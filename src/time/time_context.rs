@@ -1,9 +1,10 @@
-use super::{
-    beat::Beat, measure::Measure, ratio::mul_duration, tempo::Tempo, time_signature::TimeSignature,
+use crate::{
+    ratio::mul_duration,
+    time::{beat::Beat, measure::Measure, tempo::Tempo, time_signature::TimeSignature},
 };
 use core::time::Duration;
 
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct TimeContext {
     pub time_signature: TimeSignature,
     pub tempo: Tempo,

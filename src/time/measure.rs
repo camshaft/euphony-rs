@@ -1,6 +1,6 @@
-use super::{beat::Beat, time_signature::TimeSignature};
+use crate::time::{beat::Beat, time_signature::TimeSignature};
 
-new_ratio!(Measure);
+new_ratio!(Measure, u64);
 
 impl Default for Measure {
     fn default() -> Self {

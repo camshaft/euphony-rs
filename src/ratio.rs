@@ -25,20 +25,68 @@ fn div_duration_test() {
 }
 
 macro_rules! new_ratio {
-    ($name:ident) => {
-        #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
-        pub struct $name(pub u64, pub u64);
+    ($name:ident, $inner:ty) => {
+        new_ratio_struct!($name, $inner);
+        new_ratio_ops!($name, $inner);
+        new_ratio_conversions!($name, $inner);
+    };
+}
+
+macro_rules! new_ratio_struct {
+    ($name:ident, $inner:ty) => {
+        #[derive(Clone, Copy, Eq, Hash)]
+        pub struct $name(pub $inner, pub $inner);
+
+        impl core::fmt::Debug for $name {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                if self.1 == 1 {
+                    write!(f, "{}({:?})", stringify!($name), self.0)
+                } else {
+                    write!(f, "{}({:?}/{:?})", stringify!($name), self.0, self.1)
+                }
+            }
+        }
+
+        impl PartialEq for $name {
+            fn eq(&self, other: &Self) -> bool {
+                self.cmp(other) == core::cmp::Ordering::Equal
+            }
+        }
+
+        impl PartialOrd for $name {
+            fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+                Some(self.cmp(&other))
+            }
+        }
+
+        impl Ord for $name {
+            fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+                if cfg!(test) {
+                    self.reduce().as_ratio().cmp(&other.reduce().as_ratio())
+                } else {
+                    self.as_ratio().cmp(&other.as_ratio())
+                }
+            }
+        }
 
         impl $name {
             pub fn new<Value: Into<Self>>(value: Value) -> Self {
                 value.into()
             }
 
-            pub(crate) fn as_ratio(self) -> $crate::time::ratio::Ratio<u64> {
-                $crate::time::ratio::Ratio::new_raw(self.0, self.1)
+            pub fn reduce(self) -> Self {
+                self.as_ratio().reduced().into()
+            }
+
+            pub(crate) fn as_ratio(self) -> $crate::ratio::Ratio<$inner> {
+                $crate::ratio::Ratio::new_raw(self.0, self.1)
             }
         }
+    };
+}
 
+macro_rules! new_ratio_ops {
+    ($name:ident, $inner:ty) => {
         impl core::ops::Add for $name {
             type Output = $name;
 
@@ -68,53 +116,83 @@ macro_rules! new_ratio {
         }
 
         impl core::ops::Div for $name {
-            type Output = $crate::time::ratio::Ratio<u64>;
+            type Output = $crate::ratio::Ratio<$inner>;
 
             fn div(self, rhs: Self) -> Self::Output {
                 self.as_ratio().div(rhs.as_ratio())
             }
         }
+    };
+}
 
-        new_ratio_conversion!($name, i8);
-        new_ratio_conversion!($name, u8);
-        new_ratio_conversion!($name, i16);
-        new_ratio_conversion!($name, u16);
-        new_ratio_conversion!($name, i32);
-        new_ratio_conversion!($name, u32);
-        new_ratio_conversion!($name, i64);
-        new_ratio_conversion!($name, u64);
-        new_ratio_conversion!($name, isize);
-        new_ratio_conversion!($name, usize);
+macro_rules! new_ratio_conversions {
+    ($name:ident, $inner:ty) => {
+        new_ratio_conversion!($name, $inner, i8);
+        new_ratio_conversion!($name, $inner, u8);
+        new_ratio_conversion!($name, $inner, i16);
+        new_ratio_conversion!($name, $inner, u16);
+        new_ratio_conversion!($name, $inner, i32);
+        new_ratio_conversion!($name, $inner, u32);
+        new_ratio_conversion!($name, $inner, i64);
+        new_ratio_conversion!($name, $inner, u64);
+        new_ratio_conversion!($name, $inner, isize);
+        new_ratio_conversion!($name, $inner, usize);
     };
 }
 
 macro_rules! new_ratio_conversion {
-    ($name:ident, $ty:ident) => {
+    ($name:ident, $inner:ty, $ty:ident) => {
         impl From<$ty> for $name {
             fn from(value: $ty) -> Self {
                 use core::convert::TryInto;
-                Self(value.try_into().expect("value should fit into a u64"), 1)
+                Self(
+                    value
+                        .try_into()
+                        .expect(concat!("value should fit into a ", stringify!($inner))),
+                    1,
+                )
             }
         }
 
-        impl From<$crate::time::ratio::Ratio<$ty>> for $name {
-            fn from(value: $crate::time::ratio::Ratio<$ty>) -> Self {
+        impl From<$crate::ratio::Ratio<$ty>> for $name {
+            fn from(value: $crate::ratio::Ratio<$ty>) -> Self {
                 use core::convert::TryInto;
                 Self(
                     (*value.numer())
                         .try_into()
-                        .expect("value should fit into a u64"),
+                        .expect(concat!("value should fit into a ", stringify!($inner))),
                     (*value.denom())
                         .try_into()
-                        .expect("value should fit into a u64"),
+                        .expect(concat!("value should fit into a ", stringify!($inner))),
                 )
             }
         }
 
         impl From<($ty, $ty)> for $name {
             fn from(value: ($ty, $ty)) -> Self {
-                let value: $crate::time::ratio::Ratio<$ty> = value.into();
+                let value: $crate::ratio::Ratio<$ty> = value.into();
                 value.into()
+            }
+        }
+
+        impl PartialEq<$ty> for $name {
+            fn eq(&self, other: &$ty) -> bool {
+                self.partial_cmp(other) == Some(core::cmp::Ordering::Equal)
+            }
+        }
+
+        impl PartialOrd<$ty> for $name {
+            fn partial_cmp(&self, other: &$ty) -> Option<core::cmp::Ordering> {
+                use core::{cmp::Ordering::*, convert::TryInto};
+                let other: $inner = (*other).try_into().ok()?;
+                if self.1 == 1 {
+                    self.0.partial_cmp(&other)
+                } else {
+                    Some(match (self.0 / self.1).partial_cmp(&other)? {
+                        Equal | Greater => Greater,
+                        Less => Less,
+                    })
+                }
             }
         }
 
@@ -136,10 +214,10 @@ macro_rules! new_ratio_arithmetic {
             }
         }
 
-        impl core::ops::$op<$crate::time::ratio::Ratio<$ty>> for $name {
+        impl core::ops::$op<$crate::ratio::Ratio<$ty>> for $name {
             type Output = $name;
 
-            fn $call(self, rhs: $crate::time::ratio::Ratio<$ty>) -> Self {
+            fn $call(self, rhs: $crate::ratio::Ratio<$ty>) -> Self {
                 let rhs: Self = rhs.into();
                 self.as_ratio().$call(rhs.as_ratio()).into()
             }
@@ -160,8 +238,8 @@ macro_rules! new_ratio_arithmetic {
             }
         }
 
-        impl core::ops::$assign_op<$crate::time::ratio::Ratio<$ty>> for $name {
-            fn $assign(&mut self, rhs: $crate::time::ratio::Ratio<$ty>) {
+        impl core::ops::$assign_op<$crate::ratio::Ratio<$ty>> for $name {
+            fn $assign(&mut self, rhs: $crate::ratio::Ratio<$ty>) {
                 *self = core::ops::$op::$call(*self, rhs);
             }
         }

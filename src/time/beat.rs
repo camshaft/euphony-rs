@@ -1,6 +1,20 @@
-use super::{measure::Measure, time_signature::TimeSignature};
+use crate::time::{measure::Measure, time_signature::TimeSignature};
 
-new_ratio!(Beat);
+new_ratio!(Beat, u64);
+
+impl Beat {
+    pub const EIGHTH: Beat = Beat(1, 8);
+    // TODO
+    pub const EIGHTH_TRIPLET: Beat = Beat(1, 3);
+    pub const HALF: Beat = Beat(1, 2);
+    pub const QUARTER: Beat = Beat(1, 4);
+    // TODO
+    pub const QUARTER_TRIPLET: Beat = Beat(1, 3);
+    pub const SIXTEENTH: Beat = Beat(1, 16);
+    pub const SIXTY_FOURTH: Beat = Beat(1, 64);
+    pub const THIRTY_SECOND: Beat = Beat(1, 32);
+    pub const WHOLE: Beat = Beat(1, 1);
+}
 
 impl Default for Beat {
     fn default() -> Self {

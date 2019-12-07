@@ -1,4 +1,4 @@
-use super::{beat::Beat, measure::Measure};
+use crate::time::{beat::Beat, measure::Measure};
 use core::convert::TryInto;
 use num_rational::Ratio;
 
