@@ -1,21 +1,16 @@
 new_ratio!(Interval, i64);
 
+#[macro_export]
 macro_rules! named_interval {
     ($name:ident($n:expr, $d:expr)) => {
-        pub const $name: Interval = Interval($n, $d);
+        pub const $name: $crate::pitch::interval::Interval =
+            $crate::pitch::interval::Interval($n, $d);
     };
 }
 
-named_interval!(UNISON(1, 1));
-named_interval!(PERFECT_PRIME(1, 1));
-named_interval!(OCTAVE(2, 1));
-named_interval!(PERFECT_FIFTH(3, 2));
-named_interval!(PERFECT_FOURTH(4, 3));
-named_interval!(MAJOR_SIXTH(5, 3));
-named_interval!(MAJOR_THIRD(5, 4));
-named_interval!(MINOR_THIRD(6, 5));
-named_interval!(MINIMAL_TENTH(7, 3));
-named_interval!(HARMONIC_SEVENTH(7, 4));
+named_interval!(UNISON(0, 1));
+named_interval!(OCTAVE(1, 1));
+named_interval!(DOUBLE_OCTAVE(2, 1));
 
 impl core::ops::Neg for Interval {
     type Output = Self;

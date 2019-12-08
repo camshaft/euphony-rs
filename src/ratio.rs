@@ -39,10 +39,16 @@ macro_rules! new_ratio_struct {
 
         impl core::fmt::Debug for $name {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                write!(f, "{}({})", stringify!($name), self)
+            }
+        }
+
+        impl core::fmt::Display for $name {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 if self.1 == 1 {
-                    write!(f, "{}({:?})", stringify!($name), self.0)
+                    write!(f, "{}", self.0)
                 } else {
-                    write!(f, "{}({:?}/{:?})", stringify!($name), self.0, self.1)
+                    write!(f, "{}/{}", self.0, self.1)
                 }
             }
         }

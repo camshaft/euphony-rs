@@ -1,11 +1,25 @@
 use crate::pitch::interval::Interval;
-use core::cmp::Ordering;
+use core::{cmp::Ordering, fmt};
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct ModeIntervals {
-    pub size: usize,
+    pub tones: usize,
     pub steps: &'static [Interval],
     pub intervals: &'static [Interval],
+}
+
+impl fmt::Debug for ModeIntervals {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "ModeIntervals({:?})", self.steps)
+    }
+}
+
+impl fmt::Display for ModeIntervals {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_list()
+            .entries(self.steps.iter().map(|step| step.0))
+            .finish()
+    }
 }
 
 #[macro_export]
@@ -15,7 +29,7 @@ macro_rules! mode_intervals {
     };
     ([$($step:expr),* $(,)?], $size:expr) => {
         $crate::pitch::mode::intervals::ModeIntervals {
-            size: $size,
+            tones: $size,
             steps: &[$(
                 $crate::pitch::interval::Interval($step, $size)),*
             ],
@@ -54,6 +68,7 @@ pub enum RoundingStrategy {
     TowardsZero,
     AwayFromZero,
     Reject,
+    Pass,
 }
 
 impl Default for RoundingStrategy {
@@ -63,12 +78,12 @@ impl Default for RoundingStrategy {
 }
 
 impl ModeIntervals {
-    pub fn apply(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
-        self.try_apply(interval, rounding_strategy)
+    pub fn expand(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
+        self.checked_expand(interval, rounding_strategy)
             .expect("Interval could not be applied")
     }
 
-    pub fn try_apply(
+    pub fn checked_expand(
         &self,
         interval: Interval,
         rounding_strategy: RoundingStrategy,
@@ -82,6 +97,7 @@ impl ModeIntervals {
             Up => scaled.ceil().to_integer(),
             TowardsZero => scaled.trunc().to_integer(),
             AwayFromZero => scaled.round().to_integer(),
+            Pass => return Some(interval),
             Reject => return None,
             NearestDown | NearestUp => {
                 let lower = self.get(scaled.floor().to_integer());
@@ -120,7 +136,7 @@ impl core::ops::Mul<Interval> for ModeIntervals {
     type Output = Interval;
 
     fn mul(self, interval: Interval) -> Self::Output {
-        self.apply(interval, Default::default())
+        self.expand(interval, Default::default())
     }
 }
 
@@ -129,30 +145,6 @@ fn interval_mode_bounds_test() {
     use super::heptatonic::MAJOR;
 
     for i in -10000..10000 {
-        let _ = MAJOR.get(i);
+        let _ = MAJOR.expand(i.into(), Default::default());
     }
-}
-
-#[test]
-fn interval_mode_test() {
-    use super::heptatonic::MAJOR;
-
-    assert_eq!(MAJOR * Interval(0, 7), Interval(0, 12));
-    assert_eq!(MAJOR * Interval(1, 7), Interval(2, 12));
-    assert_eq!(MAJOR * Interval(2, 7), Interval(4, 12));
-    assert_eq!(MAJOR * Interval(3, 7), Interval(5, 12));
-    assert_eq!(MAJOR * Interval(4, 7), Interval(7, 12));
-    assert_eq!(MAJOR * Interval(5, 7), Interval(9, 12));
-    assert_eq!(MAJOR * Interval(6, 7), Interval(11, 12));
-    assert_eq!(MAJOR * Interval(7, 7), Interval(12, 12));
-    assert_eq!(MAJOR * Interval(8, 7), Interval(14, 12));
-    assert_eq!(MAJOR * Interval(9, 7), Interval(16, 12));
-    assert_eq!(MAJOR * Interval(14, 7), Interval(24, 12));
-
-    assert_eq!(MAJOR * Interval(-1, 7), Interval(-1, 12));
-    assert_eq!(MAJOR * Interval(-2, 7), Interval(-3, 12));
-    assert_eq!(MAJOR * Interval(-7, 7), Interval(-12, 12));
-    assert_eq!(MAJOR * Interval(-8, 7), Interval(-13, 12));
-    assert_eq!(MAJOR * Interval(-9, 7), Interval(-15, 12));
-    assert_eq!(MAJOR * Interval(-14, 7), Interval(-24, 12));
 }

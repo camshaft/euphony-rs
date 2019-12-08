@@ -1,5 +1,5 @@
 use crate::{
-    runtime::cell::Cell,
+    runtime::{cell::Cell, period::Period},
     time::{
         beat::Beat, measure::Measure, tempo::Tempo, time_signature::TimeSignature,
         timecode::Timecode, timestamp::Timestamp,
@@ -26,12 +26,7 @@ impl TimelineEvent {
     fn recompute(&mut self, _timecode: &Timecode) {
         match &mut self.period {
             Period::Duration(_) => {}
-            Period::Beat(_beat) => {
-                // TODO
-            }
-            Period::Measure(_measure) => {
-                // TODO
-            }
+            Period::CompoundDuration(_) => unimplemented!(),
         }
     }
 
@@ -53,8 +48,7 @@ impl TimelineEvent {
         self.source.tempo
             * match self.period {
                 Period::Duration(duration) => return duration,
-                Period::Beat(beat) => (beat / self.source.time_signature.beat()).into(),
-                Period::Measure(measure) => measure * self.source.time_signature,
+                Period::CompoundDuration(duration) => duration * self.source.time_signature,
             }
     }
 }
@@ -202,31 +196,6 @@ impl InnerTimeline {
         self.beat = event.target_beat();
         self.measure = event.target_measure();
         event.waker.wake();
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub enum Period {
-    Duration(Duration),
-    Beat(Beat),
-    Measure(Measure),
-}
-
-impl From<Duration> for Period {
-    fn from(duration: Duration) -> Self {
-        Period::Duration(duration)
-    }
-}
-
-impl From<Beat> for Period {
-    fn from(beat: Beat) -> Self {
-        Period::Beat(beat)
-    }
-}
-
-impl From<Measure> for Period {
-    fn from(measure: Measure) -> Self {
-        Period::Measure(measure)
     }
 }
 

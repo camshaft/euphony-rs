@@ -1,4 +1,5 @@
 pub mod beat;
+pub mod compound;
 pub mod measure;
 pub mod tempo;
 pub mod time_context;

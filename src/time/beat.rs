@@ -1,4 +1,5 @@
 use crate::time::{measure::Measure, time_signature::TimeSignature};
+use core::ops::Mul;
 
 new_ratio!(Beat, u64);
 
@@ -19,6 +20,14 @@ impl Beat {
 impl Default for Beat {
     fn default() -> Self {
         Beat(1, 4)
+    }
+}
+
+impl Mul<TimeSignature> for Beat {
+    type Output = Beat;
+
+    fn mul(self, time_signature: TimeSignature) -> Self::Output {
+        (self / time_signature.beat()).into()
     }
 }
 
