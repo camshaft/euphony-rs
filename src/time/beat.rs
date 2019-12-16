@@ -17,12 +17,6 @@ impl Beat {
     pub const WHOLE: Beat = Beat(1, 1);
 }
 
-impl Default for Beat {
-    fn default() -> Self {
-        Beat(1, 4)
-    }
-}
-
 impl Mul<TimeSignature> for Beat {
     type Output = Beat;
 

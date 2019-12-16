@@ -1,0 +1,12 @@
+---
+source: src/midi/message.rs
+expression: "MIDIMessage::from([224, 127, 127])"
+---
+PitchBendChange {
+    channel: Channel(
+        0,
+    ),
+    pitch_bend: PitchBend(
+        16383,
+    ),
+}

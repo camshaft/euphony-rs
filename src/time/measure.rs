@@ -2,12 +2,6 @@ use crate::time::{beat::Beat, time_signature::TimeSignature};
 
 new_ratio!(Measure, u64);
 
-impl Default for Measure {
-    fn default() -> Self {
-        Self::new(0)
-    }
-}
-
 impl Measure {
     pub fn count(self) -> u64 {
         self.as_ratio().to_integer()

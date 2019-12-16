@@ -1,0 +1,15 @@
+---
+source: src/midi/message.rs
+expression: "MIDIMessage::from([128, 60, 127])"
+---
+NoteOff {
+    channel: Channel(
+        0,
+    ),
+    key: Key(
+        60,
+    ),
+    velocity: Velocity(
+        127,
+    ),
+}

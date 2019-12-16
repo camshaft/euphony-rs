@@ -56,9 +56,27 @@ impl Mode {
         }
     }
 
+    pub fn collapse(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
+        self.checked_collapse(interval, rounding_strategy)
+            .expect("Interval could not be collapsed")
+    }
+
+    pub fn checked_collapse(
+        &self,
+        interval: Interval,
+        rounding_strategy: RoundingStrategy,
+    ) -> Option<Interval> {
+        if interval < 0 {
+            self.descending
+                .checked_collapse(interval, rounding_strategy)
+        } else {
+            self.ascending.checked_collapse(interval, rounding_strategy)
+        }
+    }
+
     pub fn expand(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
         self.checked_expand(interval, rounding_strategy)
-            .expect("Interval could not be applied")
+            .expect("Interval could not be expanded")
     }
 
     pub fn checked_expand(
@@ -117,6 +135,14 @@ impl core::ops::Mul<Interval> for Mode {
     }
 }
 
+impl core::ops::Div<Mode> for Interval {
+    type Output = Interval;
+
+    fn div(self, mode: Mode) -> Self::Output {
+        mode.collapse(self, Default::default())
+    }
+}
+
 #[test]
 fn shift_test() {
     use crate::pitch::mode::heptatonic::*;
@@ -168,4 +194,26 @@ fn expansion_test() {
     assert_eq!(C + MAJOR * -V, F - 1);
     assert_eq!(C + MAJOR * -VI, E - 1);
     assert_eq!(C + MAJOR * -VII, D - 1);
+}
+
+#[test]
+fn collapse_test() {
+    use crate::pitch::mode::western::*;
+
+    assert_eq!(A / MINOR, I);
+    assert_eq!(A.sharp() / MINOR, I);
+    assert_eq!(B / MINOR, II);
+    assert_eq!(C / MINOR, III);
+    assert_eq!(C.sharp() / MINOR, III);
+    assert_eq!(D / MINOR, IV);
+    assert_eq!(D.sharp() / MINOR, IV);
+    assert_eq!(E / MINOR, V);
+    assert_eq!(F / MINOR, VI);
+    assert_eq!(F.sharp() / MINOR, VI);
+    assert_eq!(G / MINOR, VII);
+    assert_eq!(G.sharp() / MINOR, VII);
+    assert_eq!((A + 1) / MINOR, Interval(7, 7));
+    assert_eq!(A.flat() / MINOR, -Interval(1, 7));
+    assert_eq!(A.flat().flat() / MINOR, -Interval(1, 7));
+    assert_eq!(A.flat().flat().flat() / MINOR, -Interval(2, 7));
 }

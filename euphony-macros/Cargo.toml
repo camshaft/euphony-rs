@@ -1,17 +1,14 @@
 [package]
-name = "euphony"
+name = "euphony-macros"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
-[features]
-default = ["runtime", "std"]
-std = []
-runtime = ["std"]
+[lib]
+proc-macro = true
 
 [dependencies]
-euphony-macros = { version = "0.1", path = "./euphony-macros" }
 num-rational = { version = "0.2", default-features = false }
-
-[dev-dependencies]
-insta = "0.12"
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "1", features = ["full"] }

@@ -1,0 +1,12 @@
+---
+source: src/midi/message.rs
+expression: "MIDIMessage::from([192, 1])"
+---
+ProgramChange {
+    channel: Channel(
+        0,
+    ),
+    program: Program(
+        1,
+    ),
+}

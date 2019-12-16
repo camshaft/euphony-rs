@@ -37,6 +37,12 @@ macro_rules! new_ratio_struct {
         #[derive(Clone, Copy, Eq, Hash)]
         pub struct $name(pub $inner, pub $inner);
 
+        impl Default for $name {
+            fn default() -> Self {
+                Self(0, 1)
+            }
+        }
+
         impl core::fmt::Debug for $name {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 write!(f, "{}({})", stringify!($name), self)
@@ -82,6 +88,30 @@ macro_rules! new_ratio_struct {
 
             pub fn reduce(self) -> Self {
                 self.as_ratio().reduced().into()
+            }
+
+            pub fn truncate(self) -> Self {
+                self.as_ratio().trunc().into()
+            }
+
+            pub fn is_whole(&self) -> bool {
+                self.as_ratio().is_integer()
+            }
+
+            pub fn whole(self) -> $inner {
+                self.as_ratio().to_integer()
+            }
+
+            pub fn try_into_whole(&self) -> Option<$inner> {
+                if self.is_whole() {
+                    Some(self.whole())
+                } else {
+                    None
+                }
+            }
+
+            pub fn fraction(self) -> Self {
+                self.as_ratio().fract().into()
             }
 
             pub(crate) fn as_ratio(self) -> $crate::ratio::Ratio<$inner> {

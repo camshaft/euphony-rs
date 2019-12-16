@@ -3,12 +3,6 @@ use core::{ops::Mul, time::Duration};
 
 new_ratio!(Tempo, u64);
 
-impl Default for Tempo {
-    fn default() -> Self {
-        Self::new(120)
-    }
-}
-
 const MINUTE: Duration = Duration::from_secs(60);
 
 impl Tempo {

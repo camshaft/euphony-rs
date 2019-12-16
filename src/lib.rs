@@ -5,6 +5,7 @@ extern crate alloc;
 #[macro_use]
 mod ratio;
 
+pub mod midi;
 pub mod pitch;
 pub mod time;
 

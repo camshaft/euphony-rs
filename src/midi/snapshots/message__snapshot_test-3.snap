@@ -1,0 +1,15 @@
+---
+source: src/midi/message.rs
+expression: "MIDIMessage::from([176, 1, 0])"
+---
+ControlChange {
+    channel: Channel(
+        0,
+    ),
+    controller: Controller(
+        1,
+    ),
+    value: ControllerValue(
+        0,
+    ),
+}

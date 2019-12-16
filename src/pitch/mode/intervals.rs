@@ -3,7 +3,7 @@ use core::{cmp::Ordering, fmt};
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct ModeIntervals {
-    pub tones: usize,
+    pub tones: &'static [Interval],
     pub steps: &'static [Interval],
     pub intervals: &'static [Interval],
 }
@@ -20,43 +20,6 @@ impl fmt::Display for ModeIntervals {
             .entries(self.steps.iter().map(|step| step.0))
             .finish()
     }
-}
-
-#[macro_export]
-macro_rules! mode_intervals {
-    ([$($step:expr),* $(,)?]) => {
-        $crate::mode_intervals!([$($step),*], 0 $(+ $step)*)
-    };
-    ([$($step:expr),* $(,)?], $size:expr) => {
-        $crate::pitch::mode::intervals::ModeIntervals {
-            tones: $size,
-            steps: &[$(
-                $crate::pitch::interval::Interval($step, $size)),*
-            ],
-            intervals: $crate::mode_intervals!(
-                @intervals,
-                [$($step,)*],
-                0,
-                $size,
-                [$crate::pitch::interval::Interval(0, $size),]
-            )
-        }
-    };
-    (@intervals, [$step:expr, ], $acc:expr, $size:expr, [$($intervals:expr,)*]) => {
-        &[$($intervals),*]
-    };
-    (@intervals, [$step:expr, $($steps:expr,)*], $acc:expr, $size:expr, [$($intervals:expr,)*]) => {
-        $crate::mode_intervals!(
-            @intervals,
-            [$($steps,)*],
-            $step + $acc,
-            $size,
-            [
-                $($intervals,)*
-                $crate::pitch::interval::Interval($step + $acc, $size),
-            ]
-        )
-    };
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
@@ -78,9 +41,22 @@ impl Default for RoundingStrategy {
 }
 
 impl ModeIntervals {
+    pub fn collapse(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
+        self.checked_collapse(interval, rounding_strategy)
+            .expect("Interval could not be collapsed")
+    }
+
+    pub fn checked_collapse(
+        &self,
+        interval: Interval,
+        rounding_strategy: RoundingStrategy,
+    ) -> Option<Interval> {
+        round_interval(&self.tones, interval, rounding_strategy)
+    }
+
     pub fn expand(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
         self.checked_expand(interval, rounding_strategy)
-            .expect("Interval could not be applied")
+            .expect("Interval could not be expanded")
     }
 
     pub fn checked_expand(
@@ -88,47 +64,53 @@ impl ModeIntervals {
         interval: Interval,
         rounding_strategy: RoundingStrategy,
     ) -> Option<Interval> {
-        use RoundingStrategy::*;
-
-        let scaled = (interval * self.intervals.len()).as_ratio();
-        let scaled = match rounding_strategy {
-            _ if scaled.is_integer() => scaled.to_integer(),
-            Down => scaled.floor().to_integer(),
-            Up => scaled.ceil().to_integer(),
-            TowardsZero => scaled.trunc().to_integer(),
-            AwayFromZero => scaled.round().to_integer(),
-            Pass => return Some(interval),
-            Reject => return None,
-            NearestDown | NearestUp => {
-                let lower = self.get(scaled.floor().to_integer());
-                let upper = self.get(scaled.ceil().to_integer());
-                return match lower.cmp(&upper) {
-                    Ordering::Equal if rounding_strategy == NearestDown => Some(lower),
-                    Ordering::Equal => Some(upper),
-                    Ordering::Greater => Some(upper),
-                    Ordering::Less => Some(lower),
-                };
-            }
-        };
-
-        Some(self.get(scaled))
+        round_interval(&self.intervals, interval, rounding_strategy)
     }
+}
 
-    fn get(&self, scaled: i64) -> Interval {
-        let len = self.intervals.len();
+fn round_interval(
+    intervals: &[Interval],
+    interval: Interval,
+    rounding_strategy: RoundingStrategy,
+) -> Option<Interval> {
+    use RoundingStrategy::*;
 
-        // TODO support multi-octave modes
-
-        if scaled < 0 {
-            let index = (len - (scaled.abs() as usize % len)) % len;
-            let octave = (scaled.abs() - 1) as usize / len;
-            let value = -(Interval(1, 1) - self.intervals[index]);
-            value - Interval(1, 1) * octave
-        } else {
-            let index = scaled as usize % len;
-            let octave = scaled as usize / len;
-            self.intervals[index] + Interval(1, 1) * octave
+    let scaled = (interval * intervals.len()).as_ratio();
+    let scaled = match rounding_strategy {
+        _ if scaled.is_integer() => scaled.to_integer(),
+        Down => scaled.floor().to_integer(),
+        Up => scaled.ceil().to_integer(),
+        TowardsZero => scaled.trunc().to_integer(),
+        AwayFromZero => scaled.round().to_integer(),
+        Pass => return Some(interval),
+        Reject => return None,
+        NearestDown | NearestUp => {
+            let lower = get_scaled_interval(&intervals, scaled.floor().to_integer());
+            let upper = get_scaled_interval(&intervals, scaled.ceil().to_integer());
+            return match lower.cmp(&upper) {
+                Ordering::Equal if rounding_strategy == NearestDown => Some(lower),
+                Ordering::Equal => Some(upper),
+                Ordering::Greater => Some(upper),
+                Ordering::Less => Some(lower),
+            };
         }
+    };
+
+    Some(get_scaled_interval(intervals, scaled))
+}
+
+fn get_scaled_interval(intervals: &[Interval], scaled: i64) -> Interval {
+    let len = intervals.len();
+
+    if scaled < 0 {
+        let index = (len - (scaled.abs() as usize % len)) % len;
+        let octave = (scaled.abs() - 1) as usize / len;
+        let value = -(Interval(1, 1) - intervals[index]);
+        value - Interval(1, 1) * octave
+    } else {
+        let index = scaled as usize % len;
+        let octave = scaled as usize / len;
+        intervals[index] + Interval(1, 1) * octave
     }
 }
 
@@ -137,6 +119,14 @@ impl core::ops::Mul<Interval> for ModeIntervals {
 
     fn mul(self, interval: Interval) -> Self::Output {
         self.expand(interval, Default::default())
+    }
+}
+
+impl core::ops::Div<ModeIntervals> for Interval {
+    type Output = Interval;
+
+    fn div(self, mode: ModeIntervals) -> Self::Output {
+        mode.collapse(self, Default::default())
     }
 }
 

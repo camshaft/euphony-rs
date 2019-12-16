@@ -1,12 +1,12 @@
 use crate::pitch::{
     frequency::{Frequency, FrequencyRatio},
-    interval::AbsoluteInterval,
+    interval::Interval,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Tuning {
     pub base: Frequency,
-    pub interval: AbsoluteInterval,
+    pub interval: Interval,
     pub system: TuningSystem,
 }
 
