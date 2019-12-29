@@ -17,7 +17,7 @@ impl fmt::Debug for ModeIntervals {
 impl fmt::Display for ModeIntervals {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_list()
-            .entries(self.steps.iter().map(|step| step.0))
+            .entries(self.intervals.iter().map(|step| step.as_ratio()))
             .finish()
     }
 }
@@ -77,16 +77,16 @@ fn round_interval(
 
     let scaled = (interval * intervals.len()).as_ratio();
     let scaled = match rounding_strategy {
-        _ if scaled.is_integer() => scaled.to_integer(),
-        Down => scaled.floor().to_integer(),
-        Up => scaled.ceil().to_integer(),
-        TowardsZero => scaled.trunc().to_integer(),
-        AwayFromZero => scaled.round().to_integer(),
+        _ if scaled.is_whole() => scaled.whole(),
+        Down => scaled.floor().whole(),
+        Up => scaled.ceil().whole(),
+        TowardsZero => scaled.truncate().whole(),
+        AwayFromZero => scaled.round().whole(),
         Pass => return Some(interval),
         Reject => return None,
         NearestDown | NearestUp => {
-            let lower = get_scaled_interval(&intervals, scaled.floor().to_integer());
-            let upper = get_scaled_interval(&intervals, scaled.ceil().to_integer());
+            let lower = get_scaled_interval(&intervals, scaled.floor().whole());
+            let upper = get_scaled_interval(&intervals, scaled.ceil().whole());
             return match lower.cmp(&upper) {
                 Ordering::Equal if rounding_strategy == NearestDown => Some(lower),
                 Ordering::Equal => Some(upper),

@@ -1,10 +1,8 @@
-use crate::{
-    ratio::mul_duration,
-    time::{beat::Beat, measure::Measure, tempo::Tempo, time_signature::TimeSignature},
+use crate::time::{
+    beat::Beat, duration::Duration, measure::Measure, tempo::Tempo, time_signature::TimeSignature,
 };
-use core::time::Duration;
 
-#[derive(Clone, Debug, Default, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct TimeContext {
     pub time_signature: TimeSignature,
     pub tempo: Tempo,
@@ -35,7 +33,7 @@ impl core::ops::Mul<Beat> for TimeContext {
 
     fn mul(self, beats: Beat) -> Self::Output {
         let beat_count = beats / self.time_signature.beat();
-        mul_duration(self.tempo.as_duration(), beat_count)
+        self.tempo.as_duration() * beat_count
     }
 }
 
@@ -43,7 +41,7 @@ impl core::ops::Mul<Measure> for TimeContext {
     type Output = Duration;
 
     fn mul(self, measures: Measure) -> Self::Output {
-        mul_duration(self.tempo.as_duration(), measures.as_ratio())
+        self.tempo.as_duration() * measures.as_ratio()
     }
 }
 

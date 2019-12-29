@@ -4,11 +4,11 @@ new_ratio!(Measure, u64);
 
 impl Measure {
     pub fn count(self) -> u64 {
-        self.as_ratio().to_integer()
+        self.whole()
     }
 
     pub fn beat(self) -> Beat {
-        self.as_ratio().fract().into()
+        self.as_ratio().fraction().into()
     }
 }
 

@@ -1,6 +1,8 @@
-use crate::time::{beat::Beat, measure::Measure};
+use crate::{
+    ratio::Ratio,
+    time::{beat::Beat, measure::Measure},
+};
 use core::convert::TryInto;
-use num_rational::Ratio;
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct TimeSignature(pub u64, pub u64);
@@ -24,8 +26,12 @@ impl TimeSignature {
         self.0
     }
 
+    pub fn total_beats(&self) -> Beat {
+        Beat(self.0, self.1)
+    }
+
     fn as_ratio(self) -> Ratio<u64> {
-        Ratio::new(self.0, self.1)
+        Ratio(self.0, self.1)
     }
 }
 
@@ -33,17 +39,18 @@ impl core::ops::Mul<Measure> for TimeSignature {
     type Output = Beat;
 
     fn mul(self, measure: Measure) -> Self::Output {
-        let measure: Ratio<u64> = measure.as_ratio();
-        (self.as_ratio() * measure).into()
+        let count = self.as_ratio() * measure.as_ratio();
+        (count / self.beat().as_ratio()).into()
     }
 }
 
 #[test]
 fn mul_measure_test() {
-    assert_eq!(TimeSignature(4, 4) * Measure(1, 4), Beat(1, 4));
-    assert_eq!(TimeSignature(4, 4) * Measure(2, 4), Beat(1, 4) * 2);
-    assert_eq!(TimeSignature(7, 8) * Measure(2, 1), Beat(7, 8) * 2);
-    assert_eq!(TimeSignature(6, 8) * Measure(1, 3), Beat(1, 4));
+    assert_eq!(TimeSignature(4, 4) * Measure(1, 4), Beat(1, 1));
+    assert_eq!(TimeSignature(4, 4) * Measure(2, 4), Beat(2, 1));
+    assert_eq!(TimeSignature(7, 8) * Measure(2, 1), Beat(14, 1));
+    assert_eq!(TimeSignature(6, 8) * Measure(1, 3), Beat(2, 1));
+    assert_eq!(TimeSignature(6, 8) * Measure(2, 3), Beat(4, 1));
 }
 
 macro_rules! convert {

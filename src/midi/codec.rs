@@ -81,7 +81,7 @@ impl MIDIValue for Beat {
     }
 
     fn encode<B: EncoderBuffer>(&self, buffer: &mut B) -> Result<usize, EncoderError> {
-        let count = (*self / Beat(1, 16)).to_integer() as u16;
+        let count = (*self / Beat(1, 16)).whole() as u16;
         buffer.encode(&count)
     }
 }

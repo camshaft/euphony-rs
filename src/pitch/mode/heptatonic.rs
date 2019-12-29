@@ -3,8 +3,8 @@
 use crate::pitch::mode::Mode;
 use euphony_macros::mode_system;
 
-named_interval!(I(0, 7));
-named_interval!(FIRST(0, 7));
+named_interval!(I(0, 1));
+named_interval!(FIRST(0, 1));
 named_interval!(II(1, 7));
 named_interval!(SECOND(1, 7));
 named_interval!(III(2, 7));

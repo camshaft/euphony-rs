@@ -6,4 +6,3 @@ pub mod frequency;
 pub mod key;
 pub mod mode;
 pub mod tuning;
-pub mod velocity;

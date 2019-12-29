@@ -7,11 +7,19 @@ edition = "2018"
 [features]
 default = ["runtime", "std"]
 std = []
-runtime = ["std"]
+runtime = ["futures-core", "std"]
 
 [dependencies]
 euphony-macros = { version = "0.1", path = "./euphony-macros" }
+futures-core = { version = "0.3", optional = true }
+generational-arena = { version = "0.2", default-features = false }
+num-integer = { version = "0.1", default-features = false }
 num-rational = { version = "0.2", default-features = false }
+num-traits = { version = "0.2", default-features = false }
 
 [dev-dependencies]
+ctrlc = "3.1"
 insta = "0.12"
+futures = { version = "0.3" }
+midir = { git = "https://github.com/Boddlnagg/midir" }
+rand = "0.7"
