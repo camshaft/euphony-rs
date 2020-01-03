@@ -1,5 +1,7 @@
-midi_value!(Controller, u8);
-midi_value!(ControllerValue, u8);
+use crate::midi::integer::u7;
+
+midi_value!(Controller, u7);
+midi_value!(ControllerValue, u7);
 
 // TODO
 // All Sound Off. When All Sound Off is received all oscillators will turn off, and their volume envelopes are set to zero as soon as possible. c = 120, v = 0: All Sound Off

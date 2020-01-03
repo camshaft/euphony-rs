@@ -26,9 +26,6 @@ pub(crate) struct Driver {
     wheel: Wheel<WheelStack>,
 }
 
-/// Maximum number of timeouts the system can handle concurrently.
-const MAX_TIMEOUTS: usize = core::usize::MAX >> 1;
-
 impl Default for Driver {
     fn default() -> Self {
         Self::new()
@@ -45,11 +42,6 @@ impl Driver {
 
     pub(crate) fn handle(&self) -> Handle {
         Handle::new(Rc::downgrade(&self.inner))
-    }
-
-    pub fn tick(&mut self, now: Timestamp) -> Option<Timestamp> {
-        self.process(now);
-        self.prepare_park()
     }
 
     pub fn prepare_park(&mut self) -> Option<Timestamp> {

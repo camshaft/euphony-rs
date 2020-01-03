@@ -5,6 +5,7 @@ use core::ops::{Add, AddAssign, Sub};
 pub struct Timestamp(Duration);
 
 impl Timestamp {
+    #[allow(dead_code)]
     pub(crate) const fn from_duration(duration: Duration) -> Self {
         Self(duration)
     }

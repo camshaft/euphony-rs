@@ -61,6 +61,10 @@ macro_rules! new_ratio_methods {
                 self.as_ratio().reduce().into()
             }
 
+            pub fn simplify(self, denominator: $inner) -> Self {
+                self.as_ratio().simplify(denominator).into()
+            }
+
             pub fn truncate(self) -> Self {
                 self.as_ratio().truncate().into()
             }
@@ -85,7 +89,7 @@ macro_rules! new_ratio_methods {
                 self.as_ratio().fraction().into()
             }
 
-            pub(crate) fn as_ratio(self) -> $crate::ratio::Ratio<$inner> {
+            pub fn as_ratio(self) -> $crate::ratio::Ratio<$inner> {
                 $crate::ratio::Ratio(self.0, self.1)
             }
         }

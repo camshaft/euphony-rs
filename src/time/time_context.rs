@@ -33,7 +33,7 @@ impl core::ops::Mul<Beat> for TimeContext {
 
     fn mul(self, beats: Beat) -> Self::Output {
         let beat_count = beats / self.time_signature.beat();
-        self.tempo.as_duration() * beat_count
+        self.tempo.as_beat_duration() * beat_count
     }
 }
 
@@ -41,7 +41,7 @@ impl core::ops::Mul<Measure> for TimeContext {
     type Output = Duration;
 
     fn mul(self, measures: Measure) -> Self::Output {
-        self.tempo.as_duration() * measures.as_ratio()
+        self.tempo.as_beat_duration() * measures.as_ratio()
     }
 }
 

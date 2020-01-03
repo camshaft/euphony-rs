@@ -1,7 +1,7 @@
 use crate::{
     midi::{
         channel::Channel,
-        codec::{DecoderBuffer, DecoderError, EncoderBuffer, EncoderError, MIDIValue},
+        codec::{DecoderBuffer, DecoderError, EncoderBuffer, MIDIValue},
         controller::{Controller, ControllerValue},
         key::Key,
         pitch_bend::PitchBend,
@@ -214,65 +214,74 @@ impl MIDIValue for MIDIMessage {
         }
     }
 
-    fn encode<B: EncoderBuffer>(&self, buffer: &mut B) -> Result<usize, EncoderError> {
-        Ok(match self {
+    fn encode<B: EncoderBuffer>(&self, buffer: &mut B) -> Result<(), B::Error> {
+        match self {
             MIDIMessage::NoteOff {
                 channel,
                 key,
                 velocity,
             } => {
-                buffer.write_byte(0b1000_0000 | **channel)?
-                    + buffer.encode(key)?
-                    + buffer.encode(velocity)?
+                buffer.write_byte(0b1000_0000 | **channel)?;
+                buffer.encode(key)?;
+                buffer.encode(velocity)?;
             }
             MIDIMessage::NoteOn {
                 channel,
                 key,
                 velocity,
             } => {
-                buffer.write_byte(0b1001_0000 | **channel)?
-                    + buffer.encode(key)?
-                    + buffer.encode(velocity)?
+                buffer.write_byte(0b1001_0000 | **channel)?;
+                buffer.encode(key)?;
+                buffer.encode(velocity)?
             }
             MIDIMessage::PolyphonicKeyPressure {
                 channel,
                 key,
                 pressure,
             } => {
-                buffer.write_byte(0b1010_0000 | **channel)?
-                    + buffer.encode(key)?
-                    + buffer.encode(pressure)?
+                buffer.write_byte(0b1010_0000 | **channel)?;
+                buffer.encode(key)?;
+                buffer.encode(pressure)?
             }
             MIDIMessage::ControlChange {
                 channel,
                 controller,
                 value,
             } => {
-                buffer.write_byte(0b1011_0000 | **channel)?
-                    + buffer.encode(controller)?
-                    + buffer.encode(value)?
+                buffer.write_byte(0b1011_0000 | **channel)?;
+                buffer.encode(controller)?;
+                buffer.encode(value)?
             }
             MIDIMessage::ProgramChange { channel, program } => {
-                buffer.write_byte(0b1100_0000 | **channel)? + buffer.encode(program)?
+                buffer.write_byte(0b1100_0000 | **channel)?;
+                buffer.encode(program)?
             }
             MIDIMessage::ChannelPressure { channel, pressure } => {
-                buffer.write_byte(0b1101_0000 | **channel)? + buffer.encode(pressure)?
+                buffer.write_byte(0b1101_0000 | **channel)?;
+                buffer.encode(pressure)?
             }
             MIDIMessage::PitchBendChange {
                 channel,
                 pitch_bend,
-            } => buffer.write_byte(0b1110_0000 | **channel)? + buffer.encode(pitch_bend)?,
+            } => {
+                buffer.write_byte(0b1110_0000 | **channel)?;
+                buffer.encode(pitch_bend)?
+            }
             MIDIMessage::SystemExclusive { payload } => {
-                buffer.write_byte(0b1111_0000)? + buffer.encode(payload)?
+                buffer.write_byte(0b1111_0000)?;
+                buffer.encode(payload)?
             }
             MIDIMessage::TimeCodeQuarterFrame { value } => {
-                buffer.write_byte(0b1111_0001)? + buffer.encode(value)?
+                buffer.write_byte(0b1111_0001)?;
+                buffer.encode(value)?
             }
             MIDIMessage::SongPositionPointer { beat } => {
-                buffer.write_byte(0b1111_0010)? + buffer.encode(beat)?
+                buffer.write_byte(0b1111_0010)?;
+                buffer.encode(beat)?
             }
             MIDIMessage::SongSelect { song } => {
-                buffer.write_byte(0b1111_0011)? + buffer.encode(song)?
+                buffer.write_byte(0b1111_0011)?;
+                buffer.encode(song)?;
             }
             MIDIMessage::TuneRequest => buffer.write_byte(0b1111_0110)?,
             MIDIMessage::EndOfExclusive => buffer.write_byte(0b1111_0111)?,
@@ -282,8 +291,59 @@ impl MIDIValue for MIDIMessage {
             MIDIMessage::Stop => buffer.write_byte(0b1111_1100)?,
             MIDIMessage::ActiveSensing => buffer.write_byte(0b1111_1110)?,
             MIDIMessage::Reset => buffer.write_byte(0b1111_1111)?,
+            MIDIMessage::Undefined => {}
+        }
+        Ok(())
+    }
+
+    fn encoding_len(&self) -> usize {
+        1 + match self {
+            MIDIMessage::NoteOff {
+                channel: _,
+                key,
+                velocity,
+            }
+            | MIDIMessage::NoteOn {
+                channel: _,
+                key,
+                velocity,
+            } => key.encoding_len() + velocity.encoding_len(),
+            MIDIMessage::PolyphonicKeyPressure {
+                channel: _,
+                key,
+                pressure,
+            } => key.encoding_len() + pressure.encoding_len(),
+            MIDIMessage::ControlChange {
+                channel: _,
+                controller,
+                value,
+            } => controller.encoding_len() + value.encoding_len(),
+            MIDIMessage::ProgramChange {
+                channel: _,
+                program,
+            } => program.encoding_len(),
+            MIDIMessage::ChannelPressure {
+                channel: _,
+                pressure,
+            } => pressure.encoding_len(),
+            MIDIMessage::PitchBendChange {
+                channel: _,
+                pitch_bend,
+            } => pitch_bend.encoding_len(),
+            MIDIMessage::SystemExclusive { payload } => payload.encoding_len(),
+            MIDIMessage::TimeCodeQuarterFrame { value } => value.encoding_len(),
+            MIDIMessage::SongPositionPointer { beat } => beat.encoding_len(),
+            MIDIMessage::SongSelect { song } => song.encoding_len(),
+            MIDIMessage::TuneRequest => 0,
+            MIDIMessage::EndOfExclusive => 0,
+            MIDIMessage::TimingClock => 0,
+            MIDIMessage::Start => 0,
+            MIDIMessage::Continue => 0,
+            MIDIMessage::Stop => 0,
+            MIDIMessage::ActiveSensing => 0,
+            MIDIMessage::Reset => 0,
             MIDIMessage::Undefined => 0,
-        })
+        }
     }
 }
 

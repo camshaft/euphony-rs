@@ -53,12 +53,6 @@ pub struct Delay {
 }
 
 impl Delay {
-    pub(crate) fn new_timeout(deadline: Timestamp) -> Delay {
-        Delay {
-            registration: Registration::new(deadline),
-        }
-    }
-
     /// Returns the instant at which the future will complete.
     pub fn deadline(&self) -> Timestamp {
         self.registration.deadline()

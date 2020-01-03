@@ -4,18 +4,10 @@ macro_rules! midi_value {
         pub struct $name($ty);
 
         impl $name {
-            pub const MAX: Self = Self(
-                (1 << (core::mem::size_of::<$ty>() as $ty * 8
-                    - core::mem::size_of::<$ty>() as $ty))
-                    - 1,
-            );
+            pub const MAX: Self = Self($ty::MAX);
 
-            pub fn new(value: $ty) -> Option<Self> {
-                if value <= Self::MAX.0 {
-                    Some(Self(value))
-                } else {
-                    None
-                }
+            pub fn new<T: core::convert::TryInto<$ty>>(value: T) -> Option<Self> {
+                Some(Self(T::try_into(value).ok()?))
             }
         }
 
@@ -37,8 +29,12 @@ macro_rules! midi_value {
             fn encode<B: crate::midi::codec::EncoderBuffer>(
                 &self,
                 buffer: &mut B,
-            ) -> Result<usize, crate::midi::codec::EncoderError> {
+            ) -> Result<(), B::Error> {
                 self.0.encode(buffer)
+            }
+
+            fn encoding_len(&self) -> usize {
+                self.0.encoding_len()
             }
         }
     };
@@ -47,11 +43,13 @@ macro_rules! midi_value {
 pub mod channel;
 pub mod codec;
 pub mod controller;
+pub mod integer;
 pub mod key;
 pub mod message;
 pub mod pitch_bend;
 pub mod pressure;
 pub mod program;
+pub mod smf;
 pub mod song;
 pub mod sysex;
 pub mod timecode;

@@ -1,10 +1,11 @@
 use crate::{
     runtime::{
         future::reactor,
-        time::driver::{handle, handle::DefaultGuard, Driver},
+        time::driver::{handle, Driver},
     },
     time::timestamp::Timestamp,
 };
+use core::time::Duration;
 
 #[derive(Debug, Default)]
 pub struct OfflineRuntime {
@@ -12,11 +13,34 @@ pub struct OfflineRuntime {
 }
 
 impl OfflineRuntime {
-    pub(crate) fn register(&self) -> DefaultGuard {
-        handle::set_default(self.driver.handle())
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn render_for(&mut self, limit: Duration) {
+        let guard = handle::set_default(self.driver.handle());
+
+        let mut now = Timestamp::default();
+        while reactor::tick() {
+            while self.driver.process(now) {
+                reactor::tick();
+            }
+
+            if let Some(next) = self.driver.prepare_park() {
+                now = next;
+                if now - Timestamp::default() > limit {
+                    drop(guard);
+                    return;
+                }
+            }
+        }
+
+        drop(guard);
     }
 
     pub fn render(&mut self) {
+        let guard = handle::set_default(self.driver.handle());
+
         let mut now = Timestamp::default();
         while reactor::tick() {
             while self.driver.process(now) {
@@ -27,6 +51,8 @@ impl OfflineRuntime {
                 now = next;
             }
         }
+
+        drop(guard);
     }
 }
 
@@ -42,7 +68,6 @@ fn offline_test() {
     use futures::stream::StreamExt;
 
     let mut driver = OfflineRuntime::default();
-    let register = driver.register();
     let cell = cell(Interval(1, 1));
     let mut observer = cell.clone().observe();
 
@@ -65,7 +90,6 @@ fn offline_test() {
     });
 
     driver.render();
-    drop(register);
 
     assert_eq!(
         &observed.borrow()[..],

@@ -1,6 +1,6 @@
 use crate::runtime::graph::{
     handle::NodeHandle,
-    subscription::{Observable, Subscription},
+    subscription::{Observable, Readable, Subscription},
 };
 use core::{
     fmt,
@@ -24,9 +24,10 @@ pub struct Observer<S: Subscription> {
 }
 
 impl<S: Subscription> Observer<S> {
-    pub fn new<O>(dependency: &O) -> Self
+    pub fn new<Dependency>(dependency: &Dependency) -> Self
     where
-        O: Observable<Subscription = S>,
+        Dependency: Observable<Subscription = S>,
+        S: Readable<Output = Dependency::Output>,
     {
         let handle = NodeHandle::new();
         let subscription = dependency.observe(&handle);
@@ -43,25 +44,27 @@ impl<S: Subscription> Observer<S> {
 }
 
 impl<S: Subscription> Subscription for Observer<S> {
-    type Output = S::Output;
-
-    fn try_get(&self) -> Option<Self::Output> {
-        self.handle.mark_clean();
-        self.subscription.try_get()
-    }
-
     fn is_open(&self) -> bool {
         self.subscription.is_open()
     }
 }
 
-impl<S> fmt::Debug for Observer<S>
+impl<S: Subscription> Readable for Observer<S> {
+    type Output = S::Output;
+
+    fn try_read(&self) -> Option<Self::Output> {
+        self.handle.mark_clean();
+        self.subscription.try_read()
+    }
+}
+
+impl<S, Output> fmt::Debug for Observer<S>
 where
-    S: Subscription,
+    S: Subscription<Output = Output>,
     S::Output: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.debug_tuple("Observer").field(&self.get()).finish()
+        f.debug_tuple("Observer").field(&self.read()).finish()
     }
 }
 
@@ -81,7 +84,7 @@ where
             }
             ObserverState::Ready => {
                 observer.state = ObserverState::Pending;
-                Poll::Ready(observer.try_get())
+                Poll::Ready(observer.try_read())
             }
         }
     }
@@ -103,7 +106,7 @@ where
             }
             ObserverState::Initial | ObserverState::Ready => {
                 observer.state = ObserverState::Pending;
-                Poll::Ready(observer.try_get())
+                Poll::Ready(observer.try_read())
             }
         }
     }

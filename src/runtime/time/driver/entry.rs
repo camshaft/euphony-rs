@@ -240,9 +240,9 @@ impl Entry {
         unsafe { *&*self.deadline.get() }
     }
 
-    fn deadline_mut(&self) -> &mut Timestamp {
-        unsafe { &mut *self.deadline.get() }
-    }
+    // fn deadline_mut(&self) -> &mut Timestamp {
+    //     unsafe { &mut *self.deadline.get() }
+    // }
 
     fn waker_mut(&self) -> &mut Option<Waker> {
         unsafe { &mut *self.waker.get() }

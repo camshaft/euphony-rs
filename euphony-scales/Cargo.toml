@@ -1,5 +1,5 @@
 [package]
-name = "euphony-cli"
+name = "euphony-scales"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
@@ -11,6 +11,4 @@ euphony = { version = "0.1.0", path = "../" }
 failure = "0.1"
 futures = "0.3"
 midir = { git = "https://github.com/Boddlnagg/midir" }
-# midly = "0.3"
-rand = "0.7"
 structopt = "0.3"

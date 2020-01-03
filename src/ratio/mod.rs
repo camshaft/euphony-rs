@@ -55,6 +55,14 @@ impl<T: Copy + Integer> Ord for Ratio<T> {
 }
 
 impl<T: Copy + Integer> Ratio<T> {
+    pub fn simplify(self, d: T) -> Self {
+        if self.1 < d {
+            return self;
+        }
+
+        (self * d).round() / d
+    }
+
     pub fn reduce(self) -> Self {
         self.as_ratio().reduced().into()
     }

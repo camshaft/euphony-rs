@@ -1,4 +1,6 @@
-midi_value!(Key, u8);
+use crate::midi::integer::u7;
+
+midi_value!(Key, u7);
 
 // impl MIDIValue for Interval {
 //     fn decode<B: DecoderBuffer>(buffer: &mut B) -> Result<Self, DecoderError> {

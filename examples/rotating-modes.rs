@@ -5,7 +5,11 @@ use euphony::{
     pitch::{interval::Interval, mode::western::*},
     runtime::{
         future::reactor,
-        graph::{cell::cell, map::MapCell, subscription::Subscription},
+        graph::{
+            cell::cell,
+            map::MapCell,
+            subscription::{Readable, Subscription},
+        },
         online::OnlineRuntime,
         time::delay,
     },
@@ -161,7 +165,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         let delay = |beat| delay_for_beat(beat, &time_signature_reader, &tempo_reader);
 
         let mut durations = vec![];
-        let mut remaining_time: Beat = time_signature_reader.get().total_beats();
+        let mut remaining_time: Beat = time_signature_reader.read().total_beats();
 
         loop {
             let duration = Beat(1, 16) * gen_range(1, 3);
@@ -201,7 +205,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         let delay = |beat| delay_for_beat(beat, &time_signature_reader, &tempo_reader);
 
         let mut durations = vec![];
-        let mut remaining_time: Beat = time_signature_reader.get().total_beats();
+        let mut remaining_time: Beat = time_signature_reader.read().total_beats();
 
         loop {
             let duration = Beat(1, 4) * gen_range(1, 4);
@@ -242,7 +246,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         let delay = |beat| delay_for_beat(beat, &time_signature_reader, &tempo_reader);
 
         let mut durations = vec![];
-        let mut remaining_time: Beat = time_signature_reader.get().total_beats();
+        let mut remaining_time: Beat = time_signature_reader.read().total_beats();
 
         loop {
             let duration = Beat(1, 4) * gen_range(1, 4);
@@ -284,7 +288,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         let delay = |beat| delay_for_beat(beat, &time_signature_reader, &tempo_reader);
 
         let mut intervals = vec![];
-        let mut remaining_time: Beat = time_signature_reader.get().total_beats();
+        let mut remaining_time: Beat = time_signature_reader.read().total_beats();
 
         loop {
             let interval = Interval(gen_range(-3, 8), 7);
@@ -346,7 +350,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         let delay = |beat| delay_for_beat(beat, &time_signature_reader, &tempo_reader);
 
         let mut intervals = vec![];
-        let mut remaining_time: Beat = time_signature_reader.get().total_beats();
+        let mut remaining_time: Beat = time_signature_reader.read().total_beats();
 
         loop {
             let interval = Interval(gen_range(0, 7), 7);
@@ -428,8 +432,8 @@ impl Connection {
 
     pub fn send(&self, message: MIDIMessage) {
         let mut bytes = vec![];
-        let len = message.encode(&mut bytes).unwrap();
-        self.send_bytes(&bytes[0..len])
+        message.encode(&mut bytes).unwrap();
+        self.send_bytes(&bytes[..])
     }
 
     pub fn send_bytes(&self, message: &[u8]) {
@@ -457,8 +461,8 @@ async fn delay_for_beat(
     time_signature: &impl Subscription<Output = TimeSignature>,
     tempo: &impl Subscription<Output = Tempo>,
 ) {
-    let beat: Beat = (beat / time_signature.get().beat()).into();
-    let duration = tempo.get() * beat;
+    let beat: Beat = (beat / time_signature.read().beat()).into();
+    let duration = tempo.read() * beat;
 
     delay::delay_for(duration).await;
 }
@@ -468,7 +472,7 @@ async fn delay_for_measure(
     time_signature: &impl Subscription<Output = TimeSignature>,
     tempo: &impl Subscription<Output = Tempo>,
 ) {
-    let beats = measure * time_signature.get();
-    let duration = tempo.get() * beats;
+    let beats = measure * time_signature.read();
+    let duration = tempo.read() * beats;
     delay::delay_for(duration).await;
 }

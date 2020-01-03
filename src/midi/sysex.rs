@@ -1,8 +1,10 @@
-use crate::midi::codec::{DecoderBuffer, DecoderError, EncoderBuffer, EncoderError, MIDIValue};
+use crate::midi::codec::{DecoderBuffer, DecoderError, EncoderBuffer, MIDIValue};
 
 #[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 
 pub struct SysExPayload(Vec<u8>);
+
+// TODO implement conversion?
 
 impl MIDIValue for SysExPayload {
     fn decode<B: DecoderBuffer>(buffer: &mut B) -> Result<Self, DecoderError> {
@@ -20,11 +22,12 @@ impl MIDIValue for SysExPayload {
         }
     }
 
-    fn encode<B: EncoderBuffer>(&self, buffer: &mut B) -> Result<usize, EncoderError> {
-        let len = self.0.len();
-        for byte in self.0.iter() {
-            buffer.write_byte(*byte)?;
-        }
-        Ok(len)
+    fn encode<B: EncoderBuffer>(&self, buffer: &mut B) -> Result<(), B::Error> {
+        buffer.write_bytes(&self.0)?;
+        Ok(())
+    }
+
+    fn encoding_len(&self) -> usize {
+        self.0.len()
     }
 }

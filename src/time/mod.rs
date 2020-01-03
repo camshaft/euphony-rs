@@ -7,3 +7,4 @@ pub mod time_context;
 pub mod time_signature;
 pub mod timecode;
 pub mod timestamp;
+pub mod unquantized_beat;

@@ -1,60 +1,83 @@
 use crate::runtime::graph::{global, handle::NodeHandle, registry::NodeId};
 
-pub trait Observable {
-    type Subscription: Subscription;
+pub trait Readable {
+    type Output;
 
-    fn try_get(&self) -> Option<<Self::Subscription as Subscription>::Output>;
-    fn get(&self) -> <Self::Subscription as Subscription>::Output {
-        self.try_get().expect("Observable is closed")
+    fn try_read(&self) -> Option<Self::Output>;
+    fn read(&self) -> Self::Output {
+        self.try_read().expect("Readable is closed")
     }
+}
+
+impl<Output> Readable for Box<dyn Readable<Output = Output>> {
+    type Output = Output;
+
+    fn try_read(&self) -> Option<Self::Output> {
+        self.as_ref().try_read()
+    }
+}
+
+impl<'a, R: Readable> Readable for &'a R {
+    type Output = R::Output;
+
+    fn try_read(&self) -> Option<Self::Output> {
+        (*self).try_read()
+    }
+}
+
+pub trait Observable: Readable {
+    type Subscription: Subscription + Readable<Output = Self::Output>;
+
     fn observe(&self, child: &NodeHandle) -> Self::Subscription;
 }
 
 impl<'a, O: Observable> Observable for &'a O {
     type Subscription = O::Subscription;
 
-    fn try_get(&self) -> Option<<Self::Subscription as Subscription>::Output> {
-        (*self).try_get()
-    }
-
     fn observe(&self, child: &NodeHandle) -> Self::Subscription {
         (*self).observe(child)
     }
 }
 
-impl<Sub: 'static + Subscription> Observable for Box<dyn Observable<Subscription = Sub>> {
-    type Subscription = Box<dyn Subscription<Output = Sub::Output>>;
+impl<Sub, Output> Readable for Box<dyn Observable<Output = Output, Subscription = Sub>>
+where
+    Sub: 'static + Subscription<Output = Output>,
+{
+    type Output = Output;
 
-    fn try_get(&self) -> Option<Sub::Output> {
-        self.as_ref().try_get()
+    fn try_read(&self) -> Option<Self::Output> {
+        self.as_ref().try_read()
     }
+}
+
+impl<Sub, Output> Observable for Box<dyn Observable<Output = Output, Subscription = Sub>>
+where
+    Sub: 'static + Subscription<Output = Output>,
+{
+    type Subscription = Box<dyn Subscription<Output = Output>>;
 
     fn observe(&self, handle: &NodeHandle) -> Self::Subscription {
         Box::new(self.as_ref().observe(handle))
     }
 }
 
-pub trait Subscription {
-    type Output;
-
-    fn try_get(&self) -> Option<Self::Output>;
+pub trait Subscription: Readable {
     fn is_open(&self) -> bool;
 
-    fn get(&self) -> Self::Output {
-        self.try_get().expect("Subscription is closed")
-    }
     fn is_closed(&self) -> bool {
         !self.is_open()
     }
 }
 
-impl<Output> Subscription for Box<dyn Subscription<Output = Output>> {
+impl<Output> Readable for Box<dyn Subscription<Output = Output>> {
     type Output = Output;
 
-    fn try_get(&self) -> Option<Self::Output> {
-        self.as_ref().try_get()
+    fn try_read(&self) -> Option<Self::Output> {
+        self.as_ref().try_read()
     }
+}
 
+impl<Output> Subscription for Box<dyn Subscription<Output = Output>> {
     fn is_open(&self) -> bool {
         self.as_ref().is_open()
     }

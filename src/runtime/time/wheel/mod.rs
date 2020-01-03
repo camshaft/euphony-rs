@@ -123,17 +123,17 @@ where
     }
 
     pub(crate) fn prepare_park(&mut self, store: &mut T::Store) -> Option<Timestamp> {
-        // loop {
-        //     let expiration = self.next_expiration()?;
+        loop {
+            let expiration = self.next_expiration()?;
 
-        //     if !self.sift_up(&expiration, store) {
-        //         return Some(expiration.deadline);
-        //     }
+            if !self.sift_up(&expiration, store) {
+                return Some(expiration.deadline);
+            }
 
-        //     self.set_timestamp(expiration.deadline);
-        // }
+            self.set_timestamp(expiration.deadline);
+        }
 
-        self.next_expiration().map(|expiration| expiration.deadline)
+        // self.next_expiration().map(|expiration| expiration.deadline)
     }
 
     pub(crate) fn poll(&mut self, poll: &mut Poll, store: &mut T::Store) -> Option<T::Value> {

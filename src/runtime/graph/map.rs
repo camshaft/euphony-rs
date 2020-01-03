@@ -3,7 +3,7 @@
 use crate::runtime::graph::{
     handle::NodeHandle,
     node::Node,
-    subscription::{Observable, Subscription, SubscriptionHandle},
+    subscription::{Observable, Readable, Subscription, SubscriptionHandle},
 };
 use alloc::rc::Rc;
 use core::{cell::UnsafeCell, marker::PhantomData};
@@ -11,6 +11,7 @@ use core::{cell::UnsafeCell, marker::PhantomData};
 pub struct MappedCell<S, Map, Output>(Rc<InnerComputation<S, Map, Output>>);
 
 pub struct MappedCellSubscription<S, Map, Output> {
+    #[allow(dead_code)]
     subscription: SubscriptionHandle,
     parent: MappedCell<S, Map, Output>,
 }
@@ -19,14 +20,19 @@ impl<S, Map, Output> Subscription for MappedCellSubscription<S, Map, Output>
 where
     S: MappedSubscription<Map, Output>,
 {
-    type Output = Output;
-
-    fn try_get(&self) -> Option<Self::Output> {
-        self.parent.0.try_get()
-    }
-
     fn is_open(&self) -> bool {
         self.parent.is_open()
+    }
+}
+
+impl<S, Map, Output> Readable for MappedCellSubscription<S, Map, Output>
+where
+    S: MappedSubscription<Map, Output>,
+{
+    type Output = Output;
+
+    fn try_read(&self) -> Option<Output> {
+        self.parent.0.try_read()
     }
 }
 
@@ -36,10 +42,6 @@ where
 {
     type Subscription = MappedCellSubscription<S, Map, Output>;
 
-    fn try_get(&self) -> Option<Output> {
-        self.0.try_get()
-    }
-
     fn observe(&self, handle: &NodeHandle) -> Self::Subscription {
         MappedCellSubscription {
             subscription: handle.subscribe_to(&self.0.handle),
@@ -48,16 +50,21 @@ where
     }
 }
 
-impl<S, Map, Output> Subscription for MappedCell<S, Map, Output>
+impl<S, Map, Output> Readable for MappedCell<S, Map, Output>
 where
     S: MappedSubscription<Map, Output>,
 {
     type Output = Output;
 
-    fn try_get(&self) -> Option<Self::Output> {
-        self.0.try_get()
+    fn try_read(&self) -> Option<Output> {
+        self.0.try_read()
     }
+}
 
+impl<S, Map, Output> Subscription for MappedCell<S, Map, Output>
+where
+    S: MappedSubscription<Map, Output>,
+{
     fn is_open(&self) -> bool {
         MappedSubscription::is_open(&self.0.subscription)
     }
@@ -111,9 +118,9 @@ impl<S, Map, Output> InnerComputation<S, Map, Output>
 where
     S: MappedSubscription<Map, Output>,
 {
-    fn try_get(&self) -> Option<Output> {
+    fn try_read(&self) -> Option<Output> {
         self.handle.mark_clean();
-        MappedSubscription::try_get(&self.subscription, self.map_mut())
+        MappedSubscription::try_read(&self.subscription, self.map_mut())
     }
 }
 
@@ -124,14 +131,14 @@ pub trait MapCell<Map, Output>: Sized {
 }
 
 pub trait MappedSubscription<Map, Output> {
-    fn try_get(subscription: &Self, map: &mut Map) -> Option<Output>;
+    fn try_read(subscription: &Self, map: &mut Map) -> Option<Output>;
     fn is_open(subscription: &Self) -> bool;
 }
 
 impl<O, Map, Output> MapCell<Map, Output> for O
 where
     O: Observable,
-    Map: FnMut(<O::Subscription as Subscription>::Output) -> Output,
+    Map: FnMut(O::Output) -> Output,
 {
     type Subscription = O::Subscription;
 
@@ -143,12 +150,13 @@ where
     }
 }
 
-impl<S: Subscription, Map, Output> MappedSubscription<Map, Output> for S
+impl<S, Map, Output> MappedSubscription<Map, Output> for S
 where
+    S: Subscription,
     Map: FnMut(S::Output) -> Output,
 {
-    fn try_get(subscription: &Self, map: &mut Map) -> Option<Output> {
-        Some(map(subscription.try_get()?))
+    fn try_read(subscription: &Self, map: &mut Map) -> Option<Output> {
+        Some(map(subscription.try_read()?))
     }
 
     fn is_open(subscription: &Self) -> bool {
@@ -168,9 +176,9 @@ macro_rules! impl_map_tuple {
         where
             Map: FnMut(
                 $(
-                    <$p::Subscription as Subscription>::Output,
+                    $p::Output,
                 )*
-                <$a::Subscription as Subscription>::Output
+                $a::Output
             ) -> Output,
             $(
                 $p: Observable,
@@ -206,13 +214,13 @@ macro_rules! impl_map_tuple {
             )*
             $a: Subscription
         {
-            fn try_get(subscription: &Self, map: &mut Map) -> Option<Output> {
+            fn try_read(subscription: &Self, map: &mut Map) -> Option<Output> {
                 let ($($p,)* $a,) = subscription;
                 Some(map(
                     $(
-                        Subscription::try_get($p)?,
+                        Readable::try_read($p)?,
                     )*
-                    Subscription::try_get($a)?
+                    Readable::try_read($a)?
                 ))
             }
 
@@ -238,10 +246,10 @@ fn map_test() {
     let c = a.map(|v| v * 3);
     let d = (&b, &c).map(|v1, v2| v1 + v2);
 
-    assert_eq!(d.get(), 5);
+    assert_eq!(d.read(), 5);
 
     a.set(2);
-    assert_eq!(d.get(), 9);
+    assert_eq!(d.read(), 9);
 
     a.close();
 }
@@ -257,10 +265,10 @@ fn ops_test() {
     let c = &a * &mul;
     let d = b + c;
 
-    assert_eq!(d.get(), 5);
+    assert_eq!(d.read(), 5);
 
     a.set(2);
-    assert_eq!(d.get(), 9);
+    assert_eq!(d.read(), 9);
 
     a.close();
 }

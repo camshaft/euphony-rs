@@ -1,1 +1,3 @@
-midi_value!(Program, u8);
+use crate::midi::integer::u7;
+
+midi_value!(Program, u7);

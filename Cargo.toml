@@ -22,4 +22,5 @@ ctrlc = "3.1"
 insta = "0.12"
 futures = { version = "0.3" }
 midir = { git = "https://github.com/Boddlnagg/midir" }
+midly = "0.3"
 rand = "0.7"

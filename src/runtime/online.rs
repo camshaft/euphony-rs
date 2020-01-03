@@ -1,7 +1,7 @@
 use crate::{
     runtime::{
         future::reactor,
-        time::driver::{handle, handle::DefaultGuard, Driver},
+        time::driver::{handle, Driver},
     },
     time::timestamp::Timestamp,
 };
@@ -9,14 +9,12 @@ use crate::{
 #[derive(Debug)]
 pub struct OnlineRuntime {
     driver: Driver,
-    guard: DefaultGuard,
 }
 
 impl Default for OnlineRuntime {
     fn default() -> Self {
         let driver = Driver::default();
-        let guard = handle::set_default(driver.handle());
-        Self { driver, guard }
+        Self { driver }
     }
 }
 
@@ -26,6 +24,8 @@ impl OnlineRuntime {
     }
 
     pub fn render(&mut self) {
+        let guard = handle::set_default(self.driver.handle());
+
         let mut now = Timestamp::default();
         while reactor::tick() {
             while self.driver.process(now) {
@@ -37,5 +37,7 @@ impl OnlineRuntime {
                 now = next;
             }
         }
+
+        drop(guard);
     }
 }

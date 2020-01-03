@@ -1,7 +1,7 @@
 use crate::runtime::graph::{
     handle::NodeHandle,
     node::Node,
-    subscription::{Observable, Subscription, SubscriptionHandle},
+    subscription::{Observable, Readable, Subscription, SubscriptionHandle},
 };
 use alloc::rc::{Rc, Weak};
 use core::{cell::UnsafeCell, fmt};
@@ -50,12 +50,16 @@ impl<Value> Clone for Cell<Value> {
     }
 }
 
-impl<Value: Clone> Observable for Cell<Value> {
-    type Subscription = CellSubscription<Value>;
+impl<Value: Clone> Readable for Cell<Value> {
+    type Output = Value;
 
-    fn try_get(&self) -> Option<Value> {
+    fn try_read(&self) -> Option<Value> {
         Some(self.0.value_mut().clone())
     }
+}
+
+impl<Value: Clone> Observable for Cell<Value> {
+    type Subscription = CellSubscription<Value>;
 
     fn observe(&self, child: &NodeHandle) -> Self::Subscription {
         CellSubscription {
@@ -116,14 +120,16 @@ pub struct CellSubscription<Value> {
 }
 
 impl<Value: Clone> Subscription for CellSubscription<Value> {
-    type Output = Value;
-
-    fn try_get(&self) -> Option<Self::Output> {
-        Some(self.cell.upgrade()?.value_mut().clone())
-    }
-
     fn is_open(&self) -> bool {
         self.cell.upgrade().is_some()
+    }
+}
+
+impl<Value: Clone> Readable for CellSubscription<Value> {
+    type Output = Value;
+
+    fn try_read(&self) -> Option<Value> {
+        Some(self.cell.upgrade()?.value_mut().clone())
     }
 }
 
@@ -133,21 +139,21 @@ fn cell_test() {
     let b = cell(2usize);
     let c = &a * &b;
 
-    assert_eq!(a.get(), 1);
-    assert_eq!(b.get(), 2);
-    assert_eq!(c.get(), 2);
+    assert_eq!(a.read(), 1);
+    assert_eq!(b.read(), 2);
+    assert_eq!(c.read(), 2);
 
     a.set(2);
-    assert_eq!(a.get(), 2);
-    assert_eq!(b.get(), 2);
-    assert_eq!(c.get(), 4);
+    assert_eq!(a.read(), 2);
+    assert_eq!(b.read(), 2);
+    assert_eq!(c.read(), 4);
 }
 
 #[test]
 fn cell_dyn_test() {
     let a = cell(1usize);
-    let b = a.clone().boxed().map(|a| a + 2).boxed();
+    let b = a.clone().map(|a| a + 2);
 
-    assert_eq!(a.get(), 1);
-    assert_eq!(b.get(), 3);
+    assert_eq!(a.read(), 1);
+    assert_eq!(b.read(), 3);
 }

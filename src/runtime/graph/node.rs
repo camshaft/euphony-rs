@@ -2,7 +2,7 @@ use crate::runtime::graph::{
     handle::NodeHandle,
     map::{MapCell, MappedCell},
     observer::Observer,
-    subscription::{Observable, Subscription},
+    subscription::{Observable, Readable, Subscription},
 };
 use core::{cmp::Ordering, fmt};
 
@@ -15,7 +15,7 @@ impl<T: Observable> Node<T> {
 
     pub fn map<Map, Output>(&self, map: Map) -> Node<MappedCell<T::Subscription, Map, Output>>
     where
-        Map: FnMut(<T::Subscription as Subscription>::Output) -> Output,
+        Map: FnMut(<T::Subscription as Readable>::Output) -> Output,
         Self: MapCell<Map, Output>,
     {
         <T as MapCell<_, _>>::map(&self.0, map)
@@ -35,11 +35,11 @@ where
     }
 }
 
-impl<T: 'static + Observable> Node<T> {
-    pub fn boxed(self) -> BoxedNode<T::Subscription> {
-        Self(Box::new(self.0))
-    }
-}
+// impl<T: 'static + Observable> Node<T> {
+//     pub fn boxed(self) -> BoxedNode<T::Output> {
+//         Self(Box::new(self.0))
+//     }
+// }
 
 impl<T> fmt::Debug for Node<T>
 where
@@ -50,28 +50,34 @@ where
     }
 }
 
+impl<T: Observable> Readable for Node<T> {
+    type Output = T::Output;
+
+    fn try_read(&self) -> Option<Self::Output> {
+        self.0.try_read()
+    }
+}
+
 impl<T: Observable> Observable for Node<T> {
     type Subscription = T::Subscription;
-
-    fn try_get(&self) -> Option<<Self::Subscription as Subscription>::Output> {
-        self.0.try_get()
-    }
 
     fn observe(&self, handle: &NodeHandle) -> Self::Subscription {
         self.0.observe(handle)
     }
 }
 
-pub type BoxedNode<Subscription> = Node<Box<dyn Observable<Subscription = Subscription>>>;
+pub type BoxedNode<Output> = Node<
+    Box<dyn Observable<Output = Output, Subscription = Box<dyn Subscription<Output = Output>>>>,
+>;
 
 impl<A, B> PartialEq<Node<B>> for Node<A>
 where
     A: Observable,
     B: Observable,
-    <A::Subscription as Subscription>::Output: PartialEq<<B::Subscription as Subscription>::Output>,
+    A::Output: PartialEq<B::Output>,
 {
     fn eq(&self, other: &Node<B>) -> bool {
-        self.get().eq(&other.get())
+        self.read().eq(&other.read())
     }
 }
 
@@ -79,11 +85,10 @@ impl<A, B> PartialOrd<Node<B>> for Node<A>
 where
     A: Observable,
     B: Observable,
-    <A::Subscription as Subscription>::Output:
-        PartialOrd<<B::Subscription as Subscription>::Output>,
+    A::Output: PartialOrd<B::Output>,
 {
     fn partial_cmp(&self, other: &Node<B>) -> Option<Ordering> {
-        self.get().partial_cmp(&other.get())
+        self.read().partial_cmp(&other.read())
     }
 }
 
@@ -93,22 +98,16 @@ macro_rules! impl_cell_op {
         where
             A: Observable,
             B: Observable,
-            <A::Subscription as Subscription>::Output:
-                core::ops::$binary<<B::Subscription as Subscription>::Output>,
+            A::Output: core::ops::$binary<B::Output>,
         {
             type Output = Node<
                 MappedCell<
                     (A::Subscription, B::Subscription),
                     fn(
-                        <A::Subscription as Subscription>::Output,
-                        <B::Subscription as Subscription>::Output,
-                    )
-                        -> <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
-                    <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
+                        A::Output,
+                        B::Output,
+                    ) -> <A::Output as core::ops::$binary<B::Output>>::Output,
+                    <A::Output as core::ops::$binary<B::Output>>::Output,
                 >,
             >;
 
@@ -121,22 +120,16 @@ macro_rules! impl_cell_op {
         where
             A: Observable,
             B: Observable,
-            <A::Subscription as Subscription>::Output:
-                core::ops::$binary<<B::Subscription as Subscription>::Output>,
+            A::Output: core::ops::$binary<B::Output>,
         {
             type Output = Node<
                 MappedCell<
                     (A::Subscription, B::Subscription),
                     fn(
-                        <A::Subscription as Subscription>::Output,
-                        <B::Subscription as Subscription>::Output,
-                    )
-                        -> <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
-                    <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
+                        A::Output,
+                        B::Output,
+                    ) -> <A::Output as core::ops::$binary<B::Output>>::Output,
+                    <A::Output as core::ops::$binary<B::Output>>::Output,
                 >,
             >;
 
@@ -149,22 +142,16 @@ macro_rules! impl_cell_op {
         where
             A: Observable,
             B: Observable,
-            <A::Subscription as Subscription>::Output:
-                core::ops::$binary<<B::Subscription as Subscription>::Output>,
+            A::Output: core::ops::$binary<B::Output>,
         {
             type Output = Node<
                 MappedCell<
                     (A::Subscription, B::Subscription),
                     fn(
-                        <A::Subscription as Subscription>::Output,
-                        <B::Subscription as Subscription>::Output,
-                    )
-                        -> <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
-                    <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
+                        A::Output,
+                        B::Output,
+                    ) -> <A::Output as core::ops::$binary<B::Output>>::Output,
+                    <A::Output as core::ops::$binary<B::Output>>::Output,
                 >,
             >;
 
@@ -177,22 +164,16 @@ macro_rules! impl_cell_op {
         where
             A: Observable,
             B: Observable,
-            <A::Subscription as Subscription>::Output:
-                core::ops::$binary<<B::Subscription as Subscription>::Output>,
+            A::Output: core::ops::$binary<B::Output>,
         {
             type Output = Node<
                 MappedCell<
                     (A::Subscription, B::Subscription),
                     fn(
-                        <A::Subscription as Subscription>::Output,
-                        <B::Subscription as Subscription>::Output,
-                    )
-                        -> <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
-                    <<A::Subscription as Subscription>::Output as core::ops::$binary<
-                        <B::Subscription as Subscription>::Output,
-                    >>::Output,
+                        A::Output,
+                        B::Output,
+                    ) -> <A::Output as core::ops::$binary<B::Output>>::Output,
+                    <A::Output as core::ops::$binary<B::Output>>::Output,
                 >,
             >;
 
@@ -200,65 +181,6 @@ macro_rules! impl_cell_op {
                 (self, rhs).map(core::ops::$binary::$binary_call)
             }
         }
-
-        //         impl<A, B> core::ops::$binary<&Node<B>> for &Node<A>
-        //         where
-        //             A: Clone + NodeOp,
-        //             B: Clone + NodeOp,
-        //             Node<A>: core::ops::$binary<Node<B>>,
-        //         {
-        //             type Output = <Node<A> as core::ops::$binary<Node<B>>>::Output;
-
-        //             fn $binary_call(self, rhs: &Node<B>) -> Self::Output {
-        //                 self.clone().$binary_call(rhs.clone())
-        //             }
-        //         }
-
-        //         impl<A, B> core::ops::$binary<Node<B>> for &Node<A>
-        //         where
-        //             A: Clone + NodeOp,
-        //             B: Clone + NodeOp,
-        //             Node<A>: core::ops::$binary<Node<B>>,
-        //         {
-        //             type Output = <Node<A> as core::ops::$binary<Node<B>>>::Output;
-
-        //             fn $binary_call(self, rhs: Node<B>) -> Self::Output {
-        //                 self.clone().$binary_call(rhs)
-        //             }
-        //         }
-
-        //         impl<A, B> core::ops::$binary<&Node<B>> for Node<A>
-        //         where
-        //             A: Clone + NodeOp,
-        //             B: Clone + NodeOp,
-        //             Node<A>: core::ops::$binary<Node<B>>,
-        //         {
-        //             type Output = <Node<A> as core::ops::$binary<Node<B>>>::Output;
-
-        //             fn $binary_call(self, rhs: &Node<B>) -> Self::Output {
-        //                 self.$binary_call(rhs.clone())
-        //             }
-        //         }
-
-        //         impl<T, RHS> core::ops::$assign<RHS> for super::cell::Cell<T>
-        //         where
-        //             T: Clone + core::ops::$assign<RHS>,
-        //         {
-        //             fn $assign_call(&mut self, other: RHS) {
-        //                 self.update(move |value| {
-        //                     value.$assign_call(other);
-        //                 });
-        //             }
-        //         }
-
-        //         impl<T, RHS> core::ops::$assign<RHS> for Node<super::cell::Cell<T>>
-        //         where
-        //             T: Clone + core::ops::$assign<RHS>,
-        //         {
-        //             fn $assign_call(&mut self, other: RHS) {
-        //                 core::ops::$assign::$assign_call(&mut self.0, other)
-        //             }
-        //         }
     };
 }
 
