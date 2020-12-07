@@ -1,0 +1,12 @@
+[package]
+name = "euphony-lumina"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bythewc@amazon.com>"]
+edition = "2018"
+
+[features]
+serialize = ["serde", "euphony/serialize"]
+
+[dependencies]
+euphony = { path = "../", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"], optional = true }

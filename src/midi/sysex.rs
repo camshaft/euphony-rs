@@ -1,4 +1,5 @@
 use crate::midi::codec::{DecoderBuffer, DecoderError, EncoderBuffer, MIDIValue};
+use alloc::vec::Vec;
 
 #[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 
@@ -8,7 +9,7 @@ pub struct SysExPayload(Vec<u8>);
 
 impl MIDIValue for SysExPayload {
     fn decode<B: DecoderBuffer>(buffer: &mut B) -> Result<Self, DecoderError> {
-        let mut payload = vec![];
+        let mut payload = Vec::new();
         loop {
             match buffer.next_byte() {
                 Ok(b @ 0b0000_0000..=0b0111_1111) => payload.push(b),

@@ -1,0 +1,25 @@
+[package]
+name = "auto-tuner-rs"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bythewc@amazon.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+console_error_panic_hook = { version = "0.1.6", optional = true }
+euphony = { path = "../../", default-features = false, features = ["std"] }
+euphony-lumina = { path = "../../euphony-lumina" }
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+wee_alloc = { version = "0.4.5", optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.13"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"

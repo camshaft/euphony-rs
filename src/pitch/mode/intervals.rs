@@ -41,6 +41,14 @@ impl Default for RoundingStrategy {
 }
 
 impl ModeIntervals {
+    pub const fn len(&self) -> usize {
+        self.intervals.len()
+    }
+
+    pub const fn is_empty(&self) -> bool {
+        self.intervals.is_empty()
+    }
+
     pub fn collapse(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
         self.checked_collapse(interval, rounding_strategy)
             .expect("Interval could not be collapsed")

@@ -13,8 +13,8 @@ impl ModePosition {
         self.1
     }
 
-    pub fn intervals(&self) -> ModeIntervals {
-        self.1[self.0]
+    pub const fn intervals(&self) -> ModeIntervals {
+        (self.1).0[self.0]
     }
 }
 

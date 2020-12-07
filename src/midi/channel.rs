@@ -1,6 +1,7 @@
 use core::ops::Deref;
 
 #[derive(Copy, Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Channel(u8);
 
 impl Channel {

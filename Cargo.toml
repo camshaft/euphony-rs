@@ -5,17 +5,19 @@ authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
 [features]
-default = ["runtime", "std"]
+default = ["std"]
 std = []
-runtime = ["futures-core", "std"]
+runtime = ["futures-core", "std", "generational-arena"]
+serialize = ["serde"]
 
 [dependencies]
 euphony-macros = { version = "0.1", path = "./euphony-macros" }
 futures-core = { version = "0.3", optional = true }
-generational-arena = { version = "0.2", default-features = false }
+generational-arena = { version = "0.2", default-features = false, optional = true }
 num-integer = { version = "0.1", default-features = false }
 num-rational = { version = "0.2", default-features = false }
 num-traits = { version = "0.2", default-features = false }
+serde = { version = "1", features = ["derive"], optional = true }
 
 [dev-dependencies]
 ctrlc = "3.1"

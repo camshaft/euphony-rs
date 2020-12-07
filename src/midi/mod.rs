@@ -1,6 +1,7 @@
 macro_rules! midi_value {
     ($name:ident, $ty:ident) => {
         #[derive(Copy, Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
         pub struct $name($ty);
 
         impl $name {

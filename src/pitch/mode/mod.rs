@@ -22,6 +22,7 @@ pub mod chromatic;
 pub use chromatic as dodecatonic;
 pub mod ditonic;
 pub mod heptatonic;
+pub mod pentatonic;
 
 pub mod western {
     pub use super::{chromatic::*, heptatonic::*};
@@ -54,6 +55,14 @@ impl Mode {
             ascending: ModePosition(position, system),
             descending: ModePosition(position, system),
         }
+    }
+
+    pub const fn len(&self) -> usize {
+        self.ascending.intervals().len()
+    }
+
+    pub const fn is_empty(&self) -> bool {
+        self.ascending.intervals().is_empty()
     }
 
     pub fn collapse(&self, interval: Interval, rounding_strategy: RoundingStrategy) -> Interval {
