@@ -284,6 +284,8 @@ pub enum CalculationRate {
     Control = 1,
     /// one sample is computed for each sample of audio output.
     Audio = 2,
+    /// on demand
+    Demand = 3,
 }
 
 impl<B: DecoderBuffer> TypeDecoder<B> for CalculationRate {
@@ -305,6 +307,131 @@ impl<B: DecoderBuffer> TypeDecoder<B> for CalculationRate {
         Ok((value, buffer))
     }
 }
+
+// https://github.com/overtone/overtone/blob/master/src/overtone/sc/machinery/ugen/special_ops.clj
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i16)]
+pub enum UnaryOps {
+    Neg = 0,
+    NotPos = 1,
+    IsNil = 2,
+    NotNil = 3,
+    BitNot = 4,
+    Abs = 5,
+    AsFloat = 6,
+    AsInt = 7,
+    Ceil = 8,
+    Floor = 9,
+    Frac = 10,
+    Sign = 11,
+    Squared = 12,
+    Cubed = 13,
+    Sqrt = 14,
+    Exp = 15,
+    Reciprocal = 16,
+    MidiCps = 17,
+    CpsMidi = 18,
+    MidiRatio = 19,
+    RatioMidi = 20,
+    DbAmp = 21,
+    AmpDb = 22,
+    OctCps = 23,
+    CpsOct = 24,
+    Log = 25,
+    Log2 = 26,
+    Log10 = 27,
+    Sin = 28,
+    Cos = 29,
+    Tan = 30,
+    Asin = 31,
+    Acos = 32,
+    Atan = 33,
+    Sinh = 34,
+    Cosh = 35,
+    Tanh = 36,
+    Rand = 37,
+    Rand2 = 38,
+    LinRand = 39,
+    BilinRand = 40,
+    Sum3Rand = 41,
+    Distort = 42,
+    Softclip = 43,
+    Coin = 44,
+    DigitVal = 45,
+    Silence = 46,
+    Thru = 47,
+    RectangularWindow = 48,
+    HanningWindow = 49,
+    WelchWindow = 50,
+    TriangleWindow = 51,
+    Ramp = 52,
+    SCurve = 53,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i16)]
+pub enum BinaryOps {
+    Add = 0,
+    Subtract = 1,
+    Multiply = 2,
+    /// Not implemented on the server
+    Div = 3,
+    Divide = 4,
+    Modulus = 5,
+    Equal = 6,
+    NotEqual = 7,
+    LessThan = 8,
+    GreaterThan = 9,
+    LessThanOrEqual = 10,
+    GreaterThanOrEqual = 11,
+    Minimum = 12,
+    Maximum = 13,
+    And = 14,
+    Or = 15,
+    Xor = 16,
+    /// Not implemented on the server
+    Lcm = 17,
+    /// Not implemented on the server
+    Gcd = 18,
+    Round = 19,
+    RoundUp = 20,
+    RoundDown = 21,
+    Atan2 = 22,
+    Hypotenuse = 23,
+    HypotenuseApprox = 24,
+    Pow = 25,
+    /// Not implemented on the server
+    LeftShift = 26,
+    /// Not implemented on the server
+    RightShift = 27,
+    /// Not implemented on the server
+    UnRightShift = 28,
+    /// Not implemented on the server
+    Fill = 29,
+    Ring1 = 30,
+    Ring2 = 31,
+    Ring3 = 32,
+    Ring4 = 33,
+    DifSqr = 34,
+    SqrSum = 36,
+    SqrDif = 37,
+    AbsDif = 38,
+    Thresh = 39,
+    AmClip = 40,
+    ScaleNeg = 41,
+    Clip2 = 42,
+    Excess = 43,
+    Fold2 = 44,
+    Wrap2 = 45,
+    FirstArg = 46,
+    /// Not implemented on the server
+    RRand = 47,
+    /// Not implemented on the server
+    ExpRand = 48,
+}
+
+// TODO port https://github.com/overtone/overtone/tree/master/src/overtone/sc/machinery/ugen/metadata
 
 #[cfg(test)]
 mod tests {
