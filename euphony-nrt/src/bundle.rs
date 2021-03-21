@@ -93,6 +93,17 @@ mod tests {
         buffer.encode(value).unwrap();
     }
 
+    const EXPECTED: &[u8] = hex!(
+        "
+        0000 2c00 6223 6e75 6c64 0065 0000 0000
+        0000 0000 0000 1800 732f 6e5f 7765 0000
+        732c 0069 524e 7354 6e69 0065 0000 7b00
+        0000 2400 6223 6e75 6c64 0065 0000 0100
+        0000 0000 0000 1000 6e2f 665f 6572 0065
+        692c 0000 0000 7b00
+        "
+    );
+
     #[test]
     fn sin_wav() {
         let mut f = File::create("actual.osc").unwrap();
@@ -110,12 +121,7 @@ mod tests {
             id: osc::node::Id(123),
         });
         super::flush(Duration::from_secs(2), &mut f).unwrap();
-        let mut actual = vec![];
-        File::open("expected.osc")
-            .unwrap()
-            .read_to_end(&mut actual)
-            .unwrap();
-        dbg!(rosc::decoder::decode(&actual[..]));
+        dbg!(rosc::decoder::decode(EXPECTED));
         panic!()
     }
 }
