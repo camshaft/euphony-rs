@@ -1,8 +1,9 @@
 use num_rational::Ratio;
+use proc_macro::TokenStream;
+use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, ToTokens, TokenStreamExt};
 use syn::{
     bracketed,
-    export::{TokenStream, TokenStream2},
     parse::{Parse, ParseStream, Result},
     parse_macro_input,
     punctuated::Punctuated,

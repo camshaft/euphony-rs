@@ -1,9 +1,13 @@
 [package]
-name = "euphony-osc"
+name = "euphony-sc-core"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
 [dependencies]
 codec = { git = "https://github.com/camshaft/codec" }
-euphony-osc-macros = { version = "0.1", path = "../euphony-osc-macros" }
+euphony-osc = { version = "0.1", path = "../euphony-osc" }
+
+[dev-dependencies]
+insta = "1"
+rosc = "0.4"

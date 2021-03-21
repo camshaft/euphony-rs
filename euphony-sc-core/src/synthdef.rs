@@ -444,7 +444,8 @@ mod tests {
         ($name:ident, $contents:expr) => {
             #[test]
             fn $name() {
-                let (_container, _) = $contents.decode::<Container>().unwrap();
+                let (container, _) = $contents.decode::<Container>().unwrap();
+                insta::assert_debug_snapshot!(container);
             }
         };
     }

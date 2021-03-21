@@ -6,6 +6,11 @@ edition = "2018"
 
 [dependencies]
 bach = { path = "../../bach/bach" }
+bytes = "0.5"
 euphony = { version = "0.1", path = "../" }
-flume = "0.9"
+flume = "0.10"
 lazy_static = "1"
+
+[dev-dependencies]
+euphony-sc = { version = "0.1", path = "../euphony-sc" }
+rosc = "0.4"

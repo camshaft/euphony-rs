@@ -1,0 +1,1070 @@
+---
+source: src/synthdef.rs
+expression: container
+---
+Container {
+    version: 1,
+    defs: [
+        Definition {
+            name: "sonic-pi-chiplead",
+            consts: [
+                0.0,
+                0.0,
+                2.0,
+                1.0,
+                -1.0,
+                0.125,
+                0.25,
+                0.5,
+                1.0,
+                4.0,
+                0.8,
+                -99.0,
+            ],
+            params: [
+                60.0,
+                0.0,
+                1.0,
+                0.0,
+                0.1,
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                -1.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+            ],
+            param_names: [
+                ParamName {
+                    name: "note",
+                    index: 0,
+                },
+                ParamName {
+                    name: "note_slide",
+                    index: 1,
+                },
+                ParamName {
+                    name: "note_slide_shape",
+                    index: 2,
+                },
+                ParamName {
+                    name: "note_slide_curve",
+                    index: 3,
+                },
+                ParamName {
+                    name: "note_resolution",
+                    index: 4,
+                },
+                ParamName {
+                    name: "amp",
+                    index: 5,
+                },
+                ParamName {
+                    name: "amp_slide",
+                    index: 6,
+                },
+                ParamName {
+                    name: "amp_slide_shape",
+                    index: 7,
+                },
+                ParamName {
+                    name: "amp_slide_curve",
+                    index: 8,
+                },
+                ParamName {
+                    name: "pan",
+                    index: 9,
+                },
+                ParamName {
+                    name: "pan_slide",
+                    index: 10,
+                },
+                ParamName {
+                    name: "pan_slide_shape",
+                    index: 11,
+                },
+                ParamName {
+                    name: "pan_slide_curve",
+                    index: 12,
+                },
+                ParamName {
+                    name: "attack",
+                    index: 13,
+                },
+                ParamName {
+                    name: "sustain",
+                    index: 14,
+                },
+                ParamName {
+                    name: "decay",
+                    index: 15,
+                },
+                ParamName {
+                    name: "release",
+                    index: 16,
+                },
+                ParamName {
+                    name: "attack_level",
+                    index: 17,
+                },
+                ParamName {
+                    name: "decay_level",
+                    index: 18,
+                },
+                ParamName {
+                    name: "sustain_level",
+                    index: 19,
+                },
+                ParamName {
+                    name: "env_curve",
+                    index: 20,
+                },
+                ParamName {
+                    name: "width",
+                    index: 21,
+                },
+                ParamName {
+                    name: "out_bus",
+                    index: 22,
+                },
+            ],
+            ugens: [
+                UGen {
+                    name: "Control",
+                    rate: Control,
+                    ins: [],
+                    outs: [
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 5,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 1,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 2,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        Constant {
+                            index: 4,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 18,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 6,
+                },
+                UGen {
+                    name: "Select",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 4,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 18,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 19,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "Impulse",
+                    rate: Control,
+                    ins: [
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 7,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 8,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 6,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 9,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 1,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 11,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 12,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 10,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 13,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "EnvGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 14,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 1,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 2,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 3,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 15,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 4,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 21,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 16,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 17,
+                },
+                UGen {
+                    name: "Select",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 21,
+                        },
+                        Constant {
+                            index: 5,
+                        },
+                        Constant {
+                            index: 6,
+                        },
+                        Constant {
+                            index: 7,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "Pulse",
+                    rate: Audio,
+                    ins: [
+                        UGen {
+                            index: 17,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 18,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Audio,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Audio,
+                    ins: [
+                        UGen {
+                            index: 19,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Audio,
+                    ],
+                    special_index: 43,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Audio,
+                    ins: [
+                        Constant {
+                            index: 10,
+                        },
+                        UGen {
+                            index: 20,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Audio,
+                    ],
+                    special_index: 2,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 6,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 22,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "EnvGen",
+                    rate: Control,
+                    ins: [
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 2,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 9,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 17,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 13,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 20,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 5,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 15,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 20,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 19,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 14,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 20,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 16,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 20,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Audio,
+                    ins: [
+                        UGen {
+                            index: 21,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 24,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Audio,
+                    ],
+                    special_index: 2,
+                },
+                UGen {
+                    name: "Impulse",
+                    rate: Control,
+                    ins: [
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 26,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 3,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 23,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 27,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 28,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "EnvGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 29,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 5,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 5,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 6,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 7,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 8,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "Impulse",
+                    rate: Control,
+                    ins: [
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 9,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 32,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 33,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 31,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 34,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "HPZ1",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 10,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "UnaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 36,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 5,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 37,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 9,
+                },
+                UGen {
+                    name: "BinaryOpUGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 35,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 38,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "EnvGen",
+                    rate: Control,
+                    ins: [
+                        UGen {
+                            index: 39,
+                            output: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 0,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 9,
+                        },
+                        Constant {
+                            index: 3,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        Constant {
+                            index: 11,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 9,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 10,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 11,
+                        },
+                        UGen {
+                            index: 0,
+                            output: 12,
+                        },
+                    ],
+                    outs: [
+                        Control,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "Pan2",
+                    rate: Audio,
+                    ins: [
+                        UGen {
+                            index: 25,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 40,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 30,
+                            output: 0,
+                        },
+                    ],
+                    outs: [
+                        Audio,
+                        Audio,
+                    ],
+                    special_index: 0,
+                },
+                UGen {
+                    name: "Out",
+                    rate: Audio,
+                    ins: [
+                        UGen {
+                            index: 0,
+                            output: 22,
+                        },
+                        UGen {
+                            index: 41,
+                            output: 0,
+                        },
+                        UGen {
+                            index: 41,
+                            output: 1,
+                        },
+                    ],
+                    outs: [],
+                    special_index: 0,
+                },
+            ],
+            variants: [],
+        },
+    ],
+}

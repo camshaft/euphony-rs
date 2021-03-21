@@ -5,8 +5,5 @@ authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-codec = { git = "https://github.com/camshaft/codec" }
-euphony-osc = { version = "0.1", path = "../euphony-osc" }
-
-[dev-dependencies]
-pretty_assertions = "0.6"
+euphony-sc-core = { version = "0.1", path = "../euphony-sc-core" }
+euphony-sc-macros = { version = "0.1", path = "../euphony-sc-macros" }

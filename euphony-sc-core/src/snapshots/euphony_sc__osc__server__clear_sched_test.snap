@@ -1,0 +1,12 @@
+---
+source: src/osc.rs
+expression: msg
+---
+Ok(
+    Message(
+        OscMessage {
+            addr: "/clearSched",
+            args: [],
+        },
+    ),
+)
