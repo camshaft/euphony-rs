@@ -1,5 +1,6 @@
 // http://doc.sccode.org/Reference/Server-Command-Reference.html
 
+use core::fmt;
 use euphony_osc::{
     codec::{
         self,
@@ -172,10 +173,19 @@ pub mod control {
         }
     }
 
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, PartialEq)]
     pub enum Value {
         Float(f32),
         Int(i32),
+    }
+
+    impl fmt::Debug for Value {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            match self {
+                Self::Float(v) => v.fmt(f),
+                Self::Int(v) => v.fmt(f),
+            }
+        }
     }
 
     impl<B: EncoderBuffer> Tagged<B> for Value {

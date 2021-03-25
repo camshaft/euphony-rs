@@ -1,86 +1,110 @@
+#![no_std]
+extern crate alloc;
+
+use alloc::sync::Arc;
 pub use euphony_sc_core::*;
 pub use euphony_sc_macros::*;
 
-pub mod server {
-    use super::{osc, Message};
-    use core::fmt;
-    use std::{cell::RefCell, sync::Arc};
+pub mod project {
+    use super::*;
 
     #[derive(Clone)]
-    pub struct Server(Handle);
+    pub struct Handle(pub Arc<dyn Project>);
 
-    pub type Handle = Arc<dyn Api>;
-
-    thread_local! {
-        static INSTANCE: RefCell<Option<Handle>> = RefCell::new(None);
+    impl Handle {
+        pub fn track(&self, name: &str) -> track::Handle {
+            Project::track(self, name)
+        }
     }
 
-    #[derive(Clone, Copy)]
-    pub struct Error(());
+    impl Project for Handle {
+        fn track(&self, name: &str) -> track::Handle {
+            self.0.track(name)
+        }
+    }
 
-    impl fmt::Debug for Error {
+    pub trait Project {
+        /// Returns the track for the given name
+        fn track(&self, name: &str) -> track::Handle;
+    }
+}
+
+pub mod track {
+    use super::*;
+    use core::fmt;
+
+    #[derive(Clone)]
+    pub struct Handle(pub Arc<dyn Track>);
+
+    impl fmt::Debug for Handle {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            write!(f, "Error(missing supercollider server)")
+            f.debug_struct("Track").field("name", &self.name()).finish()
         }
     }
 
-    impl fmt::Display for Error {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            write!(f, "missing supercollider server")
-        }
-    }
-
-    impl Server {
-        pub fn current() -> Result<Self, Error> {
-            INSTANCE.with(|i| i.borrow().clone().map(Self).ok_or_else(|| Error(())))
-        }
-
-        pub fn with<F: FnOnce() -> R, R>(&self, f: F) -> R {
-            let prev = INSTANCE.with(|i| {
-                let prev = i.borrow().clone();
-                *i.borrow_mut() = Some(self.0.clone());
-                prev
-            });
-
-            let res = f();
-
-            INSTANCE.with(|i| *i.borrow_mut() = prev);
-
-            res
-        }
-
+    impl Handle {
         pub fn send<T: Message>(&self, msg: T) -> T::Output {
-            T::send(msg, &self.0)
+            T::send(msg, &self)
         }
     }
 
-    pub trait Api {
-        /// Allocates a message buffer of length MTU
-        fn alloc(&self) -> Vec<u8>;
+    impl Track for Handle {
+        fn name(&self) -> &str {
+            self.0.name()
+        }
 
-        /// Assigns a new Id
-        fn assign(&self) -> osc::node::Id;
+        fn load(&self, synthname: &str, synthdef: &[u8]) {
+            self.0.load(synthname, synthdef)
+        }
 
-        fn default_target(&self) -> osc::node::Id;
+        fn new(
+            &self,
+            synthname: &str,
+            action: Option<osc::group::Action>,
+            target: Option<osc::node::Id>,
+            values: &[Option<(osc::control::Id, osc::control::Value)>],
+        ) -> osc::node::Id {
+            self.0.new(synthname, action, target, values)
+        }
 
-        fn default_add_action(&self) -> osc::group::Action;
+        fn set(
+            &self,
+            id: osc::node::Id,
+            values: &[Option<(osc::control::Id, osc::control::Value)>],
+        ) {
+            self.0.set(id, values)
+        }
 
-        /// Sends a message to the server
-        fn send(&self, message: Vec<u8>);
+        fn free(&self, id: osc::node::Id) {
+            self.0.free(id)
+        }
+    }
 
-        /// should probably call /s_noid rather than /n_free
+    pub trait Track {
+        fn name(&self) -> &str;
+
+        fn load(&self, synthname: &str, synthdef: &[u8]);
+
+        fn new(
+            &self,
+            synthname: &str,
+            action: Option<osc::group::Action>,
+            target: Option<osc::node::Id>,
+            values: &[Option<(osc::control::Id, osc::control::Value)>],
+        ) -> osc::node::Id;
+
+        fn set(
+            &self,
+            id: osc::node::Id,
+            values: &[Option<(osc::control::Id, osc::control::Value)>],
+        );
+
         fn free(&self, id: osc::node::Id);
     }
 }
 
-pub use server::Server;
-
-pub trait Message: Sized {
+pub trait Message {
     type Output;
 
-    fn send(self, api: &server::Handle) -> Self::Output;
-
-    fn send_current(self) -> Self::Output {
-        Server::current().unwrap().send(self)
-    }
+    fn send(self, track: &track::Handle) -> Self::Output;
 }

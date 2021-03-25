@@ -1,127 +1,77 @@
-use alloc::sync::Arc;
 use bytes::BytesMut;
-use core::{mem::size_of, time::Duration};
-use lazy_static::lazy_static;
-use std::{
-    io::{Result, Write},
-    sync::Mutex,
-};
+use codec::encode::{EncoderBuffer, TypeEncoder};
+use core::mem::size_of;
+use euphony_osc::{bundle::Bundle as Inner, types::Timetag};
 
-lazy_static! {
-    static ref CURRENT_BUNDLE: Arc<Mutex<Bundle>> =
-        Arc::new(Mutex::new(Bundle::new(Duration::from_secs(0))));
-}
-
-#[derive(Clone, Debug)]
-pub struct Bundle {
-    time: Duration,
-    content: BytesMut,
-}
+#[derive(Clone, Debug, Default)]
+pub struct Bundle(Inner);
 
 impl Bundle {
-    pub fn new(time: Duration) -> Self {
-        Self {
-            time,
-            content: BytesMut::new(),
+    pub fn new(timetag: Timetag) -> Self {
+        Self(Inner::new(timetag))
+    }
+
+    pub fn write<T>(&mut self, value: T)
+    where
+        T: for<'a> TypeEncoder<&'a mut BytesMut>,
+    {
+        if self.is_empty() {
+            // reserve the len bytes
+            self.0.write_header(0i32);
         }
-    }
-}
 
-pub trait Sendable {
-    fn send(self, content: &mut BytesMut);
-}
-
-pub fn send<T: Sendable>(value: T) {
-    value.send(&mut CURRENT_BUNDLE.lock().unwrap().content);
-}
-
-pub fn flush<W: Write>(now: Duration, out: &mut W) -> Result<usize> {
-    let bundle = &mut *CURRENT_BUNDLE.lock().unwrap();
-    if bundle.content.is_empty() {
-        return Ok(0);
+        self.0.write(value)
     }
 
-    const TAG: &[u8] = b"#bundle\0";
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
 
-    let len = (TAG.len() + size_of::<u32>() + size_of::<u32>() + bundle.content.len()) as u32;
+    pub fn finish(self) -> Option<BytesMut> {
+        let mut v = self.0.finish()?;
 
-    let mut o = 0;
+        // update the len prefix
+        let len = (v.len() - size_of::<i32>()) as i32;
+        v[..4].encode(len).unwrap();
 
-    o += out.write(&len.to_be_bytes())?;
-    o += out.write(&TAG)?;
-    o += write_duration(bundle.time, out)?;
-    let content = &mut bundle.content;
-    let len = content.len();
-    let len = (len as i32).to_be_bytes();
-    o += out.write(&len)?;
-    o += out.write(content)?;
-
-    bundle.time = now;
-    bundle.content.clear();
-
-    Ok(o)
-}
-
-fn write_duration<W: Write>(duration: Duration, out: &mut W) -> Result<usize> {
-    let secs = duration.as_secs() as u32;
-    let nanos = duration.subsec_nanos();
-    let frac = core::u32::MAX / 1_000_000_000 * nanos;
-
-    out.write(&secs.to_be_bytes())?;
-    out.write(&frac.to_be_bytes())?;
-
-    Ok(size_of::<u32>() + size_of::<u32>())
+        Some(v)
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::CURRENT_BUNDLE;
-    use bytes::BytesMut;
+    use super::*;
     use core::time::Duration;
-    use euphony_sc::{
-        codec::encode::{EncoderBuffer, TypeEncoder},
-        osc,
-    };
-    use std::{fs::File, io::Read};
+    use euphony_sc::osc;
+    use euphony_testing::*;
 
-    fn send<T>(value: T)
-    where
-        T: for<'a> TypeEncoder<&'a mut BytesMut>,
-    {
-        let buffer = &mut CURRENT_BUNDLE.lock().unwrap().content;
-
-        buffer.encode(value).unwrap();
-    }
-
-    const EXPECTED: &[u8] = hex!(
-        "
-        0000 2c00 6223 6e75 6c64 0065 0000 0000
-        0000 0000 0000 1800 732f 6e5f 7765 0000
-        732c 0069 524e 7354 6e69 0065 0000 7b00
-        0000 2400 6223 6e75 6c64 0065 0000 0100
-        0000 0000 0000 1000 6e2f 665f 6572 0065
-        692c 0000 0000 7b00
-        "
-    );
+    const EXPECTED: &[u8] = include_bytes!("../artifacts/simple-sin.osc");
+    const NRTSINE: &[u8] = include_bytes!("../artifacts/nrtsine.synthdef");
 
     #[test]
     fn sin_wav() {
-        let mut f = File::create("actual.osc").unwrap();
-        send(osc::synth::New {
-            // TODO
+        let mut buf = vec![];
+        let mut bundle = Bundle::default();
+
+        bundle.write(osc::synthdef::Receive { buffer: NRTSINE });
+
+        bundle.write(osc::synth::New {
             name: "NRTsine",
-            id: osc::node::Id(123),
+            id: osc::node::Id(1000),
             action: Default::default(),
             busses: &[],
             values: &[],
             target: osc::node::Id(0),
         });
-        super::flush(Duration::from_secs(1), &mut f).unwrap();
-        send(osc::node::Free {
-            id: osc::node::Id(123),
+
+        buf.extend(bundle.finish().unwrap());
+
+        let mut bundle = Bundle::new(Duration::from_secs(3).into());
+        bundle.write(osc::node::Free {
+            id: osc::node::Id(1000),
         });
-        super::flush(Duration::from_secs(2), &mut f).unwrap();
-        dbg!(rosc::decoder::decode(EXPECTED));
-        panic!()
+
+        buf.extend(bundle.finish().unwrap());
+        assert_hex_eq!(EXPECTED, buf);
     }
 }

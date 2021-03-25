@@ -1,0 +1,16 @@
+---
+source: euphony-sc-core/src/osc.rs
+expression: msg
+---
+Ok(
+    Message(
+        OscMessage {
+            addr: "/d_load",
+            args: [
+                String(
+                    "path/to/def",
+                ),
+            ],
+        },
+    ),
+)

@@ -1,0 +1,21 @@
+[package]
+name = "euphony-midi"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
+edition = "2018"
+
+[features]
+default = ["std"]
+std = ["alloc"]
+alloc = []
+serialize = ["serde"]
+
+[dependencies]
+euphony-core = { version = "0.1", path = "../euphony-core" }
+num-rational = { version = "0.2", default-features = false }
+serde = { version = "1", features = ["derive"], optional = true }
+
+[dev-dependencies]
+insta = "0.12"
+# midir = { git = "https://github.com/Boddlnagg/midir" }
+midly = "0.3"

@@ -1,0 +1,19 @@
+---
+source: euphony-sc-core/src/osc.rs
+expression: msg
+---
+Ok(
+    Message(
+        OscMessage {
+            addr: "/n_run",
+            args: [
+                Int(
+                    2,
+                ),
+                Int(
+                    0,
+                ),
+            ],
+        },
+    ),
+)

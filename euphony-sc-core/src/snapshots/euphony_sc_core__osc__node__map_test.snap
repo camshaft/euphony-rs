@@ -1,0 +1,22 @@
+---
+source: euphony-sc-core/src/osc.rs
+expression: msg
+---
+Ok(
+    Message(
+        OscMessage {
+            addr: "/n_map",
+            args: [
+                Int(
+                    2,
+                ),
+                Int(
+                    1,
+                ),
+                Int(
+                    2,
+                ),
+            ],
+        },
+    ),
+)

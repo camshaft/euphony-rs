@@ -1,0 +1,10 @@
+[package]
+name = "euphony-testing"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+hex-literal = "0.3"
+pretty_assertions = "0.7"
+pretty-hex = "0.2"

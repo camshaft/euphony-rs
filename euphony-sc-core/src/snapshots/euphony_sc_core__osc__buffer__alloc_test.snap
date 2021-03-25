@@ -1,0 +1,22 @@
+---
+source: euphony-sc-core/src/osc.rs
+expression: msg
+---
+Ok(
+    Message(
+        OscMessage {
+            addr: "/b_alloc",
+            args: [
+                Int(
+                    1,
+                ),
+                Int(
+                    123,
+                ),
+                Int(
+                    456,
+                ),
+            ],
+        },
+    ),
+)
