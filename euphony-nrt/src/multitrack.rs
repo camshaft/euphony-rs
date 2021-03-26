@@ -1,16 +1,11 @@
 use crate::track::Track;
 use core::time::Duration;
 use dashmap::DashMap;
-use euphony_runtime::time::Handle as Scheduler;
+use euphony_runtime::{output::Output, time::Handle as Scheduler};
 use euphony_sc::{project, track};
 use lasso::{Key, Spur, ThreadedRodeo};
 use rayon::prelude::*;
-use std::{
-    collections::BTreeMap,
-    io,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::{collections::BTreeMap, io, path::PathBuf, sync::Arc};
 
 #[derive(Debug)]
 pub struct Project {
@@ -18,10 +13,11 @@ pub struct Project {
     scheduler: Scheduler,
     track_names: ThreadedRodeo<Spur>,
     tracks: DashMap<Spur, Arc<Track>>,
+    output: PathBuf,
 }
 
 impl Project {
-    pub fn new(scheduler: Scheduler) -> Self {
+    pub fn new(scheduler: Scheduler, output: PathBuf) -> Self {
         Self {
             db: sled::Config::new()
                 .temporary(true)
@@ -30,17 +26,25 @@ impl Project {
             scheduler,
             track_names: Default::default(),
             tracks: Default::default(),
+            output,
         }
     }
 
-    pub fn finish(&self, outdir: &Path) -> BTreeMap<String, io::Result<PathBuf>> {
+    pub fn finish(&self) -> BTreeMap<String, io::Result<PathBuf>> {
         self.tracks
             .par_iter()
             .map(|entry| {
                 let track = entry.value();
-                track.dump(outdir, Duration::from_secs(10))
+                track.dump(&self.output, Duration::from_secs(5))
             })
             .collect()
+    }
+}
+
+impl Output for Project {
+    fn finish(&self) -> io::Result<()> {
+        // TODO
+        Ok(())
     }
 }
 

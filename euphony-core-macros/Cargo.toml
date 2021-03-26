@@ -1,5 +1,5 @@
 [package]
-name = "euphony-macros"
+name = "euphony-core-macros"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
@@ -8,6 +8,7 @@ edition = "2018"
 proc-macro = true
 
 [dependencies]
+num-rational = { version = "0.2", default-features = false }
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "1", features = ["full"] }

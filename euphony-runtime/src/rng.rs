@@ -6,34 +6,29 @@ use core::{
 use lazy_static::lazy_static;
 use pin_project::pin_project;
 use rand::{rngs::StdRng, seq::SliceRandom, Rng, RngCore, SeedableRng};
-use std::{
-    cell::RefCell,
-    sync::{Arc, Mutex},
-};
 
 lazy_static! {
-    static ref SEED: u64 = if let Ok(seed) = std::env::var("EUPHONY_SEED") {
+    pub static ref EUPHONY_SEED: u64 = if let Ok(seed) = std::env::var("EUPHONY_SEED") {
         u64::from_str_radix(&seed, 16).unwrap()
     } else {
         let seed: u64 = rand::thread_rng().gen();
-        eprintln!("EUPHONY_SEED={:x}", seed);
         seed
     };
 }
 
-thread_local! {
-    static RNG: RefCell<Scope> = RefCell::new(Scope::new(seed()));
+pub mod scope {
+    crate::scope!(rand, super::Scope);
 }
 
 pub fn seed() -> u64 {
-    *SEED
+    scope::borrow(|r| r.seed)
 }
 
 pub fn gen<T>() -> T
 where
     rand::distributions::Standard: rand::distributions::Distribution<T>,
 {
-    RNG.with(|r| r.borrow_mut().gen())
+    scope::borrow_mut(|r| r.gen())
 }
 
 pub fn gen_range<B, T>(range: B) -> T
@@ -41,75 +36,89 @@ where
     B: rand::distributions::uniform::SampleRange<T>,
     T: rand::distributions::uniform::SampleUniform + PartialOrd,
 {
-    RNG.with(|r| r.borrow_mut().gen_range(range))
+    scope::borrow_mut(|r| r.gen_range(range))
 }
 
 pub fn shuffle<T>(items: &mut [T]) {
-    RNG.with(|r| items.shuffle(&mut *r.borrow_mut()))
+    scope::borrow_mut(|r| items.shuffle(r))
 }
 
 pub fn swap<T>(items: &mut [T]) {
-    let a = gen_range(0..items.len());
-    let b = gen_range(0..items.len());
-    items.swap(a, b);
+    swap_count(items, 1)
 }
 
 pub fn swap_count<T>(items: &mut [T], count: usize) {
-    for _ in 0..count {
-        swap(items);
-    }
+    scope::borrow_mut(|r| {
+        for _ in 0..count {
+            let a = r.gen_range(0..items.len());
+            let b = r.gen_range(0..items.len());
+            items.swap(a, b)
+        }
+    })
 }
 
-pub fn one_of<T: Clone>(items: &[T]) -> T {
+pub fn one_of<T>(items: &[T]) -> &T {
     let index = gen_range(0..items.len());
-    items[index].clone()
+    &items[index]
 }
 
-pub fn scope() -> Scope {
-    RNG.with(|r| r.borrow().clone())
-}
-
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Scope {
-    rng: Arc<Mutex<StdRng>>,
-}
-
-impl Default for Scope {
-    fn default() -> Self {
-        Self::new(gen())
-    }
+    seed: u64,
+    rng: StdRng,
 }
 
 impl Scope {
     pub fn new(seed: u64) -> Self {
         Self {
-            rng: Arc::new(Mutex::new(StdRng::seed_from_u64(seed))),
+            seed,
+            rng: StdRng::seed_from_u64(seed),
         }
     }
 
-    pub fn with<F: FnOnce() -> R, R>(&self, f: F) -> R {
-        let prev = RNG.with(|r| core::mem::replace(&mut *r.borrow_mut(), self.clone()));
+    pub fn with<F: FnOnce() -> R, R>(&mut self, f: F) -> R {
+        let has_prev = scope::try_borrow_mut(|prev| {
+            if let Some(prev) = prev.as_mut() {
+                core::mem::swap(prev, self);
+                true
+            } else {
+                *prev = Some(Self {
+                    seed: self.seed,
+                    rng: self.rng.clone(),
+                });
+                false
+            }
+        });
+
         let res = f();
-        RNG.with(|r| *r.borrow_mut() = prev);
+
+        scope::try_borrow_mut(|current| {
+            if has_prev {
+                core::mem::swap(current.as_mut().unwrap(), self);
+            } else {
+                *self = current.take().unwrap();
+            }
+        });
+
         res
     }
 }
 
 impl RngCore for Scope {
     fn next_u32(&mut self) -> u32 {
-        self.rng.lock().unwrap().next_u32()
+        self.rng.next_u32()
     }
 
     fn next_u64(&mut self) -> u64 {
-        self.rng.lock().unwrap().next_u64()
+        self.rng.next_u64()
     }
 
     fn fill_bytes(&mut self, bytes: &mut [u8]) {
-        self.rng.lock().unwrap().fill_bytes(bytes)
+        self.rng.fill_bytes(bytes)
     }
 
     fn try_fill_bytes(&mut self, bytes: &mut [u8]) -> Result<(), rand::Error> {
-        self.rng.lock().unwrap().try_fill_bytes(bytes)
+        self.rng.try_fill_bytes(bytes)
     }
 }
 
@@ -142,7 +151,7 @@ impl<F> TaskScope<F> {
     pub fn new(inner: F) -> Self {
         Self {
             inner,
-            scope: scope(),
+            scope: Scope::new(gen()),
         }
     }
 }

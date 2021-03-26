@@ -1,0 +1,15 @@
+[package]
+name = "euphony"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+bach = { version = "0.0.1", path = "../../bach/bach" }
+euphony-core = { version = "0.1", path = "../euphony-core" }
+euphony-macros = { version = "0.1", path = "../euphony-macros" }
+euphony-nrt = { version = "0.1", path = "../euphony-nrt" }
+euphony-runtime = { version = "0.1", path = "../euphony-runtime" }
+euphony-sc = { version = "0.1", path = "../euphony-sc" }
+rayon = "1"
+structopt = "0.3"

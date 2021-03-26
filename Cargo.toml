@@ -1,7 +1,8 @@
 [workspace]
 members = [
     "euphony-*",
-    # "euphony",
+    "euphony",
+    "example-*",
 ]
 
 [profile.release]

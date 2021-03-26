@@ -166,23 +166,23 @@ fn address_encoding_test() {
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Ord, Eq, Hash)]
 #[repr(u8)]
 pub enum Tag {
-    Int32 = 'i' as u8,
-    Float32 = 'f' as u8,
-    String = 's' as u8,
-    Blob = 'b' as u8,
-    Int64 = 'h' as u8,
-    Timetag = 't' as u8,
-    Double = 'd' as u8,
-    Symbol = 'S' as u8,
-    Char = 'c' as u8,
-    RGBA = 'r' as u8,
-    MIDI = 'm' as u8,
-    True = 'T' as u8,
-    False = 'F' as u8,
-    Nil = 'N' as u8,
-    Infinitum = 'I' as u8,
-    ArrayOpen = '[' as u8,
-    ArrayClose = ']' as u8,
+    Int32 = b'i',
+    Float32 = b'f',
+    String = b's',
+    Blob = b'b',
+    Int64 = b'h',
+    Timetag = b't',
+    Double = b'd',
+    Symbol = b'S',
+    Char = b'c',
+    RGBA = b'r',
+    MIDI = b'm',
+    True = b'T',
+    False = b'F',
+    Nil = b'N',
+    Infinitum = b'I',
+    ArrayOpen = b'[',
+    ArrayClose = b']',
 }
 
 impl<B: EncoderBuffer> TypeEncoder<B> for Tag {
@@ -265,13 +265,15 @@ impl fmt::Debug for Timetag {
 }
 
 impl Timetag {
-    const FRAC: u32 = core::u32::MAX / Self::NANOS_PER_SEC;
+    const INV_MAX: f64 = 1.0 / Self::MAX;
+    const MAX: f64 = (u32::MAX as f64) + 1.0;
     const NANOS_PER_SEC: u32 = Duration::from_secs(1).as_nanos() as u32;
+    const SECS_PER_NANO: f64 = 1.0 / (Self::NANOS_PER_SEC as f64);
 
-    pub const fn new(timestamp: Duration) -> Self {
+    pub fn new(timestamp: Duration) -> Self {
         let secs = timestamp.as_secs() as u32;
-        let nanos = timestamp.subsec_nanos();
-        let frac = Self::FRAC * nanos;
+        let nanos = timestamp.subsec_nanos() as f64;
+        let frac = (nanos * Self::SECS_PER_NANO * Self::MAX).round() as u32;
 
         let mut out = [0u8; 8];
 
@@ -290,7 +292,7 @@ impl Timetag {
         Self(out)
     }
 
-    pub const fn as_duration(self) -> Duration {
+    pub fn as_duration(self) -> Duration {
         let mut secs = [0u8; 4];
         secs[0] = self.0[0];
         secs[1] = self.0[1];
@@ -304,7 +306,8 @@ impl Timetag {
         frac[2] = self.0[6];
         frac[3] = self.0[7];
         let frac = u32::from_be_bytes(frac);
-        let nanos = (frac / Self::FRAC) as u64;
+        let nanos = (frac as f64) * Self::INV_MAX * Self::NANOS_PER_SEC as f64;
+        let nanos = nanos as u64;
 
         Duration::from_nanos(secs * Self::NANOS_PER_SEC as u64 + nanos)
     }

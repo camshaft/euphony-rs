@@ -17,7 +17,7 @@ impl<'a> Render<'a> {
             .arg(self.input.unwrap_or_else(|| Path::new("_")))
             .arg(self.output)
             .arg("48000")
-            .arg("AIFF")
+            .arg("WAV")
             .arg("int24")
             .arg("-o")
             .arg(self.channels.to_string());

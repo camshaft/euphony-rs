@@ -9,7 +9,7 @@ pub mod project {
     use super::*;
 
     #[derive(Clone)]
-    pub struct Handle(pub Arc<dyn Project>);
+    pub struct Handle(pub Arc<dyn 'static + Project + Send + Sync>);
 
     impl Handle {
         pub fn track(&self, name: &str) -> track::Handle {
@@ -23,7 +23,7 @@ pub mod project {
         }
     }
 
-    pub trait Project {
+    pub trait Project: 'static + Send {
         /// Returns the track for the given name
         fn track(&self, name: &str) -> track::Handle;
     }
@@ -34,7 +34,7 @@ pub mod track {
     use core::fmt;
 
     #[derive(Clone)]
-    pub struct Handle(pub Arc<dyn Track>);
+    pub struct Handle(pub Arc<dyn 'static + Track + Send + Sync>);
 
     impl fmt::Debug for Handle {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -80,7 +80,7 @@ pub mod track {
         }
     }
 
-    pub trait Track {
+    pub trait Track: 'static + Send {
         fn name(&self) -> &str;
 
         fn load(&self, synthname: &str, synthdef: &[u8]);

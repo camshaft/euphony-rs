@@ -1,6 +1,6 @@
 //! https://en.wikipedia.org/wiki/Ditonic_scale
 
-use euphony_macros::mode_system;
+use euphony_core_macros::mode_system;
 
 mode_system!(ONE_FIVE = [1, 5]);
 named_mode!(VIETNAMESE(0, ONE_FIVE));

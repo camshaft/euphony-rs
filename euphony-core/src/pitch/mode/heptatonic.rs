@@ -1,7 +1,7 @@
 //! https://en.wikipedia.org/wiki/Heptatonic_scale
 
 use crate::pitch::mode::Mode;
-use euphony_macros::mode_system;
+use euphony_core_macros::mode_system;
 
 named_interval!(I(0, 1));
 named_interval!(FIRST(0, 1));

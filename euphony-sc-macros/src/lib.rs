@@ -12,16 +12,21 @@ use syn::{
 
 #[derive(Debug)]
 struct Input {
-    name: proc_macro2::Ident,
     path: syn::LitStr,
+    module: Option<Ident>,
     target: Option<syn::LitStr>,
 }
 
 impl Parse for Input {
     fn parse(input: ParseStream) -> syn::Result<Self> {
-        let name = input.parse()?;
-        let _: syn::Token![,] = input.parse()?;
         let path = input.parse()?;
+
+        let module = if input.peek(syn::Token![as]) {
+            let _: syn::Token![as] = input.parse()?;
+            Some(input.parse()?)
+        } else {
+            None
+        };
 
         let target = if let Some(_) = input.parse::<Option<syn::Token![,]>>()? {
             input.parse()?
@@ -29,7 +34,11 @@ impl Parse for Input {
             None
         };
 
-        Ok(Self { name, path, target })
+        Ok(Self {
+            path,
+            module,
+            target,
+        })
     }
 }
 
@@ -54,7 +63,7 @@ fn name_to_ident(name: &str, span: proc_macro2::Span) -> Ident {
 }
 
 fn include_synthdef_impl(input: Input, root: &str) -> Result<TokenStream2, Error> {
-    let span = input.name.span();
+    let span = input.path.span();
     let path = PathBuf::from(root).join(input.path.value());
 
     if !path.exists() {
@@ -82,7 +91,7 @@ fn include_synthdef_impl(input: Input, root: &str) -> Result<TokenStream2, Error
             .ok_or_else(|| Error::new(span, &format!("synthdef {:?} is empty", path)))?
     };
 
-    let name = input.name;
+    let module = input.module;
     let len = buffer.len();
     let def = syn::LitByteStr::new(buffer, span);
 
@@ -115,234 +124,249 @@ fn include_synthdef_impl(input: Input, root: &str) -> Result<TokenStream2, Error
 
     let synthname = &synth.name;
 
-    Ok(quote!(
-        pub mod #name {
-            use euphony_sc::{osc, track::{self, Track}};
-            use core::{fmt, ops};
+    let def = quote!(
+        use super::*;
+        use euphony_sc::{osc, track::{self, Track}};
+        use core::{fmt, ops};
+
+        pub const fn new() -> New {
+            Synth::new()
+        }
+
+        pub const fn load() -> Load {
+            Synth::load()
+        }
+
+        pub struct Synth {
+            id: osc::node::Id,
+            track: track::Handle,
+        }
+
+        impl fmt::Debug for Synth {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.debug_tuple(concat!(module_path!(), "::Synth")).field(&self.id).finish()
+            }
+        }
+
+        impl Synth {
+            pub const DEFINITION: &'static [u8; #len] = #def;
 
             pub const fn new() -> New {
-                Synth::new()
+                New::DEFAULT
+            }
+
+            pub fn set(&mut self) -> Set {
+                Set {
+                    params: Params::DEFAULT,
+                    id: self.id,
+                    track: &self.track,
+                }
             }
 
             pub const fn load() -> Load {
-                Synth::load()
+                Load::new()
             }
-
-            pub struct Synth {
-                id: osc::node::Id,
-                track: track::Handle,
-            }
-
-            impl fmt::Debug for Synth {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    f.debug_tuple(concat!(module_path!(), "::Synth")).field(&self.id).finish()
-                }
-            }
-
-            impl Synth {
-                pub const DEFINITION: &'static [u8; #len] = #def;
-
-                pub const fn new() -> New {
-                    New::DEFAULT
-                }
-
-                pub fn set(&mut self) -> Set {
-                    Set {
-                        params: Params::DEFAULT,
-                        id: self.id,
-                        track: &self.track,
-                    }
-                }
-
-                pub const fn load() -> Load {
-                    Load::new()
-                }
-            }
-
-            impl Drop for Synth {
-                fn drop(&mut self) {
-                    self.track.free(self.id)
-                }
-            }
-
-            #[derive(Clone, Copy, PartialEq)]
-            pub struct Params {
-                #(
-                    pub #fields: Option<osc::control::Value>,
-                )*
-            }
-
-            impl Default for Params {
-                fn default() -> Self {
-                    Self {
-                        #(#fields: None,)*
-                    }
-                }
-            }
-
-            impl fmt::Debug for Params {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    let mut s = f.debug_struct(concat!(module_path!(), "::Params"));
-
-                    #(
-                        if let Some(value) = self.#fields {
-                            s.field(stringify!(#fields), &value);
-                        }
-                    )*
-
-                    s.finish()
-                }
-            }
-
-            impl Params {
-                pub const DEFAULT: Self = Self {
-                    #(#fields: None,)*
-                };
-
-                #(
-                    pub fn #fields<V: Into<osc::control::Value>>(&mut self, value: V) -> &mut Self {
-                        self.#fields = Some(value.into());
-                        self
-                    }
-                )*
-            }
-
-            #[derive(Clone, Copy, PartialEq)]
-            pub struct New {
-                pub params: Params,
-                pub action: Option<osc::group::Action>,
-                pub target: Option<osc::node::Id>,
-            }
-
-            impl Default for New {
-                fn default() -> Self {
-                    Self::DEFAULT
-                }
-            }
-
-            impl New {
-                pub const DEFAULT: Self = Self {
-                    params: Params::DEFAULT,
-                    action: None,
-                    target: None,
-                };
-
-                #(
-                    pub fn #fields<V: Into<osc::control::Value>>(&mut self, value: V) -> &mut Self {
-                        self.params.#fields = Some(value.into());
-                        self
-                    }
-                )*
-            }
-
-            impl fmt::Debug for New {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    let mut s = f.debug_struct(concat!(module_path!(), "::New"));
-
-                    #(#field_debug_new)*
-
-                    s.finish()
-                }
-            }
-
-            impl euphony_sc::Message for New {
-                type Output = Synth;
-
-                fn send(self, track: &track::Handle) -> Synth {
-                    // make sure the server has the synthdef loaded
-                    track.send(load());
-
-                    let values = [
-                        #(#field_values),*
-                    ];
-
-                    let id = track.new(#synthname, self.action, self.target, &values[..]);
-
-                    Synth {
-                        id,
-                        track: track.clone()
-                    }
-                }
-            }
-
-            pub struct Set<'a> {
-                pub params: Params,
-                id: osc::node::Id,
-                track: &'a track::Handle,
-            }
-
-            impl<'a> Set<'a> {
-                #(
-                    pub fn #fields<V: Into<osc::control::Value>>(&mut self, value: V) -> &mut Self {
-                        self.params.#fields = Some(value.into());
-                        self
-                    }
-                )*
-            }
-
-            impl<'a> fmt::Debug for Set<'a> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    let mut s = f.debug_struct(concat!(module_path!(), "::Set"));
-
-                    #(
-                        if let Some(value) = self.params.#fields {
-                            s.field(stringify!(#fields), &value);
-                        }
-                    )*
-
-                    s.finish()
-                }
-            }
-
-            impl<'a> euphony_sc::Message for Set<'a> {
-                type Output = ();
-
-                fn send(self, track: &track::Handle) {
-                    let values = [
-                        #(#field_values),*
-                    ];
-
-                    track.set(self.id, &values[..]);
-                }
-            }
-
-            #[derive(Clone, Copy, PartialEq)]
-            pub struct Load;
-
-            impl Default for Load {
-                fn default() -> Self {
-                    Self::new()
-                }
-            }
-
-            impl Load {
-                pub const fn new() -> Self {
-                    Self
-                }
-
-                pub const fn as_osc(&self) -> osc::synthdef::Receive<'static> {
-                    osc::synthdef::Receive {
-                        buffer: Synth::DEFINITION
-                    }
-                }
-            }
-
-            impl fmt::Debug for Load {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    f.debug_struct(concat!(module_path!(), "::Load")).finish()
-                }
-            }
-
-            impl euphony_sc::Message for Load {
-                type Output = ();
-
-                fn send(self, track: &track::Handle) {
-                    track.load(#synthname, Synth::DEFINITION);
-                }
-            }
-
         }
-    ))
+
+        impl Drop for Synth {
+            fn drop(&mut self) {
+                self.track.free(self.id)
+            }
+        }
+
+        #[derive(Clone, Copy, PartialEq)]
+        pub struct Params {
+            #(
+                pub #fields: Option<osc::control::Value>,
+            )*
+        }
+
+        impl Default for Params {
+            fn default() -> Self {
+                Self {
+                    #(#fields: None,)*
+                }
+            }
+        }
+
+        impl fmt::Debug for Params {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                let mut s = f.debug_struct(concat!(module_path!(), "::Params"));
+
+                #(
+                    if let Some(value) = self.#fields {
+                        s.field(stringify!(#fields), &value);
+                    }
+                )*
+
+                s.finish()
+            }
+        }
+
+        impl Params {
+            pub const DEFAULT: Self = Self {
+                #(#fields: None,)*
+            };
+
+            #(
+                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
+                    self.#fields = Some(value.into());
+                    self
+                }
+            )*
+        }
+
+        #[derive(Clone, Copy, PartialEq)]
+        #[must_use = "New must be applied to a Track"]
+        pub struct New {
+            pub params: Params,
+            pub action: Option<osc::group::Action>,
+            pub target: Option<osc::node::Id>,
+        }
+
+        impl Default for New {
+            fn default() -> Self {
+                Self::DEFAULT
+            }
+        }
+
+        impl New {
+            pub const DEFAULT: Self = Self {
+                params: Params::DEFAULT,
+                action: None,
+                target: None,
+            };
+
+            #(
+                #[must_use = "New must be applied to a Track"]
+                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
+                    self.params.#fields = Some(value.into());
+                    self
+                }
+            )*
+        }
+
+        impl fmt::Debug for New {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                let mut s = f.debug_struct(concat!(module_path!(), "::New"));
+
+                #(#field_debug_new)*
+
+                s.finish()
+            }
+        }
+
+        impl euphony_sc::Message for New {
+            type Output = Synth;
+
+            fn send(self, track: &track::Handle) -> Synth {
+                // make sure the server has the synthdef loaded
+                track.send(load());
+
+                let values = [
+                    #(#field_values),*
+                ];
+
+                let id = track.new(#synthname, self.action, self.target, &values[..]);
+
+                Synth {
+                    id,
+                    track: track.clone()
+                }
+            }
+        }
+
+        #[must_use = "Set must be applied to a Track"]
+        pub struct Set<'a> {
+            pub params: Params,
+            id: osc::node::Id,
+            track: &'a track::Handle,
+        }
+
+        impl<'a> Set<'a> {
+            #(
+                #[must_use = "Set must be applied to a Track"]
+                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
+                    self.params.#fields = Some(value.into());
+                    self
+                }
+            )*
+        }
+
+        impl<'a> fmt::Debug for Set<'a> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                let mut s = f.debug_struct(concat!(module_path!(), "::Set"));
+
+                #(
+                    if let Some(value) = self.params.#fields {
+                        s.field(stringify!(#fields), &value);
+                    }
+                )*
+
+                s.finish()
+            }
+        }
+
+        impl<'a> euphony_sc::Message for Set<'a> {
+            type Output = ();
+
+            fn send(self, track: &track::Handle) {
+                let values = [
+                    #(#field_values),*
+                ];
+
+                track.set(self.id, &values[..]);
+            }
+        }
+
+        #[derive(Clone, Copy, PartialEq)]
+        pub struct Load;
+
+        impl Default for Load {
+            fn default() -> Self {
+                Self::new()
+            }
+        }
+
+        impl Load {
+            pub const fn new() -> Self {
+                Self
+            }
+
+            pub const fn as_osc(&self) -> osc::synthdef::Receive<'static> {
+                osc::synthdef::Receive {
+                    buffer: Synth::DEFINITION
+                }
+            }
+        }
+
+        impl fmt::Debug for Load {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.debug_struct(concat!(module_path!(), "::Load")).finish()
+            }
+        }
+
+        impl euphony_sc::Message for Load {
+            type Output = ();
+
+            fn send(self, track: &track::Handle) {
+                track.load(#synthname, Synth::DEFINITION);
+            }
+        }
+    );
+
+    if let Some(module) = module {
+        Ok(quote!(pub mod #module { #def }))
+    } else {
+        let name = path
+            .file_stem()
+            .or_else(|| path.file_name())
+            .expect("missing file name")
+            .to_str()
+            .expect("invalid file name");
+        let ident = Ident::new(name, span);
+        Ok(quote!(pub mod #ident { #def }))
+    }
 }
 
 #[cfg(test)]
@@ -351,9 +375,14 @@ mod tests {
 
     #[test]
     fn parse_test() {
+        let input = syn::parse2(quote!("../euphony-sc-core/artifacts/v1.scsyndef")).unwrap();
+        include_synthdef_impl(input, env!("CARGO_MANIFEST_DIR")).unwrap();
+    }
+
+    #[test]
+    fn parse_module_test() {
         let input = syn::parse2(quote!(
-            MySynthDef,
-            "../euphony-sc-core/artifacts/v1.scsyndef"
+            "../euphony-sc-core/artifacts/v1.scsyndef" as my_synth
         ))
         .unwrap();
         include_synthdef_impl(input, env!("CARGO_MANIFEST_DIR")).unwrap();

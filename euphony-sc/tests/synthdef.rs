@@ -1,8 +1,8 @@
 use euphony_sc::include_synthdef;
 
-include_synthdef!(thing, "../euphony-sc-core/artifacts/v1.scsyndef");
+include_synthdef!("../euphony-sc-core/artifacts/v1.scsyndef" as thing);
 
 #[test]
 fn thing_test() {
-    let _ = thing::new().note(1);
+    thing::new().note(1);
 }

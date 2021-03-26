@@ -39,6 +39,8 @@ impl Track {
     }
 
     fn event_id(&self, now: Duration) -> [u8; 12] {
+        // Start everything 1 second late
+        let now = now + Duration::from_secs(1);
         let now = Timetag::new(now);
         let event_id = self.event_id.fetch_add(1, Ordering::Relaxed).to_be_bytes();
         let mut id = [0u8; 12];
@@ -52,8 +54,9 @@ impl Track {
         T: Copy + for<'a> TypeEncoder<&'a mut [u8]> + TypeEncoder<LenEstimator>,
     {
         let len = LenEstimator::encoding_len(event, usize::MAX).unwrap();
-        let mut output = vec![0u8; len];
-        output.encode(event).unwrap();
+        let mut output = vec![0u8; len + size_of::<u32>()];
+        output[..size_of::<u32>()].copy_from_slice(&(len as u32).to_be_bytes());
+        output[size_of::<u32>()..].encode(event).unwrap();
         let event_id = self.event_id(now);
         self.events.insert(event_id, output).unwrap();
     }
@@ -66,7 +69,7 @@ impl Track {
         let hash = hash.finalize();
         let hash = base64::encode_config(&hash, base64::URL_SAFE_NO_PAD);
 
-        let outpath = outdir.join(hash).join("cmd.osc");
+        let outpath = outdir.join("build").join(hash).join("cmd.osc");
 
         if outpath.exists() {
             return (track_name, Ok(outpath));
@@ -111,7 +114,7 @@ impl Track {
 
         // add padding and quit
         let end = Timetag::new(self.scheduler.now() + padding);
-        let msg = "/quit\0\0\0";
+        let msg = b"\x00\x00\x00\x08/quit\0\0\0";
         len += header!(end.as_ref(), msg.len());
         len += out.write(msg.as_ref())?;
 
@@ -125,15 +128,20 @@ impl track::Track for Track {
     }
 
     fn load(&self, synthname: &str, synthdef: &[u8]) {
+        if self.synths.contains_key(synthname).unwrap() {
+            return;
+        }
+
         self.synths
             .fetch_and_update(synthname, |prev| {
-                if prev.is_some() {
-                    None
+                if let Some(prev) = prev {
+                    Some(prev.to_vec())
                 } else {
                     let event = osc::synthdef::Receive { buffer: synthdef };
                     let len = LenEstimator::encoding_len(event, usize::MAX).unwrap();
-                    let mut output = vec![0u8; len];
-                    output.encode(event).unwrap();
+                    let mut output = vec![0u8; len + size_of::<u32>()];
+                    output[..size_of::<u32>()].copy_from_slice(&(len as u32).to_be_bytes());
+                    output[size_of::<u32>()..].encode(event).unwrap();
                     Some(output)
                 }
             })
