@@ -162,15 +162,15 @@ inner_ratio_arithmetic!(Sub, sub, SubAssign, sub_assign);
 inner_ratio_arithmetic!(Mul, mul, MulAssign, mul_assign);
 inner_ratio_arithmetic!(Div, div, DivAssign, div_assign);
 
-impl<T: Copy + Integer> Into<Inner<T>> for Ratio<T> {
-    fn into(self) -> Inner<T> {
-        self.as_ratio()
+impl<T: Copy + Integer> From<Ratio<T>> for Inner<T> {
+    fn from(ratio: Ratio<T>) -> Self {
+        ratio.as_ratio()
     }
 }
 
-impl<T: Clone + Integer> Into<(T, T)> for Ratio<T> {
-    fn into(self) -> (T, T) {
-        (self.0, self.1)
+impl<T> From<Ratio<T>> for (T, T) {
+    fn from(ratio: Ratio<T>) -> Self {
+        (ratio.0, ratio.1)
     }
 }
 

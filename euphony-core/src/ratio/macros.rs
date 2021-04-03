@@ -69,6 +69,10 @@ macro_rules! new_ratio_methods {
                 self.as_ratio().truncate().into()
             }
 
+            pub fn ceil(self) -> Self {
+                self.as_ratio().ceil().into()
+            }
+
             pub fn is_whole(&self) -> bool {
                 self.as_ratio().is_whole()
             }

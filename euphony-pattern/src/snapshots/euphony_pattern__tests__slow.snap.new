@@ -1,0 +1,34 @@
+---
+source: euphony-pattern/src/lib.rs
+expression: "bd / 2, sd"
+---
+[
+    (
+        Arc {
+            start: Beat(0),
+            end: Beat(1/2),
+        },
+        "bd",
+    ),
+    (
+        Arc {
+            start: Beat(1/2),
+            end: Beat(1),
+        },
+        "sd",
+    ),
+    (
+        Arc {
+            start: Beat(1),
+            end: Beat(3/2),
+        },
+        "bd",
+    ),
+    (
+        Arc {
+            start: Beat(3/2),
+            end: Beat(2),
+        },
+        "sd",
+    ),
+]

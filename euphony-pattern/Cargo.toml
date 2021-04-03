@@ -1,0 +1,15 @@
+[package]
+name = "euphony-pattern"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+euphony-core = { version = "0.1", path = "../euphony-core" }
+euphony-pattern-macros = { version = "0.1", path = "../euphony-pattern-macros" }
+num-integer = "0.1"
+priority-queue = "1"
+slab = "0.4"
+
+[dev-dependencies]
+insta = "1"

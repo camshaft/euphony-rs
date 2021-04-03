@@ -9,3 +9,9 @@ impl DelayExt for Beat {
         crate::runtime::time::scheduler().delay(self)
     }
 }
+
+pub trait RngPickExt {
+    type Output;
+
+    fn pick(self) -> Self::Output;
+}
