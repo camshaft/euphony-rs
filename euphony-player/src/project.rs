@@ -128,10 +128,11 @@ impl Track {
         track: manifest::Track,
         cache: &mut LruCache<PathBuf, Buffer>,
     ) -> Result<Self> {
-        let buffer = if let Some(buffer) = cache.get(&track.path) {
+        let path = track.path.canonicalize()?;
+        let buffer = if let Some(buffer) = cache.get(&path) {
             buffer.clone()
         } else {
-            open(&track.path)?
+            open(&path)?
         };
 
         Ok(Self {
@@ -222,13 +223,18 @@ impl State {
 
         let mut tracks = vec![];
         for (name, track) in manifest.tracks {
-            if let Some(track) = self.track_handles.get(&name) {
-                tracks.push(track.clone());
-            } else {
-                let track = Arc::new(Track::new(name.clone(), track, &mut self.cache)?);
-                self.track_handles.insert(name.clone(), track.clone());
-                tracks.push(track);
+            let track = Track::new(name.clone(), track, &mut self.cache)?;
+
+            // copy the old settings
+            if let Some(old_track) = self.track_handles.get(&name) {
+                track.solo.store(old_track.is_solo(), Ordering::SeqCst);
+                track.mute.store(old_track.is_muted(), Ordering::SeqCst);
             }
+
+            let track = Arc::new(track);
+
+            tracks.push(track.clone());
+            self.track_handles.insert(name, track);
         }
 
         self.track_handles
@@ -285,12 +291,6 @@ mod manifest {
         pub tracks: BTreeMap<String, Track>,
     }
 
-    impl Manifest {
-        pub fn merge(&mut self, _other: &Self) {
-            // TODO
-        }
-    }
-
     #[derive(Debug, Deserialize)]
     pub struct Track {
         pub path: PathBuf,
@@ -321,7 +321,7 @@ mod worker {
         loop {
             while let Ok(event) = rx.recv_timeout(Duration::from_millis(50)) {
                 match event {
-                    DebouncedEvent::Write(_) => {
+                    DebouncedEvent::Write(_) | DebouncedEvent::Chmod(_) => {
                         if let Err(err) = state.reload() {
                             // TODO log
                             let _ = err;

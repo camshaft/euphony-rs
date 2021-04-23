@@ -59,7 +59,7 @@ fn main() -> Result<()> {
         terminal.draw(|f| {
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
-                .constraints([Constraint::Percentage(5), Constraint::Percentage(95)].as_ref())
+                .constraints([Constraint::Percentage(10), Constraint::Percentage(90)].as_ref())
                 .split(f.size());
 
             let gauge = Gauge::default()
@@ -72,18 +72,18 @@ fn main() -> Result<()> {
             let rows = tracks_entries.iter().map(|item| {
                 let status = match (item.is_muted(), item.is_solo()) {
                     (true, true) => "MS",
-                    (true, false) => "M",
-                    (false, true) => "S",
-                    (false, false) => "",
+                    (true, false) => "M ",
+                    (false, true) => " S",
+                    (false, false) => "  ",
                 };
-                let cells = vec![Cell::from(item.name()), Cell::from(status)];
+                let cells = vec![Cell::from(status), Cell::from(item.name())];
                 Row::new(cells).height(1).bottom_margin(1)
             });
             let t = Table::new(rows)
                 .block(Block::default().borders(Borders::ALL).title("Tracks"))
                 .highlight_style(Style::default().add_modifier(Modifier::REVERSED))
-                .highlight_symbol(">> ")
-                .widths(&[Constraint::Percentage(90), Constraint::Length(10)]);
+                .highlight_symbol(">")
+                .widths(&[Constraint::Length(2), Constraint::Percentage(90)]);
             f.render_stateful_widget(t, chunks[1], &mut tracks.state);
         })?;
 
