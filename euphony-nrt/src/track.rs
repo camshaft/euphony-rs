@@ -93,7 +93,7 @@ impl Track {
         (track_name, outcome)
     }
 
-    pub fn render(&self, build_dir: &Path, out_file: Option<&Path>) -> io::Result<()> {
+    pub fn render(&self, build_dir: &Path, out_file: Option<&Path>) -> io::Result<PathBuf> {
         let (name, commands) = self.dump(build_dir, Duration::from_secs(5));
         let commands = commands?;
 
@@ -131,7 +131,7 @@ impl Track {
             }
         }
 
-        Ok(())
+        Ok(out_file)
     }
 
     fn write<W: io::Write>(

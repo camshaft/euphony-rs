@@ -1,7 +1,10 @@
 use crate::track::Track;
 use dashmap::DashMap;
 use euphony_runtime::{output::Output, time::Handle as Scheduler};
-use euphony_sc::{project, track};
+use euphony_sc::{
+    project,
+    track::{self, Track as _},
+};
 use lasso::{Key, Spur, ThreadedRodeo};
 use rayon::prelude::*;
 use std::{io, path::PathBuf, sync::Arc};
@@ -32,13 +35,25 @@ impl Project {
 
 impl Output for Project {
     fn finish(&self) -> io::Result<()> {
-        self.tracks
+        let tracks = self
+            .tracks
             .par_iter()
             .map(|track| {
-                track.value().render(&self.output, None)?;
-                Ok(())
+                let name = track.name().to_owned();
+                let path = track.value().render(&self.output, None)?;
+                let path = path.strip_prefix(&self.output).unwrap().to_owned();
+                let track = crate::manifest::Track { path };
+                Ok((name, track))
             })
-            .collect::<Result<(), io::Error>>()?;
+            .collect::<Result<_, io::Error>>()?;
+
+        let manifest = crate::manifest::Manifest { tracks };
+
+        let out = self.output.join("project.json");
+        let out = std::fs::File::create(out)?;
+        let out = io::BufWriter::new(out);
+        serde_json::to_writer(out, &manifest)?;
+
         Ok(())
     }
 }

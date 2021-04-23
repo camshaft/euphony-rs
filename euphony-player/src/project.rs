@@ -268,7 +268,15 @@ impl State {
         let file = BufReader::new(file);
 
         let manifest = if input.extension().map_or(false, |ext| ext == "json") {
-            serde_json::from_reader(file)?
+            let mut manifest: manifest::Manifest = serde_json::from_reader(file)?;
+            if let Some(parent) = input.parent() {
+                for (_, track) in manifest.tracks.iter_mut() {
+                    if track.path.is_relative() {
+                        track.path = parent.join(&track.path).to_owned();
+                    }
+                }
+            }
+            manifest
         } else {
             manifest::Manifest {
                 tracks: {
