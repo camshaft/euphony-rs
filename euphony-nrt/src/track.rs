@@ -1,8 +1,13 @@
+use crate::buffers::Buffers;
+use cfg_if::cfg_if;
 use codec::encode::{EncoderBuffer, LenEstimator, TypeEncoder};
 use core::{mem::size_of, time::Duration};
 use euphony_osc::{bundle, types::Timetag};
 use euphony_runtime::time::Handle as Scheduler;
-use euphony_sc::{osc, track};
+use euphony_sc::{
+    buffer::{BufView, Buffer},
+    osc, track,
+};
 use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File},
@@ -19,6 +24,7 @@ pub struct Track {
     scheduler: Scheduler,
     spawn_id: AtomicU32,
     event_id: AtomicU32,
+    buffers: Buffers,
 }
 
 impl Track {
@@ -35,14 +41,13 @@ impl Track {
             scheduler: scheduler.clone(),
             spawn_id: AtomicU32::new(1000),
             event_id: AtomicU32::new(0),
+            buffers: Default::default(),
         }
     }
 
     fn event_id(&self, now: Duration) -> [u8; 12] {
-        // Start everything 1 second late
-        let now = now + Duration::from_secs(1);
         let now = Timetag::new(now);
-        let event_id = self.event_id.fetch_add(1, Ordering::Relaxed).to_be_bytes();
+        let event_id = self.event_id.fetch_add(1, Ordering::SeqCst).to_be_bytes();
         let mut id = [0u8; 12];
         id[..8].copy_from_slice(now.as_ref());
         id[8..].copy_from_slice(&event_id);
@@ -61,15 +66,17 @@ impl Track {
         self.events.insert(event_id, output).unwrap();
     }
 
-    pub fn dump(&self, outdir: &Path, padding: Duration) -> (String, io::Result<PathBuf>) {
-        let track_name = self.name.to_string();
+    pub fn dump(&self, out_dir: &Path, padding: Duration) -> (&str, io::Result<PathBuf>) {
+        let track_name = &self.name;
 
         let mut hash = Sha256::default();
-        self.write(&mut hash, padding).unwrap();
+        // make sure we don't have collisions with other tracks
+        hash.update(track_name.as_bytes());
+        self.write(&mut hash, out_dir, padding).unwrap();
         let hash = hash.finalize();
         let hash = base64::encode_config(&hash, base64::URL_SAFE_NO_PAD);
 
-        let outpath = outdir.join("build").join(hash).join("cmd.osc");
+        let outpath = out_dir.join("build").join(hash).join("cmd.osc");
 
         if outpath.exists() {
             return (track_name, Ok(outpath));
@@ -79,14 +86,60 @@ impl Track {
             fs::create_dir_all(outpath.parent().unwrap())?;
             let file = File::create(&outpath)?;
             let mut buf = io::BufWriter::new(file);
-            self.write(&mut buf, padding)?;
+            self.write(&mut buf, out_dir, padding)?;
             Ok(outpath)
         });
 
         (track_name, outcome)
     }
 
-    fn write<W: io::Write>(&self, out: &mut W, padding: Duration) -> io::Result<usize> {
+    pub fn render(&self, build_dir: &Path, out_file: Option<&Path>) -> io::Result<()> {
+        let (name, commands) = self.dump(build_dir, Duration::from_secs(5));
+        let commands = commands?;
+
+        let output = commands.parent().unwrap().join("render.wav");
+
+        if !output.exists() {
+            crate::render::Render {
+                commands: &commands,
+                input: None,
+                output: &output,
+                channels: 2, // TODO
+            }
+            .render()?;
+        }
+
+        let output = output.canonicalize()?;
+
+        let out_file = if let Some(out_file) = out_file {
+            out_file.to_owned()
+        } else {
+            let out_file = build_dir.join("rendered").join(format!("{}.wav", name));
+            std::fs::create_dir_all(out_file.parent().unwrap())?;
+            out_file
+        };
+
+        cfg_if! {
+            if #[cfg(unix)] {
+                let _ = std::fs::remove_file(&out_file);
+                std::os::unix::fs::symlink(&output, &out_file)?;
+            } else if #[cfg(windows)] {
+                let _ = std::fs::remove_file(&out_file);
+                std::os::windows::fs::symlink_file(&output, &out_file)?;
+            } else {
+                std::fs::copy(&output, out_file)?;
+            }
+        }
+
+        Ok(())
+    }
+
+    fn write<W: io::Write>(
+        &self,
+        out: &mut W,
+        out_dir: &Path,
+        padding: Duration,
+    ) -> io::Result<usize> {
         let mut len = 0;
 
         macro_rules! header {
@@ -104,6 +157,21 @@ impl Track {
             let synth = synth?;
             len += header!(Timetag::default().as_ref(), synth.len());
             len += out.write(&synth)?;
+        }
+
+        let mut tmp = vec![];
+        let assets = out_dir.join("assets");
+        std::fs::create_dir_all(&assets)?;
+        for buffer in self.buffers.iter() {
+            let msg = buffer.to_osc(&assets);
+
+            let encoding_len = LenEstimator::encoding_len(msg, usize::MAX).unwrap();
+            tmp.resize(encoding_len + size_of::<u32>(), 0u8);
+            tmp[..size_of::<u32>()].copy_from_slice(&(encoding_len as u32).to_be_bytes());
+            tmp[size_of::<u32>()..].encode(msg).unwrap();
+
+            len += header!(Timetag::default().as_ref(), tmp.len());
+            len += out.write(&tmp)?;
         }
 
         for event in self.events.iter() {
@@ -148,7 +216,7 @@ impl track::Track for Track {
             .unwrap();
     }
 
-    fn new(
+    fn play(
         &self,
         synthname: &str,
         action: Option<osc::group::Action>,
@@ -173,6 +241,10 @@ impl track::Track for Track {
         id
     }
 
+    fn read(&self, buffer: BufView) -> Buffer {
+        self.buffers.read(buffer)
+    }
+
     fn set(&self, id: osc::node::Id, controls: &[Option<(osc::control::Id, osc::control::Value)>]) {
         let event = osc::node::SetOptional { id, controls };
         self.insert_event(event, self.scheduler.now());
@@ -181,5 +253,10 @@ impl track::Track for Track {
     fn free(&self, id: osc::node::Id) {
         let event = osc::node::Free { id };
         self.insert_event(event, self.scheduler.now());
+    }
+
+    fn free_after(&self, id: osc::node::Id, duration: Duration) {
+        let event = osc::node::Free { id };
+        self.insert_event(event, self.scheduler.now() + duration);
     }
 }

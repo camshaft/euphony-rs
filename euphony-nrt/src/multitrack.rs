@@ -1,11 +1,10 @@
 use crate::track::Track;
-use core::time::Duration;
 use dashmap::DashMap;
 use euphony_runtime::{output::Output, time::Handle as Scheduler};
 use euphony_sc::{project, track};
 use lasso::{Key, Spur, ThreadedRodeo};
 use rayon::prelude::*;
-use std::{collections::BTreeMap, io, path::PathBuf, sync::Arc};
+use std::{io, path::PathBuf, sync::Arc};
 
 #[derive(Debug)]
 pub struct Project {
@@ -29,21 +28,17 @@ impl Project {
             output,
         }
     }
-
-    pub fn finish(&self) -> BTreeMap<String, io::Result<PathBuf>> {
-        self.tracks
-            .par_iter()
-            .map(|entry| {
-                let track = entry.value();
-                track.dump(&self.output, Duration::from_secs(5))
-            })
-            .collect()
-    }
 }
 
 impl Output for Project {
     fn finish(&self) -> io::Result<()> {
-        // TODO
+        self.tracks
+            .par_iter()
+            .map(|track| {
+                track.value().render(&self.output, None)?;
+                Ok(())
+            })
+            .collect::<Result<(), io::Error>>()?;
         Ok(())
     }
 }

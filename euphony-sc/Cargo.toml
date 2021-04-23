@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 euphony-sc-core = { version = "0.1", path = "../euphony-sc-core" }
 euphony-sc-macros = { version = "0.1", path = "../euphony-sc-macros" }
+once_cell = "1"

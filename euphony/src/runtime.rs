@@ -7,6 +7,7 @@ use std::sync::{
 };
 use structopt::StructOpt;
 
+pub use bach::executor::JoinHandle;
 pub use euphony_runtime::rng;
 
 pub mod time {
@@ -36,6 +37,12 @@ pub mod output {
 
 mod scope {
     euphony_runtime::scope!(runtime, bach::executor::Handle);
+}
+
+pub fn spawn<F: 'static + Future<Output = T> + Send, T: 'static + Send>(
+    future: F,
+) -> JoinHandle<T> {
+    scope::borrow(|h| h.spawn(future))
 }
 
 pub struct Runtime {
@@ -126,14 +133,19 @@ impl Env {
 
         let output_handle = output.clone();
 
-        let pool = rayon::ThreadPoolBuilder::new()
-            .start_handler(move |_| {
-                output::scope::set(Some(output_handle.clone()));
-                time::scope::set(Some(scheduler_handle.clone()));
-                scope::set(Some(handle.clone()));
-            })
-            .build()
-            .expect("could not build thread pool");
+        let builder = rayon::ThreadPoolBuilder::new().start_handler(move |_| {
+            output::scope::set(Some(output_handle.clone()));
+            time::scope::set(Some(scheduler_handle.clone()));
+            scope::set(Some(handle.clone()));
+        });
+
+        let builder = if !args.non_deterministic {
+            builder.num_threads(1)
+        } else {
+            builder
+        };
+
+        let pool = builder.build().expect("could not build thread pool");
 
         Self {
             output,

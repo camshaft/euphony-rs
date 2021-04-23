@@ -6,6 +6,8 @@ use codec::{
     decode::{Decoder, DecoderBuffer, TypeDecoder},
 };
 
+pub mod builder;
+
 macro_rules! decode_vec {
     ($buffer:expr, @version $version:expr) => {{
         let (len, buffer) = $version.decode_int($buffer)?;
@@ -437,8 +439,8 @@ pub enum BinaryOps {
 mod tests {
     use super::*;
 
-    static V1: &[u8] = include_bytes!("../artifacts/v1.scsyndef");
-    static V2: &[u8] = include_bytes!("../artifacts/v2.scsyndef");
+    static V1: &[u8] = include_bytes!("../../artifacts/v1.scsyndef");
+    static V2: &[u8] = include_bytes!("../../artifacts/v2.scsyndef");
 
     macro_rules! snap {
         ($name:ident, $contents:expr) => {

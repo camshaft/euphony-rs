@@ -24,6 +24,9 @@ impl<'a> Render<'a> {
 
         let output = command.output()?;
 
+        eprint!("OUTPUT {}", String::from_utf8_lossy(&output.stdout));
+        eprint!("OUTPUT {}", String::from_utf8_lossy(&output.stderr));
+
         if !output.status.success() {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,

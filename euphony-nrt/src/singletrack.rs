@@ -1,8 +1,7 @@
 use crate::track::Track;
-use core::time::Duration;
 use euphony_runtime::{output::Output, time::Handle as Scheduler};
 use euphony_sc::{project, track};
-use std::{collections::BTreeMap, io, path::PathBuf, sync::Arc};
+use std::{io, path::PathBuf, sync::Arc};
 
 #[derive(Debug)]
 pub struct Project {
@@ -36,35 +35,12 @@ impl Project {
             output,
         }
     }
-
-    pub fn finish(&self) -> BTreeMap<String, io::Result<PathBuf>> {
-        let (k, v) = self.track.dump(&self.output, Duration::from_secs(10));
-
-        let mut map = BTreeMap::new();
-        map.insert(k, v);
-        map
-    }
 }
 
 impl Output for Project {
     fn finish(&self) -> io::Result<()> {
-        let (_k, v) = self.track.dump(&self.output, Duration::from_secs(5));
-        let commands = v?;
-
-        let output = commands.parent().unwrap().join("render.wav");
-
-        if !output.exists() {
-            crate::render::Render {
-                commands: &commands,
-                input: None,
-                output: &output,
-                channels: 2, // TODO
-            }
-            .render()?;
-        }
-
-        std::fs::copy(&output, self.output.join("main.wav"))?;
-
+        let out_file = self.output.join("main.wav");
+        self.track.render(&self.output, Some(&out_file))?;
         Ok(())
     }
 }

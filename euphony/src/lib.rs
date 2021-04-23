@@ -7,19 +7,21 @@ pub mod ext;
 pub mod runtime;
 
 #[macro_export]
-macro_rules! include_synthdef {
-    ($($args:tt)*) => {
-        use $crate::euphony_sc;
-        $crate::euphony_sc::include_synthdef!($($args)*);
+macro_rules! prelude {
+    () => {
+        #[cfg(euphony_assets)]
+        include!(concat!(env!("OUT_DIR"), "/euphony_assets.rs"));
+
+        use euphony::prelude::*;
     };
 }
 
 pub mod prelude {
     pub use crate::{
         ext::*,
-        include_synthdef,
         pitch::Interval,
-        runtime::{output::track, time::scheduler},
+        runtime::{output::track, spawn, time::scheduler},
         time::{Beat, Tempo},
     };
+    pub use euphony_sc::{params, synthdef, track::Track};
 }

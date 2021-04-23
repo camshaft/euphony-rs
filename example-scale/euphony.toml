@@ -1,0 +1,12 @@
+[synths]
+chiplead = "gh://sonic-pi-net/sonic-pi/etc/synthdefs/compiled/sonic-pi-chiplead.scsyndef"
+bass = "gh://sonic-pi-net/sonic-pi/etc/synthdefs/compiled/sonic-pi-blade.scsyndef"
+
+[samples]
+bd = "clean://tidalcycles/sounds-tr808-fischer/bd8"
+sd = "clean://tidalcycles/sounds-tr808-fischer/sd8"
+hh = "clean://tidalcycles/sounds-tr808-fischer/ch8"
+cy = "clean://tidalcycles/sounds-tr808-fischer/cy8"
+ht = "clean://tidalcycles/sounds-tr808-fischer/ht8"
+lt = "clean://tidalcycles/sounds-tr808-fischer/lt8"
+mt = "clean://tidalcycles/sounds-tr808-fischer/mt8"

@@ -7,3 +7,6 @@ publish = false
 
 [dependencies]
 euphony = { version = "0.1", path = "../euphony" }
+
+[build-dependencies]
+euphony-build = { version = "0.1", path = "../euphony-build" }

@@ -1,16 +1,18 @@
 [package]
-name = "euphony-sc-macros"
+name = "euphony-build"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
-[lib]
-proc-macro = true
-
 [dependencies]
-codec = { git = "https://github.com/camshaft/codec" }
+base64 = "0.13"
 euphony-sc-core = { version = "0.1", path = "../euphony-sc-core", features = ["codegen"] }
-heck = "0.3"
+hound = "3"
 proc-macro2 = "1"
 quote = "1"
-syn = { version = "1", features = ["full"] }
+reqwest = { version = "0.11", features = ["blocking"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.9"
+toml = "0.5"
+url = "2"

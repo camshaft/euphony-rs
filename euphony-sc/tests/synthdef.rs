@@ -1,8 +1,40 @@
-use euphony_sc::include_synthdef;
+use euphony_sc::{params, synthdef};
 
-include_synthdef!("../euphony-sc-core/artifacts/v1.scsyndef" as thing);
+mod my_params {
+    use super::*;
 
-#[test]
-fn thing_test() {
-    thing::new().note(1);
+    params!(
+        pub struct Params {
+            /// FOO
+            pub freq: f32<440.0>,
+        }
+    );
+}
+
+mod my_synth {
+    use super::*;
+
+    pub fn closure_synth() -> my_params::SynthDef {
+        synthdef!(|params| sine(params, 1.0))
+    }
+
+    fn sine(params: my_params::Params, _foo: f32) {
+        let _ = params.freq;
+    }
+
+    synthdef!(
+        pub fn fn_synth(freq: f32) {
+            let _ = freq;
+        }
+    );
+
+    #[test]
+    fn closure_test() {
+        dbg!(closure_synth().freq(440));
+    }
+
+    #[test]
+    fn fn_test() {
+        dbg!(fn_synth().freq(440));
+    }
 }

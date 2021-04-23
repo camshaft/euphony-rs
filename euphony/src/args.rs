@@ -9,6 +9,9 @@ pub struct Args {
     #[structopt(long, short)]
     pub tempo: Option<u64>,
 
+    #[structopt(long, short)]
+    pub non_deterministic: bool,
+
     #[structopt(subcommand)]
     pub subcommand: Option<Cmd>,
 }

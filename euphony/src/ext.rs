@@ -15,3 +15,20 @@ pub trait RngPickExt {
 
     fn pick(self) -> Self::Output;
 }
+
+pub trait SpawnExt {
+    type Output;
+
+    fn spawn(self) -> crate::runtime::JoinHandle<Self::Output>;
+}
+
+impl<F: 'static + core::future::Future + Send> SpawnExt for F
+where
+    F::Output: 'static + Send,
+{
+    type Output = F::Output;
+
+    fn spawn(self) -> crate::runtime::JoinHandle<Self::Output> {
+        crate::runtime::spawn(self)
+    }
+}

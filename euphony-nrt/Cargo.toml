@@ -8,17 +8,20 @@ edition = "2018"
 bach = { path = "../../bach/bach" }
 base64 = "0.13"
 bytes = "0.5"
+cfg-if = "1"
 codec = { git = "https://github.com/camshaft/codec" }
 dashmap = { version = "4", default-features = false, features = ["rayon"] }
 euphony-osc = { version = "0.1", path = "../euphony-osc" }
 euphony-runtime = { version = "0.1", path = "../euphony-runtime" }
 euphony-sc = { version = "0.1", path = "../euphony-sc" }
 flume = "0.10"
+hash_hasher = "2"
 lasso = { version = "0.5", features = ["multi-threaded"] }
 lazy_static = "1"
 rayon = "1"
 sha2 = "0.9"
 sled = "0.34"
+url = "2"
 
 [dev-dependencies]
 euphony-sc = { version = "0.1", path = "../euphony-sc" }

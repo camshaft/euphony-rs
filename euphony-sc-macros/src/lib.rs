@@ -1,390 +1,160 @@
-use codec::decode::DecoderBuffer;
-use euphony_sc_core::synthdef;
-use heck::SnakeCase;
+use euphony_sc_core::codegen::{create_params, create_synthdef, Param};
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, TokenStream as TokenStream2};
 use quote::quote;
-use std::path::PathBuf;
 use syn::{
     parse::{Parse, ParseStream},
-    parse_macro_input, Error,
+    parse_macro_input,
+    spanned::Spanned,
+    Token,
 };
 
-#[derive(Debug)]
-struct Input {
-    path: syn::LitStr,
-    module: Option<Ident>,
-    target: Option<syn::LitStr>,
-}
-
-impl Parse for Input {
-    fn parse(input: ParseStream) -> syn::Result<Self> {
-        let path = input.parse()?;
-
-        let module = if input.peek(syn::Token![as]) {
-            let _: syn::Token![as] = input.parse()?;
-            Some(input.parse()?)
-        } else {
-            None
-        };
-
-        let target = if let Some(_) = input.parse::<Option<syn::Token![,]>>()? {
-            input.parse()?
-        } else {
-            None
-        };
-
-        Ok(Self {
-            path,
-            module,
-            target,
-        })
-    }
-}
-
 #[proc_macro]
-pub fn include_synthdef(input: TokenStream) -> TokenStream {
-    let input: Input = parse_macro_input!(input);
-    let root = std::env::var("CARGO_MANIFEST_DIR").unwrap();
-    include_synthdef_impl(input, &root)
+pub fn synthdef(input: TokenStream) -> TokenStream {
+    let item: SynthDefInput = parse_macro_input!(input);
+    item.to_tokens()
         .unwrap_or_else(|err| err.to_compile_error())
         .into()
 }
 
-fn name_to_ident(name: &str, span: proc_macro2::Span) -> Ident {
-    let mut name = name.to_snake_case();
-
-    match name.as_ref() {
-        "type" | "send" => name.push('_'),
-        _ => {}
-    }
-
-    Ident::new(&name, span)
+enum SynthDefInput {
+    Closure(syn::ExprClosure),
+    Fn(Box<syn::ItemFn>),
 }
 
-fn include_synthdef_impl(input: Input, root: &str) -> Result<TokenStream2, Error> {
-    let span = input.path.span();
-    let path = PathBuf::from(root).join(input.path.value());
+impl SynthDefInput {
+    fn to_tokens(&self) -> syn::parse::Result<TokenStream2> {
+        match self {
+            Self::Closure(v) => Ok(create_synthdef(&v)),
+            Self::Fn(v) => synthdef_fn_impl(v),
+        }
+    }
+}
 
-    if !path.exists() {
-        return Err(Error::new(span, format!("{:?} does not exist", path)));
+impl Parse for SynthDefInput {
+    fn parse(input: ParseStream) -> syn::parse::Result<Self> {
+        if input.peek(Token![|]) {
+            let v = input.parse()?;
+            return Ok(Self::Closure(v));
+        }
+
+        let item = input.parse()?;
+        let item = Box::new(item);
+        Ok(Self::Fn(item))
+    }
+}
+
+fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
+    let span = item.span();
+    let attrs = &item.attrs;
+    let vis = &item.vis;
+    let name = &item.sig.ident;
+    let args = &item.sig.inputs;
+    let block = &item.block;
+
+    let mut params = vec![];
+
+    for (id, arg) in args.iter().enumerate() {
+        let (name, default) = if let syn::FnArg::Typed(arg) = arg {
+            let name = if let syn::Pat::Ident(name) = arg.pat.as_ref() {
+                name.ident.clone()
+            } else {
+                panic!("invalid arg");
+            };
+            let default = type_to_default(arg.ty.as_ref())?;
+            (name, default)
+        } else {
+            panic!("invalid param");
+        };
+
+        params.push(Param {
+            name,
+            id,
+            default,
+            attrs: &[], // TODO
+        });
     }
 
-    let buffer = std::fs::read(&path).map_err(|err| Error::new(span, err))?;
-    let buffer: &[u8] = buffer.as_ref();
+    let params_impl = create_params(&[], &Ident::new("Params", span), &params);
 
-    let (container, _) = buffer
-        .decode::<synthdef::Container>()
-        .map_err(|err| Error::new(span, err))?;
-
-    let synth = if let Some(target) = input.target {
-        container
-            .defs
-            .iter()
-            .find(|def| def.name == target.value())
-            .ok_or_else(|| Error::new(span, &format!("could not find synthdef {:?}", target)))?
-    } else {
-        container
-            .defs
-            .iter()
-            .next()
-            .ok_or_else(|| Error::new(span, &format!("synthdef {:?} is empty", path)))?
-    };
-
-    let module = input.module;
-    let len = buffer.len();
-    let def = syn::LitByteStr::new(buffer, span);
-
-    let fields = synth
-        .param_names
-        .iter()
-        .map(|name| name_to_ident(&name.name, span))
-        .collect::<Vec<_>>();
-
-    let field_values = synth
-        .param_names
-        .iter()
-        .map(|name| {
-            let id = name.index;
-            let name = name_to_ident(&name.name, span);
-            quote!(self.params.#name.map(|v| (osc::control::Id::Index(#id), v)))
-        })
-        .collect::<Vec<_>>();
-
-    let field_debug_new = synth.param_names.iter().map(|name| {
-        let id = name.index as usize;
-        let name = name_to_ident(&name.name, span);
-        let default = synth.params[id];
-        quote!(if let Some(value) = self.params.#name {
-            s.field(stringify!(#name), &value);
-        } else {
-            s.field(stringify!(#name), &osc::control::Value::from(#default));
-        })
+    let def_params = params.iter().map(|param| {
+        let name = &param.name;
+        quote!(let #name = __euphony_params.#name;)
     });
 
-    let synthname = &synth.name;
-
-    let def = quote!(
+    let load = quote!(|__euphony_params: Params| {
+        use euphony_sc::_macro_support::ugen::*;
         use super::*;
-        use euphony_sc::{osc, track::{self, Track}};
-        use core::{fmt, ops};
+        #(#def_params)*
+        #block
+    });
 
-        pub const fn new() -> New {
-            Synth::new()
-        }
+    let def = create_synthdef(&load);
 
-        pub const fn load() -> Load {
-            Synth::load()
-        }
+    Ok(quote!(
+        #(#attrs)* #vis mod #name {
+            #params_impl
 
-        pub struct Synth {
-            id: osc::node::Id,
-            track: track::Handle,
-        }
-
-        impl fmt::Debug for Synth {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_tuple(concat!(module_path!(), "::Synth")).field(&self.id).finish()
+            pub fn new() -> SynthDef {
+                #def
             }
         }
-
-        impl Synth {
-            pub const DEFINITION: &'static [u8; #len] = #def;
-
-            pub const fn new() -> New {
-                New::DEFAULT
-            }
-
-            pub fn set(&mut self) -> Set {
-                Set {
-                    params: Params::DEFAULT,
-                    id: self.id,
-                    track: &self.track,
-                }
-            }
-
-            pub const fn load() -> Load {
-                Load::new()
-            }
-        }
-
-        impl Drop for Synth {
-            fn drop(&mut self) {
-                self.track.free(self.id)
-            }
-        }
-
-        #[derive(Clone, Copy, PartialEq)]
-        pub struct Params {
-            #(
-                pub #fields: Option<osc::control::Value>,
-            )*
-        }
-
-        impl Default for Params {
-            fn default() -> Self {
-                Self {
-                    #(#fields: None,)*
-                }
-            }
-        }
-
-        impl fmt::Debug for Params {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                let mut s = f.debug_struct(concat!(module_path!(), "::Params"));
-
-                #(
-                    if let Some(value) = self.#fields {
-                        s.field(stringify!(#fields), &value);
-                    }
-                )*
-
-                s.finish()
-            }
-        }
-
-        impl Params {
-            pub const DEFAULT: Self = Self {
-                #(#fields: None,)*
-            };
-
-            #(
-                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
-                    self.#fields = Some(value.into());
-                    self
-                }
-            )*
-        }
-
-        #[derive(Clone, Copy, PartialEq)]
-        #[must_use = "New must be applied to a Track"]
-        pub struct New {
-            pub params: Params,
-            pub action: Option<osc::group::Action>,
-            pub target: Option<osc::node::Id>,
-        }
-
-        impl Default for New {
-            fn default() -> Self {
-                Self::DEFAULT
-            }
-        }
-
-        impl New {
-            pub const DEFAULT: Self = Self {
-                params: Params::DEFAULT,
-                action: None,
-                target: None,
-            };
-
-            #(
-                #[must_use = "New must be applied to a Track"]
-                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
-                    self.params.#fields = Some(value.into());
-                    self
-                }
-            )*
-        }
-
-        impl fmt::Debug for New {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                let mut s = f.debug_struct(concat!(module_path!(), "::New"));
-
-                #(#field_debug_new)*
-
-                s.finish()
-            }
-        }
-
-        impl euphony_sc::Message for New {
-            type Output = Synth;
-
-            fn send(self, track: &track::Handle) -> Synth {
-                // make sure the server has the synthdef loaded
-                track.send(load());
-
-                let values = [
-                    #(#field_values),*
-                ];
-
-                let id = track.new(#synthname, self.action, self.target, &values[..]);
-
-                Synth {
-                    id,
-                    track: track.clone()
-                }
-            }
-        }
-
-        #[must_use = "Set must be applied to a Track"]
-        pub struct Set<'a> {
-            pub params: Params,
-            id: osc::node::Id,
-            track: &'a track::Handle,
-        }
-
-        impl<'a> Set<'a> {
-            #(
-                #[must_use = "Set must be applied to a Track"]
-                pub fn #fields<V: Into<osc::control::Value>>(mut self, value: V) -> Self {
-                    self.params.#fields = Some(value.into());
-                    self
-                }
-            )*
-        }
-
-        impl<'a> fmt::Debug for Set<'a> {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                let mut s = f.debug_struct(concat!(module_path!(), "::Set"));
-
-                #(
-                    if let Some(value) = self.params.#fields {
-                        s.field(stringify!(#fields), &value);
-                    }
-                )*
-
-                s.finish()
-            }
-        }
-
-        impl<'a> euphony_sc::Message for Set<'a> {
-            type Output = ();
-
-            fn send(self, track: &track::Handle) {
-                let values = [
-                    #(#field_values),*
-                ];
-
-                track.set(self.id, &values[..]);
-            }
-        }
-
-        #[derive(Clone, Copy, PartialEq)]
-        pub struct Load;
-
-        impl Default for Load {
-            fn default() -> Self {
-                Self::new()
-            }
-        }
-
-        impl Load {
-            pub const fn new() -> Self {
-                Self
-            }
-
-            pub const fn as_osc(&self) -> osc::synthdef::Receive<'static> {
-                osc::synthdef::Receive {
-                    buffer: Synth::DEFINITION
-                }
-            }
-        }
-
-        impl fmt::Debug for Load {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct(concat!(module_path!(), "::Load")).finish()
-            }
-        }
-
-        impl euphony_sc::Message for Load {
-            type Output = ();
-
-            fn send(self, track: &track::Handle) {
-                track.load(#synthname, Synth::DEFINITION);
-            }
-        }
-    );
-
-    if let Some(module) = module {
-        Ok(quote!(pub mod #module { #def }))
-    } else {
-        let name = path
-            .file_stem()
-            .or_else(|| path.file_name())
-            .expect("missing file name")
-            .to_str()
-            .expect("invalid file name");
-        let ident = Ident::new(name, span);
-        Ok(quote!(pub mod #ident { #def }))
-    }
+        #vis use #name::new as #name;
+    ))
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[proc_macro]
+pub fn params(input: TokenStream) -> TokenStream {
+    let item: syn::ItemStruct = parse_macro_input!(input);
+    match params_impl(&item) {
+        Ok(out) => out,
+        Err(err) => err.to_compile_error(),
+    }
+    .into()
+}
 
-    #[test]
-    fn parse_test() {
-        let input = syn::parse2(quote!("../euphony-sc-core/artifacts/v1.scsyndef")).unwrap();
-        include_synthdef_impl(input, env!("CARGO_MANIFEST_DIR")).unwrap();
+fn params_impl(item: &syn::ItemStruct) -> syn::parse::Result<TokenStream2> {
+    let attrs = &item.attrs;
+    let name = &item.ident;
+    let mut params = vec![];
+
+    for (id, field) in item.fields.iter().enumerate() {
+        let id = id as _;
+        let attrs = &field.attrs;
+        let name = field.ident.as_ref().unwrap().clone();
+        let default = type_to_default(&field.ty)?;
+        params.push(Param {
+            id,
+            name,
+            default,
+            attrs,
+        });
     }
 
-    #[test]
-    fn parse_module_test() {
-        let input = syn::parse2(quote!(
-            "../euphony-sc-core/artifacts/v1.scsyndef" as my_synth
-        ))
-        .unwrap();
-        include_synthdef_impl(input, env!("CARGO_MANIFEST_DIR")).unwrap();
-    }
+    let out = euphony_sc_core::codegen::create_params(attrs, name, &params);
+
+    Ok(out)
+}
+
+fn type_to_default(ty: &syn::Type) -> syn::parse::Result<f32> {
+    let span = ty.span();
+    if let syn::Type::Path(path) = ty {
+        let segment = &path.path.segments[0];
+        // TODO assert is `f32`
+        if let syn::PathArguments::AngleBracketed(args) = &segment.arguments {
+            if let syn::GenericArgument::Const(syn::Expr::Lit(syn::ExprLit { lit, .. })) =
+                args.args.first().unwrap()
+            {
+                match lit {
+                    syn::Lit::Float(v) => return Ok(v.base10_parse().unwrap()),
+                    syn::Lit::Int(v) => return Ok(v.base10_parse().unwrap()),
+                    _ => {}
+                }
+            }
+        } else {
+            return Ok(0.0);
+        }
+    };
+
+    Err(syn::parse::Error::new(span, "invalid parameter type"))
 }

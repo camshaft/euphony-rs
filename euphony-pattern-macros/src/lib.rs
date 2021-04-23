@@ -200,7 +200,7 @@ impl ToPattern for syn::ExprBinary {
 }
 
 impl ToPattern for syn::ExprIndex {
-    fn to_pattern(&self, out: &mut TokenStream2) -> Result<()> {
+    fn to_pattern(&self, _out: &mut TokenStream2) -> Result<()> {
         todo!()
     }
 }
