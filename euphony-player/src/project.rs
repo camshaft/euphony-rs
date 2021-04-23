@@ -59,21 +59,18 @@ impl Tracks {
         self.tracks.len()
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-
-    /*
-    pub fn track(&self) -> Track {
-        todo!()
-    }
-    */
-
     pub fn mute(&self, idx: usize) {
         if let Some(track) = self.tracks.get(idx) {
             track.mute();
             self.on_change();
         }
+    }
+
+    pub fn mute_all(&self) {
+        for track in &self.tracks {
+            track.mute();
+        }
+        self.on_change();
     }
 
     pub fn solo(&self, idx: usize) {
@@ -83,8 +80,15 @@ impl Tracks {
         }
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = &Arc<Track>> {
-        self.tracks.iter()
+    pub fn solo_all(&self) {
+        for track in &self.tracks {
+            track.solo();
+        }
+        self.on_change();
+    }
+
+    pub fn tracks(&self) -> &[Arc<Track>] {
+        &self.tracks
     }
 
     fn buffer(&self) -> Buffer {

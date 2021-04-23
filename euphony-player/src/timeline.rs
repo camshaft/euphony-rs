@@ -9,10 +9,6 @@ pub type Sample = f32;
 pub type Buffer = Arc<Vec<Sample>>;
 
 pub struct Timeline {
-    start: usize,
-    end: usize,
-    looping: bool,
-    playing: bool,
     playhead: Playhead,
 }
 
@@ -20,62 +16,99 @@ impl Timeline {
     pub fn new(buffer: BufferHandle) -> Self {
         let playhead = Playhead(Arc::new(Controls::new(buffer)));
 
-        Self {
-            playhead,
-            looping: false,
-            playing: true,
-            start: 0,
-            end: 2,
-        }
+        Self { playhead }
     }
 
     pub fn playing(&self) -> bool {
-        self.playing
+        self.playhead.0.playing.load(Ordering::Relaxed)
     }
 
     pub fn looping(&self) -> bool {
-        self.looping
+        self.playhead.0.looping.load(Ordering::Relaxed)
+    }
+
+    pub fn clipped(&self) -> bool {
+        self.playhead.0.clipped.load(Ordering::Relaxed)
     }
 
     pub fn update(&mut self, update: Update) {
         if let Some(playing) = update.playing {
             self.playhead.0.set_playing(playing);
-            self.playing = playing;
         }
 
         if let Some(looping) = update.looping {
             self.playhead.0.set_looping(looping);
-            self.looping = looping;
+        }
+
+        if let Some(pos) = update.clip_start {
+            if let Some(pos) = pos {
+                self.playhead.0.set_clip_start(pos.as_samples());
+            } else {
+                self.playhead.0.set_clip_start(usize::MAX);
+            }
+        }
+
+        if let Some(pos) = update.clip_end {
+            if let Some(pos) = pos {
+                self.playhead.0.set_clip_end(pos.as_samples());
+            } else {
+                self.playhead.0.set_clip_end(usize::MAX);
+            }
+        }
+
+        if let Some(clipped) = update.clipped {
+            self.playhead.0.set_clipped(clipped);
         }
 
         if let Some(value) = update.set {
-            let cursor = value.as_secs_f64() * 48000.0 * 2.0;
-            self.playhead.0.set_cursor(cursor as usize);
+            self.playhead.0.set_cursor(value.as_samples());
         }
-
-        // TODO clip_start / clip_end
     }
 
     pub fn duration(&self) -> Duration {
-        let samples = self.playhead.0.buffer.load().len() as f64;
-        let offset = samples / 48000.0 / 2.0;
-        Duration::from_secs_f64(offset)
+        let samples = self.playhead.0.buffer.load().len();
+        Duration::from_samples(samples)
     }
 
     pub fn cursor(&self) -> Duration {
-        let samples = self.playhead.0.cursor.load(Ordering::Relaxed) as f64;
-        let offset = samples / 48000.0 / 2.0;
-        Duration::from_secs_f64(offset)
+        Duration::from_samples(self.playhead.0.cursor())
     }
 
-    pub fn progress(&self) -> f64 {
-        let total = self.playhead.0.buffer.load().len() as f64;
-        let cursor = self.playhead.0.cursor.load(Ordering::Relaxed) as f64;
-        cursor.min(total) / total
+    pub fn clip_start(&self) -> Option<Duration> {
+        let value = self.playhead.0.clip_start();
+        if value == usize::MAX {
+            None
+        } else {
+            Some(Duration::from_samples(value))
+        }
+    }
+
+    pub fn clip_end(&self) -> Option<Duration> {
+        let value = self.playhead.0.clip_end();
+        if value == usize::MAX {
+            None
+        } else {
+            Some(Duration::from_samples(value))
+        }
     }
 
     pub fn playhead(&self) -> &Playhead {
         &self.playhead
+    }
+}
+
+trait SampleConv {
+    fn as_samples(&self) -> usize;
+    fn from_samples(samples: usize) -> Self;
+}
+
+impl SampleConv for Duration {
+    fn as_samples(&self) -> usize {
+        (self.as_secs_f64() * 48000.0 * 2.0) as usize
+    }
+
+    fn from_samples(samples: usize) -> Self {
+        Duration::from_secs_f64((samples as f64) / 48000.0 / 2.0)
     }
 }
 
@@ -89,8 +122,9 @@ pub struct Update {
     playing: Option<bool>,
     looping: Option<bool>,
     set: Option<Duration>,
-    clip_start: Option<Duration>,
-    clip_end: Option<Duration>,
+    clipped: Option<bool>,
+    clip_start: Option<Option<Duration>>,
+    clip_end: Option<Option<Duration>>,
 }
 
 impl Update {
@@ -99,6 +133,7 @@ impl Update {
             playing: None,
             looping: None,
             set: None,
+            clipped: None,
             clip_start: None,
             clip_end: None,
         }
@@ -116,17 +151,22 @@ impl Update {
         self
     }
 
+    pub fn clipped(&mut self, clipped: bool) -> &mut Self {
+        self.clipped = Some(clipped);
+        self
+    }
+
     pub fn set(&mut self, value: Duration) -> &mut Self {
         self.set = Some(value);
         self
     }
 
-    pub fn clip_start(&mut self, start: Duration) -> &mut Self {
+    pub fn clip_start(&mut self, start: Option<Duration>) -> &mut Self {
         self.clip_start = Some(start);
         self
     }
 
-    pub fn clip_end(&mut self, end: Duration) -> &mut Self {
+    pub fn clip_end(&mut self, end: Option<Duration>) -> &mut Self {
         self.clip_end = Some(end);
         self
     }
@@ -139,39 +179,75 @@ struct Controls {
     looping: AtomicBool,
     ending: AtomicBool,
     cursor: AtomicUsize,
+    clipped: AtomicBool,
     clip_start: AtomicUsize,
     clip_end: AtomicUsize,
 }
 
 impl Controls {
     fn new(buffer: BufferHandle) -> Self {
-        let len = buffer.load().len();
-
         Self {
-            clip_end: AtomicUsize::new(len),
             buffer,
             playing: AtomicBool::new(true),
             looping: AtomicBool::new(false),
             ending: AtomicBool::new(false),
             cursor: AtomicUsize::new(0),
-            clip_start: AtomicUsize::new(0),
+            clipped: AtomicBool::new(false),
+            clip_start: AtomicUsize::new(usize::MAX),
+            clip_end: AtomicUsize::new(usize::MAX),
         }
+    }
+
+    fn playing(&self) -> bool {
+        self.playing.load(Ordering::Relaxed)
     }
 
     fn set_playing(&self, playing: bool) {
         self.playing.store(playing, Ordering::Relaxed);
     }
 
+    fn looping(&self) -> bool {
+        self.looping.load(Ordering::Relaxed)
+    }
+
     fn set_looping(&self, looping: bool) {
         self.looping.store(looping, Ordering::Relaxed);
+    }
+
+    fn clipped(&self) -> bool {
+        self.clipped.load(Ordering::Relaxed)
+    }
+
+    fn set_clipped(&self, clipped: bool) {
+        self.clipped.store(clipped, Ordering::Relaxed);
     }
 
     fn set_ending(&self) {
         self.ending.store(true, Ordering::Relaxed);
     }
 
+    fn cursor(&self) -> usize {
+        self.cursor.load(Ordering::Relaxed)
+    }
+
     fn set_cursor(&self, value: usize) {
         self.cursor.store(value, Ordering::Relaxed);
+    }
+
+    fn clip_start(&self) -> usize {
+        self.clip_start.load(Ordering::Relaxed)
+    }
+
+    fn set_clip_start(&self, value: usize) {
+        self.clip_start.store(value, Ordering::Relaxed);
+    }
+
+    fn clip_end(&self) -> usize {
+        self.clip_end.load(Ordering::Relaxed)
+    }
+
+    fn set_clip_end(&self, value: usize) {
+        self.clip_end.store(value, Ordering::Relaxed);
     }
 }
 
@@ -206,20 +282,41 @@ impl Iterator for Playhead {
     fn next(&mut self) -> Option<Self::Item> {
         let controls = &self.0;
 
-        if !controls.playing.load(Ordering::Relaxed) {
+        if !controls.playing() {
             return Some(0.0);
         }
 
         let cursor = controls.cursor.fetch_add(1, Ordering::Relaxed);
         let buffer = controls.buffer.load();
+        let clipped = controls.clipped();
+
+        let buffer = if clipped {
+            &buffer[..controls.clip_end().min(buffer.len())]
+        } else {
+            &buffer[..]
+        };
 
         if let Some(sample) = buffer.get(cursor) {
             Some(*sample)
         } else {
-            if controls.looping.load(Ordering::Relaxed) {
-                controls.cursor.store(0, Ordering::Relaxed);
+            let looping = controls.looping();
+
+            if looping || clipped {
+                let mut start = 0;
+                if clipped {
+                    start = controls.clip_start();
+                    if start >= buffer.len() {
+                        start = 0;
+                    }
+                }
+
+                controls.cursor.store(start, Ordering::Relaxed);
+
+                if !looping && cursor == buffer.len() {
+                    controls.set_playing(false);
+                }
             } else {
-                controls.playing.store(false, Ordering::Relaxed);
+                controls.set_playing(false);
             }
             Some(0.0)
         }

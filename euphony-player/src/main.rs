@@ -8,11 +8,13 @@ use tui::{
     backend::TermionBackend,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    widgets::{Block, Borders, Cell, Gauge, Row, Table, TableState},
+    text::Span,
+    widgets::{Block, Borders, Cell, Row, Table, TableState},
     Terminal,
 };
 
 mod event;
+mod progress;
 mod project;
 mod timeline;
 
@@ -33,7 +35,11 @@ fn main() -> Result<()> {
 
     let (_stream, stream_handle) = OutputStream::try_default()?;
 
-    let (project, buffer, tracks) = project::Project::new(args.input)?;
+    let input_path = args.input;
+
+    let name = input_path.display().to_string();
+
+    let (project, buffer, tracks) = project::Project::new(input_path)?;
 
     let mut timeline = timeline::Timeline::new(buffer);
 
@@ -56,35 +62,102 @@ fn main() -> Result<()> {
     let mut tracks = TracksTable::new(tracks);
 
     loop {
+        let playing = timeline.playing();
+        let looping = timeline.looping();
+        let clipped = timeline.clipped();
+
         terminal.draw(|f| {
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
-                .constraints([Constraint::Percentage(10), Constraint::Percentage(90)].as_ref())
+                .constraints(
+                    [
+                        Constraint::Length(2),
+                        Constraint::Length(5),
+                        Constraint::Percentage(100),
+                    ]
+                    .as_ref(),
+                )
                 .split(f.size());
 
-            let gauge = Gauge::default()
-                .block(Block::default().title("Progress").borders(Borders::ALL))
-                .gauge_style(Style::default().fg(Color::Green))
-                .ratio(timeline.progress());
-            f.render_widget(gauge, chunks[0]);
+            let status = Block::default().title(vec![
+                if playing {
+                    Span::styled("Playing [Space]", Style::default().fg(Color::Green))
+                } else {
+                    Span::styled("Paused  [Space]", Style::default().fg(Color::Yellow))
+                },
+                Span::from(" | "),
+                Span::styled(
+                    "Loop [L]",
+                    if looping {
+                        Style::default().fg(Color::Green)
+                    } else {
+                        Style::default().fg(Color::DarkGray)
+                    },
+                ),
+                Span::from(" | "),
+                Span::styled(
+                    "Clip [C]",
+                    if clipped {
+                        Style::default().fg(Color::Green)
+                    } else {
+                        Style::default().fg(Color::DarkGray)
+                    },
+                ),
+            ]);
+
+            f.render_widget(status, chunks[0]);
+
+            let progress = progress::Progress::default()
+                .block(Block::default().borders(Borders::ALL))
+                .style(
+                    Style::default()
+                        .fg(if playing { Color::Green } else { Color::Yellow })
+                        .bg(Color::Black)
+                        .add_modifier(Modifier::BOLD),
+                )
+                .clipped(clipped)
+                .cursor(timeline.cursor())
+                .duration(timeline.duration())
+                .clip_start(timeline.clip_start())
+                .clip_end(timeline.clip_end());
+            f.render_widget(progress, chunks[1]);
 
             let tracks_entries = tracks.tracks.load();
-            let rows = tracks_entries.iter().map(|item| {
-                let status = match (item.is_muted(), item.is_solo()) {
-                    (true, true) => "MS",
-                    (true, false) => "M ",
-                    (false, true) => " S",
-                    (false, false) => "  ",
-                };
-                let cells = vec![Cell::from(status), Cell::from(item.name())];
-                Row::new(cells).height(1).bottom_margin(1)
+            let rows = tracks_entries.tracks().iter().map(|item| {
+                let muted = Cell::from("M").style(if item.is_muted() {
+                    Style::default().fg(Color::Green)
+                } else {
+                    Style::default().fg(Color::DarkGray)
+                });
+
+                let solo = Cell::from("S").style(if item.is_solo() {
+                    Style::default().fg(Color::Green)
+                } else {
+                    Style::default().fg(Color::DarkGray)
+                });
+
+                let cells = vec![
+                    Cell::from("["),
+                    muted,
+                    solo,
+                    Cell::from("] "),
+                    Cell::from(item.name()),
+                ];
+                Row::new(cells).height(1)
             });
+
             let t = Table::new(rows)
-                .block(Block::default().borders(Borders::ALL).title("Tracks"))
-                .highlight_style(Style::default().add_modifier(Modifier::REVERSED))
-                .highlight_symbol(">")
-                .widths(&[Constraint::Length(2), Constraint::Percentage(90)]);
-            f.render_stateful_widget(t, chunks[1], &mut tracks.state);
+                .block(Block::default().borders(Borders::ALL).title(name.as_ref()))
+                .column_spacing(0)
+                .highlight_symbol("> ")
+                .widths(&[
+                    Constraint::Length(1),
+                    Constraint::Length(1),
+                    Constraint::Length(1),
+                    Constraint::Length(2),
+                    Constraint::Percentage(100),
+                ]);
+            f.render_stateful_widget(t, chunks[2], &mut tracks.state);
         })?;
 
         if let event::Event::Input(input) = events.next()? {
@@ -102,22 +175,53 @@ fn main() -> Result<()> {
                     );
                 }
                 Key::Right => {
-                    updates.set(timeline.cursor() + Duration::from_secs(1));
+                    let duration = timeline.duration();
+                    let cursor = timeline.cursor() + Duration::from_secs(1);
+                    let cursor = cursor.min(duration);
+                    updates.set(cursor);
                 }
                 Key::Home => {
                     updates.set(Duration::from_secs(0));
                 }
+                Key::End => {
+                    updates.set(timeline.duration());
+                }
                 Key::Char('m') => {
                     tracks.mute();
+                }
+                Key::Char('M') => {
+                    tracks.tracks.load().mute_all();
                 }
                 Key::Char('s') => {
                     tracks.solo();
                 }
-                Key::Char('l') => {
+                Key::Char('S') => {
+                    tracks.tracks.load().solo_all();
+                }
+                Key::Char('l') | Key::Char('L') => {
                     updates.looping(!timeline.looping());
                 }
                 Key::Char('q') | Key::Esc => {
                     break;
+                }
+                Key::Char('[') => {
+                    updates.clip_start(Some(timeline.cursor()));
+                }
+                Key::Char('{') => {
+                    updates.clip_start(None);
+                }
+                Key::Char(']') => {
+                    // rewind to the start in clipped mode
+                    if clipped && playing {
+                        updates.set(timeline.clip_start().unwrap_or_default());
+                    }
+                    updates.clip_end(Some(timeline.cursor()));
+                }
+                Key::Char('}') => {
+                    updates.clip_end(None);
+                }
+                Key::Char('c') | Key::Char('C') => {
+                    updates.clipped(!timeline.clipped());
                 }
                 Key::Down => {
                     tracks.next();
@@ -126,7 +230,7 @@ fn main() -> Result<()> {
                     tracks.previous();
                 }
                 _key => {
-                    //dbg!(key);
+                    // dbg!(_key);
                 }
             }
 
@@ -146,10 +250,9 @@ pub struct TracksTable {
 
 impl TracksTable {
     fn new(tracks: project::TracksHandle) -> Self {
-        Self {
-            state: TableState::default(),
-            tracks,
-        }
+        let mut state = TableState::default();
+        state.select(Some(0));
+        Self { state, tracks }
     }
 
     fn mute(&self) {
