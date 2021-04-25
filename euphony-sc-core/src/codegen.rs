@@ -140,7 +140,7 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
         values.extend(quote!(
             self
                 .#name
-                .as_value(track)
+                .control_value(track)
                 .map(|value| (euphony_sc::osc::control::Id::Index(#id), value)),
         ));
     }

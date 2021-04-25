@@ -1,7 +1,7 @@
 use crate::project::BufferHandle;
 use core::time::Duration;
 use std::sync::{
-    atomic::{AtomicBool, AtomicUsize, Ordering},
+    atomic::{AtomicBool, AtomicU8, AtomicUsize, Ordering},
     Arc,
 };
 
@@ -31,6 +31,10 @@ impl Timeline {
         self.playhead.0.clipped.load(Ordering::Relaxed)
     }
 
+    pub fn volume(&self) -> u8 {
+        self.playhead.0.volume()
+    }
+
     pub fn update(&mut self, update: Update) {
         if let Some(playing) = update.playing {
             self.playhead.0.set_playing(playing);
@@ -58,6 +62,10 @@ impl Timeline {
 
         if let Some(clipped) = update.clipped {
             self.playhead.0.set_clipped(clipped);
+        }
+
+        if let Some(volume) = update.volume {
+            self.playhead.0.set_volume(volume);
         }
 
         if let Some(value) = update.set {
@@ -125,6 +133,7 @@ pub struct Update {
     clipped: Option<bool>,
     clip_start: Option<Option<Duration>>,
     clip_end: Option<Option<Duration>>,
+    volume: Option<u8>,
 }
 
 impl Update {
@@ -136,6 +145,7 @@ impl Update {
             clipped: None,
             clip_start: None,
             clip_end: None,
+            volume: None,
         }
     }
 }
@@ -170,6 +180,11 @@ impl Update {
         self.clip_end = Some(end);
         self
     }
+
+    pub fn volume(&mut self, value: u8) -> &mut Self {
+        self.volume = Some(value.min(100));
+        self
+    }
 }
 
 #[derive(Debug)]
@@ -182,6 +197,7 @@ struct Controls {
     clipped: AtomicBool,
     clip_start: AtomicUsize,
     clip_end: AtomicUsize,
+    volume: AtomicU8,
 }
 
 impl Controls {
@@ -195,6 +211,7 @@ impl Controls {
             clipped: AtomicBool::new(false),
             clip_start: AtomicUsize::new(usize::MAX),
             clip_end: AtomicUsize::new(usize::MAX),
+            volume: AtomicU8::new(100),
         }
     }
 
@@ -249,6 +266,14 @@ impl Controls {
     fn set_clip_end(&self, value: usize) {
         self.clip_end.store(value, Ordering::Relaxed);
     }
+
+    fn volume(&self) -> u8 {
+        self.volume.load(Ordering::Relaxed)
+    }
+
+    fn set_volume(&self, value: u8) {
+        self.volume.store(value, Ordering::Relaxed)
+    }
 }
 
 #[derive(Clone)]
@@ -297,7 +322,10 @@ impl Iterator for Playhead {
         };
 
         if let Some(sample) = buffer.get(cursor) {
-            Some(*sample)
+            let sample = *sample;
+            let volume = controls.volume() as f32 / 100.0;
+            let sample = sample * volume;
+            Some(sample)
         } else {
             let looping = controls.looping();
 

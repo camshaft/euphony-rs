@@ -13,12 +13,20 @@ pub enum Param {
 }
 
 impl Param {
-    pub fn as_value<T: Track>(self, track: &T) -> Option<Value> {
+    pub fn control_value<T: Track>(self, track: &T) -> Option<Value> {
         Some(match self {
             Self::BufView(v) => track.read(v).into(),
             Self::Buffer(v) => v.into(),
             Self::Builder(v) => v.as_osc()?,
         })
+    }
+
+    pub fn value(self) -> BuilderValue {
+        match self {
+            Self::BufView(_) => unreachable!(),
+            Self::Buffer(_) => unreachable!(),
+            Self::Builder(v) => v,
+        }
     }
 
     pub fn debug_field(&self, name: &str, f: &mut core::fmt::DebugStruct) {

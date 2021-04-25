@@ -92,12 +92,17 @@ impl<'a> Widget for Progress<'a> {
         }
 
         let center = gauge_area.height / 2 + gauge_area.top();
-        let width = gauge_area.width;
+        let left = gauge_area.left();
+        let width = gauge_area.width - left;
 
-        let clip_start = self.clip_start.map(|start| self.position(start, width));
-        let clip_end = self.clip_end.map(|start| self.position(start, width));
+        let clip_start = self
+            .clip_start
+            .map(|start| self.position(start, width) + left);
+        let clip_end = self
+            .clip_end
+            .map(|start| self.position(start, width) + left);
 
-        let cursor = self.position(self.cursor, width);
+        let cursor = self.position(self.cursor, width) + left;
 
         let label = Span::from(format!(
             "{} / {}",

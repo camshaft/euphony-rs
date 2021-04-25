@@ -103,6 +103,9 @@ fn main() -> Result<()> {
                         Style::default().fg(Color::DarkGray)
                     },
                 ),
+                Span::from(" | Volume [-] "),
+                Span::from(format!("{:>3}", timeline.volume())),
+                Span::from("% [+]"),
             ]);
 
             f.render_widget(status, chunks[0]);
@@ -222,6 +225,12 @@ fn main() -> Result<()> {
                 }
                 Key::Char('c') | Key::Char('C') => {
                     updates.clipped(!timeline.clipped());
+                }
+                Key::Char('+') => {
+                    updates.volume(timeline.volume().saturating_add(1));
+                }
+                Key::Char('-') => {
+                    updates.volume(timeline.volume().saturating_sub(1));
                 }
                 Key::Down => {
                     tracks.next();

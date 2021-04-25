@@ -24,7 +24,8 @@ mod my_synth {
 
     synthdef!(
         pub fn fn_synth(freq: f32) {
-            let _ = freq;
+            let mut freq = freq * [1, 2];
+            freq += 4;
         }
     );
 

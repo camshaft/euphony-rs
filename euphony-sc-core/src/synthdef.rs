@@ -97,9 +97,10 @@ impl<B: DecoderBuffer + FiniteBuffer> TypeDecoder<B> for Container {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i32)]
 pub enum Version {
-    V1,
-    V2,
+    V1 = 1,
+    V2 = 2,
 }
 
 impl Version {
@@ -277,7 +278,7 @@ fn decode_pstring<B: DecoderBuffer + FiniteBuffer>(buffer: B) -> buffer::Result<
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(i8)]
 pub enum CalculationRate {
     /// one sample is computed at initialization time only.
@@ -314,7 +315,7 @@ impl<B: DecoderBuffer> TypeDecoder<B> for CalculationRate {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(i16)]
-pub enum UnaryOps {
+pub enum UnaryOp {
     Neg = 0,
     NotPos = 1,
     IsNil = 2,
@@ -373,7 +374,7 @@ pub enum UnaryOps {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(i16)]
-pub enum BinaryOps {
+pub enum BinaryOp {
     Add = 0,
     Subtract = 1,
     Multiply = 2,

@@ -79,7 +79,7 @@ fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
 
     let def_params = params.iter().map(|param| {
         let name = &param.name;
-        quote!(let #name = __euphony_params.#name;)
+        quote!(let #name = __euphony_params.#name.value();)
     });
 
     let load = quote!(|__euphony_params: Params| {
