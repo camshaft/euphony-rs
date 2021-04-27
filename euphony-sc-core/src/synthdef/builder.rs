@@ -1,46 +1,18 @@
 #![allow(dead_code)]
 
-use crate::{
-    param::Param,
-    synthdef::{BinaryOp, CalculationRate, UnaryOp},
-};
+use crate::{param::Param, synthdef::CalculationRate};
 use core::{fmt, marker::PhantomData};
 
+mod compiler;
 mod graph;
-mod ops;
+pub mod ops;
 mod value;
 
+pub use compiler::{
+    default_compile, Compile, Compiler, Dependency, InputInfo, InputVec, Inputs, UgenMeta,
+};
 pub use graph::{OutputSpec, Ugen};
 pub use value::{Value, ValueVec};
-
-pub fn unary_op(op: UnaryOp, value: ValueVec) -> Value {
-    ugen(
-        UgenSpec {
-            name: "UnaryOpGen",
-            special_index: op as _,
-            ..Default::default()
-        },
-        |mut ugen| {
-            ugen.input(value);
-            ugen.finish()
-        },
-    )
-}
-
-pub fn binary_op(op: BinaryOp, lhs: ValueVec, rhs: ValueVec) -> Value {
-    ugen(
-        UgenSpec {
-            name: "BinaryOpGen",
-            special_index: op as _,
-            ..Default::default()
-        },
-        |mut ugen| {
-            ugen.input(lhs);
-            ugen.input(rhs);
-            ugen.finish()
-        },
-    )
-}
 
 pub trait Parameters: 'static + Sized {
     type Desc;
@@ -172,10 +144,10 @@ use std::cell::RefCell;
 pub struct UgenSpec {
     pub name: &'static str,
     pub special_index: i16,
-    pub rate: fn(inputs: &[CalculationRate]) -> CalculationRate,
+    pub rate: Option<CalculationRate>,
     pub outputs: usize,
-    pub output_rate: fn(calculation_rate: CalculationRate, idx: usize) -> CalculationRate,
-    // TODO expand callback
+    pub meta: UgenMeta,
+    pub compile: Compile,
 }
 
 impl fmt::Debug for UgenSpec {
@@ -192,22 +164,17 @@ impl Default for UgenSpec {
         Self {
             name: "",
             special_index: 0,
-            rate: |inputs| {
-                inputs
-                    .iter()
-                    .copied()
-                    .max()
-                    .unwrap_or(CalculationRate::Scalar)
-            },
+            rate: None,
             outputs: 1,
-            output_rate: |rate, _idx| rate,
+            meta: UgenMeta::default(),
+            compile: default_compile,
         }
     }
 }
 
 #[derive(Debug, Default)]
 struct Context {
-    params: Vec<(&'static str, f32)>,
+    params: Vec<compiler::ParamSpec>,
     graph: graph::Graph,
 }
 
@@ -215,16 +182,16 @@ impl Context {
     fn build(&mut self, name: &'static str) -> SynthDesc {
         let this = core::mem::take(self);
 
-        let (consts, ugens) = this.graph.build(self.params.len());
+        let (consts, ugens) = compiler::compile(&this.graph, &this.params);
 
-        let params = this.params.iter().map(|(_, v)| *v).collect();
+        let params = this.params.iter().map(|param| param.default).collect();
 
         let param_names = this
             .params
             .iter()
             .enumerate()
-            .map(|(index, (name, _))| crate::synthdef::ParamName {
-                name: name.to_string(),
+            .map(|(index, param)| crate::synthdef::ParamName {
+                name: param.name.to_string(),
                 index: index as _,
             })
             .collect();
@@ -238,25 +205,39 @@ impl Context {
             variants: vec![],
         };
 
+        // definition.dot(&mut std::io::stdout()).unwrap();
+
         let container = crate::synthdef::Container {
             version: crate::synthdef::V2 as _,
             defs: vec![definition],
         };
 
-        dbg!(container);
+        let desc = container.encode();
+
+        if cfg!(debug_assertions) {
+            use codec::decode::DecoderBuffer;
+            let (parsed, _) = desc.decode::<crate::synthdef::Container>().unwrap();
+            if parsed != container {
+                panic!("expected: {:#?}\n actual: {:#?}", container, parsed);
+            }
+        }
 
         SynthDesc {
             name: name.to_owned(),
-            desc: vec![],
+            desc,
         }
     }
 
     fn param(&mut self, id: u32, name: &'static str, default: f32) -> Param {
         let idx = id as usize;
         if idx >= self.params.len() {
-            self.params.resize(idx + 1, ("", 0.0));
+            self.params.resize(idx + 1, compiler::ParamSpec::default());
         }
-        self.params[idx] = (name, default);
+        self.params[idx] = compiler::ParamSpec {
+            name,
+            default,
+            ..Default::default()
+        };
         param_instance(id)
     }
 

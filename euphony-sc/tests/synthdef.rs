@@ -23,9 +23,19 @@ mod my_synth {
     }
 
     synthdef!(
-        pub fn fn_synth(freq: f32) {
-            let mut freq = freq * [1, 2];
-            freq += 4;
+        pub fn fn_synth(out: f32<0.0>, freq: f32) {
+            let signal = SinOsc::new().freq([freq, freq, freq]).ar();
+            let signal = Pan2::new(signal).ar();
+            let signal = Mix::new(signal).ar();
+            Out::new(out, signal).ar()
+        }
+    );
+
+    synthdef!(
+        pub fn splay_synth(out: f32<0.0>, freq: f32) {
+            let signal = SinOsc::new().freq([freq * 1.0, freq * 1.5, freq * 2]).ar();
+            let signal = Splay::new(signal).ar();
+            Out::new(out, signal).ar()
         }
     );
 
@@ -37,5 +47,10 @@ mod my_synth {
     #[test]
     fn fn_test() {
         dbg!(fn_synth().freq(440));
+    }
+
+    #[test]
+    fn splay_test() {
+        dbg!(splay_synth().freq(440));
     }
 }

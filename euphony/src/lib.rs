@@ -23,5 +23,5 @@ pub mod prelude {
         runtime::{output::track, spawn, time::scheduler},
         time::{Beat, Tempo},
     };
-    pub use euphony_sc::{params, synthdef, track::Track};
+    pub use euphony_sc::{self, params, synthdef, track::Track};
 }

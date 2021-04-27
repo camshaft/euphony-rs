@@ -1,9 +1,19 @@
 use euphony::pitch::mode::western::*;
 euphony::prelude!();
 
+synthdef!(
+    fn test_voice(out: f32<0>, freq: f32<440.0>) {
+        let detune = [0.98, 0.99, 1.00, 1.01, 1.02];
+        let freq = freq * detune;
+        let signal = SinOsc::new().freq(freq).ar();
+        let signal = Splay::new(signal).ar() * 0.2;
+        Out::new(out, signal).ar()
+    }
+);
+
 fn sustain<T: 'static + Send>(value: T) {
     async move {
-        Beat(4, 1).delay().await;
+        Beat(1, 4).delay().await;
         drop(value);
     }
     .spawn();
@@ -78,9 +88,10 @@ async fn melody() {
         let tonic = tonic + offset;
 
         for note in [I, III, V, Interval(1, 1), V, III].iter().copied() {
-            let note = midi(note + tonic, mode);
+            // let note = midi(note + tonic, mode);
+            let note = to_freq(note + tonic, mode);
 
-            let note = assets::chiplead().note(note).amp(0.3);
+            let note = test_voice().freq(note);
 
             sustain(t.send(note));
             Beat(1, 4).delay().await;
@@ -119,4 +130,14 @@ fn midi(interval: Interval, mode: euphony::pitch::mode::Mode) -> i32 {
     let note: Interval = (mode * interval) * 12;
     let note = note.whole();
     note as i32
+}
+
+fn to_freq(interval: Interval, mode: euphony::pitch::mode::Mode) -> f32 {
+    /*
+    let note: Interval = (mode * interval);
+    let note: f32 = note.into();
+    440.0
+    */
+    let note = midi(interval, mode) as f32;
+    2f32.powf((note - 69f32) / 12f32) * 440.0
 }

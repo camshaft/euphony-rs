@@ -96,6 +96,26 @@ macro_rules! new_ratio_methods {
             pub fn as_ratio(self) -> $crate::ratio::Ratio<$inner> {
                 $crate::ratio::Ratio(self.0, self.1)
             }
+
+            pub fn as_f32(self) -> f32 {
+                self.0 as f32 / self.1 as f32
+            }
+
+            pub fn as_f64(self) -> f64 {
+                self.0 as f64 / self.1 as f64
+            }
+        }
+
+        impl From<$name> for f32 {
+            fn from(value: $name) -> f32 {
+                value.as_f32()
+            }
+        }
+
+        impl From<$name> for f64 {
+            fn from(value: $name) -> f64 {
+                value.as_f64()
+            }
         }
     };
 }

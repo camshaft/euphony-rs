@@ -1,20 +1,19 @@
 use super::{
-    value::{Output, Value, ValueVec, Variant},
+    compiler::{Compiler, Inputs},
+    value::{Output, Value, ValueVec},
     UgenSpec,
 };
-use crate::synthdef::{self, CalculationRate};
-use std::collections::{hash_map::Entry, HashMap};
+use crate::synthdef::CalculationRate;
 
 #[derive(Debug)]
-struct Node {
-    spec: UgenSpec,
-    inputs: Vec<ValueVec>,
+pub struct Node {
+    pub spec: UgenSpec,
+    pub inputs: Vec<ValueVec>,
 }
-type Input = (u32, u32);
 
 #[derive(Debug)]
 pub struct Graph {
-    nodes: Vec<Node>,
+    pub nodes: Vec<Node>,
 }
 
 impl Default for Graph {
@@ -22,15 +21,38 @@ impl Default for Graph {
         let node = Node {
             spec: UgenSpec {
                 name: "Control",
-                special_index: 0,
-                rate: |_| CalculationRate::Control,
-                outputs: 0,
-                output_rate: |_, _| CalculationRate::Control,
+                compile: compile_control,
+                ..Default::default()
             },
             inputs: vec![],
         };
         Self { nodes: vec![node] }
     }
+}
+
+fn compile_control(spec: &UgenSpec, _inputs: &Inputs, compiler: &mut Compiler) {
+    let params = compiler.params();
+
+    let outs = params
+        .iter()
+        .map(|param| {
+            // TODO lag?
+            param.rate
+        })
+        .collect();
+
+    let outputs = compiler.push_ugen(
+        crate::synthdef::UGen {
+            name: spec.name.into(),
+            special_index: spec.special_index,
+            rate: CalculationRate::Control,
+            ins: vec![],
+            outs,
+        },
+        spec.meta,
+    );
+
+    compiler.push_outputs(outputs);
 }
 
 impl Graph {
@@ -46,52 +68,6 @@ impl Graph {
         Ugen {
             node: &mut self.nodes[id as usize],
             ugen: id,
-        }
-    }
-
-    pub fn build(mut self, params: usize) -> (Vec<f32>, Vec<synthdef::UGen>) {
-        self.nodes[0].spec.outputs = params;
-
-        let mut consts = ConstIds::default();
-
-        // TODO multichannel expansion
-
-        for node in &self.nodes {
-            for input in &node.inputs {
-                for input in input.iter() {
-                    let _input: synthdef::Input = match input.as_variant() {
-                        Variant::Const(v) => consts.get(v),
-                        Variant::Output(v) => v.into(),
-                        Variant::Parameter(v) => v.into(),
-                    };
-                }
-            }
-        }
-
-        let consts = consts.values;
-        let ugens = vec![];
-        (consts, ugens)
-    }
-}
-
-#[derive(Default)]
-struct ConstIds {
-    values: Vec<f32>,
-    ids: HashMap<u32, i32>,
-}
-
-impl ConstIds {
-    pub fn get(&mut self, value: f32) -> synthdef::Input {
-        match self.ids.entry(value.to_bits()) {
-            Entry::Vacant(entry) => {
-                let index = self.values.len() as i32;
-                self.values.push(value);
-                entry.insert(index);
-                synthdef::Input::Constant { index }
-            }
-            Entry::Occupied(entry) => synthdef::Input::Constant {
-                index: *entry.get(),
-            },
         }
     }
 }
@@ -142,9 +118,23 @@ pub trait OutputSpec {
     fn output(builder: &mut OutputBuilder) -> Self;
 }
 
+impl OutputSpec for () {
+    fn output(_builder: &mut OutputBuilder) -> Self {}
+}
+
 impl OutputSpec for Value {
     fn output(builder: &mut OutputBuilder) -> Self {
         builder.output()
+    }
+}
+
+impl<const N: usize> OutputSpec for [Value; N] {
+    fn output(builder: &mut OutputBuilder) -> Self {
+        let mut out = [Value::from(0); N];
+        for v in out.iter_mut() {
+            *v = builder.output();
+        }
+        out
     }
 }
 

@@ -4,7 +4,11 @@ use self::Version::*;
 use codec::{
     buffer::{self, FiniteBuffer},
     decode::{Decoder, DecoderBuffer, TypeDecoder},
+    encode::{Encoder, EncoderBuffer, TypeEncoder},
 };
+use num_derive::FromPrimitive;
+use num_traits::FromPrimitive;
+use std::{borrow::Cow, io};
 
 pub mod builder;
 
@@ -52,8 +56,48 @@ macro_rules! decode_vec_with {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Container {
-    pub version: i32,
+    pub version: Version,
     pub defs: Vec<Definition>,
+}
+
+#[derive(Clone, Debug, Default)]
+struct VecBuffer(Vec<u8>);
+
+impl EncoderBuffer for VecBuffer {
+    fn encoder_capacity(&self) -> usize {
+        usize::MAX - self.0.len()
+    }
+
+    fn encode_bytes<T: AsRef<[u8]>>(mut self, bytes: T) -> buffer::Result<usize, Self> {
+        let bytes = bytes.as_ref();
+        self.0.extend_from_slice(bytes);
+        Ok((bytes.len(), self))
+    }
+
+    fn checkpoint<F>(self, f: F) -> buffer::Result<usize, Self>
+    where
+        F: FnOnce(Self) -> buffer::Result<(), Self>,
+    {
+        let initial_len = self.0.len();
+
+        match f(self) {
+            Ok(((), buffer)) => Ok((buffer.0.len() - initial_len, buffer)),
+            #[allow(unused_mut)]
+            Err(mut err) => {
+                // roll back the len to the initial value
+                err.buffer.0.truncate(initial_len);
+                Err(err)
+            }
+        }
+    }
+}
+
+impl Container {
+    pub fn encode(&self) -> Vec<u8> {
+        let buffer = VecBuffer::default();
+        let (_, buffer) = buffer.encode(self).expect("invalid");
+        buffer.0
+    }
 }
 
 const ID: i32 = i32::from_be_bytes(*b"SCgf");
@@ -73,26 +117,27 @@ impl<B: DecoderBuffer + FiniteBuffer> TypeDecoder<B> for Container {
 
         let (version, buffer) = buffer.decode()?;
 
-        let (defs, buffer) = match version {
-            1i32 => {
-                decode_vec_with!(buffer, @len i16, V1)
-            }
-            2 => {
-                decode_vec_with!(buffer, @len i16, V2)
-            }
-            _ => {
-                return Err(buffer::BufferError {
-                    buffer,
-                    reason: buffer::BufferErrorReason::InvalidValue {
-                        message: "invalid version",
-                    },
-                });
-            }
-        };
-
+        let (defs, buffer) = decode_vec_with!(buffer, @len i16, version);
         let value = Self { version, defs };
 
         Ok((value, buffer))
+    }
+}
+
+impl<B: EncoderBuffer> TypeEncoder<B> for &Container {
+    fn encode_type(self, buffer: B) -> buffer::Result<(), B> {
+        let version = self.version;
+        let (_, buffer) = buffer.encode(ID)?;
+        let (_, buffer) = buffer.encode(version)?;
+
+        let (_, buffer) = buffer.encode(self.defs.len() as i16)?;
+        let mut buffer = buffer;
+        for value in self.defs.iter() {
+            let (_, new_buffer) = version.encode_into(value, buffer)?;
+            buffer = new_buffer;
+        }
+
+        Ok(((), buffer))
     }
 }
 
@@ -101,6 +146,30 @@ impl<B: DecoderBuffer + FiniteBuffer> TypeDecoder<B> for Container {
 pub enum Version {
     V1 = 1,
     V2 = 2,
+}
+
+impl<B: DecoderBuffer + FiniteBuffer> TypeDecoder<B> for Version {
+    fn decode_type(buffer: B) -> buffer::Result<Self, B> {
+        let (version, buffer) = buffer.decode()?;
+
+        match version {
+            1i32 => Ok((Version::V1, buffer)),
+            2i32 => Ok((Version::V2, buffer)),
+            _ => Err(buffer::BufferError {
+                buffer,
+                reason: buffer::BufferErrorReason::InvalidValue {
+                    message: "invalid version",
+                },
+            }),
+        }
+    }
+}
+
+impl<B: EncoderBuffer> TypeEncoder<B> for Version {
+    fn encode_type(self, buffer: B) -> buffer::Result<(), B> {
+        let (_, buffer) = buffer.encode(self as i32)?;
+        Ok(((), buffer))
+    }
 }
 
 impl Version {
@@ -117,6 +186,47 @@ impl Version {
         };
         Ok((len, buffer))
     }
+
+    fn encode_int<B: EncoderBuffer>(self, value: i32, buffer: B) -> buffer::Result<usize, B> {
+        match self {
+            Self::V1 => buffer.encode(value as i16),
+            Self::V2 => buffer.encode(value),
+        }
+    }
+
+    fn encode_slice<'a, B: EncoderBuffer, V>(
+        self,
+        values: &'a [V],
+        buffer: B,
+    ) -> buffer::Result<(), B>
+    where
+        Self: Encoder<&'a V, B>,
+    {
+        let (_, buffer) = self.encode_int(values.len() as _, buffer)?;
+        let mut buffer = buffer;
+        for value in values.iter() {
+            let (_, new_buffer) = self.encode_into(value, buffer)?;
+            buffer = new_buffer;
+        }
+        Ok(((), buffer))
+    }
+
+    fn encode_copied_slice<B: EncoderBuffer, V>(
+        self,
+        values: &[V],
+        buffer: B,
+    ) -> buffer::Result<(), B>
+    where
+        V: TypeEncoder<B> + Copy,
+    {
+        let (_, buffer) = self.encode_int(values.len() as _, buffer)?;
+        let mut buffer = buffer;
+        for value in values.iter().copied() {
+            let (_, new_buffer) = buffer.encode(value)?;
+            buffer = new_buffer;
+        }
+        Ok(((), buffer))
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -127,6 +237,99 @@ pub struct Definition {
     pub param_names: Vec<ParamName>,
     pub ugens: Vec<UGen>,
     pub variants: Vec<Variant>,
+}
+
+impl Definition {
+    pub fn dot<W: io::Write>(&self, w: &mut W) -> io::Result<()> {
+        writeln!(w, "digraph G {{")?;
+        writeln!(w, "  label = {:?};", self.name)?;
+        writeln!(w, "  rankdir=\"LR\";")?;
+
+        if !self.params.is_empty() {
+            writeln!(w, "  subgraph cluster_params {{")?;
+            writeln!(w, "    label = \"params\";")?;
+
+            let names: std::collections::HashMap<_, _> = self
+                .param_names
+                .iter()
+                .map(|name| (name.index as usize, &name.name))
+                .collect();
+
+            for (idx, default) in self.params.iter().enumerate() {
+                write!(w, "    output_0_{} [", idx)?;
+                if let Some(name) = names.get(&idx) {
+                    write!(w, "label = \"{} ({})\"", name, default)?;
+                } else {
+                    write!(w, "label = \"{}\"", default)?;
+                }
+                writeln!(w, "];")?;
+            }
+            writeln!(w, "  }}")?;
+        }
+
+        for (idx, ugen) in self.ugens.iter().enumerate() {
+            // this is already handled with params
+            if ugen.name == "Control" {
+                continue;
+            }
+
+            writeln!(w, "  subgraph cluster_ugens_{} {{", idx)?;
+            match ugen.name.as_ref() {
+                "BinaryOpGen" => {
+                    if let Some(op) = BinaryOp::from_i16(ugen.special_index) {
+                        writeln!(w, "    label = \"{:?}\";", op)?
+                    } else {
+                        writeln!(w, "    label = \"BinaryOpUGen ({})\";", ugen.special_index)?
+                    }
+                }
+                "UnaryOpGen" => {
+                    if let Some(op) = UnaryOp::from_i16(ugen.special_index) {
+                        writeln!(w, "    label = \"{:?}\";", op)?
+                    } else {
+                        writeln!(w, "    label = \"UnaryOpUGen ({})\";", ugen.special_index)?
+                    }
+                }
+                name => writeln!(w, "    label = {:?};", name)?,
+            }
+
+            for (input_idx, input) in ugen.ins.iter().enumerate() {
+                match input {
+                    Input::UGen { index, output } => {
+                        writeln!(
+                            w,
+                            "    input_{}_{} [label = \"input_{}\"];",
+                            idx, input_idx, input_idx
+                        )?;
+                        writeln!(
+                            w,
+                            "    output_{}_{} -> input_{}_{};",
+                            index, output, idx, input_idx
+                        )?;
+                    }
+                    Input::Constant { index } => {
+                        writeln!(
+                            w,
+                            "    input_{}_{} [label = \"input_{} = {}\"];",
+                            input_idx, idx, input_idx, self.consts[*index as usize]
+                        )?;
+                    }
+                }
+            }
+
+            for (out_idx, _rate) in ugen.outs.iter().enumerate() {
+                writeln!(
+                    w,
+                    "    output_{}_{} [label = \"output_{}\"];",
+                    idx, out_idx, out_idx
+                )?;
+            }
+
+            writeln!(w, "  }}")?;
+        }
+
+        writeln!(w, "}}")?;
+        Ok(())
+    }
 }
 
 impl<B: DecoderBuffer + FiniteBuffer> TypeDecoder<B> for Definition {
@@ -158,6 +361,25 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<Definition, B> for Version {
     }
 }
 
+impl<B: EncoderBuffer> Encoder<&Definition, B> for Version {
+    fn encode_into(self, value: &Definition, buffer: B) -> buffer::Result<(), B> {
+        let (_, buffer) = encode_pstring(&value.name, buffer)?;
+        let (_, buffer) = self.encode_copied_slice(&value.consts, buffer)?;
+        let (_, buffer) = self.encode_copied_slice(&value.params, buffer)?;
+        let (_, buffer) = self.encode_slice(&value.param_names, buffer)?;
+        let (_, buffer) = self.encode_slice(&value.ugens, buffer)?;
+
+        let (_, buffer) = buffer.encode(value.variants.len() as i16)?;
+        let mut buffer = buffer;
+        for value in value.variants.iter() {
+            let (_, new_buffer) = self.encode_into(value, buffer)?;
+            buffer = new_buffer;
+        }
+
+        Ok(((), buffer))
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ParamName {
     pub name: String,
@@ -180,9 +402,17 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<ParamName, B> for Version {
     }
 }
 
+impl<B: EncoderBuffer> Encoder<&ParamName, B> for Version {
+    fn encode_into(self, value: &ParamName, buffer: B) -> buffer::Result<(), B> {
+        let (_, buffer) = encode_pstring(&value.name, buffer)?;
+        let (_, buffer) = self.encode_int(value.index, buffer)?;
+        Ok(((), buffer))
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct UGen {
-    pub name: String,
+    pub name: Cow<'static, str>,
     pub rate: CalculationRate,
     pub ins: Vec<Input>,
     pub outs: Vec<CalculationRate>,
@@ -207,7 +437,7 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<UGen, B> for Version {
         let (outs, buffer) = decode_vec!(out_len, buffer);
 
         let value = UGen {
-            name,
+            name: name.into(),
             rate,
             ins,
             outs,
@@ -218,7 +448,30 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<UGen, B> for Version {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+impl<B: EncoderBuffer> Encoder<&UGen, B> for Version {
+    fn encode_into(self, value: &UGen, buffer: B) -> buffer::Result<(), B> {
+        let (_, buffer) = encode_pstring(&value.name, buffer)?;
+        let (_, buffer) = buffer.encode(value.rate)?;
+        let (_, buffer) = self.encode_int(value.ins.len() as _, buffer)?;
+        let (_, buffer) = self.encode_int(value.outs.len() as _, buffer)?;
+        let (_, buffer) = buffer.encode(value.special_index)?;
+
+        let mut buffer = buffer;
+        for value in value.ins.iter().copied() {
+            let (_, new_buffer) = self.encode_into(value, buffer)?;
+            buffer = new_buffer;
+        }
+
+        for value in value.outs.iter().copied() {
+            let (_, new_buffer) = buffer.encode(value)?;
+            buffer = new_buffer;
+        }
+
+        Ok(((), buffer))
+    }
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Input {
     UGen { index: i32, output: i32 },
     Constant { index: i32 },
@@ -247,6 +500,23 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<Input, B> for Version {
     }
 }
 
+impl<B: EncoderBuffer> Encoder<Input, B> for Version {
+    fn encode_into(self, value: Input, buffer: B) -> buffer::Result<(), B> {
+        match value {
+            Input::Constant { index } => {
+                let (_, buffer) = self.encode_int(-1, buffer)?;
+                let (_, buffer) = self.encode_int(index, buffer)?;
+                Ok(((), buffer))
+            }
+            Input::UGen { index, output } => {
+                let (_, buffer) = self.encode_int(index, buffer)?;
+                let (_, buffer) = self.encode_int(output, buffer)?;
+                Ok(((), buffer))
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Variant {
     pub name: String,
@@ -263,6 +533,15 @@ impl<B: DecoderBuffer + FiniteBuffer> Decoder<Variant, B> for usize {
     }
 }
 
+impl<B: EncoderBuffer> Encoder<&Variant, B> for Version {
+    fn encode_into(self, value: &Variant, buffer: B) -> buffer::Result<(), B> {
+        let (_, buffer) = encode_pstring(&value.name, buffer)?;
+        let (_, buffer) = self.encode_copied_slice(&value.params, buffer)?;
+
+        Ok(((), buffer))
+    }
+}
+
 fn decode_pstring<B: DecoderBuffer + FiniteBuffer>(buffer: B) -> buffer::Result<String, B> {
     let (len, buffer) = buffer.decode::<u8>()?;
     let (bytes, buffer) = buffer.checked_split(len as usize)?;
@@ -276,6 +555,24 @@ fn decode_pstring<B: DecoderBuffer + FiniteBuffer>(buffer: B) -> buffer::Result<
             },
         }),
     }
+}
+
+fn encode_pstring<B: EncoderBuffer>(value: &str, buffer: B) -> buffer::Result<(), B> {
+    let len = value.len();
+
+    if len > 255 {
+        return Err(buffer::BufferError {
+            buffer,
+            reason: buffer::BufferErrorReason::InvalidValue {
+                message: "string exceeds maximum limit",
+            },
+        });
+    }
+
+    let len = len as u8;
+    let (_, buffer) = buffer.encode(len)?;
+    let (_, buffer) = buffer.encode_bytes(value.as_bytes())?;
+    Ok(((), buffer))
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -311,9 +608,22 @@ impl<B: DecoderBuffer> TypeDecoder<B> for CalculationRate {
     }
 }
 
+impl<B: EncoderBuffer> TypeEncoder<B> for CalculationRate {
+    fn encode_type(self, buffer: B) -> buffer::Result<(), B> {
+        let value: i8 = match self {
+            Self::Scalar => 0,
+            Self::Control => 1,
+            Self::Audio => 2,
+            Self::Demand => 3,
+        };
+        let (_, buffer) = buffer.encode(value)?;
+        Ok(((), buffer))
+    }
+}
+
 // https://github.com/overtone/overtone/blob/master/src/overtone/sc/machinery/ugen/special_ops.clj
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, FromPrimitive)]
 #[repr(i16)]
 pub enum UnaryOp {
     Neg = 0,
@@ -372,7 +682,7 @@ pub enum UnaryOp {
     SCurve = 53,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, FromPrimitive)]
 #[repr(i16)]
 pub enum BinaryOp {
     Add = 0,

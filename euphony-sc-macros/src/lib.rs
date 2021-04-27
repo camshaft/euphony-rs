@@ -93,6 +93,8 @@ fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
 
     Ok(quote!(
         #(#attrs)* #vis mod #name {
+            use super::*;
+
             #params_impl
 
             pub fn new() -> SynthDef {

@@ -1,5 +1,5 @@
 use crate::osc::control;
-use core::fmt;
+use core::{fmt, ops};
 use smallvec::SmallVec;
 
 #[derive(Clone, Copy)]
@@ -102,9 +102,11 @@ impl From<control::Value> for Value {
 #[derive(Clone, Debug)]
 pub struct ValueVec(SmallVec<[Value; 1]>);
 
-impl ValueVec {
-    pub fn iter(&self) -> impl Iterator<Item = Value> + '_ {
-        self.0.iter().copied()
+impl ops::Deref for ValueVec {
+    type Target = [Value];
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
@@ -204,20 +206,11 @@ impl Variant {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub struct Parameter(u32);
+pub struct Parameter(pub u32);
 
 impl Parameter {
-    pub const fn new(idx: u32) -> Self {
+    pub(crate) const fn new(idx: u32) -> Self {
         Self(idx)
-    }
-}
-
-impl From<Parameter> for crate::synthdef::Input {
-    fn from(value: Parameter) -> Self {
-        Self::UGen {
-            index: 0, // inputs are always ugen 0
-            output: value.0 as _,
-        }
     }
 }
 
@@ -228,13 +221,12 @@ impl Output {
     pub(crate) const fn new(ugen: u32, output: u32) -> Self {
         Self(output, ugen)
     }
-}
 
-impl From<Output> for crate::synthdef::Input {
-    fn from(value: Output) -> Self {
-        Self::UGen {
-            index: value.1 as _,
-            output: value.0 as _,
-        }
+    pub fn ugen(self) -> u32 {
+        self.1
+    }
+
+    pub fn output(self) -> u32 {
+        self.0
     }
 }
