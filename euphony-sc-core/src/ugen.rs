@@ -233,9 +233,9 @@ impl Pan2 {
 
 pub struct Splay {
     pub signal: ValueVec,
-    pub spread: f32,
-    pub level: f32,
-    pub center: f32,
+    pub spread: Value,
+    pub level: Value,
+    pub center: Value,
     pub level_comp: bool,
 }
 
@@ -243,11 +243,26 @@ impl Splay {
     pub fn new(signal: impl Into<ValueVec>) -> Self {
         Self {
             signal: signal.into(),
-            spread: 1.0,
-            level: 1.0,
-            center: 0.0,
+            spread: Value::from(1.0),
+            level: Value::from(1.0),
+            center: Value::from(0.0),
             level_comp: true,
         }
+    }
+
+    pub fn spread(mut self, spread: impl Into<Value>) -> Self {
+        self.spread = spread.into();
+        self
+    }
+
+    pub fn level(mut self, level: impl Into<Value>) -> Self {
+        self.level = level.into();
+        self
+    }
+
+    pub fn center(mut self, center: impl Into<Value>) -> Self {
+        self.center = center.into();
+        self
     }
 
     pub fn ar(self) -> Value {
