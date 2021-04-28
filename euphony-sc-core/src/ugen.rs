@@ -1,6 +1,6 @@
 use crate::synthdef::{
     builder::{ops, ugen, Compiler, Dependency, Inputs, UgenMeta, UgenSpec, Value, ValueVec},
-    BinaryOp, CalculationRate, UGen,
+    CalculationRate, UGen,
 };
 
 #[derive(Clone, Debug)]

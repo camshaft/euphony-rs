@@ -3,7 +3,7 @@ source: euphony-sc-core/src/synthdef.rs
 expression: container
 ---
 Container {
-    version: 2,
+    version: V2,
     defs: [
         Definition {
             name: "sonic-pi-chiplead",

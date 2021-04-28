@@ -311,7 +311,7 @@ mod manifest {
 
 mod worker {
     use super::State;
-    use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
+    use notify::{watcher, RecursiveMode, Watcher};
     use std::{
         sync::{
             atomic::{AtomicBool, Ordering},
@@ -331,15 +331,13 @@ mod worker {
             .unwrap();
 
         loop {
-            while let Ok(event) = rx.recv_timeout(Duration::from_millis(50)) {
-                match event {
-                    DebouncedEvent::Write(_) | DebouncedEvent::Chmod(_) => {
-                        if let Err(err) = state.reload() {
-                            // TODO log
-                            let _ = err;
-                        }
-                    }
-                    _ => {}
+            while rx.recv_timeout(Duration::from_millis(50)).is_ok() {
+                // clear the queue
+                while rx.try_recv().is_ok() {}
+
+                if let Err(err) = state.reload() {
+                    // TODO log
+                    let _ = err;
                 }
             }
 

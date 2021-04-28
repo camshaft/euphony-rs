@@ -1,6 +1,4 @@
-use super::{
-    ugen, Compile, Compiler, Dependency, InputInfo, InputVec, Inputs, UgenSpec, Value, ValueVec,
-};
+use super::{ugen, Compile, Compiler, Dependency, InputInfo, Inputs, UgenSpec, Value, ValueVec};
 use crate::synthdef::{BinaryOp, CalculationRate, Input, UGen, UnaryOp};
 use core::ops;
 

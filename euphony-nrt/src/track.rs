@@ -109,15 +109,13 @@ impl Track {
             .render()?;
         }
 
-        let output = output.canonicalize()?;
-
         let out_file = if let Some(out_file) = out_file {
             out_file.to_owned()
         } else {
-            let out_file = build_dir.join("rendered").join(format!("{}.wav", name));
-            std::fs::create_dir_all(out_file.parent().unwrap())?;
-            out_file
+            return Ok(output);
         };
+
+        let output = output.canonicalize()?;
 
         cfg_if! {
             if #[cfg(unix)] {
