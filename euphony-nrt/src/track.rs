@@ -94,7 +94,7 @@ impl Track {
     }
 
     pub fn render(&self, build_dir: &Path, out_file: Option<&Path>) -> io::Result<PathBuf> {
-        let (name, commands) = self.dump(build_dir, Duration::from_secs(5));
+        let (_, commands) = self.dump(build_dir, Duration::from_secs(5));
         let commands = commands?;
 
         let output = commands.parent().unwrap().join("render.wav");

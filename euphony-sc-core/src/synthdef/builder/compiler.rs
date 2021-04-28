@@ -173,7 +173,7 @@ impl<'a> Expansion<'a> {
 impl<'a> ops::Index<usize> for Expansion<'a> {
     type Output = (Input, CalculationRate);
 
-    fn index(&self, index: usize) -> &Self::Output {
+    fn index(&self, _index: usize) -> &Self::Output {
         /*
         let input = &self.inputs[index];
         let idx = self.idx % input.len();
@@ -218,7 +218,7 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
     let mut outputs: Vec<InputVec> = vec![];
     let mut ranges: Vec<Range<usize>> = vec![];
 
-    for (id, node) in graph.nodes.iter().enumerate() {
+    for node in graph.nodes.iter() {
         let mut inputs: SmallVec<_> = node
             .inputs
             .iter()

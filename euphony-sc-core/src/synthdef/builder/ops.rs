@@ -217,7 +217,16 @@ pub fn compile_sub(
         return out;
     }
 
-    todo!()
+    // TODO optimize
+
+    let ugen = UGen {
+        name: "BinaryOpUGen".into(),
+        rate,
+        ins: vec![lhs, rhs],
+        outs: vec![rate],
+        special_index: BinaryOp::Subtract as _,
+    };
+    compiler.push_ugen(ugen, Default::default()).pop().unwrap()
 }
 
 binary!(Multiply, Mul, mul, MulAssign, mul_assign, compile_mul);
@@ -258,7 +267,16 @@ pub fn compile_div(
         return out;
     }
 
-    todo!()
+    // TODO optimize
+
+    let ugen = UGen {
+        name: "BinaryOpUGen".into(),
+        rate,
+        ins: vec![lhs, rhs],
+        outs: vec![rate],
+        special_index: BinaryOp::Divide as _,
+    };
+    compiler.push_ugen(ugen, Default::default()).pop().unwrap()
 }
 
 binary!(Modulus, Rem, rem, RemAssign, rem_assign, compile_rem);
@@ -272,7 +290,14 @@ pub fn compile_rem(
         return out;
     }
 
-    todo!()
+    let ugen = UGen {
+        name: "BinaryOpUGen".into(),
+        rate,
+        ins: vec![lhs, rhs],
+        outs: vec![rate],
+        special_index: BinaryOp::Modulus as _,
+    };
+    compiler.push_ugen(ugen, Default::default()).pop().unwrap()
 }
 
 //binary!(And, BitAnd, bitand, BitAndAssign, bitand_assign);

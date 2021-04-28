@@ -5,7 +5,7 @@ authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-bach = { version = "0.0.1", path = "../../bach/bach" }
+bach = { git = "https://github.com/camshaft/bach" }
 euphony-core = { version = "0.1", path = "../euphony-core" }
 euphony-macros = { version = "0.1", path = "../euphony-macros" }
 euphony-nrt = { version = "0.1", path = "../euphony-nrt" }
