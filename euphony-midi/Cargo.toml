@@ -16,6 +16,6 @@ num-rational = { version = "0.2", default-features = false }
 serde = { version = "1", features = ["derive"], optional = true }
 
 [dev-dependencies]
-insta = "0.12"
+insta = "1"
 # midir = { git = "https://github.com/Boddlnagg/midir" }
 midly = "0.3"

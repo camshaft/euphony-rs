@@ -1,6 +1,7 @@
 ---
-source: src/midi/message.rs
+source: euphony-midi/src/message.rs
 expression: "MIDIMessage::from([176, 1, 0])"
+
 ---
 ControlChange {
     channel: Channel(

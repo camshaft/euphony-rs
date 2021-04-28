@@ -1,6 +1,7 @@
 ---
-source: src/midi/message.rs
+source: euphony-midi/src/message.rs
 expression: "MIDIMessage::from([128, 60, 127])"
+
 ---
 NoteOff {
     channel: Channel(
