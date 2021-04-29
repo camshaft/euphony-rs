@@ -275,14 +275,14 @@ impl Definition {
 
             writeln!(w, "  subgraph cluster_ugens_{} {{", idx)?;
             match ugen.name.as_ref() {
-                "BinaryOpGen" => {
+                "BinaryOpUGen" => {
                     if let Some(op) = BinaryOp::from_i16(ugen.special_index) {
                         writeln!(w, "    label = \"{:?}\";", op)?
                     } else {
                         writeln!(w, "    label = \"BinaryOpUGen ({})\";", ugen.special_index)?
                     }
                 }
-                "UnaryOpGen" => {
+                "UnaryOpUGen" => {
                     if let Some(op) = UnaryOp::from_i16(ugen.special_index) {
                         writeln!(w, "    label = \"{:?}\";", op)?
                     } else {
