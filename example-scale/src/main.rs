@@ -2,7 +2,7 @@ use euphony::pitch::mode::western::*;
 euphony::prelude!();
 
 synthdef!(
-    fn test_voice(out: f32<0>, freq: f32<440.0>, amp: f32<0.5>, pan: f32<0.0>) {
+    fn organ(out: f32<0>, freq: f32<440.0>, amp: f32<0.5>, pan: f32<0.0>) {
         let detune = [0.98, 0.99, 1.00, 1.01, 1.02];
         let freq = freq * detune;
         let signal = SinOsc::new().freq(freq).ar();
@@ -91,7 +91,7 @@ async fn melody() {
             // let note = midi(note + tonic, mode);
             let note = to_freq(note + tonic, mode);
 
-            let note = test_voice().freq(note).amp(0.1);
+            let note = organ().freq(note).amp(0.1);
 
             sustain(t.send(note));
             Beat(1, 4).delay().await;

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use core::time::Duration;
 use rodio::OutputStream;
-use std::{io, path::PathBuf};
+use std::io;
 use structopt::StructOpt;
 use termion::{event::Key, input::MouseTerminal, raw::IntoRawMode, screen::AlternateScreen};
 use tui::{
@@ -27,7 +27,7 @@ struct Args {
     #[structopt(long, short)]
     stop: bool,
     /// Path to the input file
-    input: PathBuf,
+    input: String,
 }
 
 fn main() -> Result<()> {
@@ -37,7 +37,7 @@ fn main() -> Result<()> {
 
     let input_path = args.input;
 
-    let name = input_path.display().to_string();
+    let name = input_path.clone();
 
     let (project, buffer, tracks) = project::Project::new(input_path)?;
 

@@ -2,11 +2,12 @@ use crate::timeline::Buffer;
 use anyhow::Result;
 use arc_swap::{ArcSwap, ArcSwapAny};
 use lru::LruCache;
+use rayon::prelude::*;
 use serde::Deserialize;
 use std::{
     collections::{BTreeMap, HashMap},
     fs::File,
-    io::BufReader,
+    io::{BufReader, BufWriter},
     path::{Path, PathBuf},
     sync::{
         atomic::{AtomicBool, Ordering},
@@ -22,7 +23,7 @@ pub struct Project {
 }
 
 impl Project {
-    pub fn new(input: PathBuf) -> Result<(Self, BufferHandle, TracksHandle)> {
+    pub fn new(input: String) -> Result<(Self, BufferHandle, TracksHandle)> {
         let finished = Arc::new(AtomicBool::new(false));
         let state = State::new(input)?;
 
@@ -30,7 +31,12 @@ impl Project {
         let tracks = state.tracks.clone();
 
         let worker_finished = finished.clone();
-        std::thread::spawn(move || worker::create(state, worker_finished));
+
+        if state.is_remote {
+            std::thread::spawn(move || subscriber::create(state, worker_finished));
+        } else {
+            std::thread::spawn(move || watcher::create(state, worker_finished));
+        }
 
         Ok((Self { finished }, buffer, tracks))
     }
@@ -183,24 +189,28 @@ fn open(path: &Path) -> Result<Buffer> {
 }
 
 struct State {
-    input: PathBuf,
+    input: String,
     buffer: BufferHandle,
     tracks: TracksHandle,
     track_handles: HashMap<String, Arc<Track>>,
-    cache: LruCache<PathBuf, Buffer>,
+    mem_cache: LruCache<PathBuf, Buffer>,
+    tmp_dir: PathBuf,
+    is_remote: bool,
 }
 
 impl State {
-    fn new(input: PathBuf) -> Result<Self> {
-        let manifest = Self::manifest(&input)?;
+    fn new(input: String) -> Result<Self> {
+        let tmp_dir = std::env::temp_dir().join("euphony-player/cache");
 
-        let mut cache = LruCache::new(manifest.tracks.len() * 4);
+        let (manifest, is_remote) = Self::manifest(&input, &tmp_dir)?;
+
+        let mut mem_cache = LruCache::new(manifest.tracks.len() * 4);
 
         let mut track_handles = HashMap::new();
 
         let mut tracks = vec![];
         for (name, track) in manifest.tracks {
-            let track = Arc::new(Track::new(name.clone(), track, &mut cache)?);
+            let track = Arc::new(Track::new(name.clone(), track, &mut mem_cache)?);
             track_handles.insert(name.clone(), track.clone());
             tracks.push(track);
         }
@@ -216,18 +226,20 @@ impl State {
             buffer,
             tracks,
             track_handles,
-            cache,
+            mem_cache,
+            tmp_dir,
+            is_remote,
         };
 
         Ok(state)
     }
 
     fn reload(&mut self) -> Result<()> {
-        let manifest = Self::manifest(&self.input)?;
+        let (manifest, _) = Self::manifest(&self.input, &self.tmp_dir)?;
 
         let mut tracks = vec![];
         for (name, track) in manifest.tracks {
-            let track = Track::new(name.clone(), track, &mut self.cache)?;
+            let track = Track::new(name.clone(), track, &mut self.mem_cache)?;
 
             // copy the old settings
             if let Some(old_track) = self.track_handles.get(&name) {
@@ -263,53 +275,94 @@ impl State {
         Ok(())
     }
 
-    fn manifest(input: &Path) -> Result<manifest::Manifest> {
-        let file = File::open(input)?;
+    fn manifest(input: &str, tmp_dir: &Path) -> Result<(manifest::Manifest, bool)> {
+        let (path, is_remote) = if input.starts_with("http") {
+            let path = tmp_dir.join(input);
+            fetch(input, &path)?;
+            (path, true)
+        } else {
+            let path = PathBuf::from(input);
+            (path, false)
+        };
+
+        let file = File::open(&path)?;
         let file = BufReader::new(file);
 
-        let manifest = if input.extension().map_or(false, |ext| ext == "json") {
-            let mut manifest: manifest::Manifest = serde_json::from_reader(file)?;
-            if let Some(parent) = input.parent() {
-                for (_, track) in manifest.tracks.iter_mut() {
-                    if track.path.is_relative() {
-                        track.path = parent.join(&track.path).to_owned();
+        let manifest = if input.ends_with(".json") {
+            if is_remote {
+                let manifest: manifest::Manifest<String> = serde_json::from_reader(file)?;
+                let base = input.trim_end_matches("project.json");
+                let tracks = manifest
+                    .tracks
+                    .par_iter()
+                    .map(|(name, track)| {
+                        let path = tmp_dir.join(&track.path);
+                        if !path.exists() {
+                            let mut url = base.to_string();
+                            url.push_str(&track.path);
+                            fetch(&url, &path)?;
+                        }
+                        let track = manifest::Track { path };
+                        Ok((name.clone(), track))
+                    })
+                    .collect::<Result<_>>()?;
+
+                manifest::Manifest { tracks }
+            } else {
+                let mut manifest: manifest::Manifest = serde_json::from_reader(file)?;
+                if let Some(parent) = path.parent() {
+                    for (_, track) in manifest.tracks.iter_mut() {
+                        if track.path.is_relative() {
+                            track.path = parent.join(&track.path).to_owned();
+                        }
                     }
                 }
+                manifest
             }
-            manifest
         } else {
             manifest::Manifest {
                 tracks: {
                     let mut tracks = BTreeMap::new();
-                    let track = manifest::Track {
-                        path: input.to_owned(),
-                    };
+                    let track = manifest::Track { path };
                     tracks.insert("main".to_string(), track);
                     tracks
                 },
             }
         };
 
-        Ok(manifest)
+        Ok((manifest, is_remote))
     }
+}
+
+fn fetch(url: &str, path: &Path) -> Result<()> {
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(&parent)?;
+    }
+    // eprintln!("FETCH {}", url);
+    let file = File::create(&path)?;
+    let mut buf = BufWriter::new(file);
+    reqwest::blocking::get(url)?
+        .error_for_status()?
+        .copy_to(&mut buf)?;
+    Ok(())
 }
 
 mod manifest {
     use super::*;
     use std::collections::BTreeMap;
 
-    #[derive(Debug, Default, Deserialize)]
-    pub struct Manifest {
-        pub tracks: BTreeMap<String, Track>,
+    #[derive(Clone, Debug, Default, Deserialize)]
+    pub struct Manifest<Path = PathBuf> {
+        pub tracks: BTreeMap<String, Track<Path>>,
     }
 
-    #[derive(Debug, Deserialize)]
-    pub struct Track {
-        pub path: PathBuf,
+    #[derive(Clone, Debug, Deserialize)]
+    pub struct Track<Path = PathBuf> {
+        pub path: Path,
     }
 }
 
-mod worker {
+mod watcher {
     use super::State;
     use notify::{watcher, RecursiveMode, Watcher};
     use std::{
@@ -329,6 +382,44 @@ mod worker {
         watcher
             .watch(&state.input, RecursiveMode::NonRecursive)
             .unwrap();
+
+        loop {
+            while rx.recv_timeout(Duration::from_millis(50)).is_ok() {
+                // clear the queue
+                while rx.try_recv().is_ok() {}
+
+                if let Err(err) = state.reload() {
+                    // TODO log
+                    let _ = err;
+                }
+            }
+
+            if finished.load(Ordering::Relaxed) {
+                return;
+            }
+
+            let _ = state.recompute();
+        }
+    }
+}
+
+mod subscriber {
+    use super::State;
+    use sse_client::EventSource;
+    use std::{
+        sync::{
+            atomic::{AtomicBool, Ordering},
+            Arc,
+        },
+        time::Duration,
+    };
+    use url::Url;
+
+    pub(super) fn create(mut state: State, finished: Arc<AtomicBool>) {
+        let mut url = Url::parse(&state.input).unwrap();
+        url.set_path("_updates");
+        let event_source = EventSource::new(url.as_str()).unwrap();
+        let rx = event_source.receiver();
 
         loop {
             while rx.recv_timeout(Duration::from_millis(50)).is_ok() {

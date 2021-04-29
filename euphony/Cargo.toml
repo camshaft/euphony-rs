@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 bach = { git = "https://github.com/camshaft/bach", branch = "main" }
+euphony-cli = { version = "0.1", path = "../euphony-cli" }
 euphony-core = { version = "0.1", path = "../euphony-core" }
 euphony-macros = { version = "0.1", path = "../euphony-macros" }
 euphony-nrt = { version = "0.1", path = "../euphony-nrt" }
@@ -13,3 +14,6 @@ euphony-runtime = { version = "0.1", path = "../euphony-runtime" }
 euphony-sc = { version = "0.1", path = "../euphony-sc" }
 rayon = "1"
 structopt = "0.3"
+
+[[bin]]
+name = "euphony"
