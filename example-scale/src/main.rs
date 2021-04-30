@@ -11,9 +11,22 @@ synthdef!(
     }
 );
 
-fn sustain<T: 'static + Send>(value: T) {
+synthdef!(
+    fn bigsynth(out: f32<0>, freq: f32<440.0>, amp: f32<0.5>, pan: f32<0.0>, stutter: f32<0.1>) {
+        let detune = [0.9999, 1.0, 1.0001];
+        let freq = freq * detune;
+        let width = LFPar::new().freq(stutter).iphase(1).kr();
+        let signal = Pulse::new().freq(freq).width(width).ar();
+
+        let signal = Splay::new(signal).center(pan).ar() * amp;
+
+        Out::new(out, signal).ar()
+    }
+);
+
+fn sustain<T: 'static + Send>(value: T, beats: Beat) {
     async move {
-        Beat(1, 1).delay().await;
+        beats.delay().await;
         drop(value);
     }
     .spawn();
@@ -82,7 +95,7 @@ async fn fill() {
 async fn melody() {
     let t = track("melody");
 
-    let tonic = Interval(5, 1);
+    let tonic = Interval(4, 1);
 
     for (offset, mode) in structure().take(32) {
         let tonic = tonic + offset;
@@ -93,7 +106,7 @@ async fn melody() {
 
             let note = organ().freq(note).amp(0.1);
 
-            sustain(t.send(note));
+            sustain(t.send(note), Beat(1, 2));
             Beat(1, 4).delay().await;
         }
     }
@@ -104,13 +117,24 @@ async fn bass() {
 
     let tonic = Interval(3, 1);
 
+    let stutter_len = 16;
+    let stutter = 0..stutter_len;
+    let mut stutter = stutter
+        .clone()
+        .chain(stutter.rev())
+        .map(|v| 0.15 - (v as f32 / stutter_len as f32) * 0.1)
+        .cycle();
+
     for (offset, mode) in structure().take(32) {
-        let note = midi(tonic + offset, mode);
+        let note = to_freq(offset + tonic, mode);
 
         for delay in [5, 1].iter().copied() {
-            let n = assets::bass().note(note as i32).sustain(0.3).amp(0.2);
+            let n = bigsynth()
+                .freq(note)
+                .amp(0.1)
+                .stutter(stutter.next().unwrap());
 
-            sustain(t.send(n));
+            sustain(t.send(n), Beat(1, 4));
             Beat(delay, 4).delay().await;
         }
     }

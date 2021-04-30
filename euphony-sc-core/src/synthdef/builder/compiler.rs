@@ -278,7 +278,7 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
 
     // dead code eliminate
     for (idx, ugen) in ugens.iter().enumerate().rev() {
-        if uses[idx] == 0 && meta[idx].is_pure {
+        if uses[idx] == 0 && !meta[idx].writes() {
             for input in &ugen.ins {
                 match input {
                     Input::Constant { .. } => {}
@@ -296,7 +296,7 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
     let mut optimized = vec![];
     let mut optimized_ids = vec![usize::MAX; ugens.len()];
     for (idx, mut ugen) in ugens.drain(..).enumerate() {
-        if uses[idx] == 0 && meta[idx].is_pure {
+        if uses[idx] == 0 && !meta[idx].writes() {
             continue;
         }
 
@@ -412,20 +412,47 @@ impl<'a> Compiler<'a> {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct UgenMeta {
-    /// Is this UGen free from side-effects (e.g. writing to a buffer, bus, etc)
-    pub is_pure: bool,
-    /// Does calling this UGen with the same arguments produce the same result?
-    pub is_deterministic: bool,
+    pub reads_buffer: bool,
+    pub writes_buffer: bool,
+    pub reads_bus: bool,
+    pub writes_bus: bool,
+    pub randomized: bool,
 }
 
-impl Default for UgenMeta {
-    fn default() -> Self {
-        Self {
-            is_pure: true,
-            is_deterministic: true,
-        }
+impl UgenMeta {
+    pub fn reads_buffer(mut self) -> Self {
+        self.reads_buffer = true;
+        self
+    }
+
+    pub fn writes_buffer(mut self) -> Self {
+        self.writes_buffer = true;
+        self
+    }
+
+    pub fn reads_bus(mut self) -> Self {
+        self.reads_bus = true;
+        self
+    }
+
+    pub fn writes_bus(mut self) -> Self {
+        self.writes_bus = true;
+        self
+    }
+
+    pub fn randomized(mut self) -> Self {
+        self.randomized = true;
+        self
+    }
+
+    pub fn writes(self) -> bool {
+        self.writes_buffer || self.writes_bus
+    }
+
+    pub fn reads(self) -> bool {
+        self.reads_buffer || self.reads_bus
     }
 }
 

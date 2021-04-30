@@ -3,187 +3,27 @@ use crate::synthdef::{
     CalculationRate, UGen,
 };
 
-#[derive(Clone, Debug)]
-pub struct Out {
-    pub buffer: Value,
-    pub channels: ValueVec,
-}
+#[macro_use]
+mod macros;
 
-impl Out {
-    pub fn new(buffer: impl Into<Value>, channels: impl Into<ValueVec>) -> Self {
-        Self {
-            buffer: buffer.into(),
-            channels: channels.into(),
-        }
-    }
+pub mod generator;
+pub mod io;
+pub mod multichannel;
 
-    pub fn ar(self) {
-        self.build(Some(CalculationRate::Audio))
-    }
+pub mod prelude {
+    use super::*;
 
-    pub fn kr(self) {
-        self.build(Some(CalculationRate::Control))
-    }
-
-    pub fn build(self, rate: Option<CalculationRate>) {
-        let Self { buffer, channels } = self;
-        ugen(
-            UgenSpec {
-                name: "Out",
-                meta: UgenMeta {
-                    is_pure: false,
-                    is_deterministic: true,
-                },
-                rate,
-                outputs: 0,
-                compile: compile_out,
-                ..Default::default()
-            },
-            |mut ugen| {
-                ugen.input(buffer);
-                ugen.input(channels);
-                ugen.finish()
-            },
-        )
-    }
-}
-
-fn compile_out(spec: &UgenSpec, inputs: &Inputs, compiler: &mut Compiler) {
-    let mut inputs = inputs.iter();
-    let buffer = inputs.next().expect("buffer");
-    let channels = inputs.next().expect("channels");
-
-    let mut ins = vec![];
-    let mut rate = spec.rate.unwrap_or(CalculationRate::Scalar);
-    ins.push(buffer[0][0].input);
-    rate = rate.max(buffer[0][0].rate);
-
-    for channel in channels.iter().flatten() {
-        ins.push(channel.input);
-        rate = rate.max(channel.rate);
-    }
-
-    let ugen = UGen {
-        name: spec.name.into(),
-        special_index: spec.special_index,
-        rate,
-        ins,
-        outs: vec![],
-    };
-
-    let outputs = compiler.push_ugen(ugen, spec.meta);
-    compiler.push_outputs(outputs);
-}
-
-#[derive(Clone, Debug)]
-pub struct SinOsc {
-    pub freq: ValueVec,
-    pub phase: ValueVec,
-}
-
-impl Default for SinOsc {
-    fn default() -> Self {
-        Self {
-            freq: (440.0).into(),
-            phase: (0.0).into(),
-        }
-    }
-}
-
-impl SinOsc {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    pub fn freq(mut self, freq: impl Into<ValueVec>) -> Self {
-        self.freq = freq.into();
-        self
-    }
-
-    pub fn ar(self) -> Value {
-        self.build(Some(CalculationRate::Audio))
-    }
-
-    pub fn kr(self) -> Value {
-        self.build(Some(CalculationRate::Control))
-    }
-
-    pub fn build(self, rate: Option<CalculationRate>) -> Value {
-        let Self { freq, phase } = self;
-
-        ugen(
-            UgenSpec {
-                name: "SinOsc",
-                rate,
-                ..Default::default()
-            },
-            |mut ugen| {
-                ugen.input(freq);
-                ugen.input(phase);
-                ugen.finish()
-            },
-        )
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct Mix {
-    pub signals: ValueVec,
-}
-
-impl Mix {
-    pub fn new(signals: impl Into<ValueVec>) -> Self {
-        Self {
-            signals: signals.into(),
-        }
-    }
-
-    pub fn ar(self) -> Value {
-        self.build(Some(CalculationRate::Audio))
-    }
-
-    pub fn kr(self) -> Value {
-        self.build(Some(CalculationRate::Control))
-    }
-
-    pub fn build(self, rate: Option<CalculationRate>) -> Value {
-        let Self { signals } = self;
-        ugen(
-            UgenSpec {
-                rate,
-                compile: compile_mix,
-                ..Default::default()
-            },
-            |mut ugen| {
-                ugen.input(signals);
-                ugen.finish()
-            },
-        )
-    }
-}
-
-fn compile_mix(spec: &UgenSpec, inputs: &Inputs, compiler: &mut Compiler) {
-    let channels = inputs.iter().next().expect("only one param");
-    for signals in channels.iter() {
-        match signals.len() {
-            0 => continue,
-            1 => compiler.push_outputs(signals.clone()),
-            _ => {
-                let rate = spec.rate.unwrap_or(CalculationRate::Audio); // TODO get from the signals
-                let first = signals[0];
-                let out = signals[1..].iter().fold(first, |acc, signal| {
-                    ops::compile_add(acc.input, signal.input, rate, compiler)
-                });
-                compiler.push_output(out);
-            }
-        }
-    }
+    pub use super::Splay;
+    pub use generator::*;
+    pub use io::*;
+    pub use multichannel::*;
 }
 
 pub struct Pan2 {
     pub signal: ValueVec,
     pub pos: ValueVec,
     pub level: ValueVec,
+    pub rate: Option<CalculationRate>,
 }
 
 impl Pan2 {
@@ -192,6 +32,7 @@ impl Pan2 {
             signal: signal.into(),
             pos: 0.into(),
             level: 1.into(),
+            rate: None,
         }
     }
 
@@ -205,15 +46,26 @@ impl Pan2 {
         self
     }
 
+    pub fn rate(mut self, rate: CalculationRate) -> Self {
+        self.rate = Some(rate);
+        self
+    }
+
     pub fn ar(self) -> [Value; 2] {
-        self.build(Some(CalculationRate::Audio))
+        self.rate(CalculationRate::Audio).build()
     }
 
     pub fn kr(self) -> [Value; 2] {
-        self.build(Some(CalculationRate::Control))
+        self.rate(CalculationRate::Control).build()
     }
 
-    pub fn build(self, rate: Option<CalculationRate>) -> [Value; 2] {
+    pub fn build(self) -> [Value; 2] {
+        let Self {
+            signal,
+            pos,
+            level,
+            rate,
+        } = self;
         ugen(
             UgenSpec {
                 name: "Pan2",
@@ -222,9 +74,9 @@ impl Pan2 {
                 ..Default::default()
             },
             |mut ugen| {
-                ugen.input(self.signal);
-                ugen.input(self.pos);
-                ugen.input(self.level);
+                ugen.input(signal);
+                ugen.input(pos);
+                ugen.input(level);
                 ugen.finish()
             },
         )
@@ -237,6 +89,7 @@ pub struct Splay {
     pub level: Value,
     pub center: Value,
     pub level_comp: bool,
+    pub rate: Option<CalculationRate>,
 }
 
 impl Splay {
@@ -247,6 +100,7 @@ impl Splay {
             level: Value::from(1.0),
             center: Value::from(0.0),
             level_comp: true,
+            rate: None,
         }
     }
 
@@ -265,22 +119,30 @@ impl Splay {
         self
     }
 
+    pub fn rate(mut self, rate: CalculationRate) -> Self {
+        self.rate = Some(rate);
+        self
+    }
+
     pub fn ar(self) -> Value {
-        self.build(CalculationRate::Audio)
+        self.rate(CalculationRate::Audio).build()
     }
 
     pub fn kr(self) -> Value {
-        self.build(CalculationRate::Control)
+        self.rate(CalculationRate::Control).build()
     }
 
-    pub fn build(self, rate: CalculationRate) -> Value {
+    pub fn build(self) -> Value {
         let Self {
             signal,
             spread,
             level,
             center,
             level_comp,
+            rate,
         } = self;
+
+        use crate::ugen::prelude::*;
 
         let size = Size::ir(signal.clone());
         //        let size = size.max(2);
@@ -288,14 +150,15 @@ impl Splay {
         let range = Range::ir(Value::from(0)..size);
         let positions = (range * (2 / n1) - 1) * spread + center;
 
-        let signal = Pan2::new(signal).pos(positions).build(Some(rate));
-        let signal = Mix::new(signal).build(Some(rate));
+        let signal = Pan2::new(signal).pos(positions).build();
+        let signal = Mix::new(signal).xr();
 
         if !level_comp {
             return signal * level;
         }
 
-        let level = if rate == CalculationRate::Audio {
+        // TODO get calculation rate from ugen
+        let level = if rate == Some(CalculationRate::Audio) {
             // TODO level * n.recip().sqrt()
             level * (1 / size)
         } else {

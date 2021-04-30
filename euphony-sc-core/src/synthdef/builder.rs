@@ -205,7 +205,17 @@ impl Context {
             variants: vec![],
         };
 
-        // definition.dot(&mut std::io::stdout()).unwrap();
+        if let Ok(out) = std::env::var("SYNTHDEF_OUT_DIR") {
+            let dir = std::path::Path::new(&out);
+            std::fs::create_dir_all(&dir).unwrap();
+            let mut path = dir.join(name);
+            path.set_extension("dot");
+
+            let file = std::fs::File::create(path).unwrap();
+            let mut file = std::io::BufWriter::new(file);
+
+            definition.dot(&mut file).unwrap();
+        }
 
         let container = crate::synthdef::Container {
             version: crate::synthdef::V2 as _,

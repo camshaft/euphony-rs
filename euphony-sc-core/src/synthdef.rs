@@ -588,6 +588,20 @@ pub enum CalculationRate {
     Demand = 3,
 }
 
+impl CalculationRate {
+    pub fn kr() -> Option<Self> {
+        Some(Self::Control)
+    }
+
+    pub fn ar() -> Option<Self> {
+        Some(Self::Audio)
+    }
+
+    pub fn xr() -> Option<Self> {
+        None
+    }
+}
+
 impl<B: DecoderBuffer> TypeDecoder<B> for CalculationRate {
     fn decode_type(buffer: B) -> buffer::Result<Self, B> {
         let (value, buffer) = buffer.decode()?;

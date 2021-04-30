@@ -83,7 +83,7 @@ fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
     });
 
     let load = quote!(|__euphony_params: Params| {
-        use euphony_sc::_macro_support::ugen::*;
+        use euphony_sc::_macro_support::ugen::prelude::*;
         use super::*;
         #(#def_params)*
         #block
