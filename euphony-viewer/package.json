@@ -1,0 +1,38 @@
+{
+  "name": "euphony-viewer",
+  "version": "0.1.1",
+  "description": "Browser interface for euphony projects",
+  "main": "lib/index.js",
+  "unpkg": "dist/index.js",
+  "repository": "https://github.com/camshaft/euphony-rs",
+  "author": "Cameron Bytheway",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write lib/**/*.js",
+    "format-check": "prettier --check lib/**/*.js",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run format && npm run package && npm test"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "waveform-viewer": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15",
+    "@typescript-eslint/parser": "^4",
+    "@vercel/ncc": "^0.28",
+    "eslint": "^7",
+    "eslint-plugin-github": "^4",
+    "eslint-plugin-jest": "^24",
+    "jest": "^26",
+    "jest-circus": "^26",
+    "js-yaml": "^4",
+    "prettier": "^2",
+    "ts-jest": "^26",
+    "typescript": "^4"
+  }
+}
