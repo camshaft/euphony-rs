@@ -18,14 +18,14 @@ pub fn synthdef(input: TokenStream) -> TokenStream {
 }
 
 enum SynthDefInput {
-    Closure(syn::ExprClosure),
+    Closure(syn::ExprClosure, syn::Expr),
     Fn(Box<syn::ItemFn>),
 }
 
 impl SynthDefInput {
     fn to_tokens(&self) -> syn::parse::Result<TokenStream2> {
         match self {
-            Self::Closure(v) => Ok(create_synthdef(&v)),
+            Self::Closure(v, drop) => Ok(create_synthdef(&v, &drop)),
             Self::Fn(v) => synthdef_fn_impl(v),
         }
     }
@@ -35,7 +35,9 @@ impl Parse for SynthDefInput {
     fn parse(input: ParseStream) -> syn::parse::Result<Self> {
         if input.peek(Token![|]) {
             let v = input.parse()?;
-            return Ok(Self::Closure(v));
+            let _: Token![,] = input.parse()?;
+            let d = input.parse()?;
+            return Ok(Self::Closure(v, d));
         }
 
         let item = input.parse()?;
@@ -89,7 +91,36 @@ fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
         #block
     });
 
-    let def = create_synthdef(&load);
+    let drop_ident = Ident::new("drop", span);
+
+    let default_drop_handler = quote!(|synth| synth.free());
+    let drop_handler = attrs
+        .iter()
+        .find_map(|attr| {
+            if attr.path.is_ident(&drop_ident) {
+                Some(&attr.tokens)
+            } else {
+                None
+            }
+        })
+        .unwrap_or(&default_drop_handler);
+
+    // nest the closure so the caller doesn't have to specify the type argument
+    let drop = quote!(|synth: Synth| {
+        #[allow(unused_parens)]
+        let handler: fn(Synth) = #drop_handler;
+        handler(synth)
+    });
+
+    let def = create_synthdef(&load, &drop);
+
+    let attrs = attrs.iter().filter(|attr| {
+        if attr.path.is_ident(&drop_ident) {
+            return false;
+        }
+
+        true
+    });
 
     Ok(quote!(
         #(#attrs)* #vis mod #name {

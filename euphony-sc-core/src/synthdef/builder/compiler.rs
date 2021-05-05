@@ -18,6 +18,14 @@ impl<'a> Inputs<'a> {
         Expand::new(self)
     }
 
+    pub fn len(&self) -> usize {
+        self.inputs.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.inputs.is_empty()
+    }
+
     pub fn iter(&self) -> impl Iterator<Item = SmallVec<[InputVec; 2]>> + '_ {
         let ranges = &self.ranges;
         let outputs = &self.outputs;
@@ -45,6 +53,15 @@ impl<'a> Inputs<'a> {
             }
             input_set
         })
+    }
+
+    pub fn iter_raw(&self) -> impl Iterator<Item = &SmallVec<[Input; 2]>> + '_ {
+        self.inputs.iter()
+    }
+
+    pub fn outputs(&self, index: usize) -> &[InputVec] {
+        let range = self.ranges[index].clone();
+        &self.outputs[range]
     }
 }
 
@@ -219,7 +236,7 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
     let mut ranges: Vec<Range<usize>> = vec![];
 
     for node in graph.nodes.iter() {
-        let mut inputs: SmallVec<_> = node
+        let inputs: SmallVec<_> = node
             .inputs
             .iter()
             .map(|value_vec| {
@@ -241,11 +258,6 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
                 inputs
             })
             .collect();
-
-        // make sure each set of inputs has an instantiation
-        if inputs.is_empty() {
-            inputs.push(SmallVec::new());
-        }
 
         let mut compiler_outputs = vec![];
         let range_start = outputs.len();
@@ -271,6 +283,7 @@ pub fn compile(graph: &Graph, params: &[ParamSpec]) -> (Vec<f32>, Vec<synthdef::
         ranges.push(range_start..outputs.len());
     }
 
+    // set to true to disable optimizations
     if false {
         let consts = consts.values;
         return (consts, ugens);
@@ -493,6 +506,23 @@ impl ConstIds {
 }
 
 pub fn default_compile(spec: &UgenSpec, inputs: &Inputs, compiler: &mut Compiler) {
+    // special-case ugens with no arguments
+    if inputs.is_empty() {
+        let rate = spec.rate.unwrap_or(CalculationRate::Control);
+
+        let ugen = synthdef::UGen {
+            name: spec.name.into(),
+            special_index: spec.special_index,
+            rate,
+            ins: vec![],
+            outs: (0..spec.outputs).map(|_| rate).collect(),
+        };
+
+        let outputs = compiler.push_ugen(ugen, spec.meta);
+        compiler.push_outputs(outputs);
+        return;
+    }
+
     for expansion in inputs.expand().iter() {
         let rate = spec
             .rate

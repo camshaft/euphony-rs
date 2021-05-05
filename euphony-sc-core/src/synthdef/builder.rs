@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use crate::{param::Param, synthdef::CalculationRate};
 use core::{fmt, marker::PhantomData};
 
@@ -14,10 +12,28 @@ pub use compiler::{
 pub use graph::{OutputSpec, Ugen};
 pub use value::{Value, ValueVec};
 
+pub trait GetWrap<T> {
+    fn get_wrap(&self, index: usize) -> &T;
+}
+
+impl<T, U> GetWrap<T> for U
+where
+    U: AsRef<[T]>,
+{
+    fn get_wrap(&self, index: usize) -> &T {
+        let l = self.as_ref();
+        assert!(!l.is_empty());
+
+        let index = index % l.len();
+        &l[index]
+    }
+}
+
 pub trait Parameters: 'static + Sized {
     type Desc;
+    type Synth;
 
-    fn new<F>(f: F) -> Self
+    fn new<F>(f: F, drop_handler: fn(Self::Synth)) -> Self
     where
         F: FnOnce(fn() -> Self::Desc) -> SynthDescRef;
 }
@@ -54,6 +70,20 @@ impl Synth {
         use crate::track::Track;
         self.track.name()
     }
+
+    pub fn track(&self) -> &crate::track::Handle {
+        &self.track
+    }
+
+    pub fn free(&self) {
+        use crate::track::Track;
+        self.track.free(self.id);
+    }
+
+    pub fn free_after(&self, time: core::time::Duration) {
+        use crate::track::Track;
+        self.track.free_after(self.id, time);
+    }
 }
 
 impl fmt::Debug for Synth {
@@ -63,13 +93,6 @@ impl fmt::Debug for Synth {
             .field("track", &self.track_name())
             .field("synthdef", &self.synthdef)
             .finish()
-    }
-}
-
-impl Drop for Synth {
-    fn drop(&mut self) {
-        use crate::track::Track;
-        self.track.free(self.id)
     }
 }
 
@@ -109,15 +132,17 @@ impl fmt::Debug for SynthDescRef {
     }
 }
 
-pub struct SynthDef<Params> {
+pub struct SynthDef<Params, Synth> {
     desc: SynthDescRef,
+    drop_handler: fn(Synth),
     params: PhantomData<Params>,
 }
 
-impl<Params> SynthDef<Params> {
-    pub fn new(desc: SynthDescRef) -> Self {
+impl<Params, Synth> SynthDef<Params, Synth> {
+    pub fn new(desc: SynthDescRef, drop_handler: fn(Synth)) -> Self {
         Self {
             desc,
+            drop_handler,
             params: PhantomData,
         }
     }
@@ -129,9 +154,13 @@ impl<Params> SynthDef<Params> {
     pub fn desc(&self) -> &'static [u8] {
         &self.desc.desc
     }
+
+    pub fn drop_handler(&self) -> fn(Synth) {
+        self.drop_handler
+    }
 }
 
-impl<Params> fmt::Debug for SynthDef<Params> {
+impl<Params, Synth> fmt::Debug for SynthDef<Params, Synth> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("SynthDef")
             .field("name", &self.name())

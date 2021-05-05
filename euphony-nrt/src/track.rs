@@ -66,13 +66,13 @@ impl Track {
         self.events.insert(event_id, output).unwrap();
     }
 
-    pub fn dump(&self, out_dir: &Path, padding: Duration) -> (&str, io::Result<PathBuf>) {
+    pub fn dump(&self, out_dir: &Path) -> (&str, io::Result<PathBuf>) {
         let track_name = &self.name;
 
         let mut hash = Sha256::default();
         // make sure we don't have collisions with other tracks
         hash.update(track_name.as_bytes());
-        self.write(&mut hash, out_dir, padding).unwrap();
+        self.write(&mut hash, out_dir).unwrap();
         let hash = hash.finalize();
         let hash = base64::encode_config(&hash, base64::URL_SAFE_NO_PAD);
 
@@ -86,7 +86,7 @@ impl Track {
             fs::create_dir_all(outpath.parent().unwrap())?;
             let file = File::create(&outpath)?;
             let mut buf = io::BufWriter::new(file);
-            self.write(&mut buf, out_dir, padding)?;
+            self.write(&mut buf, out_dir)?;
             Ok(outpath)
         });
 
@@ -94,7 +94,7 @@ impl Track {
     }
 
     pub fn render(&self, build_dir: &Path, out_file: Option<&Path>) -> io::Result<PathBuf> {
-        let (_, commands) = self.dump(build_dir, Duration::from_secs(0));
+        let (_, commands) = self.dump(build_dir);
         let commands = commands?;
 
         let output = commands.parent().unwrap().join("render.wav");
@@ -132,12 +132,7 @@ impl Track {
         Ok(out_file)
     }
 
-    fn write<W: io::Write>(
-        &self,
-        out: &mut W,
-        out_dir: &Path,
-        padding: Duration,
-    ) -> io::Result<usize> {
+    fn write<W: io::Write>(&self, out: &mut W, out_dir: &Path) -> io::Result<usize> {
         let mut len = 0;
 
         macro_rules! header {
@@ -177,12 +172,6 @@ impl Track {
             len += header!(&key[..8], value.len());
             len += out.write(&value)?;
         }
-
-        // add padding and quit
-        let end = Timetag::new(self.scheduler.now() + padding);
-        let msg = b"\x00\x00\x00\x08/quit\0\0\0";
-        len += header!(end.as_ref(), msg.len());
-        len += out.write(msg.as_ref())?;
 
         Ok(len)
     }

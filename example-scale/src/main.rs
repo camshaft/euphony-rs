@@ -1,15 +1,6 @@
+use core::time::Duration;
 use euphony::pitch::mode::western::*;
 euphony::prelude!();
-
-synthdef!(
-    fn organ(out: f32<0>, freq: f32<440.0>, amp: f32<0.5>, pan: f32<0.0>) {
-        let detune = [0.98, 0.99, 1.00, 1.01, 1.02];
-        let freq = freq * detune;
-        let signal = SinOsc::new().freq(freq).ar();
-        let signal = Splay::new(signal).center(pan).ar() * amp;
-        Out::new(out, signal).ar()
-    }
-);
 
 synthdef!(
     fn bigsynth(out: f32<0>, freq: f32<440.0>, amp: f32<0.5>, pan: f32<0.0>, stutter: f32<0.1>) {
@@ -19,6 +10,32 @@ synthdef!(
         let signal = Pulse::new().freq(freq).width(width).ar();
 
         let signal = Splay::new(signal).center(pan).ar() * amp;
+
+        Out::new(out, signal).ar()
+    }
+);
+
+synthdef!(
+    #[drop(|mut synth| {
+        synth.set().gate(0).send();
+        synth.free_after(Duration::from_secs_f32(0.5));
+    })]
+    fn organ(out: f32<0>, freq: f32<440.0>, amp: f32<0.2>, pan: f32<0.0>, gate: f32<1>) {
+        let env = Env::new()
+            .levels([0., 1., 0.6, 0.])
+            .times([0.01, 0.1, 0.5])
+            .curve(Curve::Squared)
+            .sustain(1)
+            .xr();
+
+        let detune = [0.99, 1.00, 1.01];
+        let freq = freq * detune;
+
+        let signal = SinOsc::new().freq(freq).ar();
+        let signal = signal * EnvGen::new(env).gate(gate).done_action(2).kr();
+
+        let signal = Splay::new(signal).center(pan).ar();
+        let signal = signal * amp;
 
         Out::new(out, signal).ar()
     }
@@ -40,12 +57,13 @@ async fn main() {
     let tempo = Tempo(50, 1);
     scheduler().set_tempo(tempo);
 
-    let drums = drums().spawn();
+    section(Beat(6, 1)).with(drums()).with(bass()).await;
 
-    bass().spawn();
-    melody().await;
-
-    drums.cancel();
+    section(Beat(6, 1))
+        .with(drums())
+        .with(bass())
+        .with(melody())
+        .await;
 }
 
 async fn drums() {
@@ -95,9 +113,9 @@ async fn fill() {
 async fn melody() {
     let t = track("melody");
 
-    let tonic = Interval(4, 1);
+    let tonic = Interval(5, 1);
 
-    for (offset, mode) in structure().take(32) {
+    for (offset, mode) in structure() {
         let tonic = tonic + offset;
 
         for note in [I, III, V, Interval(1, 1), V, III].iter().copied() {
@@ -125,7 +143,7 @@ async fn bass() {
         .map(|v| 0.15 - (v as f32 / stutter_len as f32) * 0.1)
         .cycle();
 
-    for (offset, mode) in structure().take(32) {
+    for (offset, mode) in structure() {
         let note = to_freq(offset + tonic, mode);
 
         for delay in [5, 1].iter().copied() {

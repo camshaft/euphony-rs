@@ -6,17 +6,17 @@ use crate::synthdef::{
 #[macro_use]
 mod macros;
 
+pub mod delay;
+pub mod envelope;
+pub mod filter;
 pub mod generator;
 pub mod io;
 pub mod multichannel;
 
 pub mod prelude {
-    use super::*;
-
-    pub use super::Splay;
-    pub use generator::*;
-    pub use io::*;
-    pub use multichannel::*;
+    pub use super::{
+        delay::*, envelope::*, filter::*, generator::*, io::*, multichannel::*, Splay,
+    };
 }
 
 pub struct Pan2 {

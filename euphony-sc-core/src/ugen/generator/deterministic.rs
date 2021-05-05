@@ -396,3 +396,203 @@ ugen!(
         phase: ValueVec,
     }
 );
+
+ugen!(
+    /// SinOscFB is a sine oscillator that has phase modulation feedback.
+    ///
+    /// Its output plugs back into the phase input. Basically this allows a
+    /// modulation between a sine wave and a sawtooth like wave. Overmodulation
+    /// causes chaotic oscillation. It may be useful if you want to simulate
+    /// feedback FM synths.
+    #[rates = [ar, kr]]
+    #[output = Value]
+    struct SinOscFB {
+        /// Frequency in Hertz
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Amplitude of the phase feedback in radians
+        #[default = 0.0]
+        feedback: ValueVec,
+    }
+);
+
+ugen!(
+    /// A sawtooth wave that is hard synched to a fundamental pitch.
+    ///
+    /// This produces an effect similar to moving formants or pulse width
+    /// modulation. The sawtooth oscillator has its phase reset when the
+    /// sync oscillator completes a cycle. This is not a band limited waveform,
+    /// so it may alias.
+    #[rates = [ar, kr]]
+    #[output = Value]
+    struct SyncSaw {
+        /// Frequency of the fundamental in Hertz
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Frequency of the slave synched sawtooth wave.
+        ///
+        /// Should always be greater than freq.
+        #[default = 440.0]
+        saw_freq: ValueVec,
+    }
+);
+
+ugen!(
+    /// A wavetable lookup oscillator which can be swept smoothly across wavetables.
+    ///
+    /// All the wavetables must be allocated to the same size. Fractional values of
+    /// table will interpolate between two adjacent tables.
+    ///
+    /// This oscillator requires at least two buffers to be filled with a wavetable
+    /// format signal. This preprocesses the Signal into a form which can be used
+    /// efficiently by the Oscillator. The buffer size must be a power of 2.
+    #[rates = [ar, kr]]
+    #[new(buf: impl Into<ValueVec>)]
+    #[output = Value]
+    struct VOsc {
+        /// Buffer index
+        ///
+        /// Can be swept continuously among adjacent wavetable buffers of the same size
+        buf: ValueVec,
+
+        /// Frequency in Hertz
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Phase in radians
+        #[default = 0.0]
+        phase: ValueVec,
+    }
+);
+
+ugen!(
+    /// A wavetable lookup oscillator which can be swept smoothly across wavetables.
+    ///
+    /// All the wavetables must be allocated to the same size. Fractional values of
+    /// table will interpolate between two adjacent tables.
+    ///
+    /// This unit generator contains three oscillators at different frequencies, mixed together.
+    ///
+    /// This oscillator requires at least two buffers to be filled with a wavetable
+    /// format signal. This preprocesses the Signal into a form which can be used
+    /// efficiently by the Oscillator. The buffer size must be a power of 2.
+    #[rates = [ar, kr]]
+    #[new(buf: impl Into<ValueVec>)]
+    #[output = Value]
+    struct VOsc3 {
+        /// Buffer index
+        ///
+        /// Can be swept continuously among adjacent wavetable buffers of the same size
+        buf: ValueVec,
+
+        /// Frequency in Hertz of the 1st oscillator
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Frequency in Hertz of the 2nd oscillator
+        #[default = 220.0]
+        freq_2: ValueVec,
+
+        /// Frequency in Hertz of the 3rd oscillator
+        #[default = 110.0]
+        freq_3: ValueVec,
+    }
+);
+
+ugen!(
+    /// Variable duty saw
+    ///
+    /// Sawtooth-triangle oscillator with variable duty.
+    #[rates = [ar, kr]]
+    #[output = Value]
+    struct VarSaw {
+        /// Frequency in Hertz
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Initial phase offset in radians
+        #[default = 0.0]
+        iphase: ValueVec,
+
+        /// Duty cycle from zero to one
+        #[default = 0.5]
+        width: ValueVec,
+    }
+);
+
+ugen!(
+    /// The Vibrato oscillator models a slow frequency modulation.
+    ///
+    /// Vibrato is a slow frequency modulation. Consider the systematic
+
+    /// deviation in pitch of a singer around a fundamental frequency, or a
+    /// violinist whose finger wobbles in position on the fingerboard, slightly
+    /// tightening and loosening the string to add shimmer to the pitch. There is
+    /// often also a delay before vibrato is established on a note. This UGen models
+    /// these processes; by setting more extreme settings, you can get back to the
+    /// timbres of FM synthesis. You can also add in some noise to the vibrato rate
+    /// and vibrato size (modulation depth) to make for a more realistic motor pattern.
+    ///
+    /// The vibrato output is a waveform based on a squared envelope shape with four
+    /// stages marking out 0.0 to 1.0, 1.0 to 0.0, 0.0 to -1.0, and -1.0 back to 0.0.
+    /// Vibrato rate determines how quickly you move through these stages.
+    #[rates = [ar, kr]]
+    #[output = Value]
+    struct Vibrato {
+        /// Fundamental  frequency in Hertz
+        ///
+        /// If the Vibrato UGen is running at audio rate, this must not be a constant,
+        /// but an actual audio rate UGen
+        #[default = 440.0]
+        freq: ValueVec,
+
+        /// Vibrato rate, speed of wobble in Hertz.
+        ///
+        /// Note that if this is set to a low value (and definitely with 0.0),
+        /// you may never get vibrato back, since the rate input is only checked at the
+        /// end of a cycle.
+        #[default = 6]
+        rate: ValueVec,
+
+        /// Size of vibrato frequency deviation around the fundamental, as a proportion of the fundamental.
+        ///
+        /// For example, 0.02 = 2% of the fundamental.
+        #[default = 0.02]
+        depth: ValueVec,
+
+        /// Delay before vibrato is established in seconds
+        ///
+        /// For example, a singer tends to attack a note and then stabilise with vibrato.
+        #[default = 0.0]
+        delay: ValueVec,
+
+        /// Transition time in seconds from no vibrato to full vibrato after the initial delay time.
+        #[default = 0.0]
+        onset: ValueVec,
+
+        /// Noise on the rate, expressed as a proportion of the rate
+        ///
+        /// This can change once per cycle of vibrato.
+        #[default = 0.04]
+        rate_var: ValueVec,
+
+        /// Noise on the depth of modulation, expressed as a proportion of the depth.
+        ///
+        /// This can change once per cycle of vibrato. The noise affects independently
+        /// the up and the down part of vibrato shape within a cycle.
+        #[default = 0.1]
+        depth_var: ValueVec,
+
+        /// Initial phase of vibrato modulation
+        ///
+        /// This allows it to start above or below the fundamental rather than on it.
+        #[default = 0.0]
+        iphase: ValueVec,
+
+        /// Start again if transition from trig <= 0 to trig > 0.
+        #[default = 0.0]
+        trig: ValueVec,
+    }
+);

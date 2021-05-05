@@ -57,9 +57,10 @@ macro_rules! ugen {
             )*
 
             fn build(self, rate: Option<CalculationRate>) -> $output {
+                #![allow(unused_mut)]
+
                 let Self { $($field,)* } = self;
 
-                #[allow(unused_mut)]
                 let mut spec = UgenSpec {
                     name: stringify!($name),
                     rate,

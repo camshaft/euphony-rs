@@ -220,18 +220,8 @@ impl Timer {
     pub fn cancel(&mut self) {
         self.entry.cancel();
     }
-}
 
-impl Drop for Timer {
-    fn drop(&mut self) {
-        self.cancel();
-    }
-}
-
-impl Future for Timer {
-    type Output = ();
-
-    fn poll(self: Pin<&mut Self>, cx: &mut Context) -> Poll<()> {
+    pub fn poll_unpin(&mut self, cx: &mut Context) -> Poll<()> {
         // check condition before to avoid needless registration
         if self.entry.take_expired() {
             return Poll::Ready(());
@@ -251,5 +241,19 @@ impl Future for Timer {
         }
 
         Poll::Pending
+    }
+}
+
+impl Drop for Timer {
+    fn drop(&mut self) {
+        self.cancel();
+    }
+}
+
+impl Future for Timer {
+    type Output = ();
+
+    fn poll(mut self: Pin<&mut Self>, cx: &mut Context) -> Poll<()> {
+        self.poll_unpin(cx)
     }
 }

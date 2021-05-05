@@ -70,12 +70,15 @@ fn include_synthdef_impl(path: &Path, span: Span) -> Result<TokenStream2, Error>
             euphony_sc::_macro_support::Parameters::new(move |_create_params| {
                 static SYNTHDEF: &[u8] = include_bytes!(#path_str);
                 euphony_sc::_macro_support::external_synthdef(#synthname, SYNTHDEF)
-            })
+            }, |synth: Synth| synth.free())
         }
     ))
 }
 
-pub fn create_synthdef<T: quote::ToTokens>(item: &T) -> TokenStream2 {
+pub fn create_synthdef<T: quote::ToTokens, U: quote::ToTokens>(
+    item: &T,
+    drop_handler: &U,
+) -> TokenStream2 {
     quote!({
         fn __euphony_item_path__() {}
         fn __euphony_resolve_item_path__<T>(_: T) -> &'static str {
@@ -93,7 +96,7 @@ pub fn create_synthdef<T: quote::ToTokens>(item: &T) -> TokenStream2 {
                     (#item)(create_params())
                 })
             }).as_ref()
-        })
+        }, #drop_handler)
     })
 }
 
@@ -159,14 +162,15 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
         }
 
         /// A set of parameters with an attached synth definition
-        pub type #synthdef = #name<euphony_sc::_macro_support::SynthDef<#name>>;
+        pub type #synthdef = #name<euphony_sc::_macro_support::SynthDef<#name, #synth>>;
 
         impl euphony_sc::_macro_support::Parameters for #synthdef {
             type Desc = #name;
+            type Synth = #synth;
 
             /// Creates a set of parameters with an associated synthdef
-            fn new<F>(desc: F) -> #synthdef
-                where F: FnOnce(fn() -> #name) -> euphony_sc::_macro_support::SynthDescRef
+            fn new<Desc>(desc: Desc, drop: fn(#synth)) -> #synthdef
+                where Desc: FnOnce(fn() -> #name) -> euphony_sc::_macro_support::SynthDescRef,
             {
                 fn create_params() -> #name {
                     #name {
@@ -176,7 +180,7 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
                 }
 
                 let desc = desc(create_params);
-                let _meta = <euphony_sc::_macro_support::SynthDef<#name>>::new(desc);
+                let _meta = <euphony_sc::_macro_support::SynthDef<#name, #synth>>::new(desc, drop);
                 // with instance params we can distinguish between set/unset
                 #synthdef {
                     #instance_params
@@ -222,13 +226,15 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
 
                 let id = track.play(synthdef, action, target, &values[..]);
 
+                let drop = self._meta.drop_handler();
+
                 let synth = euphony_sc::_macro_support::Synth::new(id, track.clone(), synthdef);
 
-                #synth(synth)
+                #synth(synth, drop)
             }
         }
 
-        pub struct #synth(euphony_sc::_macro_support::Synth);
+        pub struct #synth(euphony_sc::_macro_support::Synth, fn(Self));
 
         impl core::fmt::Debug for #synth {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
@@ -244,20 +250,51 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
                     _meta: &mut self.0
                 }
             }
+
+            pub fn free(mut self) {
+                // set the drop to noop
+                self.1 = |synth: #synth| {};
+                self.0.free();
+            }
+
+            pub fn free_after(mut self, time: ::core::time::Duration) {
+                // set the drop to noop
+                self.1 = |synth: #synth| {};
+                self.0.free_after(time);
+            }
         }
 
-        impl euphony_sc::Message for #name<&mut euphony_sc::_macro_support::Synth> {
-            type Output = ();
+        impl Drop for #synth {
+            fn drop(&mut self) {
+                fn noop(synth: Synth) {}
 
-            fn send(self, track: &euphony_sc::track::Handle) -> Self::Output {
+                if self.1 == noop {
+                    return;
+                }
+
+                let drop_handler = self.1;
+                // set the noop
+                self.1 = noop;
+
+                let s = #synth(self.0.clone(), noop);
+
+                drop_handler(s)
+            }
+        }
+
+        impl #name<&mut euphony_sc::_macro_support::Synth> {
+            pub fn send(self) {
                 use euphony_sc::track::Track;
+
+                let id = self._meta.id();
+                let track = self._meta.track();
 
                 // the synthdef is already loaded so just update the values
                 let values = [
                     #values
                 ];
 
-                track.set(self._meta.id(), &values[..]);
+                track.set(id, &values[..]);
             }
         }
     )

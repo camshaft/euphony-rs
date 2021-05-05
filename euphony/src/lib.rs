@@ -5,6 +5,7 @@ pub use euphony_sc;
 mod args;
 pub mod ext;
 pub mod runtime;
+pub mod section;
 
 #[macro_export]
 macro_rules! prelude {
@@ -21,6 +22,7 @@ pub mod prelude {
         ext::*,
         pitch::Interval,
         runtime::{output::track, spawn, time::scheduler},
+        section::section,
         time::{Beat, Tempo},
     };
     pub use euphony_sc::{self, params, synthdef, track::Track};
