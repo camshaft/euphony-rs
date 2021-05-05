@@ -1,8 +1,10 @@
 [package]
 name = "euphony-macros"
+description = "Public macros for music composition"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
+license = "MIT"
 
 [lib]
 proc-macro = true

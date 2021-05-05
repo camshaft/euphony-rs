@@ -17,7 +17,14 @@ static NEXT_SUB_ID: AtomicUsize = AtomicUsize::new(1);
 
 #[derive(Debug, StructOpt)]
 enum Arguments {
+    Publish(Publish),
     Serve(Serve),
+}
+
+#[derive(Debug, StructOpt)]
+struct Publish {
+    #[structopt(long)]
+    manifest_path: Option<PathBuf>,
 }
 
 #[derive(Debug, StructOpt)]
@@ -35,8 +42,25 @@ type Subscriptions = Arc<Mutex<HashMap<usize, mpsc::Sender<String>>>>;
 pub async fn main() {
     let args = Arguments::from_args();
     match args {
-        Arguments::Serve(args) => serve(args).await.unwrap(),
+        Arguments::Publish(args) => publish(args),
+        Arguments::Serve(args) => serve(args).await,
     }
+    // TODO better error message
+    .unwrap()
+}
+
+fn publish(publish: Publish) -> Result<()> {
+    let mut compiler = Compiler::new(publish.manifest_path.as_deref())?;
+
+    compiler.multitrack = false;
+    compiler.compile()?;
+
+    compiler.multitrack = true;
+    compiler.compile()?;
+
+    // TODO generate html
+
+    Ok(())
 }
 
 async fn serve(serve: Serve) -> Result<()> {
@@ -112,6 +136,8 @@ mod watcher {
     use std::{collections::HashSet, sync::mpsc::channel, time::Duration};
 
     pub(crate) fn create(subs: Subscriptions, mut compiler: Compiler) {
+        let _ = compiler.compile();
+
         let (tx, rx) = channel();
 
         let mut watcher = watcher(tx, Duration::from_millis(100)).unwrap();
