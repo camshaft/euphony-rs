@@ -234,7 +234,7 @@ impl Context {
             variants: vec![],
         };
 
-        if let Ok(out) = std::env::var("SYNTHDEF_OUT_DIR") {
+        if let Ok(out) = std::env::var("SYNTHDEF_DOT_DIR") {
             let dir = std::path::Path::new(&out);
             std::fs::create_dir_all(&dir).unwrap();
             let mut path = dir.join(name);
@@ -253,13 +253,8 @@ impl Context {
 
         let desc = container.encode();
 
-        if cfg!(debug_assertions) {
-            use codec::decode::DecoderBuffer;
-            let (parsed, _) = desc.decode::<crate::synthdef::Container>().unwrap();
-            if parsed != container {
-                panic!("expected: {:#?}\n actual: {:#?}", container, parsed);
-            }
-        }
+        #[cfg(test)]
+        insta::assert_debug_snapshot!(name, container);
 
         SynthDesc {
             name: name.to_owned(),

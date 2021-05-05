@@ -18,6 +18,7 @@ macro_rules! ugen {
     ) => {
         $(#[doc = $doc])*
         #[derive(Clone, Debug)]
+        #[allow(clippy::upper_case_acronyms)]
         pub struct $name {
             $(
                 $(#[doc = $field_doc])*

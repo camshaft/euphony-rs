@@ -226,19 +226,22 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
 
                 let id = track.play(synthdef, action, target, &values[..]);
 
-                let drop = self._meta.drop_handler();
-
                 let synth = euphony_sc::_macro_support::Synth::new(id, track.clone(), synthdef);
+                let drop_handler = self._meta.drop_handler();
+                let drop_handler = Some(drop_handler);
 
-                #synth(synth, drop)
+                #synth { synth, drop_handler }
             }
         }
 
-        pub struct #synth(euphony_sc::_macro_support::Synth, fn(Self));
+        pub struct #synth {
+            synth: euphony_sc::_macro_support::Synth,
+            drop_handler: Option<fn(Self)>
+        }
 
         impl core::fmt::Debug for #synth {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                self.0.fmt(f)
+                self.synth.fmt(f)
             }
         }
 
@@ -247,38 +250,28 @@ pub fn create_params(attrs: &[syn::Attribute], name: &Ident, parameters: &[Param
             pub fn set(&mut self) -> #name<&mut euphony_sc::_macro_support::Synth> {
                 #name {
                     #instance_params
-                    _meta: &mut self.0
+                    _meta: &mut self.synth
                 }
             }
 
             pub fn free(mut self) {
-                // set the drop to noop
-                self.1 = |synth: #synth| {};
-                self.0.free();
+                self.drop_handler = None;
+                self.synth.free();
             }
 
             pub fn free_after(mut self, time: ::core::time::Duration) {
-                // set the drop to noop
-                self.1 = |synth: #synth| {};
-                self.0.free_after(time);
+                self.drop_handler = None;
+                self.synth.free_after(time);
             }
         }
 
         impl Drop for #synth {
             fn drop(&mut self) {
-                fn noop(synth: Synth) {}
-
-                if self.1 == noop {
-                    return;
+                if let Some(drop_handler) = self.drop_handler.take() {
+                    let synth = self.synth.clone();
+                    let synth = #synth { synth, drop_handler: None };
+                    drop_handler(synth)
                 }
-
-                let drop_handler = self.1;
-                // set the noop
-                self.1 = noop;
-
-                let s = #synth(self.0.clone(), noop);
-
-                drop_handler(s)
             }
         }
 

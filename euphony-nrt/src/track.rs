@@ -38,7 +38,7 @@ impl Track {
             name,
             events,
             synths,
-            scheduler: scheduler.clone(),
+            scheduler,
             spawn_id: AtomicU32::new(1000),
             event_id: AtomicU32::new(0),
             buffers: Default::default(),
