@@ -1,3 +1,12 @@
+// TODO
+// * ops::{Add, Sub, Mul, Rem, Div} etc
+// * filter_map
+// * Generator::new(fn(context: &mut Context) -> (Option<T>, Status))
+// * Divide
+// * Euclidean
+// * Polymetric
+// * Rng
+
 use core::marker::PhantomData;
 use euphony_core::{
     ratio::Ratio,
@@ -380,10 +389,18 @@ where
 }
 
 #[test]
-fn gate_constant_test() {
+fn gate_test() {
     combinator_test!(123.hold().gate(().hold()), [[(Instant(0, 1), Some(123))]]);
-    combinator_test!(123.hold().gate(rest::<()>()), [[(Instant(0, 1), None)]]);
-    combinator_test!(rest::<()>().gate(123.hold()), [[(Instant(0, 1), None)]]);
+    combinator_test!(
+        123.hold()
+            .gate(Beat(1, 1).hold().tick().filter(|b| b % 2 == 0)),
+        [[
+            (Instant(0, 1), Some(123)),
+            (Instant(1, 1), None),
+            (Instant(2, 1), Some(123)),
+            (Instant(3, 1), None),
+        ]]
+    );
 }
 
 /// Scales time of one pattern by another
