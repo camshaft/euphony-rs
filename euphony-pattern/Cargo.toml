@@ -10,6 +10,8 @@ euphony-pattern-macros = { version = "0.1", path = "../euphony-pattern-macros" }
 num-integer = "0.1"
 priority-queue = "1"
 slab = "0.4"
+smallvec = "1"
 
 [dev-dependencies]
 insta = "1"
+pretty_assertions = "0.7"

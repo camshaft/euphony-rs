@@ -12,6 +12,8 @@ pub mod euphony_pattern {
     pub use crate::*;
 }
 
+mod traits;
+
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct Arc {
     start: Beat,
