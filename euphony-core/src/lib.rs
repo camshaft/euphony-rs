@@ -3,7 +3,7 @@
 extern crate alloc;
 
 #[macro_use]
-mod ratio;
+pub mod ratio;
 
 pub mod dynamics;
 pub mod pitch;

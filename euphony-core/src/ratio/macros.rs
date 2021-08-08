@@ -44,7 +44,7 @@ macro_rules! new_ratio_struct {
 
         impl Ord for $name {
             fn cmp(&self, other: &Self) -> core::cmp::Ordering {
-                self.as_ratio().cmp(&other.as_ratio())
+                self.reduce().as_ratio().cmp(&other.reduce().as_ratio())
             }
         }
     };
@@ -157,6 +157,14 @@ macro_rules! new_ratio_ops {
                 self.as_ratio().div(rhs.as_ratio())
             }
         }
+
+        impl core::ops::Rem for $name {
+            type Output = $crate::ratio::Ratio<$inner>;
+
+            fn rem(self, rhs: Self) -> Self::Output {
+                self.as_ratio().rem(rhs.as_ratio())
+            }
+        }
     };
 }
 
@@ -235,6 +243,7 @@ macro_rules! new_ratio_conversion {
         new_ratio_arithmetic!($name, Sub, sub, SubAssign, sub_assign, $ty);
         new_ratio_arithmetic!($name, Mul, mul, MulAssign, mul_assign, $ty);
         new_ratio_arithmetic!($name, Div, div, DivAssign, div_assign, $ty);
+        new_ratio_arithmetic!($name, Rem, rem, RemAssign, rem_assign, $ty);
     };
 }
 
@@ -281,6 +290,32 @@ macro_rules! new_ratio_arithmetic {
 
         impl core::ops::$assign_op<($ty, $ty)> for $name {
             fn $assign(&mut self, rhs: ($ty, $ty)) {
+                *self = core::ops::$op::$call(*self, rhs);
+            }
+        }
+    };
+}
+
+macro_rules! new_extern_ratio_arithmetic {
+    ($name:ident, $op:ident, $call:ident, $assign_op:ident, $assign:ident, $ty:ident) => {
+        impl core::ops::$op<$ty> for $name {
+            type Output = $name;
+
+            fn $call(self, rhs: $ty) -> Self::Output {
+                self.as_ratio().$call(rhs.as_ratio()).into()
+            }
+        }
+
+        impl core::ops::$op<$name> for $ty {
+            type Output = $name;
+
+            fn $call(self, rhs: $name) -> Self::Output {
+                self.as_ratio().$call(rhs.as_ratio()).into()
+            }
+        }
+
+        impl core::ops::$assign_op<$ty> for $name {
+            fn $assign(&mut self, rhs: $ty) {
                 *self = core::ops::$op::$call(*self, rhs);
             }
         }

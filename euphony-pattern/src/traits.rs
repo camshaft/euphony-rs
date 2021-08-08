@@ -5,7 +5,6 @@
 // * Divide
 // * Euclidean
 // * Polymetric
-// * Rng
 
 use core::marker::PhantomData;
 use euphony_core::{
@@ -16,12 +15,17 @@ use euphony_core::{
     },
 };
 
+mod rng;
+
 pub trait Pattern: Sized {
     type Output;
 
     fn expansions(&self) -> usize;
-    fn read(&self, context: &mut Context) -> Option<Self::Output>;
-    fn status(&self, context: &mut Context) -> Status;
+    fn read(&self, context: &Context) -> Option<Self::Output>;
+    fn status(&self, context: &Context) -> Status;
+    fn period(&self, context: &Context) -> Beat {
+        Beat(1, 1)
+    }
     fn end(&self) -> Ending;
 }
 
@@ -75,6 +79,13 @@ pub trait PatternExt: Pattern {
         Translate::new(self, amount)
     }
 
+    fn splice<P>(self, amount: P) -> Splice<Self, P>
+    where
+        P: Pattern<Output = Ratio<u64>>,
+    {
+        Splice::new(self, amount)
+    }
+
     fn tick(self) -> Tick<Self>
     where
         Self: Pattern<Output = Beat>,
@@ -85,14 +96,15 @@ pub trait PatternExt: Pattern {
 
 impl<P> PatternExt for P where P: Pattern {}
 
-pub struct Context<'a> {
+pub struct Context {
+    // Scaled time
     now: Instant,
+    // Actual time
+    real: Instant,
     expansion: usize,
-    // TODO rng
-    rng: PhantomData<&'a ()>,
 }
 
-impl<'a> Context<'a> {
+impl Context {
     pub fn now(&self) -> Instant {
         self.now
     }
@@ -100,14 +112,22 @@ impl<'a> Context<'a> {
     pub fn expansion(&self) -> usize {
         self.expansion
     }
+
+    pub fn child(&self, now: Instant) -> Self {
+        Self {
+            now,
+            real: self.real,
+            expansion: self.expansion,
+        }
+    }
 }
 
 #[cfg(test)]
-fn test_context() -> Context<'static> {
+fn test_context() -> Context {
     Context {
         now: Instant(0, 1),
+        real: Instant(0, 1),
         expansion: 0,
-        rng: PhantomData,
     }
 }
 
@@ -125,12 +145,15 @@ macro_rules! combinator_test {
             let expected_len = expected.get(expansion).map(|v| v.len()).unwrap_or(0);
 
             loop {
-                let output = pattern.read(&mut context);
+                let output = pattern.read(&context);
                 actual_expansion.push((context.now, output));
 
-                match pattern.status(&mut context) {
+                match pattern.status(&context) {
                     Status::Finished => break,
-                    Status::Pending(next) => context.now = next,
+                    Status::Pending(next) => {
+                        context.now = next;
+                        context.real = next;
+                    }
                 }
 
                 // only get enough samples for the expectation
@@ -199,6 +222,7 @@ macro_rules! impl_tuple {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
     Finished,
+    // TODO Continuous
     Pending(Instant),
 }
 
@@ -290,11 +314,11 @@ where
         0
     }
 
-    fn read(&self, _context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, _context: &Context) -> Option<Self::Output> {
         Some(self.value.clone())
     }
 
-    fn status(&self, _context: &mut Context) -> Status {
+    fn status(&self, _context: &Context) -> Status {
         Status::Finished
     }
 
@@ -327,17 +351,83 @@ impl<T> Pattern for Rest<T> {
         0
     }
 
-    fn read(&self, _context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, _context: &Context) -> Option<Self::Output> {
         None
     }
 
-    fn status(&self, _context: &mut Context) -> Status {
+    fn status(&self, _context: &Context) -> Status {
         Status::Finished
     }
 
     fn end(&self) -> Ending {
         Ending::Indefinite
     }
+}
+
+pub fn random<P>(seed: P) -> Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    Random::new(seed)
+}
+
+/// Generates a random u64 with a given seed
+///
+/// The output is completely determined from the current time and seed
+#[derive(Copy, Clone, Debug)]
+pub struct Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    seed: P,
+}
+
+impl<P> Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    pub fn new(seed: P) -> Self {
+        Self { seed }
+    }
+}
+
+impl<P> Pattern for Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    type Output = u64;
+
+    fn expansions(&self) -> usize {
+        0
+    }
+
+    fn read(&self, context: &Context) -> Option<Self::Output> {
+        let seed = self.seed.read(context)?;
+        Some(rng::get(context.now(), context.expansion() as u64, seed))
+    }
+
+    fn status(&self, context: &Context) -> Status {
+        self.seed.status(context)
+    }
+
+    fn end(&self) -> Ending {
+        self.seed.end()
+    }
+}
+
+#[test]
+fn random_test() {
+    combinator_test!(
+        random(123.hold())
+            .gate(Beat(1, 1).hold().tick())
+            .map(|v| v % 4),
+        [[
+            (Instant(0, 1), Some(3)),
+            (Instant(1, 1), Some(0)),
+            (Instant(2, 1), Some(2)),
+            (Instant(3, 1), Some(2)),
+        ]]
+    );
 }
 
 /// Emits a pattern only while another pattern returns a value
@@ -372,12 +462,12 @@ where
         self.pattern.expansions().max(self.condition.expansions())
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let _ = self.condition.read(context)?;
         self.pattern.read(context)
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.condition.status(context);
         status.or(self.pattern.status(context));
         status
@@ -435,7 +525,7 @@ where
         self.pattern.expansions().max(self.amount.expansions())
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let amount = self.amount.read(context)?;
         // an empty period doesn't make sense
         if amount.0 == 0 {
@@ -443,14 +533,13 @@ where
         }
 
         let now = context.now();
-        context.now *= amount;
-        let value = self.pattern.read(context);
-        context.now = now;
+        let child = context.child(now * amount);
+        let value = self.pattern.read(&child);
 
         value
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.amount.status(context);
 
         if let Some(amount) = self.amount.read(context) {
@@ -460,9 +549,8 @@ where
             }
 
             let now = context.now();
-            context.now *= amount;
-            let p_status = self.pattern.status(context);
-            context.now = now;
+            let child = context.child(now * amount);
+            let p_status = self.pattern.status(&child);
             status.or(p_status.map(|v| v / amount));
         }
 
@@ -515,6 +603,61 @@ fn scale_test() {
     );
 }
 
+/// Scales group member time by another pattern
+#[derive(Clone, Debug)]
+pub struct Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pattern: P,
+    amount: A,
+}
+
+impl<P, A> Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pub fn new(pattern: P, amount: A) -> Self {
+        Self { pattern, amount }
+    }
+}
+
+impl<P, A> Pattern for Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.amount.expansions())
+    }
+
+    fn read(&self, context: &Context) -> Option<Self::Output> {
+        self.pattern.read(&context)
+    }
+
+    fn status(&self, context: &Context) -> Status {
+        let mut status = self.amount.status(context);
+
+        let p_status = self.pattern.status(&context);
+        status.or(p_status);
+
+        status
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        let amount = self.amount.read(context).unwrap_or(Ratio(0, 1));
+        self.pattern.period(context) * amount
+    }
+
+    fn end(&self) -> Ending {
+        self.pattern.end().min(self.amount.end())
+    }
+}
+
 /// Translates time of one pattern by another
 #[derive(Clone, Debug)]
 pub struct Translate<P, A>
@@ -547,18 +690,17 @@ where
         self.pattern.expansions().max(self.amount.expansions())
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let amount = self.amount.read(context)?;
 
         let now = context.now();
-        context.now += amount;
-        let value = self.pattern.read(context);
-        context.now = now;
+        let child = context.child(now + amount);
+        let value = self.pattern.read(&child);
 
         value
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.amount.status(context);
 
         if let Some(amount) = self.amount.read(context) {
@@ -568,9 +710,8 @@ where
             }
 
             let now = context.now();
-            context.now += amount;
-            let p_status = self.pattern.status(context);
-            context.now = now;
+            let child = context.child(now + amount);
+            let p_status = self.pattern.status(&child);
             status.or(p_status.map(|v| v - amount));
         };
 
@@ -623,7 +764,7 @@ where
         self.pattern.expansions()
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let arc = self.pattern.read(context)?;
 
         if !arc.contains(context.now()) {
@@ -633,7 +774,7 @@ where
         Some(())
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         // TODO use the arc to determine the next time
         self.pattern.status(context)
     }
@@ -675,7 +816,7 @@ where
         self.pattern.expansions().max(self.period.expansions())
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let now = context.now();
 
         let period = self.period.read(context)?;
@@ -684,14 +825,12 @@ where
         let cycle_now: Instant = (now % period).into();
 
         // change what `now` the child pattern sees
-        context.now = cycle_now;
-        let value = self.pattern.read(context);
-        context.now = now;
+        let value = self.pattern.read(&context.child(cycle_now));
 
         value
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.period.status(context);
 
         let now = context.now();
@@ -709,9 +848,7 @@ where
             status.or(Status::Pending(next_cycle));
 
             // change what `now` the child pattern sees
-            context.now = cycle_now;
-            let p_status = self.pattern.status(context);
-            context.now = now;
+            let p_status = self.pattern.status(&context.child(cycle_now));
 
             // we need to offset the returned time with the cycle start
             status.or(p_status.map(|v| v + cycle_start));
@@ -776,14 +913,14 @@ where
         self.pattern.expansions()
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let period = self.pattern.read(context)?;
 
         let count = (context.now() / period).whole();
         Some(count)
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.pattern.status(context);
 
         if let Some(period) = self.pattern.read(context) {
@@ -850,11 +987,11 @@ where
         self.pattern.expansions()
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         self.pattern.read(context).map(|v| (self.map)(v))
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         self.pattern.status(context)
     }
 
@@ -908,11 +1045,11 @@ where
         self.pattern.expansions()
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         self.pattern.read(context).filter(|v| (self.filter)(v))
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         self.pattern.status(context)
     }
 
@@ -965,14 +1102,14 @@ where
         self.group.max_expansions().max(self.selector.expansions())
     }
 
-    fn read(&self, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, context: &Context) -> Option<Self::Output> {
         let idx = self.selector.read(context)? as usize;
         let len = self.group.len();
         let idx = idx % len;
         self.group.read(idx, context)
     }
 
-    fn status(&self, context: &mut Context) -> Status {
+    fn status(&self, context: &Context) -> Status {
         let mut status = self.selector.status(context);
 
         if let Some(idx) = self.selector.read(context) {
@@ -1047,6 +1184,193 @@ fn select_test() {
     );
 }
 
+/// Equally divides time between members of a group based on their group_period
+#[derive(Clone, Debug)]
+pub struct Divide<G>
+where
+    G: Group,
+{
+    group: G,
+}
+
+impl<G> Divide<G>
+where
+    G: Group,
+{
+    pub fn new(group: G) -> Self {
+        Self { group }
+    }
+}
+
+impl<G> Pattern for Divide<G>
+where
+    G: Group,
+{
+    type Output = G::Output;
+
+    fn expansions(&self) -> usize {
+        self.group.max_expansions()
+    }
+
+    fn read(&self, context: &Context) -> Option<Self::Output> {
+        let period = self.group.total_period(context).as_ratio();
+
+        if period.0 == 0 {
+            return None;
+        }
+
+        let now = context.now();
+        // figure out the start of the current cycle
+        let cycle_start: Instant = now.whole().into();
+        // figure out where we are in the cycle
+        let cycle_cursor: Instant = (now - cycle_start) * period;
+        let cycle_cursor: Beat = cycle_cursor.as_ratio().into();
+
+        // keep track of each of the starting points
+        let mut child_start = Beat(0, 1);
+
+        for idx in 0..self.group.len() {
+            let child_period = self.group.period(idx, context);
+
+            // skip over empty periods
+            if child_period.0 == 0 {
+                continue;
+            }
+
+            let child_end = child_start + child_period;
+
+            // keep searching
+            if cycle_cursor >= child_end {
+                child_start = child_end;
+                continue;
+            }
+
+            let mut child_cursor = cycle_cursor;
+            // shift the cursor back to the start of the child
+            child_cursor -= child_start;
+            // scale the cursor by the amount of time it occupies in the period
+            child_cursor *= child_period.as_ratio();
+
+            let child_now = cycle_start + child_cursor;
+
+            let child = context.child(child_now);
+            return self.group.read(idx, &child);
+        }
+
+        unreachable!()
+    }
+
+    fn status(&self, context: &Context) -> Status {
+        let period = self.group.total_period(context).as_ratio();
+
+        if period.0 == 0 {
+            // TODO
+            return Status::Finished;
+        }
+
+        let now = context.now();
+        // figure out the start of the current cycle
+        let cycle_start: Instant = now.whole().into();
+        // figure out where we are in the cycle
+        let cycle_cursor: Instant = (now - cycle_start) * period;
+        let cycle_cursor: Beat = cycle_cursor.as_ratio().into();
+
+        // keep track of each of the starting points
+        let mut child_start = Beat(0, 1);
+
+        for idx in 0..self.group.len() {
+            let child_period = self.group.period(idx, context);
+
+            // skip over empty periods
+            if child_period.0 == 0 {
+                continue;
+            }
+
+            let child_end = child_start + child_period;
+
+            // keep searching
+            if cycle_cursor >= child_end {
+                child_start = child_end;
+                continue;
+            }
+
+            let mut child_cursor = cycle_cursor;
+            // shift the cursor back to the start of the child
+            child_cursor -= child_start;
+            // scale the cursor by the amount of time it occupies in the period
+            let scale = (child_period / period).as_ratio();
+            child_cursor /= scale;
+
+            let child_now = cycle_start + child_cursor;
+            dbg!(child_cursor, child_now, scale);
+
+            let child = context.child(child_now);
+            let status = self.group.status(idx, &child);
+
+            let status = status.map(|time| {
+                // invert the time operation
+                let mut child_cursor = time - cycle_start;
+                dbg!(child_cursor);
+                child_cursor *= scale;
+                child_cursor += child_start;
+
+                cycle_start + child_cursor
+            });
+
+            dbg!(status);
+
+            return status;
+        }
+
+        unreachable!()
+    }
+
+    fn end(&self) -> Ending {
+        todo!()
+    }
+}
+
+#[test]
+fn divide_test() {
+    combinator_test!(
+        (
+            Beat(1, 1).hold().tick().map(|_| 1),
+            Beat(1, 2).hold().tick().map(|_| 2),
+            Beat(1, 4).hold().tick().map(|_| 3),
+        )
+            .divide(),
+        [[
+            (Instant(0, 1), Some(1)),
+            (Instant(2, 6), Some(2)),
+            (Instant(3, 6), Some(2)),
+            (Instant(8, 12), Some(3)),
+            (Instant(9, 12), Some(3)),
+            (Instant(10, 12), Some(3)),
+            (Instant(11, 12), Some(3)),
+        ]]
+    );
+    dbg!("");
+    combinator_test!(
+        (
+            Beat(1, 1)
+                .hold()
+                .tick()
+                .map(|_| 1)
+                .splice(Ratio(2, 1).hold()),
+            Beat(1, 2).hold().tick().map(|_| 2),
+            Beat(1, 4).hold().tick().map(|_| 3),
+        )
+            .divide(),
+        [[
+            (Instant(0, 1), Some(1)),
+            (Instant(1, 4), Some(1)),
+            (Instant(1, 2), Some(2)),
+            (Instant(5, 8), Some(2)),
+            (Instant(6, 8), Some(2)),
+        ]]
+    );
+}
+
 pub trait Group: Sized {
     type Output;
 
@@ -1059,8 +1383,16 @@ pub trait Group: Sized {
         }
         v
     }
-    fn read(&self, idx: usize, context: &mut Context) -> Option<Self::Output>;
-    fn status(&self, idx: usize, context: &mut Context) -> Status;
+    fn read(&self, idx: usize, context: &Context) -> Option<Self::Output>;
+    fn status(&self, idx: usize, context: &Context) -> Status;
+    fn period(&self, idx: usize, context: &Context) -> Beat;
+    fn total_period(&self, context: &Context) -> Beat {
+        let mut v = Beat(0, 1);
+        for idx in 0..self.len() {
+            v += self.period(idx, context);
+        }
+        v
+    }
     fn end(&self, idx: usize) -> Ending;
 }
 
@@ -1070,6 +1402,10 @@ pub trait GroupExt: Group {
         P: Pattern<Output = u64>,
     {
         Select::new(self, selector)
+    }
+
+    fn divide(self) -> Divide<Self> {
+        Divide::new(self)
     }
 }
 
@@ -1089,12 +1425,16 @@ where
         self[idx].expansions()
     }
 
-    fn read(&self, idx: usize, context: &mut Context) -> Option<Self::Output> {
+    fn read(&self, idx: usize, context: &Context) -> Option<Self::Output> {
         self[idx].read(context)
     }
 
-    fn status(&self, idx: usize, context: &mut Context) -> Status {
+    fn status(&self, idx: usize, context: &Context) -> Status {
         self[idx].status(context)
+    }
+
+    fn period(&self, idx: usize, context: &Context) -> Beat {
+        self[idx].period(context)
     }
 
     fn end(&self, idx: usize) -> Ending {
@@ -1123,7 +1463,7 @@ macro_rules! impl_group {
                 }
             }
 
-            fn read(&self, idx: usize, context: &mut Context) -> Option<Self::Output> {
+            fn read(&self, idx: usize, context: &Context) -> Option<Self::Output> {
                 match idx {
                     $(
                         $value => {
@@ -1134,11 +1474,23 @@ macro_rules! impl_group {
                 }
             }
 
-            fn status(&self, idx: usize, context: &mut Context) -> Status {
+
+            fn status(&self, idx: usize, context: &Context) -> Status {
                 match idx {
                     $(
                         $value => {
                             (self.$value).status(context)
+                        }
+                    )*
+                    _ => panic!("invalid index"),
+                }
+            }
+
+            fn period(&self, idx: usize, context: &Context) -> Beat {
+                match idx {
+                    $(
+                        $value => {
+                            (self.$value).period(context)
                         }
                     )*
                     _ => panic!("invalid index"),
@@ -1167,266 +1519,3 @@ macro_rules! impl_group {
 }
 
 impl_tuple!(impl_group);
-
-/*
-/// Equally divides time between members of a group
-#[derive(Clone, Debug)]
-pub struct Divide<G>
-where
-    G: Group,
-{
-    pattern: P,
-    filter: F,
-}
-*/
-
-/*
-
-macro_rules! tuple {
-    ($(($T:ident, $idx:tt)),*) => {
-        impl<A, $($T),*> Pattern for (A, $($T,)*)
-        where
-            A: Pattern,
-            $(
-                $T: Pattern<Output = A::Output>,
-            )*
-        {
-            type Output = A::Output;
-
-            fn poll(&self, context: &mut impl Context<Self::Output>) -> Status {
-                let now = context.now();
-
-                let mut status = Status::Finished;
-
-                let mut sub_context = CycleContext::new(now, path![0], context);
-                status.any(self.0.poll(&mut sub_context));
-
-                $(
-                    {
-                        let mut sub_context = CycleContext::new(now, path![$idx], context);
-                        status.any(self.$idx.poll(&mut sub_context));
-                    }
-                )*
-
-                status
-            }
-
-            fn end(&self) -> Instant {
-                let mut t = self.0.end();
-                $(
-                    t = t.max(self.$idx.end());
-                )*
-                t
-            }
-        }
-    };
-}
-
-tuple!();
-tuple!((B, 1));
-tuple!((B, 1), (C, 2));
-
-/// Emits a value every specified beat
-#[derive(Clone, Debug)]
-pub struct Periodic<T, P, D>
-where
-    T: Clone,
-    P: Pattern<Output = Beat>,
-    D: Pattern<Output = Beat>,
-{
-    value: T,
-    period: P,
-    duration: D,
-}
-
-impl<T, P, D> Periodic<T, P, D>
-where
-    T: Clone,
-    P: Pattern<Output = Beat>,
-    D: Pattern<Output = Beat>,
-{
-    pub fn new(value: T, period: P, duration: D) -> Self {
-        Self {
-            value,
-            period,
-            duration,
-        }
-    }
-}
-
-impl<T, P, D> Pattern for Periodic<T, P, D>
-where
-    T: Clone,
-    P: Pattern<Output = Beat>,
-    D: Pattern<Output = Beat>,
-{
-    type Output = T;
-
-    fn poll(&mut self, context: &mut impl Context<Self::Output>) -> Status {
-        let now = context.now();
-        let divisions = now / self.period;
-
-        if divisions.is_whole() {
-            context.emit(self.value.clone(), self.duration);
-        }
-
-        let next = self.period * (divisions.whole() + 1);
-
-        Status::Pending(next)
-    }
-}
-*/
-/*
-#[test]
-fn periodic_test() {
-    let mut context = VecContext::default();
-
-    let mut pattern = Periodic::new(1, Beat(1, 1), Beat(1, 2));
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(1, 1)));
-    assert_eq!(context.tick(Beat(1, 2)), vec![(1, Instant(1, 2))]);
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(1, 1)));
-    assert!(context.tick(Beat(1, 2)).is_empty());
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(2, 1)));
-    assert_eq!(context.tick(Beat(1, 1)), vec![(1, Instant(3, 2))]);
-}
-
-/// Cycles after a number of beats
-#[derive(Clone, Debug)]
-struct Cycle<P, Period>
-where
-    P: Pattern,
-    Period: Pattern<Output = Beat>,
-{
-    pattern: P,
-    period: Period,
-}
-
-impl<P, Period> Cycle<P, Period>
-where
-    P: Pattern,
-    Period: Pattern<Output = Beat>,
-{
-    pub fn new(pattern: P, period: Period) -> Self {
-        Self { pattern, period }
-    }
-}
-
-impl<P, Period> Pattern for Cycle<P, Period>
-where
-    P: Pattern,
-    Period: Pattern<Output = Beat>,
-{
-    type Output = P::Output;
-
-    fn poll(&self, context: &mut impl Context<Self::Output>) -> Status {
-        let now = context.now();
-
-        let mut period_context = VecContext::new(now);
-        let mut status = self.period.poll(&mut period_context);
-
-        for (index, (path, period)) in period_context.values.drain(..).enumerate() {
-            let cycle_count = now / period;
-            let cycle_now = now % period;
-            let cycle_start: Instant = (period * cycle_count.whole()).as_ratio().into();
-
-            let next_cycle = cycle_start + period;
-            status.any(Status::Pending(next_cycle));
-
-            let mut cycle_context =
-                CycleContext::new(cycle_now.into(), path.with(path![index as u8]), context);
-
-            let mut cycle_status = self.pattern.poll(&mut cycle_context);
-
-            // shift the reported cycle by the start time
-            cycle_status = cycle_status.map(|v| v + cycle_start);
-
-            status.any(cycle_status);
-        }
-
-        status
-    }
-
-    fn end(&self) -> Instant {
-        self.period.end()
-    }
-}
-
-struct CycleContext<'a, T, C: Context<T>> {
-    context: &'a mut C,
-    value: PhantomData<T>,
-    path: Path,
-    now: Instant,
-}
-
-impl<'a, T, C: Context<T>> CycleContext<'a, T, C> {
-    pub fn new(now: Instant, path: Path, context: &'a mut C) -> Self {
-        Self {
-            context,
-            value: PhantomData,
-            path,
-            now,
-        }
-    }
-}
-
-impl<'a, T, C: Context<T>> Context<T> for CycleContext<'a, T, C> {
-    fn now(&self) -> Instant {
-        self.now
-    }
-
-    fn emit(&mut self, path: Path, value: T) {
-        self.context.emit(self.path.with(path), value)
-    }
-}
-
-#[test]
-fn cycle_single_test() {
-    let mut context = VecContext::default();
-
-    let pattern = Cycle::new(Constant::new(123), Constant::new(Beat(2, 1)));
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(2, 1)));
-    assert_eq!(&context.tick(Beat(2, 1))[..], &[(path![0], 123)][..]);
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(4, 1)));
-    assert_eq!(&context.tick(Beat(2, 1))[..], &[(path![0], 123)][..]);
-}
-
-#[test]
-fn cycle_multi_test() {
-    let mut context = VecContext::default();
-
-    let pattern = Cycle::new(
-        (Constant::new(123), Constant::new(456)),
-        (Constant::new(Beat(2, 1)), Constant::new(Beat(4, 1))),
-    );
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(2, 1)));
-    assert_eq!(&context.tick(Beat(2, 1))[..], &[(path![0], 123)][..]);
-
-    assert_eq!(pattern.poll(&mut context), Status::Pending(Instant(4, 1)));
-    assert_eq!(&context.tick(Beat(2, 1))[..], &[(path![0], 123)][..]);
-}
-
-/// Scales the sub-pattern's periods by a specified amount
-pub struct Scale<P: Pattern, A: Pattern<Output = Ratio<u64>>> {
-    pattern: P,
-    amount: A,
-}
-
-impl<P: Pattern, A: Pattern<Output = Ratio<u64>>> Pattern for Scale<P, A> {
-    type Output = P::Output;
-
-    fn poll(&mut self, context: &mut impl Context<Self::Output>) -> Option<Beat> {
-        let mut amount_context = VecContext::default();
-        amount_context.now = context.now();
-
-        self.amount.poll(&mut amount_context);
-
-        todo!()
-    }
-}
-*/

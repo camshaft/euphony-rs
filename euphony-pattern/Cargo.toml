@@ -9,6 +9,7 @@ euphony-core = { version = "0.1", path = "../euphony-core" }
 euphony-pattern-macros = { version = "0.1", path = "../euphony-pattern-macros" }
 num-integer = "0.1"
 priority-queue = "1"
+rand_core = "0.6"
 slab = "0.4"
 smallvec = "1"
 

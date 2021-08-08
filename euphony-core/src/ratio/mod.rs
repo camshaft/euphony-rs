@@ -161,6 +161,7 @@ inner_ratio_arithmetic!(Add, add, AddAssign, add_assign);
 inner_ratio_arithmetic!(Sub, sub, SubAssign, sub_assign);
 inner_ratio_arithmetic!(Mul, mul, MulAssign, mul_assign);
 inner_ratio_arithmetic!(Div, div, DivAssign, div_assign);
+inner_ratio_arithmetic!(Rem, rem, RemAssign, rem_assign);
 
 impl<T: Copy + Integer> From<Ratio<T>> for Inner<T> {
     fn from(ratio: Ratio<T>) -> Self {
