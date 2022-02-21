@@ -1,0 +1,13 @@
+[package]
+name = "euphony-dsp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dasp_frame = "0.11"
+dasp_sample = "0.11"
+fastapprox = "0.3"
+
+[dev-dependencies]
+insta = "1"
+plotters = { version = "0.3", default-features = false, features = ["point_series", "svg_backend"] }

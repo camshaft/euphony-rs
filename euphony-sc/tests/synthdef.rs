@@ -14,10 +14,10 @@ mod my_params {
 mod my_synth {
     use super::*;
 
-    pub fn closure_synth() -> my_params::SynthDef {
-        synthdef!(|params| sine(params, 1.0), |synth: my_params::Synth| synth
-            .free())
-    }
+    // pub fn closure_synth() -> my_params::SynthDef {
+    //     synthdef!(|params| sine(params, 1.0), |synth: my_params::Synth| synth
+    //         .free())
+    // }
 
     fn sine(params: my_params::Params, _foo: f32) {
         let _ = params.freq;

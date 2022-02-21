@@ -17,36 +17,38 @@ pub fn synthdef(input: TokenStream) -> TokenStream {
         .into()
 }
 
-enum SynthDefInput {
-    Closure(syn::ExprClosure, syn::Expr),
-    Fn(Box<syn::ItemFn>),
+struct SynthDefInput {
+    def: Box<syn::ItemFn>,
+    drop: Option<Box<syn::ItemFn>>,
 }
 
 impl SynthDefInput {
     fn to_tokens(&self) -> syn::parse::Result<TokenStream2> {
-        match self {
-            Self::Closure(v, drop) => Ok(create_synthdef(&v, &drop)),
-            Self::Fn(v) => synthdef_fn_impl(v),
-        }
+        synthdef_fn_impl(&self.def, self.drop.as_deref())
     }
 }
 
 impl Parse for SynthDefInput {
     fn parse(input: ParseStream) -> syn::parse::Result<Self> {
-        if input.peek(Token![|]) {
-            let v = input.parse()?;
-            let _: Token![,] = input.parse()?;
-            let d = input.parse()?;
-            return Ok(Self::Closure(v, d));
-        }
+        let def = input.parse()?;
+        let def = Box::new(def);
 
-        let item = input.parse()?;
-        let item = Box::new(item);
-        Ok(Self::Fn(item))
+        let drop = if input.peek(Token![fn]) {
+            let drop = input.parse()?;
+            let drop = Box::new(drop);
+            Some(drop)
+        } else {
+            None
+        };
+
+        Ok(Self { def, drop })
     }
 }
 
-fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
+fn synthdef_fn_impl(
+    item: &syn::ItemFn,
+    drop: Option<&syn::ItemFn>,
+) -> syn::parse::Result<TokenStream2> {
     let span = item.span();
     let attrs = &item.attrs;
     let vis = &item.vis;
@@ -91,36 +93,20 @@ fn synthdef_fn_impl(item: &syn::ItemFn) -> syn::parse::Result<TokenStream2> {
         #block
     });
 
-    let drop_ident = Ident::new("drop", span);
-
-    let default_drop_handler = quote!(|synth| synth.free());
-    let drop_handler = attrs
-        .iter()
-        .find_map(|attr| {
-            if attr.path.is_ident(&drop_ident) {
-                Some(&attr.tokens)
-            } else {
-                None
-            }
+    let drop = if let Some(drop) = drop {
+        let mut drop = drop.clone();
+        drop.sig.ident = Ident::new("_drop", drop.sig.ident.span());
+        quote!(|synth: Synth| {
+            #drop
+            _drop(synth)
         })
-        .unwrap_or(&default_drop_handler);
-
-    // nest the closure so the caller doesn't have to specify the type argument
-    let drop = quote!(|synth: Synth| {
-        #[allow(unused_parens)]
-        let handler: fn(Synth) = #drop_handler;
-        handler(synth)
-    });
+    } else {
+        quote!(|synth: Synth| {
+            synth.free();
+        })
+    };
 
     let def = create_synthdef(&load, &drop);
-
-    let attrs = attrs.iter().filter(|attr| {
-        if attr.path.is_ident(&drop_ident) {
-            return false;
-        }
-
-        true
-    });
 
     Ok(quote!(
         #(#attrs)* #vis mod #name {
