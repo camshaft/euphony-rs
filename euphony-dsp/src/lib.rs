@@ -22,21 +22,27 @@ pub use dasp_frame as frame;
 pub use frame::Frame;
 pub mod sample {
     pub use dasp_sample::*;
-    pub const PERIOD_44100: u32 = unsafe { core::mem::transmute(1.0f32 / 44100.0f32) };
-    pub const PERIOD_48000: u32 = unsafe { core::mem::transmute(1.0f32 / 48000.0f32) };
+
+    pub trait Rate {
+        const PERIOD: f32;
+        const VALUE: f32;
+    }
+
+    pub struct Rate44100;
+
+    impl Rate for Rate44100 {
+        const PERIOD: f32 = 1.0f32 / 44100.0;
+        const VALUE: f32 = 44100.0;
+    }
+
+    pub struct Rate48000;
+
+    impl Rate for Rate48000 {
+        const PERIOD: f32 = 1.0f32 / 48000.0;
+        const VALUE: f32 = 48000.0;
+    }
 }
 pub mod buffer;
 pub use buffer::Buffer;
 pub mod signal;
 pub use signal::Signal;
-
-pub fn sine_fm_test(freq: f32, mul: f32, add: f32, phase: f32, buffer: &mut buffer::Buffer<f32>) {
-    use crate::signal::{generator::*, Signal as _, SignalExt as _};
-
-    let carrier = sine_fast::<f32>(freq)
-        .phase(phase)
-        .mul_signal(mul)
-        .add_signal(add);
-    let mut sine = sine_fast(carrier);
-    sine.fill::<buffer::ArrayBatch<2, { sample::PERIOD_48000 }>>(buffer);
-}

@@ -1,22 +1,23 @@
-use crate::{buffer::Batch, sample::Sample};
+use crate::sample::{self, Sample};
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Phase<T>(T);
 
 impl Phase<f32> {
+    #[inline]
     pub fn set(&mut self, phase: f32) {
         self.0 = phase.fract();
     }
 
-    #[inline]
-    pub fn next<B: Batch>(&mut self, freq: f32) -> f32 {
+    #[inline(always)]
+    pub fn next<R: sample::Rate>(&mut self, freq: f32) -> f32 {
         let value = self.0;
         unsafe {
             unsafe_assert!(!value.is_nan());
             unsafe_assert!(value.is_finite());
             unsafe_assert!((0.0..=1.0).contains(&value));
         }
-        self.0 = (value + B::SAMPLE_PERIOD * freq).fract();
+        self.0 = (value + R::PERIOD * freq).fract();
         value
     }
 }
@@ -27,9 +28,9 @@ impl Phase<i32> {
     }
 
     #[inline]
-    pub fn next<B: Batch>(&mut self, freq: f32) -> i32 {
+    pub fn next<R: sample::Rate>(&mut self, freq: f32) -> i32 {
         let value = self.0;
-        self.0 = i32::from_sample(f32::from_sample(value) + B::SAMPLE_PERIOD * freq);
+        self.0 = i32::from_sample(f32::from_sample(value) + R::PERIOD * freq);
         value
     }
 }
@@ -94,7 +95,7 @@ macro_rules! phased_generator {
                         }
                         for (frame, freq) in buffer.iter_mut().zip(freq.iter()) {
                             let freq = unsafe { *freq.channel_unchecked(0) };
-                            let $phase = self.phase.next::<Bat>(freq);
+                            let $phase = self.phase.next::<Bat::SampleRate>(freq);
                             frame.write($f);
                         }
                     },

@@ -74,7 +74,7 @@ mod testing {
 
 #[macro_use]
 mod phase;
-use phase::Phase;
+pub use phase::Phase;
 
 mod sine;
 pub use sine::*;

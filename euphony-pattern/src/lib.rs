@@ -1,608 +1,266 @@
-use core::{
-    cmp::Reverse,
-    ops::{self, Range},
+// TODO
+// * ops::{Add, Sub, Mul, Rem, Div} etc
+// * Generator::new(fn(context: &mut Context) -> (Option<T>, Status))
+// * Euclidean
+// * Polymetric
+
+use core::marker::PhantomData;
+use euphony_core::{
+    ratio::Ratio,
+    time::{beat::Instant, Beat},
 };
-use euphony_core::time::Beat;
-pub use euphony_pattern_macros::p as p_impl;
-use num_integer::lcm;
-use priority_queue::PriorityQueue;
-use slab::Slab;
 
-pub mod euphony_pattern {
-    pub use crate::*;
+mod rng;
+
+pub type Result<T> = core::result::Result<(T, Status), Status>;
+
+pub trait ResultExt<T> {
+    fn map_status<F: FnOnce(Status) -> Status>(self, f: F) -> Self;
+    fn or_status(self, status: Status) -> Self;
+    fn split_status(self) -> (Option<T>, Status);
 }
 
-mod traits;
+impl<T> ResultExt<T> for Result<T> {
+    fn map_status<F: FnOnce(Status) -> Status>(self, f: F) -> Self {
+        match self {
+            Ok((value, status)) => Ok((value, f(status))),
+            Err(status) => Err(f(status)),
+        }
+    }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
-pub struct Arc {
-    start: Beat,
-    end: Beat,
+    fn or_status(self, status: Status) -> Self {
+        self.map_status(|mut s| {
+            s.or(status);
+            s
+        })
+    }
+
+    fn split_status(self) -> (Option<T>, Status) {
+        match self {
+            Ok((value, status)) => (Some(value), status),
+            Err(status) => (None, status),
+        }
+    }
 }
 
-impl Default for Arc {
-    fn default() -> Self {
+pub trait HoldValue: Clone {
+    fn hold(self) -> Hold<Self>;
+}
+
+pub trait HoldGroup {
+    type Pattern: Pattern;
+
+    fn hold_group(self) -> Self::Pattern;
+}
+
+pub trait Pattern: Sized {
+    type Output;
+
+    fn expansions(&self) -> usize;
+    fn poll(&self, context: &Context) -> Result<Self::Output>;
+    fn period(&self, context: &Context) -> Beat;
+}
+
+pub trait Group: Sized {
+    type Output;
+
+    fn len(&self) -> usize;
+
+    fn expansions(&self, idx: usize) -> usize;
+
+    fn max_expansions(&self) -> usize {
+        let mut v = 0;
+        for idx in 0..self.len() {
+            v = v.max(self.expansions(idx));
+        }
+        v
+    }
+
+    fn poll(&self, idx: usize, context: &Context) -> Result<Self::Output>;
+
+    fn period(&self, idx: usize, context: &Context) -> Beat;
+
+    fn period_total(&self, context: &Context) -> Beat {
+        let mut v = Beat(0, 1);
+        for idx in 0..self.len() {
+            v += self.period(idx, context);
+        }
+        v
+    }
+}
+
+pub trait Join: Sized {
+    type Pattern: Pattern;
+
+    fn join(self) -> Self::Pattern;
+}
+
+impl<T> HoldValue for T
+where
+    T: Clone,
+{
+    fn hold(self) -> Hold<Self> {
+        Hold::new(self)
+    }
+}
+
+pub trait PatternExt: Pattern {
+    fn map<F: Fn(Self::Output) -> T, T>(self, map: F) -> Map<Self, F, T> {
+        Map::new(self, map)
+    }
+
+    fn filter<F: Fn(&Self::Output) -> bool>(self, filter: F) -> Filter<Self, F> {
+        Filter::new(self, filter)
+    }
+
+    fn filter_map<F: Fn(Self::Output) -> Option<T>, T>(self, map: F) -> FilterMap<Self, F, T> {
+        FilterMap::new(self, map)
+    }
+
+    fn gate<P>(self, gate: P) -> Gate<Self, P>
+    where
+        P: Pattern,
+    {
+        Gate::new(self, gate)
+    }
+
+    fn scale<P>(self, amount: P) -> Scale<Self, P>
+    where
+        P: Pattern<Output = Ratio<u64>>,
+    {
+        Scale::new(self, amount)
+    }
+
+    fn translate<P>(self, amount: P) -> Translate<Self, P>
+    where
+        P: Pattern<Output = Beat>,
+    {
+        Translate::new(self, amount)
+    }
+
+    fn cycle<P>(self, period: P) -> Cycle<Self, P>
+    where
+        P: Pattern<Output = Beat>,
+    {
+        Cycle::new(self, period)
+    }
+
+    fn splice<P>(self, amount: P) -> Splice<Self, P>
+    where
+        P: Pattern<Output = Ratio<u64>>,
+    {
+        Splice::new(self, amount)
+    }
+
+    fn tick(self) -> Tick<Self>
+    where
+        Self: Pattern<Output = Beat>,
+    {
+        tick(self)
+    }
+}
+
+impl<P> PatternExt for P where P: Pattern {}
+
+pub trait GroupExt: Group {
+    fn select<P>(self, selector: P) -> Select<Self, P>
+    where
+        P: Pattern<Output = u64>,
+    {
+        Select::new(self, selector)
+    }
+
+    fn divide(self) -> Divide<Self> {
+        Divide::new(self)
+    }
+}
+
+impl<G> GroupExt for G where G: Group {}
+
+pub struct Context {
+    // Scaled time
+    now: Instant,
+    // Actual time
+    real: Instant,
+    expansion: usize,
+}
+
+impl Context {
+    pub fn new(now: Instant, expansion: usize) -> Self {
         Self {
-            start: Beat(0, 1),
-            end: Beat(1, 1),
+            now,
+            real: now,
+            expansion,
         }
     }
-}
 
-impl Arc {
-    pub fn cycles(&self) -> ArcCycles {
-        ArcCycles(self.start, self.end)
+    pub fn now(&self) -> Instant {
+        self.now
     }
 
-    pub fn from_cycle(cycle: usize) -> Self {
-        let start = Beat(cycle as u64, 1);
-        let end = Beat(cycle as u64 + 1, 1);
-        (start..end).into()
+    pub fn expansion(&self) -> usize {
+        self.expansion
     }
-}
 
-fn lcm_slice<I: Copy + num_integer::Integer>(nums: &[I]) -> Option<I> {
-    // TODO can this be optimized?
-    nums.iter().copied().reduce(|a, b| lcm(a, b))
-}
-
-pub struct ArcCycles(Beat, Beat);
-
-impl Iterator for ArcCycles {
-    type Item = Arc;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.0 >= self.1 {
-            return None;
+    pub fn child(&self, now: Instant) -> Self {
+        Self {
+            now,
+            real: self.real,
+            expansion: self.expansion,
         }
-
-        let end = if !self.0.is_whole() {
-            self.0.ceil()
-        } else {
-            self.0 + 1
-        }
-        .min(self.1);
-
-        let arc = (self.0..end).into();
-        self.0 = end;
-
-        Some(arc)
     }
 }
 
 #[cfg(test)]
-mod arc_tests {
-    use super::*;
-
-    #[test]
-    fn cycles() {
-        macro_rules! t {
-            ($arc:expr, $expected:expr) => {{
-                let actual: Vec<_> = (Arc::from($arc)).cycles().collect();
-                let expected: Vec<Arc> = ($expected).iter().map(|r| Arc::from(r.clone())).collect();
-                assert_eq!(actual, expected);
-            }};
-        }
-
-        t!(Beat(0, 1)..Beat(1, 1), [Beat(0, 1)..Beat(1, 1)]);
-        t!(
-            Beat(0, 1)..Beat(2, 1),
-            [Beat(0, 1)..Beat(1, 1), Beat(1, 1)..Beat(2, 1)]
-        );
-        t!(
-            Beat(1, 2)..Beat(3, 2),
-            [Beat(1, 2)..Beat(1, 1), Beat(1, 1)..Beat(3, 2)]
-        );
-    }
+fn test_context() -> Context {
+    Context::new(Instant(0, 1), 0)
 }
 
-impl From<Range<Beat>> for Arc {
-    fn from(r: Range<Beat>) -> Self {
-        Self {
-            start: r.start,
-            end: r.end,
-        }
-    }
-}
+#[cfg(test)]
+macro_rules! combinator_test {
+    ($pattern:expr, $expected:expr) => {{
+        let pattern = $pattern;
+        let mut expected = $expected;
 
-#[macro_export]
-macro_rules! p {
-    ($($t:tt)*) => {{
-        #[allow(unused_imports)]
-        use $crate::euphony_pattern;
-        $crate::p_impl!($($t)*)
+        // simplify the expected terms
+        for exp in expected.iter_mut() {
+            for (time, _) in exp.iter_mut() {
+                *time = time.reduce();
+            }
+        }
+
+        let mut actual = vec![];
+
+        for expansion in 0..(pattern.expansions() + 1) {
+            let mut context = test_context();
+            context.expansion = expansion;
+            let mut actual_expansion = vec![];
+            let expected_len = expected.get(expansion).map(|v| v.len()).unwrap_or(0);
+
+            loop {
+                let (output, status) = pattern.poll(&context).split_status();
+                actual_expansion.push((context.now, output));
+
+                match status {
+                    Status::Continuous => break,
+                    Status::Pending(next) => {
+                        assert!(next > context.now, "combinator going back in time");
+                        context.now = next;
+                        context.real = next;
+                    }
+                }
+
+                // only get enough samples for the expectation
+                if actual_expansion.len() == expected_len {
+                    break;
+                }
+            }
+
+            actual.push(actual_expansion);
+        }
+
+        pretty_assertions::assert_eq!(&actual[..], &expected[..],);
     }};
-}
-
-pub trait Pattern {
-    type Output;
-
-    fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-        let _ = arc;
-        let _ = stream;
-        todo!()
-    }
-
-    fn cycles(&self) -> usize {
-        1
-    }
-
-    fn splice_len(&self, arc: &Arc) -> usize {
-        let _ = arc;
-        1
-    }
-}
-
-macro_rules! assert_obj_safe {
-    ($($xs:path),+ $(,)?) => {
-        $(const _: Option<&dyn $xs> = None;)+
-    };
-}
-
-assert_obj_safe!(Pattern<Output = u32>);
-
-pub trait PatternExt: Pattern + Sized {
-    fn euc<L, R>(self, lhs: L, rhs: R) -> Euclid<Self, L, R, Ident<usize>> {
-        Euclid {
-            pattern: self,
-            lhs,
-            rhs,
-            offset: Ident::new(0),
-        }
-    }
-
-    fn eucs<L, R, Off>(self, lhs: L, rhs: R, offset: Off) -> Euclid<Self, L, R, Off> {
-        Euclid {
-            pattern: self,
-            lhs,
-            rhs,
-            offset,
-        }
-    }
-
-    fn degrade(self) -> Degrade<Self> {
-        Degrade(self)
-    }
-
-    fn repeat<A>(self, amount: A) -> Repeat<Self, A> {
-        Repeat {
-            pattern: self,
-            amount,
-        }
-    }
-
-    fn repl<A>(self, amount: A) -> Replicate<Self, A> {
-        Replicate {
-            pattern: self,
-            amount,
-        }
-    }
-
-    fn slow<A>(self, amount: A) -> Slow<Self, A> {
-        Slow {
-            pattern: self,
-            amount,
-        }
-    }
-
-    fn hold<A>(self, amount: A) -> Hold<Self, A> {
-        Hold {
-            pattern: self,
-            amount,
-        }
-    }
-
-    fn polym<A>(self, amount: A) -> Polym<Self, A> {
-        Polym {
-            pattern: self,
-            amount,
-        }
-    }
-
-    fn ap<F: FnOnce(Self) -> U, U>(self, f: F) -> U {
-        f(self)
-    }
-}
-
-impl<T: Pattern> PatternExt for T {}
-
-pub trait StreamT {
-    type Output;
-
-    fn emit(&mut self, arc: Arc, scale_ttl: usize, value: Self::Output);
-    /*
-    fn start(&self) -> Beat;
-    fn end(&self) -> Beat;
-    fn arc(&self) -> Arc {
-        (self.start()..self.end()).into()
-    }
-    */
-}
-
-assert_obj_safe!(StreamT<Output = u32>);
-
-#[derive(Clone, Debug, Default)]
-pub struct Stream<T> {
-    values: Slab<T>,
-    times: PriorityQueue<(usize, Beat), Reverse<Beat>>,
-    last: Beat,
-}
-
-impl<T: Clone> Stream<T> {
-    pub fn drain(mut self) -> Vec<(Arc, T)> {
-        let mut events = vec![];
-        while let Some(((idx, end), start)) = self.times.pop() {
-            let arc = (start.0..end).into();
-            let value = self.values[idx].clone();
-            events.push((arc, value));
-        }
-        events
-    }
-}
-
-impl<T> StreamT for Stream<T> {
-    type Output = T;
-
-    fn emit(&mut self, arc: Arc, _scale_ttl: usize, value: Self::Output) {
-        let id = self.values.insert(value);
-        self.times.push((id, arc.end), Reverse(arc.start));
-        self.last = self.last.max(arc.end);
-    }
-
-    /*
-    fn start(&self) -> Beat {
-        self.times.peek().map(|(_, b)| b.0).unwrap_or(Beat(0, 1))
-    }
-
-    fn end(&self) -> Beat {
-        self.last
-    }
-    */
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
-pub enum Event<T> {
-    Start(T),
-    Rest,
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Rest<T>(core::marker::PhantomData<T>);
-
-impl<T> Default for Rest<T> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl<T> Rest<T> {
-    pub const fn new() -> Self {
-        Self(core::marker::PhantomData)
-    }
-}
-
-impl<T> Pattern for Rest<T> {
-    type Output = T;
-
-    fn emit(&self, _arc: &Arc, _stream: &mut dyn StreamT<Output = Self::Output>) {
-        // nothing to do
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Ident<T>(pub T);
-
-impl<T> Ident<T> {
-    pub const fn new(v: T) -> Self {
-        Self(v)
-    }
-}
-
-impl<T: Clone> Pattern for Ident<T> {
-    type Output = T;
-
-    fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-        for cycle in arc.cycles() {
-            let start = cycle.start;
-            if !start.is_whole() {
-                continue;
-            }
-
-            // always occupy 1 cycle
-            let end = start + 1;
-            let arc = (start..end).into();
-            stream.emit(arc, 0, self.0.clone());
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Euclid<T, L, R, Off> {
-    pattern: T,
-    lhs: L,
-    rhs: R,
-    offset: Off,
-}
-
-impl<T, L, R, Off> Pattern for Euclid<T, L, R, Off>
-where
-    T: Pattern,
-{
-    type Output = T::Output;
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Degrade<T>(T);
-
-impl<T> Pattern for Degrade<T>
-where
-    T: Pattern,
-{
-    type Output = T::Output;
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Repeat<T, A> {
-    pattern: T,
-    amount: A,
-}
-
-impl<T, A> Pattern for Repeat<T, A>
-where
-    T: Pattern,
-    A: Pattern<Output = usize>,
-{
-    type Output = T::Output;
-
-    fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-        for arc in arc.cycles() {
-            let mut amount_stream = FirstValueStream::default();
-            self.amount.emit(&arc, &mut amount_stream);
-            let len = amount_stream.unwrap_or(1);
-
-            let mut group_stream = GroupStream::new(stream, len, arc.start);
-
-            for _ in 0..len {
-                self.pattern.emit(&arc, &mut group_stream);
-                group_stream.advance();
-            }
-        }
-    }
-
-    fn cycles(&self) -> usize {
-        lcm(self.pattern.cycles(), self.amount.cycles())
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Replicate<T, A> {
-    pattern: T,
-    amount: A,
-}
-
-impl<T, A> Pattern for Replicate<T, A>
-where
-    T: Pattern,
-    A: Pattern<Output = usize>,
-{
-    type Output = T::Output;
-
-    fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-        for arc in arc.cycles() {
-            let len = self.splice_len(&arc) as u64;
-
-            for offset in 0..len {
-                let mut alt_stream = AltStream::new(stream, offset);
-                self.pattern.emit(&arc, &mut alt_stream);
-            }
-        }
-    }
-
-    fn cycles(&self) -> usize {
-        lcm(self.pattern.cycles(), self.amount.cycles())
-    }
-
-    fn splice_len(&self, arc: &Arc) -> usize {
-        let mut stream = FirstValueStream::default();
-        self.amount.emit(arc, &mut stream);
-        stream.value.unwrap_or(1)
-    }
-}
-
-#[derive(Default)]
-struct FirstValueStream<T> {
-    value: Option<T>,
-}
-
-impl<T> ops::Deref for FirstValueStream<T> {
-    type Target = Option<T>;
-
-    fn deref(&self) -> &Self::Target {
-        &self.value
-    }
-}
-
-impl<T> StreamT for FirstValueStream<T> {
-    type Output = T;
-
-    fn emit(&mut self, _arc: Arc, _scale_ttl: usize, value: Self::Output) {
-        if self.value.is_none() {
-            self.value = Some(value);
-        }
-    }
-}
-
-#[derive(Default)]
-struct LastValueStream<T> {
-    value: Option<T>,
-}
-
-impl<T> ops::Deref for LastValueStream<T> {
-    type Target = Option<T>;
-
-    fn deref(&self) -> &Self::Target {
-        &self.value
-    }
-}
-
-impl<T> StreamT for LastValueStream<T> {
-    type Output = T;
-
-    fn emit(&mut self, _arc: Arc, _scale_ttl: usize, value: Self::Output) {
-        self.value = Some(value);
-    }
-}
-
-#[derive(Default)]
-struct TotalValueStream<T> {
-    value: T,
-}
-
-impl<T> ops::Deref for TotalValueStream<T> {
-    type Target = T;
-
-    fn deref(&self) -> &Self::Target {
-        &self.value
-    }
-}
-
-impl<T: ops::AddAssign> StreamT for TotalValueStream<T> {
-    type Output = T;
-
-    fn emit(&mut self, _arc: Arc, _scale_ttl: usize, value: Self::Output) {
-        self.value += value;
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Slow<T, A> {
-    pattern: T,
-    amount: A,
-}
-
-impl<T, A> Slow<T, A>
-where
-    T: Pattern,
-    A: Pattern<Output = usize>,
-{
-    fn for_each<F: FnMut(Arc, usize)>(&self, arc: &Arc, mut f: F) {
-        dbg!(self.cycles());
-        let amount_cycles = self.amount.cycles() as u64;
-
-        for arc in arc.cycles() {
-            let start = Beat(arc.start.0 % amount_cycles, 1);
-            let end = start + 1;
-            let subarc: Arc = (start..end).into();
-
-            let mut amount_stream = FirstValueStream::default();
-            self.amount.emit(&subarc, &mut amount_stream);
-            let amount = amount_stream.unwrap_or(1);
-
-            f(arc, amount);
-        }
-    }
-}
-
-impl<T, A> Pattern for Slow<T, A>
-where
-    T: Pattern,
-    A: Pattern<Output = usize>,
-{
-    type Output = T::Output;
-
-    fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-        self.for_each(arc, |arc, _amount| {
-            self.pattern.emit(&arc, stream);
-            // let slow_stream = SlowStream::new(stream, amount as _);
-            todo!()
-        });
-    }
-
-    fn cycles(&self) -> usize {
-        let amount_cycles = self.amount.cycles();
-        let cycles = lcm(self.pattern.cycles(), amount_cycles);
-
-        let mut total_stream = TotalValueStream::default();
-        let arc = (Beat(0, 1)..Beat(amount_cycles as _, 1)).into();
-        self.amount.emit(&arc, &mut total_stream);
-        let total = *total_stream;
-
-        lcm(total, cycles)
-    }
-}
-
-struct SlowStream<'a, Output> {
-    stream: &'a mut dyn StreamT<Output = Output>,
-    amount: u64,
-}
-
-impl<'a, Output> SlowStream<'a, Output> {
-    #[allow(dead_code)]
-    fn new(stream: &'a mut dyn StreamT<Output = Output>, amount: u64) -> Self {
-        Self { stream, amount }
-    }
-}
-
-impl<'a, Output> StreamT for SlowStream<'a, Output> {
-    type Output = Output;
-
-    fn emit(&mut self, arc: Arc, scale_ttl: usize, value: Self::Output) {
-        let start = arc.start * self.amount;
-
-        let mut end = arc.end;
-        if scale_ttl == 0 {
-            end *= self.amount;
-        }
-
-        let arc = (start..end).into();
-        self.stream.emit(arc, scale_ttl.saturating_sub(1), value);
-    }
-
-    /*
-
-    fn start(&self) -> Beat {
-        self.stream.start()
-    }
-
-    fn end(&self) -> Beat {
-        self.stream.end()
-    }
-    */
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Hold<T, A> {
-    pattern: T,
-    amount: A,
-}
-
-impl<T, A> Pattern for Hold<T, A>
-where
-    T: Pattern,
-{
-    type Output = T::Output;
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Polym<T, A> {
-    pattern: T,
-    amount: A,
-}
-
-impl<T, A> Pattern for Polym<T, A>
-where
-    T: Pattern,
-{
-    type Output = T::Output;
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Group<T>(T);
-
-impl<T> Group<T> {
-    pub const fn new(v: T) -> Self {
-        Self(v)
-    }
 }
 
 macro_rules! impl_tuple {
@@ -655,9 +313,1169 @@ macro_rules! impl_tuple {
     };
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Status {
+    Continuous,
+    Pending(Instant),
+}
+
+impl Status {
+    pub fn or(&mut self, other: Self) {
+        match (self, other) {
+            (Self::Pending(a), Self::Pending(b)) => *a = core::cmp::min(*a, b),
+            (Self::Continuous, Self::Continuous) => {}
+            (a, Self::Pending(_)) => *a = other,
+            (Self::Pending(_), Self::Continuous) => {}
+        }
+    }
+
+    pub fn and(&mut self, other: Self) {
+        match (self, other) {
+            (Self::Pending(a), Self::Pending(b)) => *a = core::cmp::min(*a, b),
+            (Self::Continuous, Self::Continuous) => {}
+            (Self::Continuous, Self::Pending(_)) => {}
+            (Self::Pending(_), Self::Continuous) => {}
+        }
+    }
+
+    pub fn map(self, map: impl Fn(Instant) -> Instant) -> Self {
+        match self {
+            Self::Pending(v) => Self::Pending(map(v)),
+            Self::Continuous => Self::Continuous,
+        }
+    }
+}
+
+/// Constantly emits a value
+#[derive(Clone, Debug)]
+pub struct Hold<T>
+where
+    T: Clone,
+{
+    value: T,
+}
+
+impl<T> Hold<T>
+where
+    T: Clone,
+{
+    pub fn new(value: T) -> Self {
+        Self { value }
+    }
+}
+
+impl<T> Pattern for Hold<T>
+where
+    T: Clone,
+{
+    type Output = T;
+
+    fn expansions(&self) -> usize {
+        0
+    }
+
+    fn poll(&self, _context: &Context) -> Result<Self::Output> {
+        let value = self.value.clone();
+        let status = Status::Continuous;
+        Ok((value, status))
+    }
+
+    fn period(&self, _context: &Context) -> Beat {
+        Beat(1, 1)
+    }
+}
+
+/// Returns a pattern that never emits a value
+pub fn rest<T>() -> Rest<T> {
+    Rest::new()
+}
+
+/// Never emits a value
+#[derive(Clone, Debug)]
+pub struct Rest<T> {
+    value: PhantomData<T>,
+}
+
+impl<T> Rest<T> {
+    pub fn new() -> Self {
+        Self { value: PhantomData }
+    }
+}
+
+impl<T> Pattern for Rest<T> {
+    type Output = T;
+
+    fn expansions(&self) -> usize {
+        0
+    }
+
+    fn poll(&self, _context: &Context) -> Result<Self::Output> {
+        Err(Status::Continuous)
+    }
+
+    fn period(&self, _context: &Context) -> Beat {
+        Beat(1, 1)
+    }
+}
+
+/// Creates a tick pattern
+pub fn tick<P>(pattern: P) -> Tick<P>
+where
+    P: Pattern<Output = Beat>,
+{
+    Tick::new(pattern)
+}
+
+/// Ticks every period, returning how many periods have elapsed
+#[derive(Clone, Debug)]
+pub struct Tick<P>
+where
+    P: Pattern<Output = Beat>,
+{
+    pattern: P,
+}
+
+impl<P> Tick<P>
+where
+    P: Pattern<Output = Beat>,
+{
+    pub fn new(pattern: P) -> Self {
+        Self { pattern }
+    }
+}
+
+impl<P> Pattern for Tick<P>
+where
+    P: Pattern<Output = Beat>,
+{
+    type Output = u64;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions()
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (period, mut status) = self.pattern.poll(context)?;
+
+        if period.0 == 0 {
+            return Err(status);
+        }
+
+        let count = (context.now() / period).whole();
+
+        let next_cycle: Instant = (period * (count + 1)).as_ratio().into();
+
+        status.or(Status::Pending(next_cycle));
+
+        Ok((count, status))
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn tick_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick(),
+        [[
+            (Instant(0, 1), Some(0)),
+            (Instant(1, 1), Some(1)),
+            (Instant(2, 1), Some(2)),
+            (Instant(3, 1), Some(3)),
+        ]]
+    );
+}
+
+pub fn random<P>(seed: P) -> Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    Random::new(seed)
+}
+
+/// Generates a random u64 with a given seed
+///
+/// The output is completely determined from the current time and seed
+#[derive(Copy, Clone, Debug)]
+pub struct Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    seed: P,
+}
+
+impl<P> Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    pub fn new(seed: P) -> Self {
+        Self { seed }
+    }
+}
+
+impl<P> Pattern for Random<P>
+where
+    P: Pattern<Output = u64>,
+{
+    type Output = u64;
+
+    fn expansions(&self) -> usize {
+        0
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (seed, status) = self.seed.poll(context)?;
+
+        let value = rng::get(context.now(), context.expansion() as u64, seed);
+
+        Ok((value, status))
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.seed.period(context)
+    }
+}
+
+#[test]
+fn random_test() {
+    combinator_test!(
+        random(123.hold())
+            .gate(Beat(1, 1).hold().tick())
+            .map(|v| v % 4),
+        [[
+            (Instant(0, 1), Some(3)),
+            (Instant(1, 1), Some(0)),
+            (Instant(2, 1), Some(2)),
+            (Instant(3, 1), Some(2)),
+        ]]
+    );
+}
+
+/// Maps from one pattern value to another
+#[derive(Clone, Debug)]
+pub struct Map<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> T,
+{
+    pattern: P,
+    map: F,
+    output: PhantomData<T>,
+}
+
+impl<P, F, T> Map<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> T,
+{
+    pub fn new(pattern: P, map: F) -> Self {
+        Self {
+            pattern,
+            map,
+            output: PhantomData,
+        }
+    }
+}
+
+impl<P, F, T> Pattern for Map<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> T,
+{
+    type Output = T;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions()
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (value, status) = self.pattern.poll(context)?;
+        let value = (self.map)(value);
+        Ok((value, status))
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn map_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick().map(|v| v * 2),
+        [[
+            (Instant(0, 1), Some(0)),
+            (Instant(1, 1), Some(2)),
+            (Instant(2, 1), Some(4)),
+            (Instant(3, 1), Some(6)),
+        ]]
+    );
+}
+
+/// Filters the output from a pattern
+#[derive(Clone, Debug)]
+pub struct Filter<P, F>
+where
+    P: Pattern,
+    F: Fn(&P::Output) -> bool,
+{
+    pattern: P,
+    filter: F,
+}
+
+impl<P, F> Filter<P, F>
+where
+    P: Pattern,
+    F: Fn(&P::Output) -> bool,
+{
+    pub fn new(pattern: P, filter: F) -> Self {
+        Self { pattern, filter }
+    }
+}
+
+impl<P, F> Pattern for Filter<P, F>
+where
+    P: Pattern,
+    F: Fn(&P::Output) -> bool,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions()
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (value, status) = self.pattern.poll(context)?;
+        if (self.filter)(&value) {
+            Ok((value, status))
+        } else {
+            Err(status)
+        }
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn filter_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick().filter(|v| v % 2 == 1),
+        [[
+            (Instant(0, 1), None),
+            (Instant(1, 1), Some(1)),
+            (Instant(2, 1), None),
+            (Instant(3, 1), Some(3)),
+        ]]
+    );
+}
+
+/// Filters the output from a pattern
+#[derive(Clone, Debug)]
+pub struct FilterMap<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> Option<T>,
+{
+    pattern: P,
+    filter_map: F,
+    output: PhantomData<T>,
+}
+
+impl<P, F, T> FilterMap<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> Option<T>,
+{
+    pub fn new(pattern: P, filter_map: F) -> Self {
+        Self {
+            pattern,
+            filter_map,
+            output: PhantomData,
+        }
+    }
+}
+
+impl<P, F, T> Pattern for FilterMap<P, F, T>
+where
+    P: Pattern,
+    F: Fn(P::Output) -> Option<T>,
+{
+    type Output = T;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions()
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (value, status) = self.pattern.poll(context)?;
+        if let Some(value) = (self.filter_map)(value) {
+            Ok((value, status))
+        } else {
+            Err(status)
+        }
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn filter_map_test() {
+    combinator_test!(
+        Beat(1, 1)
+            .hold()
+            .tick()
+            .filter_map(|v| if v % 2 == 0 { Some(v + 1) } else { None }),
+        [[
+            (Instant(0, 1), Some(1)),
+            (Instant(1, 1), None),
+            (Instant(2, 1), Some(3)),
+            (Instant(3, 1), None),
+        ]]
+    );
+}
+
+/// Emits a pattern only while another pattern returns a value
+#[derive(Clone, Debug)]
+pub struct Gate<P, C>
+where
+    P: Pattern,
+    C: Pattern,
+{
+    pattern: P,
+    condition: C,
+}
+
+impl<P, C> Gate<P, C>
+where
+    P: Pattern,
+    C: Pattern,
+{
+    pub fn new(pattern: P, condition: C) -> Self {
+        Self { pattern, condition }
+    }
+}
+
+impl<P, C> Pattern for Gate<P, C>
+where
+    P: Pattern,
+    C: Pattern,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.condition.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (_, status) = self.condition.poll(context)?;
+
+        self.pattern.poll(context).or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn gate_test() {
+    combinator_test!(123.hold().gate(().hold()), [[(Instant(0, 1), Some(123))]]);
+    combinator_test!(
+        123.hold()
+            .gate(Beat(1, 1).hold().tick().filter(|b| b % 2 == 0)),
+        [[
+            (Instant(0, 1), Some(123)),
+            (Instant(1, 1), None),
+            (Instant(2, 1), Some(123)),
+            (Instant(3, 1), None),
+        ]]
+    );
+}
+
+/// Scales time of one pattern by another
+#[derive(Clone, Debug)]
+pub struct Scale<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pattern: P,
+    amount: A,
+}
+
+impl<P, A> Scale<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pub fn new(pattern: P, amount: A) -> Self {
+        Self { pattern, amount }
+    }
+}
+
+impl<P, A> Pattern for Scale<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.amount.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (amount, status) = self.amount.poll(context)?;
+
+        if amount.0 == 0 {
+            return Err(status);
+        }
+
+        let now = context.now();
+        let child = context.child(now * amount);
+
+        self.pattern
+            .poll(&child)
+            .map_status(|s| s.map(|v| v / amount))
+            .or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        // TODO do we need to scale the period?
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn scale_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick().scale(Ratio(2, 1).hold()),
+        [[
+            (Instant(0, 1), Some(0)),
+            (Instant(1, 2), Some(1)),
+            (Instant(2, 2), Some(2)),
+            (Instant(3, 2), Some(3)),
+            (Instant(4, 2), Some(4)),
+            (Instant(5, 2), Some(5)),
+        ]]
+    );
+    combinator_test!(
+        Beat(1, 1).hold().tick().scale(Hold::new(Ratio(1, 2))),
+        [[
+            (Instant(0, 1), Some(0)),
+            (Instant(2, 1), Some(1)),
+            (Instant(4, 1), Some(2)),
+            (Instant(6, 1), Some(3)),
+            (Instant(8, 1), Some(4)),
+            (Instant(10, 1), Some(5)),
+        ]]
+    );
+    combinator_test!(
+        Beat(1, 1)
+            .hold()
+            .tick()
+            .scale(Beat(2, 1).hold().tick().map(|v| (v as u64 + 1).into())),
+        [[
+            (Instant(0, 2), Some(0)),
+            (Instant(2, 2), Some(1)),
+            (Instant(4, 2), Some(4)),
+            (Instant(5, 2), Some(5)),
+            (Instant(6, 2), Some(6)),
+            (Instant(7, 2), Some(7)),
+            (Instant(8, 2), Some(12)),
+        ]]
+    );
+}
+
+/// Translates time of one pattern by another
+#[derive(Clone, Debug)]
+pub struct Translate<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Beat>,
+{
+    pattern: P,
+    amount: A,
+}
+
+impl<P, A> Translate<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Beat>,
+{
+    pub fn new(pattern: P, amount: A) -> Self {
+        Self { pattern, amount }
+    }
+}
+
+impl<P, A> Pattern for Translate<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Beat>,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.amount.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (amount, status) = self.amount.poll(context)?;
+
+        let now = context.now();
+        let child = context.child(now + amount);
+
+        self.pattern
+            .poll(&child)
+            .map_status(|s| s.map(|v| v - amount))
+            .or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn translate_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick().translate(Beat(2, 1).hold()),
+        [[
+            (Instant(0, 1), Some(2)),
+            (Instant(1, 1), Some(3)),
+            (Instant(2, 1), Some(4)),
+            (Instant(3, 1), Some(5)),
+        ]]
+    );
+}
+
+/// Cycles after a number of beats
+#[derive(Clone, Debug)]
+pub struct Cycle<P, Period>
+where
+    P: Pattern,
+    Period: Pattern<Output = Beat>,
+{
+    pattern: P,
+    period: Period,
+}
+
+impl<P, Period> Cycle<P, Period>
+where
+    P: Pattern,
+    Period: Pattern<Output = Beat>,
+{
+    pub fn new(pattern: P, period: Period) -> Self {
+        Self { pattern, period }
+    }
+}
+
+impl<P, Period> Pattern for Cycle<P, Period>
+where
+    P: Pattern,
+    Period: Pattern<Output = Beat>,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.period.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (period, mut status) = self.period.poll(context)?;
+
+        if period.0 == 0 {
+            return Err(status);
+        }
+
+        let now = context.now();
+        // count how many cycles we've done
+        let cycle_count = now / period;
+        // modulate the current time by the period
+        let cycle_now: Instant = (now % period).into();
+        // compute when the current cycle would have started
+        let cycle_start: Instant = (period * cycle_count.whole()).as_ratio().into();
+
+        // let the caller know we change every cycle
+        let next_cycle = cycle_start + period;
+        status.or(Status::Pending(next_cycle));
+
+        // change what `now` the child pattern sees
+        let result = self.pattern.poll(&context.child(cycle_now));
+
+        // we need to offset the returned time with the cycle start
+        result
+            .map_status(|s| s.map(|v| v + cycle_start))
+            .or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.pattern.period(context)
+    }
+}
+
+#[test]
+fn cycle_test() {
+    combinator_test!(
+        Beat(1, 1).hold().tick().cycle(Beat(3, 1).hold()),
+        [[
+            (Instant(0, 1), Some(0)),
+            (Instant(1, 1), Some(1)),
+            (Instant(2, 1), Some(2)),
+            (Instant(3, 1), Some(0)),
+            (Instant(4, 1), Some(1)),
+            (Instant(5, 1), Some(2)),
+        ]]
+    );
+}
+
+/// Scales group member time by another pattern
+#[derive(Clone, Debug)]
+pub struct Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pattern: P,
+    amount: A,
+}
+
+impl<P, A> Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    pub fn new(pattern: P, amount: A) -> Self {
+        Self { pattern, amount }
+    }
+}
+
+impl<P, A> Pattern for Splice<P, A>
+where
+    P: Pattern,
+    A: Pattern<Output = Ratio<u64>>,
+{
+    type Output = P::Output;
+
+    fn expansions(&self) -> usize {
+        self.pattern.expansions().max(self.amount.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (_amount, status) = self.amount.poll(context)?;
+        self.pattern.poll(context).or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        let period = self.pattern.period(context);
+
+        if let Ok((amount, _)) = self.amount.poll(context) {
+            period * amount
+        } else {
+            Beat(1, 1)
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct Select<G, P>
+where
+    G: Group,
+    P: Pattern<Output = u64>,
+{
+    group: G,
+    selector: P,
+}
+
+impl<G, P> Select<G, P>
+where
+    G: Group,
+    P: Pattern<Output = u64>,
+{
+    pub fn new(group: G, selector: P) -> Self {
+        Self { group, selector }
+    }
+
+    fn idx(&self, context: &Context) -> Result<usize> {
+        let (idx, status) = self.selector.poll(context)?;
+        let idx = idx as usize;
+        let len = self.group.len();
+        let idx = idx % len;
+        Ok((idx, status))
+    }
+}
+
+impl<G, P> Pattern for Select<G, P>
+where
+    G: Group,
+    P: Pattern<Output = u64>,
+{
+    type Output = G::Output;
+
+    fn expansions(&self) -> usize {
+        self.group.max_expansions().max(self.selector.expansions())
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let (idx, status) = self.idx(context)?;
+        let result = self.group.poll(idx, context);
+        result.or_status(status)
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        if let Ok((idx, _)) = self.idx(context) {
+            self.group.period(idx, context)
+        } else {
+            Beat(1, 1)
+        }
+    }
+}
+
+#[test]
+fn select_test() {
+    combinator_test!(
+        (1.hold(), 2.hold(), 3.hold(), 4.hold()).select(Beat(1, 1).hold().tick()),
+        [[
+            (Instant(0, 1), Some(1)),
+            (Instant(1, 1), Some(2)),
+            (Instant(2, 1), Some(3)),
+            (Instant(3, 1), Some(4)),
+            (Instant(4, 1), Some(1)),
+            (Instant(5, 1), Some(2)),
+            (Instant(6, 1), Some(3)),
+            (Instant(7, 1), Some(4)),
+        ]]
+    );
+    combinator_test!(
+        (1.hold(), 2.hold(), 3.hold(), 4.hold())
+            .select(Beat(1, 1).hold().tick())
+            .scale(Ratio(4, 1).hold()),
+        [[
+            (Instant(0, 4), Some(1)),
+            (Instant(1, 4), Some(2)),
+            (Instant(2, 4), Some(3)),
+            (Instant(3, 4), Some(4)),
+            (Instant(4, 4), Some(1)),
+        ]]
+    );
+    combinator_test!(
+        (1.hold(), 2.hold(), 3.hold(), 4.hold())
+            .select(Beat(1, 1).hold().tick())
+            .translate(Beat(2, 1).hold())
+            .scale(Ratio(4, 1).hold()),
+        [[
+            (Instant(0, 4), Some(3)),
+            (Instant(1, 4), Some(4)),
+            (Instant(2, 4), Some(1)),
+            (Instant(3, 4), Some(2)),
+            (Instant(4, 4), Some(3)),
+        ]]
+    );
+    combinator_test!(
+        (
+            Beat(1, 1).hold().tick(),
+            Beat(1, 2).hold().tick(),
+            Beat(1, 4).hold().tick()
+        )
+            .select(Beat(1, 1).hold().tick()),
+        [[
+            (Instant(0, 4), Some(0)),
+            (Instant(4, 4), Some(2)),
+            (Instant(6, 4), Some(3)),
+            (Instant(8, 4), Some(8)),
+            (Instant(9, 4), Some(9)),
+        ]]
+    );
+}
+
+/// Equally divides a period between members of a group based on their period
+#[derive(Clone, Debug)]
+pub struct Divide<G>
+where
+    G: Group,
+{
+    group: G,
+}
+
+impl<G> Divide<G>
+where
+    G: Group,
+{
+    pub fn new(group: G) -> Self {
+        Self { group }
+    }
+}
+
+impl<G> Pattern for Divide<G>
+where
+    G: Group,
+{
+    type Output = G::Output;
+
+    fn expansions(&self) -> usize {
+        self.group.max_expansions()
+    }
+
+    fn poll(&self, context: &Context) -> Result<Self::Output> {
+        let period = self.group.period_total(context).as_ratio();
+
+        if period.0 == 0 {
+            return Err(Status::Continuous);
+        }
+
+        let now = context.now();
+        // figure out the start of the current cycle
+        let cycle_start: Instant = now.whole().into();
+        // figure out where we are in the cycle
+        let cycle_cursor: Instant = (now - cycle_start) * period;
+        let cycle_cursor: Beat = cycle_cursor.as_ratio().into();
+
+        // keep track of each of the starting points
+        let mut child_start = Beat(0, 1);
+
+        for idx in 0..self.group.len() {
+            let child_period = self.group.period(idx, context);
+
+            // skip over empty periods
+            if child_period.0 == 0 {
+                continue;
+            }
+
+            let child_end = child_start + child_period;
+
+            // keep searching
+            if cycle_cursor >= child_end {
+                child_start = child_end;
+                continue;
+            }
+
+            let mut child_cursor = cycle_cursor;
+            // shift the cursor back to the start of the child
+            child_cursor -= child_start;
+            // scale the cursor by the amount of time it occupies in the period
+            child_cursor *= child_period.as_ratio();
+
+            let child_now = cycle_start + child_cursor;
+
+            let child = context.child(child_now);
+            let result = self.group.poll(idx, &child);
+
+            return result.map_status(|status| {
+                let mut status = status.map(|time| {
+                    // invert the time scaling
+                    let mut child_cursor = time - child_now;
+                    child_cursor /= period;
+                    child_cursor += now;
+                    child_cursor
+                });
+
+                // status should change on the next group member
+                status.or(Status::Pending(cycle_start + (child_end / period)));
+
+                status
+            });
+        }
+
+        unreachable!()
+    }
+
+    fn period(&self, context: &Context) -> Beat {
+        self.group.period_total(context)
+    }
+}
+
+#[test]
+fn divide_test() {
+    combinator_test!(
+        (
+            Beat(1, 1).hold().tick().map(|_| 1),
+            Beat(1, 2).hold().tick().map(|_| 2),
+        )
+            .divide(),
+        [[
+            (Instant(0, 4), Some(1)),
+            (Instant(2, 4), Some(2)),
+            (Instant(3, 4), Some(2)),
+            (Instant(4, 4), Some(1)),
+            (Instant(6, 4), Some(2)),
+            (Instant(7, 4), Some(2)),
+            (Instant(8, 4), Some(1)),
+            (Instant(10, 4), Some(2)),
+            (Instant(11, 4), Some(2)),
+        ]]
+    );
+    combinator_test!(
+        (
+            Beat(1, 1).hold().tick().map(|_| 1),
+            Beat(1, 2).hold().tick().map(|_| 2),
+            Beat(1, 4).hold().tick().map(|_| 3),
+        )
+            .divide(),
+        [[
+            (Instant(0, 1), Some(1)),
+            (Instant(2, 6), Some(2)),
+            (Instant(3, 6), Some(2)),
+            (Instant(8, 12), Some(3)),
+            (Instant(9, 12), Some(3)),
+            (Instant(10, 12), Some(3)),
+            (Instant(11, 12), Some(3)),
+        ]]
+    );
+    combinator_test!(
+        (
+            Beat(1, 1)
+                .hold()
+                .tick()
+                .map(|_| 1)
+                .splice(Ratio(2, 1).hold()),
+            Beat(1, 2).hold().tick().map(|_| 2),
+            Beat(1, 4).hold().tick().map(|_| 3),
+        )
+            .divide(),
+        [[
+            (Instant(0, 16), Some(1)),
+            (Instant(4, 16), Some(1)),
+            (Instant(8, 16), Some(2)),
+            (Instant(10, 16), Some(2)),
+            (Instant(12, 16), Some(3)),
+            (Instant(13, 16), Some(3)),
+            (Instant(14, 16), Some(3)),
+            (Instant(15, 16), Some(3)),
+            (Instant(16, 16), Some(1)),
+        ]]
+    );
+}
+
+impl<P> Group for &[P]
+where
+    P: Pattern,
+{
+    type Output = P::Output;
+
+    fn len(&self) -> usize {
+        <[P]>::len(self)
+    }
+
+    fn expansions(&self, idx: usize) -> usize {
+        self[idx].expansions()
+    }
+
+    fn poll(&self, idx: usize, context: &Context) -> Result<Self::Output> {
+        self[idx].poll(context)
+    }
+
+    fn period(&self, idx: usize, context: &Context) -> Beat {
+        self[idx].period(context)
+    }
+}
+
+impl<P, const N: usize> Group for [P; N]
+where
+    P: Pattern,
+{
+    type Output = P::Output;
+
+    fn len(&self) -> usize {
+        <[P]>::len(self)
+    }
+
+    fn expansions(&self, idx: usize) -> usize {
+        self[idx].expansions()
+    }
+
+    fn poll(&self, idx: usize, context: &Context) -> Result<Self::Output> {
+        self[idx].poll(context)
+    }
+
+    fn period(&self, idx: usize, context: &Context) -> Beat {
+        self[idx].period(context)
+    }
+}
+
+/*
+impl<V: Clone, const N: usize> HoldGroup for [V; N] {
+    type Pattern = [Hold<V>; N];
+
+    fn hold_group(self) -> Self::Pattern {
+        todo!()
+    }
+}
+*/
+
 macro_rules! impl_group {
     ([$($t:ident),*],[$($value:tt),*]) => {
-        impl<$($t),*, Output> Pattern for Group<($($t,)*)>
+        impl<$($t),*> Pattern for ($($t,)*)
+        where
+            $(
+                $t: Pattern,
+            )*
+        {
+            type Output = (
+                $(
+                    Option<$t::Output>,
+                )*
+            );
+
+            fn expansions(&self) -> usize {
+                0 $(
+                  +  (self.$value).expansions()
+                )*
+            }
+
+            fn poll(&self, context: &Context) -> Result<Self::Output> {
+                let mut status = Status::Continuous;
+                let mut has_value = false;
+
+                let value = (
+                    $({
+                        let (value, s) = (self.$value).poll(context).split_status();
+                        status.or(s);
+                        has_value |= value.is_some();
+                        value
+                    },)*
+                );
+
+                if has_value {
+                    Ok((value, status))
+                } else {
+                    Err(status)
+                }
+            }
+
+            fn period(&self, _context: &Context) -> Beat {
+                // TODO does this even make sense to do?
+                Beat(1, 1)
+            }
+        }
+
+        impl<$($t),*> HoldGroup for ($($t,)*)
+        where
+            $(
+                $t: HoldValue,
+            )*
+        {
+            type Pattern = (
+                $(
+                    Hold<$t>,
+                )*
+            );
+
+            fn hold_group(self) -> Self::Pattern {
+                (
+                    $(
+                        (self.$value).hold(),
+                    )*
+                )
+            }
+        }
+
+        impl<$($t),*, Output> Group for ($($t,)*)
         where
             $(
                 $t: Pattern<Output = Output>,
@@ -665,362 +1483,47 @@ macro_rules! impl_group {
         {
             type Output = Output;
 
-            fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-                for arc in arc.cycles() {
-                    let lengths = (
-                        $(
-                            (self.0).$value.splice_len(&arc),
-                        )*
-                    );
-                    let total = 0
-                        $(
-                            + lengths.$value
-                        )*;
-
-                    let mut group_stream = GroupStream::new(stream, total, arc.start);
+            fn expansions(&self, idx: usize) -> usize {
+                match idx {
                     $(
-                        (self.0).$value.emit(&arc, &mut group_stream);
-                        group_stream.advance();
+                        $value => {
+                            (self.$value).expansions()
+                        }
                     )*
+                    _ => panic!("invalid index"),
                 }
             }
 
-            fn cycles(&self) -> usize {
-                lcm_slice(&[
+            fn poll(&self, idx: usize, context: &Context) -> Result<Self::Output> {
+                match idx {
                     $(
-                        (self.0).$value.cycles(),
+                        $value => {
+                            (self.$value).poll(context)
+                        }
                     )*
-                ]).unwrap_or(1)
+                    _ => panic!("invalid index"),
+                }
+            }
+
+            fn period(&self, idx: usize, context: &Context) -> Beat {
+                match idx {
+                    $(
+                        $value => {
+                            (self.$value).period(context)
+                        }
+                    )*
+                    _ => panic!("invalid index"),
+                }
+            }
+
+            fn len(&self) -> usize {
+                $(
+                    let _idx = $value;
+                )*
+                _idx + 1
             }
         }
     };
 }
 
 impl_tuple!(impl_group);
-
-struct GroupStream<'a, Output> {
-    stream: &'a mut dyn StreamT<Output = Output>,
-    total: usize,
-    offset: usize,
-    start: Beat,
-}
-
-impl<'a, Output> GroupStream<'a, Output> {
-    fn new(stream: &'a mut dyn StreamT<Output = Output>, total: usize, start: Beat) -> Self {
-        Self {
-            stream,
-            total,
-            offset: 0,
-            start,
-        }
-    }
-
-    fn scale(&self) -> (u64, u64) {
-        (1, self.total as _)
-    }
-
-    fn offset(&self) -> Beat {
-        Beat(self.offset as _, self.total as _)
-    }
-
-    fn advance(&mut self) {
-        self.offset += 1;
-    }
-}
-
-impl<'a, Output> StreamT for GroupStream<'a, Output> {
-    type Output = Output;
-
-    fn emit(&mut self, arc: Arc, scale_ttl: usize, value: Self::Output) {
-        let offset = self.offset() + self.start;
-        let scale = self.scale();
-
-        let start = (arc.start - self.start) * scale + offset;
-
-        let mut end = arc.end - self.start;
-        if scale_ttl == 0 {
-            end *= scale
-        }
-        end += offset;
-
-        let arc = (start..end).into();
-        self.stream.emit(arc, scale_ttl.saturating_sub(1), value);
-    }
-
-    /*
-
-    fn start(&self) -> Beat {
-        self.stream.start()
-    }
-
-    fn end(&self) -> Beat {
-        self.stream.end()
-    }
-    */
-}
-
-#[derive(Clone, Copy, Debug)]
-pub struct Alternate<T>(T);
-
-impl<T> Alternate<T> {
-    pub const fn new(v: T) -> Self {
-        Self(v)
-    }
-}
-
-macro_rules! impl_alt {
-    ([$($t:ident),*],[$($value:tt),*]) => {
-        impl<$($t),*, Output> Pattern for Alternate<($($t,)*)>
-        where
-            $(
-                $t: Pattern<Output = Output>,
-            )*
-        {
-            type Output = Output;
-
-            fn emit(&self, arc: &Arc, stream: &mut dyn StreamT<Output = Self::Output>) {
-                for arc in arc.cycles() {
-                    let lengths = (
-                        $(
-                            (self.0).$value.splice_len(&arc) as u64,
-                        )*
-                    );
-                    let total = 0
-                        $(
-                            + lengths.$value
-                        )*;
-
-                    if total == 0 {
-                        continue;
-                    }
-
-                    let start = arc.start.truncate().whole();
-                    let mut idx = start % total;
-
-                    $(
-                        if let Some(n) = idx.checked_sub(lengths.$value) {
-                            idx = n;
-                        } else {
-                            let new_start = start / total;
-                            let diff = start - new_start;
-                            let mut alt_stream = AltStream::new(stream, diff);
-                            let start = Beat(new_start, 1);
-                            let end = start + 1;
-                            let arc = (start..end).into();
-                            (self.0).$value.emit(&arc, &mut alt_stream);
-                            continue;
-                        }
-                    )*
-
-                    let _ = idx;
-                }
-            }
-
-            fn cycles(&self) -> usize {
-                let cycles = lcm_slice(&[
-                    $(
-                        (self.0).$value.cycles(),
-                    )*
-                ]).unwrap_or(1);
-
-                let mut total = 0;
-
-                for cycle in 0..cycles {
-                    let arc = Arc::from_cycle(cycle);
-                    $(
-                        total += (self.0).$value.splice_len(&arc);
-                    )*
-                }
-
-                lcm(total, cycles)
-            }
-        }
-    };
-}
-
-struct AltStream<'a, Output> {
-    stream: &'a mut dyn StreamT<Output = Output>,
-    offset: u64,
-}
-
-impl<'a, Output> AltStream<'a, Output> {
-    fn new(stream: &'a mut dyn StreamT<Output = Output>, offset: u64) -> Self {
-        Self { stream, offset }
-    }
-
-    fn offset(&self) -> Beat {
-        Beat(self.offset, 1)
-    }
-}
-
-impl<'a, Output> StreamT for AltStream<'a, Output> {
-    type Output = Output;
-
-    fn emit(&mut self, mut arc: Arc, scale_ttl: usize, value: Self::Output) {
-        let offset = self.offset();
-        arc.start += offset;
-        arc.end += offset;
-        self.stream.emit(arc, scale_ttl, value);
-    }
-
-    /*
-
-    fn start(&self) -> Beat {
-        self.stream.start()
-    }
-
-    fn end(&self) -> Beat {
-        self.stream.end()
-    }
-    */
-}
-
-impl_tuple!(impl_alt);
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    macro_rules! pt {
-        ($($t:tt)*) => {{
-            let f = $crate::p!($($t)*);
-            let mut stream = Stream::default();
-            let cycles = f.cycles() as u64;
-            let arc = (Beat(0, 1)..Beat(cycles, 1)).into();
-            f.emit(&arc, &mut stream);
-            let value = format!("{:#?}", stream.drain());
-            insta::assert_snapshot!(
-                insta::_macro_support::AutoName,
-                value,
-                stringify!($($t)*)
-            );
-            f
-        }};
-    }
-
-    #[allow(non_upper_case_globals)]
-    const bd: &str = "bd";
-    #[allow(non_upper_case_globals)]
-    const sd: &str = "sd";
-    #[allow(non_upper_case_globals)]
-    const hh: &str = "hh";
-    #[allow(non_upper_case_globals)]
-    const cp: &str = "cp";
-
-    #[test]
-    fn grouping() {
-        // "[bd sd] hh"
-        pt![[bd, sd], hh];
-    }
-
-    #[test]
-    fn replicate() {
-        // "hh bd!2"
-        pt![hh, bd.repl(2)];
-    }
-
-    #[test]
-    fn replicate_alternate() {
-        // "hh bd!<2 3>"
-        pt![hh, bd.repl((2, 3))];
-    }
-
-    #[test]
-    fn alternate() {
-        // "bd <sd hh cp>"
-        pt![bd, (sd, hh, cp)];
-    }
-
-    #[test]
-    fn alternate_nested() {
-        // "<sd <hh <cp bd>>>"
-        pt![(sd, (hh, (cp, bd)))];
-    }
-
-    #[test]
-    fn repeat() {
-        // "bd*2 sd"
-        pt![bd * 2, sd];
-        pt![bd * 2];
-    }
-
-    #[test]
-    fn repeat_alternate() {
-        // "bd*<2 3> sd"
-        pt![bd * (2, 3), sd];
-    }
-
-    #[test]
-    #[ignore] // TODO
-    fn slow() {
-        // "bd/2"
-        pt![bd / 2, sd];
-        pt![bd / 2];
-    }
-
-    #[test]
-    #[ignore] // TODO
-    fn slow_alternate() {
-        // "bd/2"
-        pt![bd / (1, 2), sd];
-    }
-
-    #[test]
-    fn examples() {
-        /*
-        // shorthand
-        // "bd sd . hh hh hh"
-        // p![bd sd | hh hh hh];
-
-        // slow down a pattern
-        // "bd/2"
-        pt![bd / 2, sd];
-        pt![bd / 2];
-
-        // rest
-        // "bd ~ sd"
-        //pt![bd, _];
-        //pt![bd, _, sd];
-
-        // elongate
-        // "bd@3 bd"
-        pt![bd + 3];
-        pt![bd + 3, bd];
-
-        // degrade
-        // "bd? sd"
-        pt![bd?];
-        pt![bd?, sd];
-
-        // euclidean sequences
-        // "bd(3,8)"
-        pt![bd.euc(3, 8)];
-        pt![bd.eucs(3, 8, 1)];
-        pt![bd.eucs([3, 4], 8 * 3, 1)];
-
-        // polymetric sequences
-        // "{bd bd bd bd, cp cp hh}"
-        // pt![bd, bd, bd, bd & cp, cp, hh];
-
-        // subdivision
-        // "{bd cp hh}%8"
-        pt![[bd, cp, hh] % 8];
-
-        // other
-        let _: Rest<()> = pt![];
-        pt![1];
-        pt![1,];
-        pt![1, 2];
-        pt![1, [2, 3]];
-
-        let test = Ident::new(4);
-        pt![&test];
-
-        // escape
-        pt![{ p![1] }];
-
-        // chaining
-        pt![1.ap(|f| f.repeat(1)),];
-        */
-    }
-}

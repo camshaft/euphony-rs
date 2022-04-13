@@ -7,9 +7,13 @@ edition = "2018"
 [dependencies]
 bach = "^0.0.2"
 euphony-core = { version = "0.1", path = "../euphony-core" }
+euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-macros = { version = "0.1", path = "../euphony-macros" }
 euphony-nrt = { version = "0.1", path = "../euphony-nrt" }
+euphony-pattern = { version = "0.1", path = "../euphony-pattern" }
 euphony-runtime = { version = "0.1", path = "../euphony-runtime" }
 euphony-sc = { version = "0.1", path = "../euphony-sc" }
+futures = "0.3"
+pin-project = "1"
 rayon = "1"
 structopt = "0.3"

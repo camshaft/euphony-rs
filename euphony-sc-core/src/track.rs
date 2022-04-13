@@ -16,7 +16,7 @@ impl fmt::Debug for Handle {
 
 impl Handle {
     pub fn send<T: Message>(&self, msg: T) -> T::Output {
-        T::send(msg, &self)
+        T::send(msg, self)
     }
 }
 

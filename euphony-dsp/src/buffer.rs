@@ -1,15 +1,14 @@
-use crate::frame::Frame;
+use crate::{frame::Frame, sample};
 // mod ext;
 // pub use ext::BufferExt;
-use core::mem::MaybeUninit;
+use core::{marker::PhantomData, mem::MaybeUninit};
 
 pub type Buffer<F> = [MaybeUninit<F>];
 #[cfg(test)]
-pub type TestBatch = ArrayBatch<1024, { crate::sample::PERIOD_48000 }>;
+pub type TestBatch = ArrayBatch<sample::Rate48000, 1024>;
 
 pub trait Batch {
-    const SAMPLE_PERIOD: f32;
-    const SAMPLE_PERIOD_INT: u32;
+    type SampleRate: sample::Rate;
     const LEN: usize;
 
     fn buffer<Child, Init, Finish>(init: Init, finish: Finish)
@@ -19,12 +18,12 @@ pub trait Batch {
         Finish: FnOnce(&[Child]);
 }
 
-pub struct ArrayBatch<const LEN: usize, const SAMPLE_PERIOD: u32>;
+pub struct ArrayBatch<S: sample::Rate, const LEN: usize>(PhantomData<S>);
 
-impl<const SAMPLE_PERIOD: u32, const LEN: usize> Batch for ArrayBatch<LEN, SAMPLE_PERIOD> {
+impl<S: sample::Rate, const LEN: usize> Batch for ArrayBatch<S, LEN> {
+    type SampleRate = S;
+
     const LEN: usize = LEN;
-    const SAMPLE_PERIOD: f32 = unsafe { core::mem::transmute(SAMPLE_PERIOD) };
-    const SAMPLE_PERIOD_INT: u32 = unsafe { core::mem::transmute(SAMPLE_PERIOD) };
 
     fn buffer<Child, Init, Finish>(init: Init, finish: Finish)
     where

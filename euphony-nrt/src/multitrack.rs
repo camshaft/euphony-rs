@@ -7,53 +7,31 @@ use euphony_sc::{
 };
 use lasso::{Key, Spur, ThreadedRodeo};
 use rayon::prelude::*;
-use std::{io, path::PathBuf, sync::Arc};
+use std::{
+    io,
+    path::PathBuf,
+    sync::{atomic::AtomicU64, Arc},
+};
 
 #[derive(Debug)]
 pub struct Project {
-    db: sled::Db,
     scheduler: Scheduler,
     track_names: ThreadedRodeo<Spur>,
     tracks: DashMap<Spur, Arc<Track>>,
-    output: PathBuf,
 }
 
 impl Project {
     pub fn new(scheduler: Scheduler, output: PathBuf) -> Self {
         Self {
-            db: sled::Config::new()
-                .temporary(true)
-                .open()
-                .expect("could not open db"),
             scheduler,
             track_names: Default::default(),
             tracks: Default::default(),
-            output,
         }
     }
 }
 
 impl Output for Project {
     fn finish(&self) -> io::Result<()> {
-        let tracks = self
-            .tracks
-            .par_iter()
-            .map(|track| {
-                let name = track.name().to_owned();
-                let path = track.value().render(&self.output, None)?;
-                let path = path.strip_prefix(&self.output).unwrap().to_owned();
-                let track = crate::manifest::Track { path };
-                Ok((name, track))
-            })
-            .collect::<Result<_, io::Error>>()?;
-
-        let manifest = crate::manifest::Manifest { tracks };
-
-        let out = self.output.join("project.json");
-        let out = std::fs::File::create(out)?;
-        let out = io::BufWriter::new(out);
-        serde_json::to_writer(out, &manifest)?;
-
         Ok(())
     }
 }
@@ -68,22 +46,10 @@ impl project::Project for Project {
             .tracks
             .entry(key)
             .or_insert_with(|| {
-                let id = (key.into_usize() as u32).to_be_bytes();
+                let id = key.into_usize() as u64;
+                euphony_command::api::set_track_name(id, name);
 
-                let mut events = [0u8; 5];
-                events[..4].copy_from_slice(&id);
-                let events = db.open_tree(events).unwrap();
-
-                let mut synths = [1u8; 5];
-                synths[..4].copy_from_slice(&id);
-                let synths = db.open_tree(synths).unwrap();
-
-                Arc::new(Track::new(
-                    events,
-                    synths,
-                    scheduler.clone(),
-                    name.to_string(),
-                ))
+                Arc::new(Track::new(id, scheduler.clone(), name.to_string()))
             })
             .value()
             .clone();

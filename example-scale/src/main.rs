@@ -57,6 +57,9 @@ async fn main() {
     let tempo = Tempo(50, 1);
     scheduler().set_tempo(tempo);
 
+    section(Beat(32, 1)).with(pattern_test()).await;
+
+    /*
     section(Beat(6, 1)).with(drums()).with(bass()).await;
 
     section(Beat(6, 1))
@@ -64,6 +67,7 @@ async fn main() {
         .with(bass())
         .with(melody())
         .await;
+    */
 }
 
 async fn drums() {
@@ -154,6 +158,82 @@ async fn bass() {
 
             sustain(t.send(n), Beat(1, 4));
             Beat(delay, 4).delay().await;
+        }
+    }
+}
+
+async fn pattern_test() {
+    let t = track("melody");
+
+    let modes = (MAJOR, DORIAN, MINOR)
+        .hold_group()
+        .select(Beat(2, 1).hold().tick());
+
+    let tonics_a = (I, I, IV, III, II, I, -III, -II)
+        .hold_group()
+        .select(Beat(1, 8).hold().tick());
+
+    let tonics_b = (V, III, V, I).hold_group().select(Beat(1, 4).hold().tick());
+
+    let tonics = (tonics_a, tonics_b).select(Beat(4, 1).hold().tick());
+
+    let intervals_a = (I, III, V, Interval(1, 1), V, III)
+        .hold_group()
+        .select(Beat(1, 2).hold().tick());
+
+    let intervals_b = (III, VI, IV, I)
+        .hold_group()
+        .select(Beat(1, 2).hold().tick());
+
+    let intervals = (intervals_a, intervals_b).select(Beat(4, 1).hold().tick());
+
+    let sustain_t = (4, 8, 16, 16)
+        .hold_group()
+        .select(Beat(1, 8).hold().tick())
+        .map(|v| Beat(1, v));
+
+    let mut rhythm = (
+        Beat(1, 1).hold().tick(),
+        Beat(1, 2).hold().tick(),
+        // Beat(1, 1).hold().tick(),
+        // Beat(1, 3).hold().tick(),
+    )
+        .divide()
+        .as_stream();
+
+    let pattern = (modes, tonics, intervals, sustain_t);
+
+    let tonic = Interval(5, 1);
+
+    loop {
+        if rhythm.next().await.is_some() {
+            if let (Some(mode), Some(offset), Some(interval), Some(sustain_t)) =
+                pattern.read().unwrap()
+            {
+                let tonic = tonic + offset;
+
+                /*
+                eprintln!(
+                    "1,{},Note_on_c,0,{},70",
+                    scheduler().beats().as_f32() * 16.,
+                    midi(interval + tonic, mode)
+                );
+                */
+                let note = to_freq(interval + tonic, mode);
+                let note = organ().freq(note).amp(0.1);
+                sustain(t.send(note), sustain_t);
+                /*
+                async move {
+                    sustain_t.delay().await;
+                    eprintln!(
+                        "1,{},Note_off_c,0,{},70",
+                        scheduler().beats().as_f32() * 16.,
+                        midi(interval + tonic, mode)
+                    );
+                }
+                .spawn();
+                */
+            }
         }
     }
 }

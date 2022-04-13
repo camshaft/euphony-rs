@@ -4,6 +4,7 @@ pub use euphony_sc;
 
 mod args;
 pub mod ext;
+pub mod pattern;
 pub mod runtime;
 pub mod section;
 
@@ -20,10 +21,13 @@ macro_rules! prelude {
 pub mod prelude {
     pub use crate::{
         ext::*,
+        pattern::PatternStreamExt,
         pitch::Interval,
         runtime::{output::track, spawn, time::scheduler},
         section::section,
         time::{Beat, Tempo},
     };
+    pub use euphony_pattern::{Group, GroupExt, HoldGroup, HoldValue, Pattern, PatternExt};
     pub use euphony_sc::{self, params, synthdef, track::Track};
+    pub use futures::{FutureExt, StreamExt};
 }

@@ -57,10 +57,9 @@ impl Runtime {
         let seed = if let Some(seed) = args.seed {
             seed
         } else {
-            let seed = *euphony_runtime::rng::EUPHONY_SEED;
-            eprintln!("EUPHONY_SEED={:x?}", seed);
-            seed
+            *euphony_runtime::rng::EUPHONY_SEED
         };
+        euphony_command::api::set_seed(seed);
 
         let executor = Executor::new(|handle| Env::from_args(&args, handle), None);
 
@@ -80,6 +79,7 @@ impl Runtime {
         let result = self.executor.block_on(task, |executor| {
             let env = executor.environment();
             if let Some(time) = env.scheduler.advance() {
+                euphony_command::api::set_time(env.scheduler.now());
                 let _ = time;
                 env.scheduler.wake();
             }

@@ -10,7 +10,7 @@ use core::{
     task::{Context, Poll},
     time::Duration,
 };
-use euphony_core::time::{Beat, Tempo};
+use euphony_core::time::{beat::Instant, Beat, Tempo};
 use flume::{Receiver, Sender};
 use std::sync::Arc;
 
@@ -140,8 +140,8 @@ impl Handle {
     }
 
     /// Returns the current number of beats that has passed for this scheduler
-    pub fn beats(&self) -> Beat {
-        self.ticks_to_beats(self.ticks())
+    pub fn beats(&self) -> Instant {
+        self.ticks_to_beats(self.ticks()).as_ratio().into()
     }
 
     /// Updates the tempo for the given scheduler
