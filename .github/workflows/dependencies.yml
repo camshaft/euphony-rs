@@ -3,7 +3,7 @@ name: dependencies
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - '**/Cargo.toml'
       - '**/Cargo.lock'
@@ -11,7 +11,7 @@ on:
 
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - '**/Cargo.toml'
       - '**/Cargo.lock'
