@@ -1,6 +1,6 @@
 use crate::{api, message::NodeValue};
-use euphony_core_macros::dispatch_struct;
 use euphony_dsp::signal::generator::Phase;
+use euphony_macros::dispatch_struct;
 
 pub type Error = Box<dyn std::error::Error>;
 pub type Result<T, E = Error> = core::result::Result<T, E>;

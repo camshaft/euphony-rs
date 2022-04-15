@@ -1,5 +1,5 @@
 use crate::message::{Node, NodeValue};
-use euphony_core_macros::Command;
+use euphony_macros::Command;
 use serde::{Deserialize, Serialize};
 
 #[derive(Command, Clone, Copy, Debug, Serialize, Deserialize)]

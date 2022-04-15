@@ -3,8 +3,19 @@ name = "euphony-testing"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
+publish = false
+license = "MIT"
 
 [dependencies]
-hex-literal = "0.3"
-pretty_assertions = "0.7"
-pretty-hex = "0.2"
+euphony = { path = "../euphony" }
+insta = "1"
+
+[[test]]
+name = "rand"
+harness = false
+[[test]]
+name = "scheduler"
+harness = false
+[[test]]
+name = "tempo"
+harness = false

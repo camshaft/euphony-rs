@@ -1,7 +1,6 @@
 ---
 source: euphony-dsp/src/signal/generator/sawtooth.rs
 expression: result
-
 ---
 [
     1.0,
@@ -604,7 +603,7 @@ expression: result
     0.055006742,
     0.036673427,
     0.01834011,
-    0.0000067949295,
+    6.7949295e-6,
     -0.01832652,
     -0.036659837,
     -0.054993153,

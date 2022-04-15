@@ -1,39 +1,39 @@
 use proc_macro::TokenStream;
 use quote::quote;
+use syn::parse_macro_input;
 
-#[proc_macro_attribute]
-pub fn main(_args: TokenStream, item: TokenStream) -> TokenStream {
-    let input = syn::parse_macro_input!(item as syn::ItemFn);
+mod cents;
+mod command;
+mod dispatch;
+mod main_;
+mod mode_system;
 
-    if input.sig.ident == "main" && !input.sig.inputs.is_empty() {
-        let msg = "the main function cannot accept arguments";
-        return syn::Error::new_spanned(&input.sig.ident, msg)
-            .to_compile_error()
-            .into();
-    }
-
-    parse(input).unwrap_or_else(|e| e.to_compile_error().into())
+#[proc_macro]
+pub fn cents(input: TokenStream) -> TokenStream {
+    let cents = parse_macro_input!(input as cents::Cents);
+    quote!(#cents).into()
 }
 
-fn parse(mut input: syn::ItemFn) -> Result<TokenStream, syn::Error> {
-    let sig = &mut input.sig;
-    let body = &input.block;
-    let attrs = &input.attrs;
-    let vis = input.vis;
+#[proc_macro]
+pub fn mode_system(input: TokenStream) -> TokenStream {
+    let system = parse_macro_input!(input as mode_system::ModeSystem);
+    quote!(#system).into()
+}
 
-    if sig.asyncness.is_none() {
-        let msg = "the async keyword is missing from the function declaration";
-        return Err(syn::Error::new_spanned(sig.fn_token, msg));
-    }
+#[proc_macro]
+pub fn dispatch_struct(input: TokenStream) -> TokenStream {
+    let dispatch = parse_macro_input!(input as dispatch::DispatchStruct);
+    quote!(#dispatch).into()
+}
 
-    sig.asyncness = None;
+#[proc_macro_attribute]
+pub fn main(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let main = parse_macro_input!(input as main_::Main);
+    quote!(#main).into()
+}
 
-    let result = quote! {
-        #(#attrs)*
-        #vis #sig {
-            euphony::runtime::Runtime::from_env().block_on(async #body)
-        }
-    };
-
-    Ok(result.into())
+#[proc_macro_derive(Command, attributes(cmd))]
+pub fn derive_command(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as syn::DeriveInput);
+    command::Command::parse(&input).into()
 }

@@ -1,29 +1,34 @@
-use core::fmt;
-pub use hex_literal::hex;
-pub use pretty_assertions::*;
+use core::panic::Location;
+use euphony::output::{self, message::Message};
+use std::{
+    future::Future,
+    sync::{Arc, Mutex},
+};
 
-#[derive(PartialEq)]
-pub struct Hex<T>(pub T);
+#[derive(Clone, Default)]
+struct List(Arc<Mutex<String>>);
 
-impl<T: AsRef<[u8]>> fmt::Display for Hex<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        pretty_hex::PrettyHex::hex_dump(&self.0).fmt(f)
+impl output::Output for List {
+    fn emit(&mut self, message: Message) {
+        let mut out = self.0.lock().unwrap();
+        out.push_str(&format!("{}\n", message));
     }
 }
 
-impl<T: AsRef<[u8]>> fmt::Debug for Hex<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        pretty_hex::PrettyHex::hex_dump(&self.0).fmt(f)
-    }
-}
+#[track_caller]
+pub fn start<F>(f: F)
+where
+    F: 'static + Future<Output = ()> + Send,
+{
+    let list = List::default();
+    output::set_output(Box::new(list.clone()));
 
-#[macro_export]
-macro_rules! assert_hex_eq {
-    ($a:expr, $b:expr $(, $($tt:tt)*)?) => {
-        $crate::assert_eq!(
-            $crate::Hex(&$a[..]),
-            $crate::Hex(&$b[..])
-            $(, $($tt)*)?
-        );
-    };
+    euphony::runtime::Runtime::new(0).block_on(f);
+
+    let result = list.0.lock().unwrap();
+
+    let name = Location::caller().file();
+    let name = name.split('/').last().unwrap();
+    let name = name.trim_end_matches(".rs");
+    insta::assert_display_snapshot!(name, *result);
 }

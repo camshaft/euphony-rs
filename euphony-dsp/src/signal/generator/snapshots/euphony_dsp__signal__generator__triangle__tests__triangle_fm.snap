@@ -1,7 +1,6 @@
 ---
 source: euphony-dsp/src/signal/generator/triangle.rs
 expression: result
-
 ---
 [
     1.0,
@@ -295,7 +294,7 @@ expression: result
     0.72026634,
     0.67219055,
     0.62408304,
-    0.5759438,
+    0.5759437,
     0.5277729,
     0.47957063,
     0.43133676,

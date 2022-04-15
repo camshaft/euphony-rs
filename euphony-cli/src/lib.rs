@@ -137,7 +137,7 @@ pub fn write_project_index<W: std::io::Write>(w: &mut W) -> Result<()> {
     Ok(())
 }
 
-pub fn write_main_index<W: std::io::Write>(w: &mut W, projects: &HashSet<String>) -> Result<()> {
+pub fn write_main_index<W: std::io::Write>(w: &mut W, _projects: &HashSet<String>) -> Result<()> {
     macro_rules! w {
         ($arg:expr) => {
             write!(w, "{}", $arg)?

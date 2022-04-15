@@ -1,33 +1,27 @@
-pub use euphony_core::*;
 pub use euphony_macros::*;
-pub use euphony_sc;
+pub use euphony_units as units;
 
 mod args;
 pub mod ext;
-pub mod pattern;
+pub mod output;
+pub mod rand;
 pub mod runtime;
 pub mod section;
-
-#[macro_export]
-macro_rules! prelude {
-    () => {
-        #[cfg(euphony_assets)]
-        include!(concat!(env!("OUT_DIR"), "/euphony_assets.rs"));
-
-        use euphony::prelude::*;
-    };
-}
+pub mod synth;
 
 pub mod prelude {
     pub use crate::{
         ext::*,
-        pattern::PatternStreamExt,
-        pitch::Interval,
-        runtime::{output::track, spawn, time::scheduler},
+        rand,
+        runtime::{
+            spawn, spawn_primary,
+            time::{now, set_tempo, tempo},
+        },
         section::section,
-        time::{Beat, Tempo},
+        units::{
+            pitch::Interval,
+            time::{Beat, Tempo},
+        },
     };
-    pub use euphony_pattern::{Group, GroupExt, HoldGroup, HoldValue, Pattern, PatternExt};
-    pub use euphony_sc::{self, params, synthdef, track::Track};
     pub use futures::{FutureExt, StreamExt};
 }

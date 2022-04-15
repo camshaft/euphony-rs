@@ -10,41 +10,5 @@ pub struct Args {
     pub tempo: Option<u64>,
 
     #[structopt(long, short)]
-    pub non_deterministic: bool,
-
-    #[structopt(subcommand)]
-    pub subcommand: Option<Cmd>,
-}
-
-#[derive(Clone, Debug, StructOpt)]
-pub enum Cmd {
-    Render(Render),
-}
-
-impl Default for Cmd {
-    fn default() -> Self {
-        Self::Render(Default::default())
-    }
-}
-
-#[derive(Clone, Debug, Default, StructOpt)]
-pub struct Render {
-    #[structopt(long, short)]
-    pub multitrack: bool,
-
-    #[structopt(long, short)]
-    pub out: Option<PathBuf>,
-}
-
-impl Render {
-    pub fn output(&self) -> PathBuf {
-        self.out.clone().unwrap_or_else(Self::default_path)
-    }
-
-    pub fn default_path() -> PathBuf {
-        PathBuf::new()
-            .join("target")
-            .join("euphony")
-            .join(std::env::current_exe().unwrap().file_name().unwrap())
-    }
+    pub output: Option<PathBuf>,
 }

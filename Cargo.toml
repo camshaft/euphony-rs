@@ -2,7 +2,6 @@
 members = [
     "euphony-*",
     "euphony",
-    "example-*",
 ]
 
 #[profile.dev]

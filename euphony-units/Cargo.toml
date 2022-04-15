@@ -1,0 +1,13 @@
+[package]
+name = "euphony-units"
+description = "Core types and traits for music composition"
+version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
+edition = "2018"
+license = "MIT"
+
+[dependencies]
+euphony-macros = { version = "0.1", path = "../euphony-macros" }
+num-integer = { version = "0.1", default-features = false }
+num-rational = { version = "0.4", default-features = false }
+num-traits = { version = "0.2", default-features = false }
