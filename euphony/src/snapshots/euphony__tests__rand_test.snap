@@ -1,0 +1,41 @@
+---
+source: euphony/src/tests.rs
+expression: dump
+---
+  SPN 0,0
+  SET 0,1,0
+ADV 2048
+  SET 0,1,0.5
+ADV 2048
+  SET 0,1,1
+ADV 2048
+  SET 0,2,1.5
+ADV 2048
+  SET 0,1,2
+ADV 2048
+  FIN 0
+  SPN 1,0
+  SET 1,1,2.5
+ADV 2048
+  SET 1,2,3
+ADV 2048
+  SET 1,0,3.5
+ADV 2048
+  SET 1,0,4
+ADV 2048
+  SET 1,0,4.5
+ADV 2048
+  FIN 1
+  SPN 2,0
+  SET 2,1,5
+ADV 2048
+  SET 2,1,5.5
+ADV 2048
+  SET 2,1,6
+ADV 2048
+  SET 2,2,6.5
+ADV 2048
+  SET 2,1,7
+ADV 2048
+  FIN 2
+

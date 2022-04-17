@@ -29,6 +29,9 @@ impl Runtime {
         if let Some(path) = args.output.as_ref() {
             if path.to_str() != Some("-") {
                 output::set_file(path);
+            } else {
+                // setting the output argument forces binary mode
+                output::scope::set(Some(Box::new(std::io::BufWriter::new(std::io::stdout()))));
             }
         }
 
@@ -42,7 +45,6 @@ impl Runtime {
     }
 
     pub fn new(seed: u64) -> Self {
-        output::set_seed(seed);
         let executor = Executor::new(|handle| Env::new(handle, seed));
         Self { executor }
     }
@@ -119,10 +121,16 @@ impl Environment for Env {
             return;
         }
 
-        if let Some(ticks) = self.scheduler.advance() {
-            let duration = time::ticks_to_duration(ticks);
-            output::advance(duration);
-            self.scheduler.wake();
+        let mut advance = 0;
+        while let Some(ticks) = self.scheduler.advance() {
+            advance += ticks;
+            if self.scheduler.wake() > 0 {
+                break;
+            }
+        }
+
+        if advance > 0 {
+            output::advance_time(advance);
         }
     }
 }

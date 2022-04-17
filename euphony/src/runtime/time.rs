@@ -1,25 +1,25 @@
 use crate::units::time::{Beat, Tempo};
-use core::sync::atomic::{AtomicU64, Ordering};
 
 pub use bach::time::scheduler::{self, Handle, Scheduler, Timer};
 
 bach::scope::define!(resolution, Beat);
 
-static TEMPO_NUM: AtomicU64 = AtomicU64::new(120);
-static TEMPO_DEN: AtomicU64 = AtomicU64::new(1);
+mod tempo {
+    use super::*;
+
+    bach::scope::define!(scope, Tempo);
+}
+
+const DEFAULT_TEMPO: Tempo = Tempo(120, 1);
 
 pub fn tempo() -> Tempo {
-    let num = TEMPO_NUM.load(Ordering::SeqCst);
-    let den = TEMPO_DEN.load(Ordering::SeqCst);
-    Tempo(num, den)
+    tempo::scope::try_borrow_with(|t| t.unwrap_or(DEFAULT_TEMPO))
 }
 
 pub fn set_tempo(tempo: Tempo) -> Tempo {
-    // Since a euphony application is single threaded, this doesn't need any additional
-    // synchronization
-    let num = TEMPO_NUM.swap(tempo.0, Ordering::SeqCst);
-    let den = TEMPO_DEN.swap(tempo.1, Ordering::SeqCst);
-    Tempo(num, den)
+    let duration = tempo * beats_per_tick();
+    crate::output::set_tick_duration(duration);
+    tempo::scope::set(Some(tempo)).unwrap_or(DEFAULT_TEMPO)
 }
 
 pub fn delay(beats: Beat) -> scheduler::Timer {
@@ -35,9 +35,5 @@ pub fn now() -> Beat {
 }
 
 fn beats_per_tick() -> Beat {
-    resolution::try_borrow_with(|v| v.unwrap_or(Beat(1, 1024)))
-}
-
-pub(super) fn ticks_to_duration(ticks: u64) -> core::time::Duration {
-    tempo() * (beats_per_tick() * ticks)
+    resolution::try_borrow_with(|v| v.unwrap_or(Beat(1, 4096)))
 }

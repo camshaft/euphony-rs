@@ -1,0 +1,12 @@
+[package]
+name = "euphony-graph"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+smallvec = "1"
+rayon = "1"
+
+[dev-dependencies]
+insta = "1"

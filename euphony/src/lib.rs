@@ -25,3 +25,6 @@ pub mod prelude {
     };
     pub use futures::{FutureExt, StreamExt};
 }
+
+#[cfg(test)]
+mod tests;

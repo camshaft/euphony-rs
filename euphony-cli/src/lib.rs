@@ -52,10 +52,6 @@ pub async fn main() {
 fn publish(publish: Publish) -> Result<()> {
     let mut compiler = Compiler::new(publish.manifest_path.as_deref())?;
 
-    compiler.multitrack = false;
-    compiler.compile()?;
-
-    compiler.multitrack = true;
     compiler.compile()?;
 
     let mut projects = create_file(compiler.root.join("target/euphony/projects.json"))?;
@@ -260,7 +256,7 @@ mod watcher {
             should_compile |= should_rebuild_manifest;
 
             for update in updates.drain() {
-                // notify websockets of project updates
+                // notify subscriptions of project updates
                 let path = update
                     .strip_prefix(compiler.root.join("target"))
                     .unwrap()
@@ -287,7 +283,6 @@ mod watcher {
 struct Compiler {
     pub root: PathBuf,
     pub projects: HashSet<String>,
-    pub multitrack: bool,
 }
 
 impl Compiler {
@@ -296,11 +291,7 @@ impl Compiler {
 
         let root = Self::build_manifest(manifest_path, &mut projects)?;
 
-        let comp = Self {
-            root,
-            projects,
-            multitrack: true,
-        };
+        let comp = Self { root, projects };
         Ok(comp)
     }
 
@@ -348,16 +339,17 @@ impl Compiler {
             return Err(anyhow::anyhow!("build command failed"));
         }
 
+        let mut commands = vec![];
         for project in &self.projects {
             let mut proc = std::process::Command::new(format!("target/debug/{}", project));
-            proc.arg("render");
-            if self.multitrack {
-                proc.arg("--multitrack");
-            }
+            proc.current_dir(&self.root);
 
-            let status = proc.current_dir(&self.root).spawn()?.wait()?;
+            commands.push((project, proc.spawn()?));
+        }
 
-            if !status.success() {
+        for (project, command) in commands {
+            let output = command.wait_with_output()?;
+            if !output.status.success() {
                 eprintln!("{:?} failed", project);
             }
         }

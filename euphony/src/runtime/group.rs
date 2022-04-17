@@ -3,16 +3,17 @@ use core::{
     pin::Pin,
     task::{Context, Poll},
 };
-use once_cell::sync::Lazy;
 use pin_project::pin_project;
-use std::{collections::HashMap, sync::Mutex};
+use std::{cell::RefCell, collections::HashMap};
 
-static GROUPS: Lazy<Mutex<HashMap<String, u64>>> = Lazy::new(|| Mutex::new(HashMap::new()));
+thread_local! {
+    static GROUPS: RefCell<HashMap<String, u64>> = RefCell::new(HashMap::new());
+}
 
 bach::scope::define!(scope, Group);
 
 pub fn current() -> Group {
-    scope::try_borrow_with(|v| v.unwrap_or_else(|| Group::new("main")))
+    scope::try_borrow_with(|group| group.unwrap_or_else(|| Group::new("main")))
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -22,19 +23,21 @@ pub struct Group {
 
 impl Group {
     pub fn new(name: &str) -> Self {
-        let mut groups = GROUPS.lock().unwrap();
+        GROUPS.with(|groups| {
+            let mut groups = groups.borrow_mut();
 
-        if let Some(id) = groups.get(name).copied() {
-            return Self { id };
-        }
+            if let Some(id) = groups.get(name).copied() {
+                return Self { id };
+            }
 
-        let id = groups.len() as u64;
+            let id = groups.len() as u64;
 
-        crate::runtime::output::set_group_name(id, name);
+            crate::runtime::output::create_group(id, name.to_string());
 
-        groups.insert(name.to_owned(), id);
+            groups.insert(name.to_owned(), id);
 
-        Self { id }
+            Self { id }
+        })
     }
 
     pub(crate) fn as_u64(self) -> u64 {
