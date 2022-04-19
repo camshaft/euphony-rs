@@ -1,0 +1,13 @@
+[package]
+name = "euphony-node"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+reflect = ["serde", "serde_json"]
+
+[dependencies]
+euphony-graph = { version = "0.1", path = "../euphony-graph" }
+euphony-macros = { version = "0.1", path = "../euphony-macros" }
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1", optional = true }

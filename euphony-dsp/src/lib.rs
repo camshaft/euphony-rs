@@ -18,31 +18,36 @@ macro_rules! unsafe_assert {
     }};
 }
 
-pub use dasp_frame as frame;
-pub use frame::Frame;
+pub mod loader;
+mod osc;
+
 pub mod sample {
     pub use dasp_sample::*;
 
-    pub trait Rate {
-        const PERIOD: f32;
-        const VALUE: f32;
+    pub type Default = f64;
+    pub type DefaultRate = Rate48000;
+
+    pub trait Rate: 'static + Send + Sync {
+        const PERIOD: f64;
+        const VALUE: f64;
     }
 
     pub struct Rate44100;
 
     impl Rate for Rate44100 {
-        const PERIOD: f32 = 1.0f32 / 44100.0;
-        const VALUE: f32 = 44100.0;
+        const PERIOD: f64 = 1.0f64 / 44100.0;
+        const VALUE: f64 = 44100.0;
     }
 
     pub struct Rate48000;
 
     impl Rate for Rate48000 {
-        const PERIOD: f32 = 1.0f32 / 48000.0;
-        const VALUE: f32 = 48000.0;
+        const PERIOD: f64 = 1.0f64 / 48000.0;
+        const VALUE: f64 = 48000.0;
     }
 }
-pub mod buffer;
-pub use buffer::Buffer;
-pub mod signal;
-pub use signal::Signal;
+
+#[test]
+fn reflection() {
+    euphony_node::reflect::generate_files(env!("CARGO_MANIFEST_DIR"));
+}

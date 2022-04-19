@@ -1,0 +1,8 @@
+{
+  "name": "Silence",
+  "module": null,
+  "impl_path": "euphony_dsp::osc",
+  "id": 106,
+  "inputs": [],
+  "docs": ""
+}

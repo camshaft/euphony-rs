@@ -7,6 +7,7 @@ mod command;
 mod dispatch;
 mod main_;
 mod mode_system;
+mod node;
 
 #[proc_macro]
 pub fn cents(input: TokenStream) -> TokenStream {
@@ -36,4 +37,10 @@ pub fn main(_args: TokenStream, input: TokenStream) -> TokenStream {
 pub fn derive_command(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as syn::DeriveInput);
     command::Command::parse(&input).into()
+}
+
+#[proc_macro_derive(Node, attributes(node, input))]
+pub fn derive_processor(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as syn::DeriveInput);
+    node::Node::parse(&input).into()
 }

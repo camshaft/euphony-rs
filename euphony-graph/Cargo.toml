@@ -5,8 +5,10 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-smallvec = "1"
-rayon = "1"
+slotmap = { version = "1", default-features = false }
+rayon = { version = "1", optional = true }
 
 [dev-dependencies]
+bolero = "0.6"
 insta = "1"
+rayon = "1"

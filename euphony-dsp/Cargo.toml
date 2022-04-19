@@ -5,10 +5,12 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-dasp_frame = "0.11"
 dasp_sample = "0.11"
+euphony-graph = { version = "0.1", path = "../euphony-graph" }
+euphony-node = { version = "0.1", path = "../euphony-node" }
 fastapprox = "0.3"
 
 [dev-dependencies]
+euphony-node = { path = "../euphony-node", features = ["reflect"] }
 insta = "1"
 plotters = { version = "0.3", default-features = false, features = ["point_series", "svg_backend"] }

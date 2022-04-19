@@ -50,7 +50,7 @@ pub async fn main() {
 }
 
 fn publish(publish: Publish) -> Result<()> {
-    let mut compiler = Compiler::new(publish.manifest_path.as_deref())?;
+    let compiler = Compiler::new(publish.manifest_path.as_deref())?;
 
     compiler.compile()?;
 

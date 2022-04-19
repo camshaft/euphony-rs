@@ -72,7 +72,6 @@ impl Generator {
 
         let node = OwnedNode {
             id,
-            generator: self,
             parameters: Mutex::new(vec![Parameter::Unset; self.inputs as usize]),
         };
 
@@ -83,7 +82,6 @@ impl Generator {
 #[derive(Debug)]
 struct OwnedNode {
     id: u64,
-    generator: &'static Generator,
     parameters: Mutex<Vec<Parameter>>,
 }
 

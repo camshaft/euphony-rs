@@ -1,0 +1,21 @@
+{
+  "name": "SineFaster",
+  "module": null,
+  "impl_path": "euphony_dsp::osc",
+  "id": 102,
+  "inputs": [
+    {
+      "name": "frequency",
+      "id": 0,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "phase",
+      "id": 1,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "docs": " Less accurate, but fast sine oscillator\n\n # frequency\n\n # phase (trigger)\n"
+}

@@ -1,0 +1,25 @@
+---
+source: euphony-dsp/src/osc.rs
+expression: node
+---
+Node {
+    name: "Sawtooth",
+    module: None,
+    impl_path: "euphony_dsp::osc",
+    id: 104,
+    inputs: [
+        Input {
+            name: "frequency",
+            id: 0,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "phase",
+            id: 1,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: " A sawtooth oscillator\n\n # frequency\n\n # phase (trigger)\n",
+}

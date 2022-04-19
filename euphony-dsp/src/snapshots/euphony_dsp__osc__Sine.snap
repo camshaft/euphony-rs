@@ -1,0 +1,25 @@
+---
+source: euphony-dsp/src/osc.rs
+expression: node
+---
+Node {
+    name: "Sine",
+    module: None,
+    impl_path: "euphony_dsp::osc",
+    id: 100,
+    inputs: [
+        Input {
+            name: "frequency",
+            id: 0,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "phase",
+            id: 1,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: " Accurate (slow) sine oscillator\n\n # frequency\n\n # phase (trigger)\n",
+}

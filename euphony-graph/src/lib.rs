@@ -1,447 +1,517 @@
-use rayon::prelude::*;
-use smallvec::SmallVec;
-use std::{
-    cell::UnsafeCell,
-    collections::BTreeMap,
-    ops,
-    sync::atomic::{AtomicU8, Ordering},
+#![no_std]
+
+extern crate alloc;
+
+use alloc::{
+    boxed::Box,
+    collections::{BTreeMap, BTreeSet, VecDeque},
+    vec,
+    vec::Vec,
 };
+use core::{cell::UnsafeCell, ops};
+use slotmap::SlotMap;
 
-type Map<K, V> = BTreeMap<K, V>;
-type NodeId = u64;
-type NodeMap<const BATCH_SIZE: usize> = Map<NodeId, Node<BATCH_SIZE>>;
-type BufferMap = Map<u64, Vec<u8>>;
+slotmap::new_key_type! { struct Key; }
 
-pub struct Graph<const BATCH_SIZE: usize> {
-    samples: u64,
-    epoch: u64,
-    nodes: NodeMap<BATCH_SIZE>,
-    buffers: BufferMap,
-    current_view: usize,
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Error<Parameter> {
+    MissingNode(u64),
+    InvalidParameter(u64, Parameter),
+    CycleDetected,
 }
 
-impl<const BATCH_SIZE: usize> Default for Graph<BATCH_SIZE> {
+type NodeMap<C> = SlotMap<Key, Node<C>>;
+
+pub trait Config: 'static {
+    type Output: 'static + Send;
+    type Parameter: 'static + Send;
+    type Value: 'static + Send;
+    type Context: 'static + Send + Sync;
+}
+
+pub trait Processor<C: Config>: 'static + Send {
+    fn set(
+        &mut self,
+        parameter: C::Parameter,
+        key: Input<C::Value>,
+    ) -> Result<Input<C::Value>, C::Parameter>;
+
+    fn remove(&mut self, key: NodeKey);
+
+    fn output(&self) -> &C::Output;
+
+    fn output_mut(&mut self) -> &mut C::Output;
+
+    fn process(&mut self, inputs: Inputs<C>, context: &C::Context);
+}
+
+pub struct Graph<C: Config> {
+    nodes: NodeMap<C>,
+    ids: BTreeMap<u64, Key>,
+    levels: Vec<BTreeSet<Key>>,
+    dirty: BTreeMap<Key, DirtyState>,
+    stack: VecDeque<Key>,
+}
+
+impl<C: Config> Default for Graph<C> {
+    #[inline]
     fn default() -> Self {
         Self {
-            samples: 0,
-            epoch: 0,
-            nodes: NodeMap::new(),
-            buffers: BufferMap::new(),
-            current_view: 0,
+            nodes: Default::default(),
+            ids: Default::default(),
+            levels: vec![Default::default()],
+            dirty: Default::default(),
+            stack: Default::default(),
         }
     }
 }
 
-impl<const BATCH_SIZE: usize> Graph<BATCH_SIZE> {
-    pub fn spawn<P: Processor<BATCH_SIZE>>(&mut self, id: u64, processor: P) {
-        let epoch = self.epoch as u8;
-        self.nodes.insert(id, Node::new(processor, epoch));
-    }
+#[derive(Clone, Copy, Debug)]
+enum DirtyState {
+    Initial,
+    Pending,
+    Done(u16),
+}
 
-    pub fn finish(&mut self, id: u64) {
-        self.nodes.remove(&id);
-    }
-
-    pub fn set(&mut self, target_node: u64, target_parameter: u64, value: f64) {
-        let node = self.nodes.get_mut(&target_node).unwrap();
-        node.set(target_parameter, value);
-    }
-
-    pub fn pipe(&mut self, target_node: u64, target_parameter: u64, source_node: u64) {
-        let node = self.nodes.get_mut(&target_node).unwrap();
-        node.pipe(target_parameter, source_node);
-    }
-
-    pub fn render_batch(&mut self, partial: Option<usize>) {
-        let batch = &Batch {
-            epoch: self.epoch as u8,
-            nodes: &self.nodes,
-            buffers: &self.buffers,
-            partial,
-        };
-
-        self.nodes
-            .par_iter()
-            .for_each(|(_id, node)| batch.node(node));
-
-        self.epoch += 1;
-        self.current_view = partial.unwrap_or(BATCH_SIZE);
-        self.samples += self.current_view as u64;
-    }
-
-    pub fn samples(&self) -> u64 {
-        self.samples
+impl Default for DirtyState {
+    #[inline]
+    fn default() -> Self {
+        Self::Initial
     }
 }
 
-impl<const BATCH_SIZE: usize> ops::Index<u64> for Graph<BATCH_SIZE> {
-    type Output = [f32];
+impl<C: Config> Graph<C> {
+    #[inline]
+    pub fn process(&mut self, context: &C::Context) {
+        debug_assert!(
+            self.dirty.is_empty(),
+            "need to call `update` before `process`"
+        );
 
-    fn index(&self, index: u64) -> &Self::Output {
-        if let Some(node) = self.nodes.get(&index) {
-            &node.output()[..self.current_view]
+        for level in &self.levels {
+            let nodes = &self.nodes;
+
+            #[cfg(any(test, feature = "rayon"))]
+            {
+                use rayon::prelude::*;
+                level.par_iter().for_each(|key| {
+                    nodes[*key].render(nodes, context);
+                });
+            }
+
+            #[cfg(not(any(test, feature = "rayon")))]
+            {
+                level.iter().for_each(|key| {
+                    nodes[*key].render(nodes, context);
+                });
+            }
+        }
+    }
+
+    #[inline]
+    pub fn insert(&mut self, id: u64, processor: Box<dyn Processor<C>>) {
+        let node = Node::new(id, processor);
+        let key = self.nodes.insert(node);
+        self.ids.insert(id, key);
+        self.levels[0].insert(key);
+
+        self.ensure_consistency();
+    }
+
+    #[inline]
+    pub fn set(
+        &mut self,
+        target: u64,
+        param: C::Parameter,
+        value: C::Value,
+    ) -> Result<(), Error<C::Parameter>> {
+        let idx = *self.ids.get(&target).ok_or(Error::MissingNode(target))?;
+
+        let node = unsafe { self.nodes.get_unchecked_mut(idx) };
+
+        let prev = node
+            .set(param, Input::Value(value))
+            .map_err(|param| Error::InvalidParameter(target, param))?;
+
+        if let Input::Node(prev) = prev {
+            // if we went from a node input to a constant, we need to recalc
+            self.dirty.insert(idx, Default::default());
+            node.parents.remove(prev.0);
+
+            // tell the parent we are no longer a child
+            let prev = unsafe { self.nodes.get_unchecked_mut(prev.0) };
+            prev.children.remove(idx);
+        }
+
+        self.ensure_consistency();
+
+        Ok(())
+    }
+
+    #[inline]
+    pub fn connect(
+        &mut self,
+        target: u64,
+        param: C::Parameter,
+        source: u64,
+    ) -> Result<(), Error<C::Parameter>> {
+        if target == source {
+            return Err(Error::CycleDetected);
+        }
+
+        let idx = *self.ids.get(&target).ok_or(Error::MissingNode(target))?;
+
+        let source_key = *self.ids.get(&source).ok_or(Error::MissingNode(source))?;
+        let source = unsafe { self.nodes.get_unchecked_mut(source_key) };
+        source.children.insert(idx);
+        let source_level = source.level;
+
+        let node = unsafe { self.nodes.get_unchecked_mut(idx) };
+        let prev = node
+            .set(param, Input::Node(NodeKey(source_key)))
+            .map_err(|param| Error::InvalidParameter(target, param))?;
+        node.parents.insert(source_key);
+
+        if let Input::Node(prev) = prev {
+            node.parents.remove(prev.0);
+
+            let prev = unsafe { self.nodes.get_unchecked_mut(prev.0) };
+            prev.children.remove(idx);
+            let prev_level = prev.level;
+
+            // the node is only dirty if the levels have changed
+            if source_level != prev_level {
+                self.dirty.insert(idx, Default::default());
+            }
         } else {
-            &[][..]
+            // going from a constant to a node will require recalc
+            self.dirty.insert(idx, Default::default());
         }
+
+        self.ensure_consistency();
+
+        Ok(())
     }
-}
 
-struct Batch<'a, const BATCH_SIZE: usize> {
-    epoch: u8,
-    nodes: &'a NodeMap<BATCH_SIZE>,
-    buffers: &'a BufferMap,
-    partial: Option<usize>,
-}
+    #[inline]
+    pub fn remove(&mut self, id: u64) -> Result<(), Error<C::Parameter>> {
+        let key = self.ids.remove(&id).ok_or(Error::MissingNode(id))?;
+        let node = self.nodes.remove(key).unwrap();
 
-impl<'a, const BATCH_SIZE: usize> Batch<'a, BATCH_SIZE> {
-    fn node(&self, node: &Node<BATCH_SIZE>) {
-        // try to lock the node for this epoch, if this fails something is already working on
-        // it
-        if !node.acquire(self.epoch) {
+        // the node is no longer part of the levels
+        self.levels[node.level as usize].remove(&key);
+        self.dirty.remove(&key);
+
+        // notify our children that we're finished
+        for child_key in node.children.iter() {
+            let child = unsafe { self.nodes.get_unchecked_mut(child_key) };
+            child.clear_parent(key);
+
+            // if the child's level matches the node's, it needs to be recalculated
+            if child.level == node.level + 1 {
+                self.dirty.insert(child_key, Default::default());
+            }
+        }
+
+        // notify our parents that we're finished
+        for parent_key in node.parents.iter() {
+            let parent = unsafe { self.nodes.get_unchecked_mut(parent_key) };
+            parent.children.clear(key);
+        }
+
+        self.ensure_consistency();
+
+        Ok(())
+    }
+
+    #[inline]
+    pub fn get(&self, id: u64) -> Result<&C::Output, Error<C::Parameter>> {
+        let key = self.ids.get(&id).ok_or(Error::MissingNode(id))?;
+        let node = unsafe { self.nodes.get_unchecked(*key) };
+        let output = node.output();
+        Ok(output)
+    }
+
+    #[inline]
+    pub fn get_mut(&mut self, id: u64) -> Result<&mut C::Output, Error<C::Parameter>> {
+        let key = self.ids.get(&id).ok_or(Error::MissingNode(id))?;
+        let node = unsafe { self.nodes.get_unchecked_mut(*key) };
+        let output = node.output_mut();
+        Ok(output)
+    }
+
+    #[inline]
+    pub fn update(&mut self) -> Result<(), Error<C::Parameter>> {
+        if self.dirty.is_empty() {
+            return Ok(());
+        }
+
+        // queue up all of the updates
+        self.stack.extend(self.dirty.keys().copied());
+
+        while let Some(key) = self.stack.pop_front() {
+            let node = unsafe { self.nodes.get_unchecked(key) };
+            let mut was_repushed = false;
+            let mut new_level = 0u16;
+
+            for parent in node.parents.iter() {
+                if let Some(parent_state) = self.dirty.get(&parent).copied() {
+                    match parent_state {
+                        DirtyState::Initial => {
+                            if !core::mem::replace(&mut was_repushed, true) {
+                                self.dirty.insert(key, DirtyState::Pending);
+                                self.stack.push_front(key);
+                            }
+
+                            self.stack.push_front(parent);
+                        }
+                        DirtyState::Pending => {
+                            return Err(Error::CycleDetected);
+                        }
+                        DirtyState::Done(parent_level) => {
+                            new_level = new_level.max(parent_level + 1);
+                        }
+                    }
+                } else if !was_repushed {
+                    let parent = unsafe { self.nodes.get_unchecked(parent) };
+                    new_level = new_level.max(parent.level + 1);
+                }
+            }
+
+            if was_repushed {
+                continue;
+            }
+
+            if let Some(DirtyState::Done(prev_level)) =
+                self.dirty.insert(key, DirtyState::Done(new_level))
+            {
+                if prev_level != new_level {
+                    return Err(Error::CycleDetected);
+                }
+
+                continue;
+            }
+
+            if node.level == new_level {
+                continue;
+            }
+
+            self.levels[node.level as usize].remove(&key);
+
+            // the children need to be updated now
+            for child in node.children.iter() {
+                self.stack.push_back(child);
+            }
+
+            let node = unsafe { self.nodes.get_unchecked_mut(key) };
+            node.level = new_level;
+
+            let new_level = new_level as usize;
+            if self.levels.len() <= new_level {
+                self.levels.resize_with(new_level + 1, Default::default);
+            }
+            self.levels[new_level].insert(key);
+        }
+
+        self.dirty.clear();
+
+        self.ensure_consistency();
+
+        Ok(())
+    }
+
+    #[inline]
+    fn ensure_consistency(&self) {
+        if !cfg!(debug_assertions) {
             return;
         }
 
-        self.dependencies(node.dependencies());
-        node.render(self.nodes, self.buffers, self.partial);
-    }
+        // ensure the ids aren't referencing a freed node
+        for (id, key) in self.ids.iter() {
+            let node = self.nodes.get(*key).unwrap();
+            assert_eq!(*id, node.id);
+        }
 
-    fn dependencies(&self, deps: &[u64]) {
-        deps.par_iter().for_each(|id| {
-            if let Some(node) = self.nodes.get(id) {
-                self.node(node);
+        // ensure the nodes match the expected id
+        for (key, node) in self.nodes.iter() {
+            let actual = *self.ids.get(&node.id).unwrap();
+            assert_eq!(actual, key);
+        }
+
+        // ensure the levels don't have freed nodes
+        for level in &self.levels {
+            for key in level {
+                assert!(self.nodes.contains_key(*key));
             }
-        });
+        }
+
+        for key in self.nodes.keys() {
+            let node = &self.nodes[key];
+
+            for child_key in node.children.iter() {
+                let child = &self.nodes[child_key];
+                assert!(child.parents.contains(key));
+            }
+
+            for parent_key in node.parents.iter() {
+                let parent = &self.nodes[parent_key];
+                assert!(parent.children.contains(key));
+            }
+
+            assert!(self.levels[node.level as usize].contains(&key));
+
+            // the following checks require the node to be clean
+            if self.dirty.contains_key(&key) {
+                continue;
+            }
+
+            let mut expected = 0;
+
+            for parent in node.parents.iter() {
+                let parent = self.nodes[parent].level;
+                expected = expected.max(parent + 1);
+            }
+
+            assert_eq!(node.level, expected, "level mismatch");
+        }
     }
 }
 
-struct Node<const BATCH_SIZE: usize> {
-    state: UnsafeCell<Box<NodeState<BATCH_SIZE>>>,
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct NodeKey(Key);
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum Input<Value> {
+    Value(Value),
+    Node(NodeKey),
 }
 
-impl<const BATCH_SIZE: usize> Node<BATCH_SIZE> {
-    fn new<P: Processor<BATCH_SIZE>>(processor: P, epoch: u8) -> Self {
+pub struct Inputs<'a, C: Config> {
+    nodes: &'a NodeMap<C>,
+    #[cfg(debug_assertions)]
+    parents: &'a Relationship,
+}
+
+impl<'a, C: Config> ops::Index<NodeKey> for Inputs<'a, C> {
+    type Output = C::Output;
+
+    #[inline]
+    fn index(&self, key: NodeKey) -> &Self::Output {
+        debug_assert!(self.nodes.contains_key(key.0));
+
+        #[cfg(debug_assertions)]
+        {
+            assert!(
+                self.parents.contains(key.0),
+                "node should only access its configured parents"
+            );
+        }
+
+        unsafe { &*self.nodes.get_unchecked(key.0).output() }
+    }
+}
+
+struct Node<C: Config> {
+    #[cfg(debug_assertions)]
+    id: u64,
+    processor: UnsafeCell<Box<dyn Processor<C>>>,
+    level: u16,
+    parents: Relationship,
+    children: Relationship,
+}
+
+/// Safety: Mutual exclusion is ensured by level organization
+unsafe impl<C: Config> Sync for Node<C> {}
+
+impl<C: Config> Node<C> {
+    #[inline]
+    fn new(id: u64, processor: Box<dyn Processor<C>>) -> Self {
+        let _ = id;
         Self {
-            state: UnsafeCell::new(NodeState::new(processor, epoch)),
+            #[cfg(debug_assertions)]
+            id,
+            processor: UnsafeCell::new(processor),
+            level: 0,
+            parents: Default::default(),
+            children: Default::default(),
         }
     }
 
-    fn acquire(&self, epoch: u8) -> bool {
-        unsafe { &*self.state.get() }
-            .epoch
-            .compare_exchange(
-                epoch,
-                epoch.wrapping_add(1),
-                Ordering::Acquire,
-                Ordering::Acquire,
-            )
-            .is_ok()
+    #[inline]
+    fn set(
+        &mut self,
+        param: C::Parameter,
+        value: Input<C::Value>,
+    ) -> Result<Input<C::Value>, C::Parameter> {
+        let processor = unsafe { &mut *self.processor.get() };
+        processor.set(param, value)
     }
 
-    fn output(&self) -> &[f32; BATCH_SIZE] {
-        &unsafe { &*self.state.get() }.output
+    #[inline]
+    fn clear_parent(&mut self, key: Key) {
+        let processor = unsafe { &mut *self.processor.get() };
+        processor.remove(NodeKey(key));
+        self.parents.clear(key);
     }
 
-    fn dependencies(&self) -> &[u64] {
-        &unsafe { &*self.state.get() }.dependencies
-    }
-
-    fn set(&self, parameter: u64, value: f64) {
-        let parameter = parameter as usize;
-        let state = unsafe { &mut *self.state.get() };
-
-        // if we have some dependencies, make sure it's cleared before updating the constant
-        if state.dependencies.len() > parameter {
-            self.pipe(parameter as _, u64::MAX);
-        }
-
-        if state.constants.len() <= parameter {
-            state.constants.resize_with(parameter + 1, || 0.0);
-        }
-
-        state.constants[parameter] = value;
-    }
-
-    fn pipe(&self, parameter: u64, source_node: u64) {
-        let parameter = parameter as usize;
-        let state = unsafe { &mut *self.state.get() };
-
-        // if we have some constants, make sure it's cleared before updating the dependency
-        if state.constants.len() > parameter {
-            self.set(parameter as _, 0.0);
-        }
-
-        if state.dependencies.len() <= parameter {
-            state.dependencies.resize_with(parameter + 1, || u64::MAX);
-        }
-
-        state.dependencies[parameter] = source_node;
-    }
-
-    fn render(&self, nodes: &NodeMap<BATCH_SIZE>, buffers: &BufferMap, partial: Option<usize>) {
-        let state = unsafe { &mut *self.state.get() };
-        let output = &mut state.output;
-
-        let mut inputs = SmallVec::<[Input<BATCH_SIZE>; 32]>::new();
-
-        for idx in 0..state.inner.inputs() {
-            let dep = state
-                .dependencies
-                .get(idx)
-                .filter(|dep| **dep != u64::MAX)
-                .and_then(|dep| nodes.get(dep))
-                .map(|node| node.output());
-
-            if let Some(output) = dep {
-                inputs.push(Input::Dynamic(output));
-            } else {
-                let v = *state.constants.get(idx).unwrap_or(&0.0);
-                inputs.push(Input::Constant(v));
-            }
-        }
-
-        let buffers = Buffers {
-            inputs: &state.buffers,
-            buffers,
+    #[inline]
+    fn render(&self, nodes: &NodeMap<C>, context: &C::Context) {
+        let inputs = Inputs {
+            nodes,
+            #[cfg(debug_assertions)]
+            parents: &self.parents,
         };
 
-        if let Some(partial) = partial {
-            state
-                .inner
-                .render_partial(&inputs, buffers, &mut output[..partial])
-        } else {
-            state.inner.render(&inputs, buffers, output)
+        let processor = unsafe { &mut *self.processor.get() };
+
+        processor.process(inputs, context);
+    }
+
+    #[inline]
+    fn output(&self) -> &C::Output {
+        let processor = unsafe { &*self.processor.get() };
+        processor.output()
+    }
+
+    #[inline]
+    fn output_mut(&mut self) -> &mut C::Output {
+        let processor = unsafe { &mut *self.processor.get() };
+        processor.output_mut()
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+struct Relationship(BTreeMap<Key, u16>);
+
+impl Relationship {
+    #[inline]
+    pub fn insert(&mut self, key: Key) {
+        *self.0.entry(key).or_default() += 1;
+    }
+
+    #[inline]
+    pub fn remove(&mut self, key: Key) {
+        let new_count = self.0.remove(&key).unwrap_or(1) - 1;
+        if new_count != 0 {
+            self.0.insert(key, new_count);
         }
     }
-}
 
-unsafe impl<const BATCH_SIZE: usize> Sync for Node<BATCH_SIZE> {}
-
-struct NodeState<const BATCH_SIZE: usize> {
-    output: [f32; BATCH_SIZE],
-    inner: Box<dyn Processor<BATCH_SIZE>>,
-    epoch: AtomicU8,
-    buffers: Vec<u64>,
-    constants: SmallVec<[f64; 4]>,
-    dependencies: SmallVec<[u64; 4]>,
-}
-
-impl<const BATCH_SIZE: usize> NodeState<BATCH_SIZE> {
-    fn new<P: Processor<BATCH_SIZE>>(processor: P, epoch: u8) -> Box<Self> {
-        Box::new(Self {
-            epoch: AtomicU8::new(epoch),
-            output: [0.0; BATCH_SIZE],
-            buffers: vec![],
-            constants: Default::default(),
-            dependencies: Default::default(),
-            inner: Box::new(processor),
-        })
-    }
-}
-
-pub trait Processor<const BATCH_SIZE: usize>: 'static + Send {
-    fn inputs(&self) -> usize;
-
-    fn render(
-        &mut self,
-        inputs: &[Input<BATCH_SIZE>],
-        buffers: Buffers,
-        output: &mut [f32; BATCH_SIZE],
-    );
-
-    fn render_partial(
-        &mut self,
-        inputs: &[Input<BATCH_SIZE>],
-        buffers: Buffers,
-        output: &mut [f32],
-    );
-}
-
-pub struct Buffers<'a> {
-    inputs: &'a [u64],
-    buffers: &'a BufferMap,
-}
-
-impl<'a> Buffers<'a> {
-    pub fn len(&self) -> usize {
-        self.inputs.len()
+    #[inline]
+    pub fn clear(&mut self, key: Key) {
+        self.0.remove(&key);
     }
 
-    pub fn is_empty(&self) -> bool {
-        self.inputs.is_empty()
+    #[inline]
+    pub fn iter(&self) -> impl Iterator<Item = Key> + '_ {
+        self.0.keys().copied()
     }
-}
 
-impl<'a> ops::Index<usize> for Buffers<'a> {
-    type Output = [u8];
-
-    fn index(&self, index: usize) -> &Self::Output {
-        let idx = self.inputs[index];
-        &*self.buffers.get(&idx).unwrap()
+    #[inline]
+    pub fn contains(&self, key: Key) -> bool {
+        self.0.contains_key(&key)
     }
-}
-
-pub enum Input<'a, const BATCH_SIZE: usize> {
-    Constant(f64),
-    Dynamic(&'a [f32; BATCH_SIZE]),
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-    use insta::assert_debug_snapshot;
-
-    #[derive(Debug, Default)]
-    struct Counter(u64);
-
-    impl<const BATCH_SIZE: usize> Processor<BATCH_SIZE> for Counter {
-        fn inputs(&self) -> usize {
-            0
-        }
-
-        fn render(
-            &mut self,
-            inputs: &[Input<BATCH_SIZE>],
-            buffers: Buffers,
-            output: &mut [f32; BATCH_SIZE],
-        ) {
-            self.render_partial(inputs, buffers, output);
-        }
-
-        fn render_partial(
-            &mut self,
-            _inputs: &[Input<BATCH_SIZE>],
-            _buffers: Buffers,
-            output: &mut [f32],
-        ) {
-            for sample in output.iter_mut() {
-                let value = self.0;
-                *sample = value as _;
-                self.0 += 1;
-            }
-        }
-    }
-
-    #[derive(Debug, Default)]
-    struct Add;
-
-    impl<const BATCH_SIZE: usize> Processor<BATCH_SIZE> for Add {
-        fn inputs(&self) -> usize {
-            2
-        }
-
-        fn render(
-            &mut self,
-            inputs: &[Input<BATCH_SIZE>],
-            buffers: Buffers,
-            output: &mut [f32; BATCH_SIZE],
-        ) {
-            self.render_partial(inputs, buffers, output)
-        }
-
-        fn render_partial(
-            &mut self,
-            inputs: &[Input<BATCH_SIZE>],
-            _buffers: Buffers,
-            output: &mut [f32],
-        ) {
-            // clear the output before adding anything
-            for sample in output.iter_mut() {
-                *sample = 0.0;
-            }
-
-            let mut write = |input: &Input<BATCH_SIZE>| {
-                match input {
-                    Input::Dynamic(input) => {
-                        for (sample, source) in output.iter_mut().zip(input.iter()) {
-                            *sample += source;
-                        }
-                    }
-                    Input::Constant(value) => {
-                        for sample in output.iter_mut() {
-                            *sample += *value as f32;
-                        }
-                    }
-                };
-            };
-
-            write(&inputs[0]);
-            write(&inputs[1]);
-        }
-    }
-
-    #[test]
-    fn counter_test() {
-        let mut graph = Graph::<32>::default();
-
-        graph.spawn(0, Counter::default());
-
-        graph.render_batch(None);
-
-        assert_debug_snapshot!("counter_test", &graph[0]);
-    }
-
-    #[test]
-    fn add_dynamic_test() {
-        let mut graph = Graph::<32>::default();
-
-        graph.spawn(0, Counter::default());
-        graph.spawn(1, Counter::default());
-        graph.spawn(2, Add);
-        graph.pipe(2, 0, 0);
-        graph.pipe(2, 1, 1);
-
-        graph.render_batch(None);
-
-        assert_debug_snapshot!("add_dynamic_test", &graph[2]);
-    }
-
-    #[test]
-    fn add_constant_test() {
-        let mut graph = Graph::<32>::default();
-
-        graph.spawn(0, Counter::default());
-        graph.spawn(1, Add);
-        graph.pipe(1, 0, 0);
-        graph.set(1, 1, 3.0);
-
-        graph.render_batch(None);
-
-        assert_debug_snapshot!("add_constant_test", &graph[1]);
-    }
-
-    #[test]
-    fn diamond_test() {
-        let mut graph = Graph::<32>::default();
-
-        graph.spawn(0, Counter::default());
-
-        graph.spawn(1, Add);
-        graph.pipe(1, 0, 0);
-        graph.set(1, 1, 42.0);
-
-        graph.spawn(2, Add);
-        graph.pipe(2, 0, 0);
-        graph.set(2, 1, 42.0);
-
-        graph.spawn(3, Add);
-        graph.pipe(3, 0, 1);
-        graph.pipe(3, 1, 2);
-
-        graph.render_batch(None);
-
-        assert_debug_snapshot!("diamond_test", &graph[3]);
-    }
-
-    #[test]
-    fn many_test() {
-        let mut graph = Graph::<32>::default();
-
-        for i in 0..1000 {
-            graph.spawn(i, Counter::default());
-        }
-
-        graph.render_batch(None);
-
-        assert_debug_snapshot!("many_test", &graph[999]);
-    }
-}
+mod tests;
