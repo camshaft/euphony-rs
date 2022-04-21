@@ -1,7 +1,9 @@
 #![deny(unreachable_patterns)]
 
+#[rustfmt::skip]
 use euphony_node::{BoxProcessor, Error, ParameterValue as Value};
 
+#[rustfmt::skip]
 pub fn load(processor: u64) -> Option<BoxProcessor> {
     match processor {
         100 => Some(crate::osc::Sine::spawn()),
@@ -18,6 +20,7 @@ pub fn load(processor: u64) -> Option<BoxProcessor> {
     }
 }
 
+#[rustfmt::skip]
 pub fn name(processor: u64) -> Option<&'static str> {
     match processor {
         100 => Some("Sine"),
@@ -34,6 +37,7 @@ pub fn name(processor: u64) -> Option<&'static str> {
     }
 }
 
+#[rustfmt::skip]
 pub fn validate_parameter(processor: u64, parameter: u64, value: Value) -> Result<(), Error> {
     match processor {
         100 => crate::osc::Sine::validate_parameter(parameter, value),

@@ -18,8 +18,9 @@ macro_rules! unsafe_assert {
     }};
 }
 
-mod math;
 pub mod nodes;
+
+mod math;
 mod osc;
 
 pub mod sample {

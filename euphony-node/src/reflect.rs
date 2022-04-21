@@ -37,8 +37,12 @@ fn nodes_file<O: io::Write>(o: &mut O, nodes: &[Node]) -> io::Result<()> {
 
     w!("#![deny(unreachable_patterns)]");
     w!();
+
+    w!("#[rustfmt::skip]");
     w!("use euphony_node::{{BoxProcessor, Error, ParameterValue as Value}};");
     w!();
+
+    w!("#[rustfmt::skip]");
     w!("pub fn load(processor: u64) -> Option<BoxProcessor> {{");
     w!("    match processor {{");
     for node in nodes {
@@ -47,8 +51,9 @@ fn nodes_file<O: io::Write>(o: &mut O, nodes: &[Node]) -> io::Result<()> {
     w!("        _ => None,");
     w!("    }}");
     w!("}}");
-    w!("");
+    w!();
 
+    w!("#[rustfmt::skip]");
     w!("pub fn name(processor: u64) -> Option<&'static str> {{");
     w!("    match processor {{");
     for node in nodes {
@@ -57,8 +62,9 @@ fn nodes_file<O: io::Write>(o: &mut O, nodes: &[Node]) -> io::Result<()> {
     w!("        _ => None,");
     w!("    }}");
     w!("}}");
-    w!("");
+    w!();
 
+    w!("#[rustfmt::skip]");
     w!("pub fn validate_parameter(processor: u64, parameter: u64, value: Value) -> Result<(), Error> {{");
     w!("    match processor {{");
     for node in nodes {

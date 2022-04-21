@@ -40,16 +40,14 @@ where
 use euphony::{prelude::*, synth::Processor};
 
 static SINE: Processor = Processor {
-    id: 0,
+    id: 100,
     name: "Sine",
     inputs: 3,
-    outputs: 1,
 };
 static SQUARE: Processor = Processor {
-    id: 1,
+    id: 104,
     name: "Square",
     inputs: 3,
-    outputs: 1,
 };
 
 #[test]
