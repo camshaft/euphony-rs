@@ -122,7 +122,7 @@ jobs:
     strategy:
       matrix:
         rust: ${{ fromJson(needs.env.outputs.rust-versions) }}
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest]
     steps:
       - uses: actions/checkout@v2
         with:

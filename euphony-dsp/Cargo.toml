@@ -14,4 +14,5 @@ fastapprox = "0.3"
 [dev-dependencies]
 euphony-node = { path = "../euphony-node", features = ["reflect"] }
 insta = "1"
-plotters = { version = "0.3", default-features = false, features = ["point_series", "svg_backend"] }
+# TODO re-enable this once we get test for each processor
+# plotters = { version = "0.3", default-features = false, features = ["point_series", "svg_backend"] }
