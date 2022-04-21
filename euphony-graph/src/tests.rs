@@ -162,7 +162,7 @@ fn model(ops: &[Op]) -> Result<(), Error<u8>> {
             }
             Op::Remove { idx } => {
                 let (id, expected) = ids.remove(idx);
-                let actual = subject.remove(id);
+                let actual = subject.remove(id).map(|_| ());
                 assert_eq!(expected, actual);
             }
             Op::Process => {

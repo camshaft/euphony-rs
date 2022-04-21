@@ -6,11 +6,16 @@ pub mod reflect;
 
 use euphony_graph as graph;
 
+pub type Error = String;
+
 pub type BoxProcessor = Box<dyn graph::Processor<Config>>;
 
+mod sink;
+pub use sink::{SampleType, Sink};
+
 #[inline]
-pub fn spawn<const I: usize, const B: usize, N: Default + Node<I, B>>() -> BoxProcessor {
-    Box::new(StaticNode::new(N::default()))
+pub fn spawn<const I: usize, const B: usize, N: Node<I, B>>(node: N) -> BoxProcessor {
+    Box::new(StaticNode::new(node))
 }
 
 type BufferMap = ();
@@ -21,11 +26,13 @@ pub type Output = [Sample; LEN];
 
 type BufferKey = u64;
 
+#[derive(Debug, Default)]
 pub struct Context {
-    buffers: BufferMap,
-    partial: Option<usize>,
+    pub buffers: BufferMap,
+    pub partial: Option<usize>,
 }
 
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Config;
 
 impl graph::Config for Config {
@@ -36,6 +43,12 @@ impl graph::Config for Config {
 }
 
 type Parameter = u64;
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum ParameterValue {
+    Constant(f64),
+    Node(u64),
+}
 
 pub enum Value {
     Constant(f64),
@@ -58,6 +71,7 @@ impl<'a, const I: usize> Inputs<'a, I> {
     }
 }
 
+#[derive(Clone, Copy, Debug)]
 pub enum Input<'a> {
     Constant(f64),
     Buffer(&'a Output),
@@ -102,9 +116,18 @@ pub struct StaticNode<const I: usize, const B: usize, P: Node<I, B>> {
 }
 
 impl<const I: usize, const B: usize, P: Node<I, B>> StaticNode<I, B, P> {
+    #[inline]
     pub fn new(processor: P) -> Self {
+        let defaults = P::DEFAULTS;
+
+        let mut inputs = [graph::Input::Value(0.0); I];
+
+        for (from, to) in defaults.iter().zip(inputs.iter_mut()) {
+            *to = graph::Input::Value(*from);
+        }
+
         Self {
-            inputs: [graph::Input::Value(0.0); I],
+            inputs,
             buffers: [BufferKey::default(); B],
             output: [0.0; LEN],
             processor,
@@ -191,6 +214,8 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
 }
 
 pub trait Node<const INPUTS: usize, const BUFFERS: usize>: 'static + Send {
+    const DEFAULTS: [f64; INPUTS] = [0.0; INPUTS];
+
     #[inline]
     fn trigger(&mut self, param: Parameter, value: f64) -> bool {
         // no op

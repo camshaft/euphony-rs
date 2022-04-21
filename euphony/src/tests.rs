@@ -37,15 +37,15 @@ where
     insta::assert_display_snapshot!(name, dump);
 }
 
-use euphony::{prelude::*, synth::Generator};
+use euphony::{prelude::*, synth::Processor};
 
-static SINE: Generator = Generator {
+static SINE: Processor = Processor {
     id: 0,
     name: "Sine",
     inputs: 3,
     outputs: 1,
 };
-static SQUARE: Generator = Generator {
+static SQUARE: Processor = Processor {
     id: 1,
     name: "Square",
     inputs: 3,

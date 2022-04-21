@@ -6,6 +6,8 @@ new_ratio!(Tempo, u64);
 const MINUTE: Duration = Duration::from_secs(60);
 
 impl Tempo {
+    pub const DEFAULT: Self = Self(120, 1);
+
     pub fn as_beat_duration(self) -> Duration {
         MINUTE / self.as_ratio()
     }

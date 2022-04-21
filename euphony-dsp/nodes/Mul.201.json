@@ -1,0 +1,21 @@
+{
+  "name": "Mul",
+  "module": null,
+  "impl_path": "euphony_dsp::math",
+  "id": 201,
+  "inputs": [
+    {
+      "name": "a",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "b",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Multiplies two signals together\n"
+}

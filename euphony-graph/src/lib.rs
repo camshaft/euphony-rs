@@ -1,4 +1,4 @@
-#![no_std]
+// #![no_std]
 
 extern crate alloc;
 
@@ -8,7 +8,7 @@ use alloc::{
     vec,
     vec::Vec,
 };
-use core::{cell::UnsafeCell, ops};
+use core::{cell::UnsafeCell, fmt, ops};
 use slotmap::SlotMap;
 
 slotmap::new_key_type! { struct Key; }
@@ -45,6 +45,7 @@ pub trait Processor<C: Config>: 'static + Send {
     fn process(&mut self, inputs: Inputs<C>, context: &C::Context);
 }
 
+#[derive(Debug)]
 pub struct Graph<C: Config> {
     nodes: NodeMap<C>,
     ids: BTreeMap<u64, Key>,
@@ -194,7 +195,7 @@ impl<C: Config> Graph<C> {
     }
 
     #[inline]
-    pub fn remove(&mut self, id: u64) -> Result<(), Error<C::Parameter>> {
+    pub fn remove(&mut self, id: u64) -> Result<Box<dyn Processor<C>>, Error<C::Parameter>> {
         let key = self.ids.remove(&id).ok_or(Error::MissingNode(id))?;
         let node = self.nodes.remove(key).unwrap();
 
@@ -221,7 +222,7 @@ impl<C: Config> Graph<C> {
 
         self.ensure_consistency();
 
-        Ok(())
+        Ok(node.processor.into_inner())
     }
 
     #[inline]
@@ -320,12 +321,13 @@ impl<C: Config> Graph<C> {
         Ok(())
     }
 
-    #[inline]
-    fn ensure_consistency(&self) {
-        if !cfg!(debug_assertions) {
-            return;
-        }
+    #[inline(always)]
+    #[cfg(not(debug_assertions))]
+    fn ensure_consistency(&self) {}
 
+    #[inline]
+    #[cfg(debug_assertions)]
+    fn ensure_consistency(&self) {
         // ensure the ids aren't referencing a freed node
         for (id, key) in self.ids.iter() {
             let node = self.nodes.get(*key).unwrap();
@@ -350,12 +352,12 @@ impl<C: Config> Graph<C> {
 
             for child_key in node.children.iter() {
                 let child = &self.nodes[child_key];
-                assert!(child.parents.contains(key));
+                assert!(child.parents.0.contains_key(&key));
             }
 
             for parent_key in node.parents.iter() {
                 let parent = &self.nodes[parent_key];
-                assert!(parent.children.contains(key));
+                assert!(parent.children.0.contains_key(&key));
             }
 
             assert!(self.levels[node.level as usize].contains(&key));
@@ -402,7 +404,7 @@ impl<'a, C: Config> ops::Index<NodeKey> for Inputs<'a, C> {
         #[cfg(debug_assertions)]
         {
             assert!(
-                self.parents.contains(key.0),
+                self.parents.0.contains_key(&key.0),
                 "node should only access its configured parents"
             );
         }
@@ -418,6 +420,20 @@ struct Node<C: Config> {
     level: u16,
     parents: Relationship,
     children: Relationship,
+}
+
+impl<C: Config> fmt::Debug for Node<C> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s = f.debug_struct("Node");
+
+        #[cfg(debug_assertions)]
+        s.field("id", &self.id);
+
+        s.field("level", &self.level)
+            .field("parents", &self.parents)
+            .field("children", &self.children)
+            .finish()
+    }
 }
 
 /// Safety: Mutual exclusion is ensured by level organization
@@ -505,11 +521,6 @@ impl Relationship {
     #[inline]
     pub fn iter(&self) -> impl Iterator<Item = Key> + '_ {
         self.0.keys().copied()
-    }
-
-    #[inline]
-    pub fn contains(&self, key: Key) -> bool {
-        self.0.contains_key(&key)
     }
 }
 

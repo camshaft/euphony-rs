@@ -9,6 +9,6 @@ pub struct Args {
     #[structopt(long, short, env = "EUPHONY_TEMPO")]
     pub tempo: Option<u64>,
 
-    #[structopt(long, short, env = "EUPHONY_BINARY")]
+    #[structopt(long, short, env = "EUPHONY_OUTPUT")]
     pub output: Option<PathBuf>,
 }

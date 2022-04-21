@@ -1,4 +1,4 @@
-#![cfg_attr(not(any(feature = "std", test)), no_std)]
+//#![cfg_attr(not(any(feature = "std", test)), no_std)]
 
 /// Asserts that a boolean expression is true at runtime, only if debug_assertions are enabled.
 ///
@@ -18,11 +18,13 @@ macro_rules! unsafe_assert {
     }};
 }
 
-pub mod loader;
+mod math;
+pub mod nodes;
 mod osc;
 
 pub mod sample {
     pub use dasp_sample::*;
+    use euphony_units::ratio::Ratio;
 
     pub type Default = f64;
     pub type DefaultRate = Rate48000;
@@ -30,6 +32,8 @@ pub mod sample {
     pub trait Rate: 'static + Send + Sync {
         const PERIOD: f64;
         const VALUE: f64;
+        const COUNT: u64;
+        const NANOS_PER_SAMPLE: Ratio<u64>;
     }
 
     pub struct Rate44100;
@@ -37,6 +41,8 @@ pub mod sample {
     impl Rate for Rate44100 {
         const PERIOD: f64 = 1.0f64 / 44100.0;
         const VALUE: f64 = 44100.0;
+        const COUNT: u64 = 44100;
+        const NANOS_PER_SAMPLE: Ratio<u64> = Ratio(10000000, 441);
     }
 
     pub struct Rate48000;
@@ -44,6 +50,8 @@ pub mod sample {
     impl Rate for Rate48000 {
         const PERIOD: f64 = 1.0f64 / 48000.0;
         const VALUE: f64 = 48000.0;
+        const COUNT: u64 = 48000;
+        const NANOS_PER_SAMPLE: Ratio<u64> = Ratio(62500, 3);
     }
 }
 

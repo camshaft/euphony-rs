@@ -31,7 +31,7 @@ impl Runtime {
                 output::set_file(path);
             } else {
                 // setting the output argument forces binary mode
-                output::scope::set(Some(Box::new(std::io::BufWriter::new(std::io::stdout()))));
+                output::set_stdout();
             }
         }
 

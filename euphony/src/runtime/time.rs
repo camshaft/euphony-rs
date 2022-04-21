@@ -10,16 +10,14 @@ mod tempo {
     bach::scope::define!(scope, Tempo);
 }
 
-const DEFAULT_TEMPO: Tempo = Tempo(120, 1);
-
 pub fn tempo() -> Tempo {
-    tempo::scope::try_borrow_with(|t| t.unwrap_or(DEFAULT_TEMPO))
+    tempo::scope::try_borrow_with(|t| t.unwrap_or(Tempo::DEFAULT))
 }
 
 pub fn set_tempo(tempo: Tempo) -> Tempo {
     let duration = tempo * beats_per_tick();
     crate::output::set_tick_duration(duration);
-    tempo::scope::set(Some(tempo)).unwrap_or(DEFAULT_TEMPO)
+    tempo::scope::set(Some(tempo)).unwrap_or(Tempo::DEFAULT)
 }
 
 pub fn delay(beats: Beat) -> scheduler::Timer {
@@ -35,5 +33,5 @@ pub fn now() -> Beat {
 }
 
 fn beats_per_tick() -> Beat {
-    resolution::try_borrow_with(|v| v.unwrap_or(Beat(1, 4096)))
+    resolution::try_borrow_with(|v| v.unwrap_or(Beat::DEFAULT_RESOLUTION))
 }

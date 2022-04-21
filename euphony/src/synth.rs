@@ -35,12 +35,18 @@ impl Sink {
     pub fn spawn(node: Node) -> Self {
         let id = NODE_ID.with(|v| v.next());
 
-        let group = crate::runtime::group::current().as_u64();
+        let group = crate::runtime::group::current();
 
-        emit(SpawnSink {
+        emit(SpawnNode {
             id,
+            processor: 0,
+            group: Some(group.as_u64()),
+        });
+
+        emit(PipeParameter {
+            target_node: id,
+            target_parameter: 0,
             source_node: node.id(),
-            group,
         });
 
         Self { id, node }
@@ -49,25 +55,25 @@ impl Sink {
 
 impl Drop for Sink {
     fn drop(&mut self) {
-        emit(FinishSink { sink: self.id })
+        emit(FinishNode { node: self.id })
     }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct Generator {
+pub struct Processor {
     pub id: u64,
     pub name: &'static str,
     pub inputs: u64,
-    pub outputs: u64,
 }
 
-impl Generator {
+impl Processor {
     pub fn spawn(&'static self) -> Node {
         let id = NODE_ID.with(|v| v.next());
 
         emit(SpawnNode {
             id,
-            generator: self.id,
+            processor: self.id,
+            group: None,
         });
 
         let node = OwnedNode {

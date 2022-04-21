@@ -81,6 +81,7 @@ impl ToTokens for Node {
         let mut process_inputs = quote!();
         let process_buffers = quote!();
         let mut triggers = quote!();
+        let mut defaults = quote!();
         let mut input_len: usize = 0;
 
         for (id, input) in inputs.iter().enumerate() {
@@ -88,6 +89,9 @@ impl ToTokens for Node {
 
             input.test(id, &mut test_inputs);
             input_len += 1;
+
+            let default = input.default.unwrap_or(0.0);
+            quote!(#default,).to_tokens(&mut defaults);
 
             // triggers are not passed on each process call
             if let Some(trigger) = input.trigger.as_ref() {
@@ -125,11 +129,21 @@ impl ToTokens for Node {
             impl #name {
                 #[inline]
                 pub fn spawn() -> ::euphony_node::BoxProcessor {
-                    ::euphony_node::spawn::<#input_len, #buffer_len, Self>()
+                    ::euphony_node::spawn::<#input_len, #buffer_len, Self>(Self::default())
+                }
+
+                #[inline]
+                pub fn validate_parameter(param: u64, value: ::euphony_node::ParameterValue) -> Result<(), String> {
+                    // TODO
+                    let _ = param;
+                    let _ = value;
+                    Ok(())
                 }
             }
 
             impl ::euphony_node::Node<#input_len, #buffer_len> for #name {
+                const DEFAULTS: [f64; #input_len] = [#defaults];
+
                 #[inline]
                 fn trigger(&mut self, param: u64, value: f64) -> bool {
                     match param {

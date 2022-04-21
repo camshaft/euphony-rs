@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "example-*",
+]
+
+[profile.dev]
+debug = false
+debug-assertions = false
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.dev.build-override]
+opt-level = 3
+

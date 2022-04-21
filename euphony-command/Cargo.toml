@@ -5,11 +5,6 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-euphony-macros = { version = "0.1", path = "../euphony-macros" }
-euphony-dsp = { version = "0.1", path = "../euphony-dsp" }
-fastapprox = "0.3"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
 
 [dev-dependencies]
 bolero = "0.6"
