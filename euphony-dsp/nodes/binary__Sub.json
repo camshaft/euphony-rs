@@ -1,0 +1,23 @@
+{
+  "name": "Sub",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 64,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Subtracts `rhs` from `lhs`\n"
+}

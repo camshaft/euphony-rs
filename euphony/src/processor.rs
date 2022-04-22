@@ -150,6 +150,7 @@ macro_rules! define_processor {
         define_processor_binary_op!($name, Div, div);
         define_processor_binary_op!($name, Mul, mul);
         define_processor_binary_op!($name, Rem, rem);
+        define_processor_binary_op!($name, Sub, sub);
 
         impl core::ops::Neg for $name {
             type Output = crate::processors::unary::Neg;

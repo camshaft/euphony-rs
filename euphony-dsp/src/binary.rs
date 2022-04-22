@@ -160,3 +160,9 @@ binary!(
     RemEuclid,
     |a, b| a.rem_euclid(b)
 );
+binary!(
+    /// Subtracts `rhs` from `lhs`
+    64,
+    Sub,
+    |a, b| a - b
+);

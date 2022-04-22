@@ -295,6 +295,14 @@ pub mod ext {
             crate::processors::unary::sqrt().with_input(self)
         }
         #[inline]
+        #[doc = " Subtracts `rhs` from `lhs`\n"]
+        fn sub<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Sub
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::sub().with_rhs(self).with_lhs(lhs)
+        }
+        #[inline]
         #[doc = " Computes the tangent of a number (in radians).\n"]
         fn tan(&self) -> crate::processors::unary::Tan {
             crate::processors::unary::tan().with_input(self)
@@ -595,6 +603,20 @@ mod api {
             #[id = 63]
             #[lower = rem_euclid]
             struct RemEuclid {
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Subtracts `rhs` from `lhs`\n"]
+            #[id = 64]
+            #[lower = sub]
+            struct Sub {
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
