@@ -1,0 +1,17 @@
+{
+  "name": "Recip",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 22,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Takes the reciprocal (inverse) of a number, 1/x.\n"
+}

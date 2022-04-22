@@ -1,0 +1,23 @@
+{
+  "name": "Rem",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 62,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the remainder of the left hand signal by the right\n"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Tanh",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 29,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Hyperbolic tangent function.\n"
+}

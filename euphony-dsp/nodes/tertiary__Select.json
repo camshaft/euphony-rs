@@ -1,0 +1,29 @@
+{
+  "name": "Select",
+  "module": [
+    "tertiary"
+  ],
+  "impl_path": "euphony_dsp::tertiary",
+  "id": 78,
+  "inputs": [
+    {
+      "name": "cond",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "positive",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "negative",
+      "id": 2,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " If `cond` is positive, then `positive` is returned. Otherwise `negative`\n is returned.\n"
+}

@@ -50,8 +50,24 @@ impl<W: 'static + io::Write + io::Seek + Send> Sink for Writer<W> {
             return;
         }
 
+        // TODO apply LeakDC (https://doc.sccode.org/Classes/LeakDC.html)
+
         for sample in samples.iter().copied() {
             let _ = self.writer.write_sample(sample as f32);
+        }
+    }
+
+    #[inline]
+    fn write_const(&mut self, ty: SampleType, value: f64, count: usize) {
+        // we only support PCM currently
+        if ty != SampleType::Pcm {
+            return;
+        }
+
+        // TODO apply LeakDC (https://doc.sccode.org/Classes/LeakDC.html)
+
+        for _ in 0..count {
+            let _ = self.writer.write_sample(value as f32);
         }
     }
 }

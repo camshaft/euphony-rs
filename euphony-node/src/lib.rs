@@ -138,6 +138,7 @@ impl<const I: usize, const B: usize, P: Node<I, B>> StaticNode<I, B, P> {
 impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
     for StaticNode<I, B, P>
 {
+    #[inline(never)]
     fn set(
         &mut self,
         param: Parameter,
@@ -171,6 +172,7 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
         })
     }
 
+    #[inline(never)]
     fn remove(&mut self, node: graph::NodeKey) {
         for input in self.inputs.iter_mut() {
             if let graph::Input::Node(key) = input {
@@ -181,14 +183,17 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
         }
     }
 
+    #[inline(never)]
     fn output(&self) -> &Output {
         &self.output
     }
 
+    #[inline(never)]
     fn output_mut(&mut self) -> &mut Output {
         &mut self.output
     }
 
+    #[inline(never)]
     fn process(&mut self, inputs: graph::Inputs<Config>, context: &Context) {
         let inputs = Inputs {
             inputs,

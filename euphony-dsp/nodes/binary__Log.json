@@ -1,0 +1,23 @@
+{
+  "name": "Log",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 56,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the logarithm of the number with respect to an arbitrary base.\n\n The result might not be correctly rounded owing to implementation details;\n `self.log2()` can produce more accurate results for base 2, and `self.log10()` can produce\n more accurate results for base 10.\n"
+}

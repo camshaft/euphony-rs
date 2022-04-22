@@ -1,0 +1,17 @@
+{
+  "name": "Ln",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 17,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the natural logarithm of the number.\n"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Div",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 53,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Divides the left hand signal by the right\n"
+}

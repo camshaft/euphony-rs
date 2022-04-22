@@ -1,0 +1,23 @@
+{
+  "name": "DivEuclid",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 54,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Calculates Euclidean division, the matching method for `rem_euclid`.\n\n This computes the integer `n` such that `lhs = n * rhs + self.rem_euclid(rhs)`.\n In other words, the result is `lhs / rhs` rounded to the integer n such that `lhs >= n * rhs`.\n"
+}

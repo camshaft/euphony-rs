@@ -1,0 +1,21 @@
+---
+source: euphony-dsp/src/unary.rs
+expression: node
+---
+Node {
+    name: "Acosh",
+    module: [
+        "unary",
+    ],
+    impl_path: "euphony_dsp::unary",
+    id: 3,
+    inputs: [
+        Input {
+            name: "input",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Inverse hyperbolic cosine function.\n",
+}

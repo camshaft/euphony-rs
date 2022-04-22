@@ -1,0 +1,27 @@
+---
+source: euphony-dsp/src/binary.rs
+expression: node
+---
+Node {
+    name: "Add",
+    module: [
+        "binary",
+    ],
+    impl_path: "euphony_dsp::binary",
+    id: 50,
+    inputs: [
+        Input {
+            name: "rhs",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "lhs",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Adds two signals together\n",
+}

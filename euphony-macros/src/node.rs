@@ -67,9 +67,10 @@ impl ToTokens for Node {
         let name_str = self.ident.to_string();
 
         let module = if let Some(m) = self.module.as_ref() {
-            quote!(Some(#m.to_string()))
+            let parts = m.segments.iter().map(|s| s.ident.to_string());
+            quote!(vec![#(#parts.to_string()),*])
         } else {
-            quote!(None)
+            quote!(Default::default())
         };
 
         let test_name = Ident::new(
@@ -133,7 +134,7 @@ impl ToTokens for Node {
                 }
 
                 #[inline]
-                pub fn validate_parameter(param: u64, value: ::euphony_node::ParameterValue) -> Result<(), String> {
+                pub fn validate_parameter(param: u64, value: ::euphony_node::ParameterValue) -> Result<(), ::euphony_node::Error> {
                     // TODO
                     let _ = param;
                     let _ = value;

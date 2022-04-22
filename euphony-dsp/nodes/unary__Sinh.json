@@ -1,0 +1,17 @@
+{
+  "name": "Sinh",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 26,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Hyperbolic sine function.\n"
+}

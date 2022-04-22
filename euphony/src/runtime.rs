@@ -10,9 +10,6 @@ pub use bach::{
     task::{spawn, spawn_primary},
 };
 
-pub mod group;
-pub mod time;
-
 pub struct Runtime {
     executor: Executor<Env>,
 }
@@ -23,7 +20,7 @@ impl Runtime {
 
         if let Some(tempo) = args.tempo {
             let tempo = Tempo(tempo, 1);
-            time::set_tempo(tempo);
+            crate::time::set_tempo(tempo);
         }
 
         if let Some(path) = args.output.as_ref() {
@@ -66,14 +63,14 @@ impl Runtime {
 }
 
 struct Env {
-    scheduler: time::Scheduler,
+    scheduler: crate::time::Scheduler,
     handle: Handle,
     rand: crate::rand::Scope,
 }
 
 impl Env {
     fn new(handle: &Handle, seed: u64) -> Self {
-        let scheduler = time::Scheduler::new();
+        let scheduler = crate::time::Scheduler::new();
         let rand = crate::rand::Scope::new(seed);
 
         Self {

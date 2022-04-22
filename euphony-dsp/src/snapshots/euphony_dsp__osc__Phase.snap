@@ -4,7 +4,9 @@ expression: node
 ---
 Node {
     name: "Phase",
-    module: None,
+    module: [
+        "osc",
+    ],
     impl_path: "euphony_dsp::osc",
     id: 107,
     inputs: [

@@ -182,8 +182,13 @@ impl Handler for Compiler {
             return Ok(());
         }
 
-        let samples =
-            (self.samples_per_tick.0 * msg.ticks as u128 / self.samples_per_tick.1) as u64;
+        let samples = self
+            .samples_per_tick
+            .0
+            .checked_mul(msg.ticks as u128)
+            .ok_or_else(|| error!("sample overflow"))?;
+        let samples = samples / self.samples_per_tick.1;
+        let samples = samples as u64;
 
         // limit the number of samples in testing so we don't churn indefinitely
         // TODO this should probably error out if the requested time exceeds an hour or something

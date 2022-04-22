@@ -1,4 +1,4 @@
-use crate::{BoxProcessor, Buffers, Input, Inputs, Node, Output};
+use crate::{BoxProcessor, Buffers, Input, Inputs, Node, Output, LEN};
 
 pub trait Sink: 'static + Send + Sized {
     #[inline]
@@ -13,6 +13,19 @@ pub trait Sink: 'static + Send + Sized {
     #[inline]
     fn write_full(&mut self, ty: SampleType, samples: &Output) {
         self.write(ty, samples);
+    }
+
+    #[inline]
+    fn write_const(&mut self, ty: SampleType, value: f64, count: usize) {
+        let mut values = [0.0; LEN];
+        for to in values[..count].iter_mut() {
+            *to = value;
+        }
+        if count == LEN {
+            self.write_full(ty, &values)
+        } else {
+            self.write(ty, &values[..count])
+        }
     }
 }
 
@@ -49,19 +62,7 @@ impl<Inner: Sink> Node<4, 0> for Wrapper<Inner> {
         macro_rules! input {
             ($ty:expr) => {{
                 match inputs.get($ty as u8 as usize) {
-                    Input::Constant(v) => {
-                        if v != 0.0 {
-                            for sample in samples.iter_mut() {
-                                *sample = v;
-                            }
-                            self.inner.write($ty, samples)
-                        } else {
-                            for sample in samples.iter_mut() {
-                                *sample = 0.0;
-                            }
-                            self.inner.write($ty, samples);
-                        }
-                    }
+                    Input::Constant(v) => self.inner.write_const($ty, v, samples.len()),
                     Input::Buffer(b) => self.inner.write($ty, &b[..samples.len()]),
                 };
             }};
@@ -80,19 +81,7 @@ impl<Inner: Sink> Node<4, 0> for Wrapper<Inner> {
         macro_rules! input {
             ($ty:expr) => {{
                 match inputs.get($ty as u8 as usize) {
-                    Input::Constant(v) => {
-                        if v != 0.0 {
-                            for sample in samples.iter_mut() {
-                                *sample = v;
-                            }
-                            self.inner.write_full($ty, samples)
-                        } else {
-                            for sample in samples.iter_mut() {
-                                *sample = 0.0;
-                            }
-                            self.inner.write_full($ty, samples);
-                        }
-                    }
+                    Input::Constant(v) => self.inner.write_const($ty, v, LEN),
                     Input::Buffer(b) => self.inner.write_full($ty, b),
                 };
             }};

@@ -1,0 +1,29 @@
+{
+  "name": "MulAdd",
+  "module": [
+    "tertiary"
+  ],
+  "impl_path": "euphony_dsp::tertiary",
+  "id": 77,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "mul",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "add",
+      "id": 2,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Fused multiply-add. Computes `(input * mul) + add` with only one rounding\n error, yielding a more accurate result than an unfused multiply-add.\n"
+}

@@ -1,0 +1,21 @@
+---
+source: euphony-dsp/src/unary.rs
+expression: node
+---
+Node {
+    name: "Fract",
+    module: [
+        "unary",
+    ],
+    impl_path: "euphony_dsp::unary",
+    id: 16,
+    inputs: [
+        Input {
+            name: "input",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Returns the fractional part of a number.\n",
+}

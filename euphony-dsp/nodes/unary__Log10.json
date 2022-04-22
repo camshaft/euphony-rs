@@ -1,0 +1,17 @@
+{
+  "name": "Log10",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 19,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the base 10 logarithm of the number.\n"
+}

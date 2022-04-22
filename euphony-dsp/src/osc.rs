@@ -4,7 +4,7 @@ use euphony_node::{Input, Node};
 use fastapprox::{fast, faster};
 
 #[derive(Debug, Clone, Copy, Default, Node)]
-#[node(id = 107)]
+#[node(id = 107, module = "osc")]
 #[input(frequency, default = 440.0)]
 #[input(phase, trigger = set)]
 pub struct Phase(f64);
@@ -23,13 +23,12 @@ impl Phase {
             unsafe_assert!(value.is_finite());
             unsafe_assert!((0.0..=1.0).contains(&value));
         }
-        self.0 = (value + Rate::PERIOD * freq).fract();
+        self.0 = Rate::PERIOD.mul_add(freq, value).fract();
         value
     }
 
     #[inline]
     pub fn render(&mut self, frequency: Input, output: &mut [f64]) {
-        // TODO split the output into chunks
         match frequency {
             Input::Constant(freq) => {
                 for frame in output.iter_mut() {
@@ -48,7 +47,7 @@ impl Phase {
 macro_rules! phase_osc {
     ($(#[doc = $doc:literal])* $id:literal, $name:ident, | $phase:ident | $sample:expr) => {
         #[derive(Default, Node)]
-        #[node(id = $id)]
+        #[node(id = $id, module = "osc")]
         #[input(frequency, default = 440.0)]
         #[input(phase, trigger = set_phase)]
         $(
@@ -128,7 +127,7 @@ phase_osc!(
 );
 
 #[derive(Default, Node)]
-#[node(id = 106)]
+#[node(id = 106, module = "osc")]
 pub struct Silence;
 
 impl Silence {

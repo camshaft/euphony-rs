@@ -1,0 +1,17 @@
+{
+  "name": "Floor",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 15,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the largest integer less than or equal to a number.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Abs",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 1,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Computes the absolute value of `input`. Returns `NAN` if the number is `NAN`.\n"
+}

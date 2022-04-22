@@ -1,4 +1,4 @@
-//#![cfg_attr(not(any(feature = "std", test)), no_std)]
+#![cfg_attr(not(any(feature = "std", test)), no_std)]
 
 /// Asserts that a boolean expression is true at runtime, only if debug_assertions are enabled.
 ///
@@ -20,8 +20,10 @@ macro_rules! unsafe_assert {
 
 pub mod nodes;
 
-mod math;
+mod binary;
 mod osc;
+mod tertiary;
+mod unary;
 
 pub mod sample {
     pub use dasp_sample::*;

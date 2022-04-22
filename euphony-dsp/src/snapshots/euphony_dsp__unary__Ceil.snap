@@ -1,0 +1,21 @@
+---
+source: euphony-dsp/src/unary.rs
+expression: node
+---
+Node {
+    name: "Ceil",
+    module: [
+        "unary",
+    ],
+    impl_path: "euphony_dsp::unary",
+    id: 9,
+    inputs: [
+        Input {
+            name: "input",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Returns the smallest integer greater than or equal to a number.\n",
+}

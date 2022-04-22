@@ -1,0 +1,27 @@
+---
+source: euphony-dsp/src/binary.rs
+expression: node
+---
+Node {
+    name: "Powi",
+    module: [
+        "binary",
+    ],
+    impl_path: "euphony_dsp::binary",
+    id: 61,
+    inputs: [
+        Input {
+            name: "rhs",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "lhs",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Raises a number to an integer power.\n\n Using this function is generally faster than using `powf`\n",
+}

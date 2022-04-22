@@ -1,0 +1,17 @@
+{
+  "name": "Atan",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 6,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Computes the arctangent of a number. Return value is in radians in the range [-pi/2, pi/2];\n"
+}

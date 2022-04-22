@@ -37,27 +37,16 @@ where
     insta::assert_display_snapshot!(name, dump);
 }
 
-use euphony::{prelude::*, synth::Processor};
-
-static SINE: Processor = Processor {
-    id: 100,
-    name: "Sine",
-    inputs: 3,
-};
-static SQUARE: Processor = Processor {
-    id: 104,
-    name: "Square",
-    inputs: 3,
-};
+use euphony::prelude::*;
 
 #[test]
 fn tempo_test() {
     start("tempo_test", async {
         for i in 0..10 {
             set_tempo(Tempo(60 + i * 10, 1));
-            let s = SINE.spawn();
-            s.set(i % 3, now().as_f64());
+            let s = osc::sine().with_frequency(now().as_f64());
             Beat(1, 2).delay().await;
+            s.fin()
         }
     })
 }
@@ -66,18 +55,18 @@ fn tempo_test() {
 fn rand_test() {
     start("rand_test", async {
         // make sure we have a scope in the root
-        let s = SINE.spawn();
+        let s = osc::sine();
         for _ in 0..5 {
-            s.set(rand::gen_range(0..3), now().as_f64());
+            s.set_frequency(rand::gen_range(0..3) as f64);
             Beat(1, 2).delay().await;
         }
         drop(s);
 
         // make sure spawned tasks have scopes
         async {
-            let s = SINE.spawn();
+            let s = osc::sine();
             for _ in 0..5 {
-                s.set(rand::gen_range(0..3), now().as_f64());
+                s.set_frequency(rand::gen_range(0..3) as f64);
                 Beat(1, 2).delay().await;
             }
         }
@@ -86,9 +75,9 @@ fn rand_test() {
 
         // make sure we can seed tasks
         async {
-            let s = SINE.spawn();
+            let s = osc::sine();
             for _ in 0..5 {
-                s.set(rand::gen_range(0..3), now().as_f64());
+                s.set_frequency(rand::gen_range(0..3) as f64);
                 Beat(1, 2).delay().await;
             }
         }
@@ -102,19 +91,19 @@ fn rand_test() {
 fn scheduler_test() {
     start("scheduler_test", async {
         async {
-            for i in 0..10 {
-                let s = SINE.spawn();
-                s.set(i % 3, now().as_f64());
+            for _i in 0..10 {
+                let s = osc::sine().with_frequency(now().as_f64());
                 Beat(1, 2).delay().await;
+                s.fin()
             }
         }
         .spawn_primary();
 
         async {
-            for i in 0..10 {
-                let s = SQUARE.spawn();
-                s.set(i % 3, now().as_f64());
+            for _i in 0..10 {
+                let s = osc::pulse().with_frequency(now().as_f64());
                 Beat(1, 4).delay().await;
+                s.fin()
             }
         }
         .spawn_primary();

@@ -1,0 +1,17 @@
+{
+  "name": "Acos",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 2,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Computes the arccosine of a number. Return value is in radians in the\n range [0, pi] or NaN if the number is outside the range [-1, 1].\n"
+}

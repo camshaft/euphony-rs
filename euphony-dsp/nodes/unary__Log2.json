@@ -1,0 +1,17 @@
+{
+  "name": "Log2",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 20,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the base 2 logarithm of the number.\n"
+}

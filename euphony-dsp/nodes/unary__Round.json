@@ -1,0 +1,17 @@
+{
+  "name": "Round",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 23,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns the nearest integer to a number. Round half-way cases away from `0.0`.\n"
+}

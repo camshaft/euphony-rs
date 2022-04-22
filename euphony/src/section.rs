@@ -1,6 +1,6 @@
 use crate::{
     ext::{DelayExt, SpawnExt},
-    runtime::time::Timer,
+    time::Timer,
 };
 use bach::executor::JoinHandle;
 use core::{

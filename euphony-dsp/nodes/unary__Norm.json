@@ -1,0 +1,17 @@
+{
+  "name": "Norm",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 21,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Normalizes a number.\n\n * `-0.0` will be converted into `0.0`\n * `NAN` will be converted into `0.0`\n * `INFINITY` will be converted into `MAX`\n * `NEG_INFINITY` will be converted into `MIN`\n"
+}

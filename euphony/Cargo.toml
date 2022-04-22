@@ -17,3 +17,4 @@ structopt = "0.3"
 
 [dev-dependencies]
 insta = "1"
+euphony-node = { version = "0.1", path = "../euphony-node", features = ["reflect"] }

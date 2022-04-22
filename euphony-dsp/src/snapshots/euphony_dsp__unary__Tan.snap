@@ -1,0 +1,21 @@
+---
+source: euphony-dsp/src/unary.rs
+expression: node
+---
+Node {
+    name: "Tan",
+    module: [
+        "unary",
+    ],
+    impl_path: "euphony_dsp::unary",
+    id: 28,
+    inputs: [
+        Input {
+            name: "input",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Computes the tangent of a number (in radians).\n",
+}

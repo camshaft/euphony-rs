@@ -1,0 +1,27 @@
+---
+source: euphony-dsp/src/binary.rs
+expression: node
+---
+Node {
+    name: "Powf",
+    module: [
+        "binary",
+    ],
+    impl_path: "euphony_dsp::binary",
+    id: 60,
+    inputs: [
+        Input {
+            name: "rhs",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "lhs",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Raises a number to a floating point power.\n",
+}

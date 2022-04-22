@@ -1,0 +1,17 @@
+{
+  "name": "ExpM1",
+  "module": [
+    "unary"
+  ],
+  "impl_path": "euphony_dsp::unary",
+  "id": 14,
+  "inputs": [
+    {
+      "name": "input",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Returns `e^(self) - 1` in a way that is accurate even if the number is close to zero.\n"
+}

@@ -1,0 +1,27 @@
+---
+source: euphony-dsp/src/binary.rs
+expression: node
+---
+Node {
+    name: "Hypot",
+    module: [
+        "binary",
+    ],
+    impl_path: "euphony_dsp::binary",
+    id: 55,
+    inputs: [
+        Input {
+            name: "rhs",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "lhs",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Calculates the length of the hypotenuse of a right-angle triangle given legs of length `x` and `y`.\n",
+}
