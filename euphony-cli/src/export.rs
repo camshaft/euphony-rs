@@ -6,6 +6,7 @@ use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
 pub struct Export {
+    #[allow(dead_code)]
     input: PathBuf,
 }
 

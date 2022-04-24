@@ -3,8 +3,6 @@ use quote::quote;
 use syn::parse_macro_input;
 
 mod cents;
-mod command;
-mod dispatch;
 mod main_;
 mod mode_system;
 mod node;
@@ -21,22 +19,10 @@ pub fn mode_system(input: TokenStream) -> TokenStream {
     quote!(#system).into()
 }
 
-#[proc_macro]
-pub fn dispatch_struct(input: TokenStream) -> TokenStream {
-    let dispatch = parse_macro_input!(input as dispatch::DispatchStruct);
-    quote!(#dispatch).into()
-}
-
 #[proc_macro_attribute]
 pub fn main(_args: TokenStream, input: TokenStream) -> TokenStream {
     let main = parse_macro_input!(input as main_::Main);
     quote!(#main).into()
-}
-
-#[proc_macro_derive(Command, attributes(cmd))]
-pub fn derive_command(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as syn::DeriveInput);
-    command::Command::parse(&input).into()
 }
 
 #[proc_macro_derive(Node, attributes(node, input))]

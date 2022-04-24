@@ -6,6 +6,10 @@ authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2018"
 license = "MIT"
 
+[[bin]]
+name = "euphony"
+path = "src/main.rs"
+
 [features]
 default = ["remote"]
 remote = ["tokio", "warp"]

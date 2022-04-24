@@ -9,6 +9,7 @@ use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
 pub struct Play {
+    #[allow(dead_code)]
     input: PathBuf,
 }
 
