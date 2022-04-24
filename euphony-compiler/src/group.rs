@@ -1,12 +1,26 @@
-use crate::{sample::Sample, sink::SinkMap, Entry};
-use std::collections::{hash_map, HashMap};
+use crate::{sample::Sample, sink::SinkMap, Entry, Hash};
+use blake3::Hasher;
+use std::collections::{btree_set, hash_map, BTreeSet, HashMap};
 
 pub type GroupMap = HashMap<u64, Group>;
 
 #[derive(Debug, Default)]
 pub struct Group {
     pub name: String,
-    pub sinks: HashMap<u64, Sample>,
+    pub hash: Hash,
+    pub sinks: BTreeSet<(Sample, u64)>,
+}
+
+impl Group {
+    #[inline]
+    pub fn update_hash(&mut self, sinks: &SinkMap) {
+        let mut hasher = Hasher::new();
+        for (sample, sink) in &self.sinks {
+            hasher.update(&sample.to_bytes());
+            hasher.update(&sinks[sink].hash);
+        }
+        self.hash = *hasher.finalize().as_bytes();
+    }
 }
 
 pub struct Iter<'a> {
@@ -37,7 +51,7 @@ impl<'a> Iterator for Iter<'a> {
 }
 
 pub struct Entries<'a> {
-    iter: hash_map::Iter<'a, u64, Sample>,
+    iter: btree_set::Iter<'a, (Sample, u64)>,
     sinks: &'a SinkMap,
 }
 
@@ -45,7 +59,7 @@ impl<'a> Iterator for Entries<'a> {
     type Item = Entry;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let (sink, sample) = self.iter.next()?;
+        let (sample, sink) = self.iter.next()?;
         let sample_offset = (*sample).into();
         let hash = self.sinks[sink].hash;
         Some(Entry {

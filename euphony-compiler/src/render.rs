@@ -19,7 +19,7 @@ impl Renderer {
         match instr {
             Instruction::AdvanceSamples { count } => self.advance(count),
             Instruction::SpawnNode { id, processor } => self.spawn(id, processor),
-            Instruction::SpawnSink { id, hash } => self.sink(id, hash, writer),
+            Instruction::SpawnSink { id, hash } => self.sink(id, &hash, writer),
             Instruction::SetParameter {
                 target_node,
                 target_parameter,
@@ -73,7 +73,7 @@ impl Renderer {
     }
 
     #[inline]
-    fn sink<W: Writer>(&mut self, id: u64, hash: Hash, writer: &mut W) -> Result {
+    fn sink<W: Writer>(&mut self, id: u64, hash: &Hash, writer: &mut W) -> Result {
         let sink = writer.sink(hash);
         self.graph.insert(id, sink);
         Ok(())

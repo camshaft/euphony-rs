@@ -8,8 +8,8 @@ macro_rules! error {
 
 pub trait Writer: Sync {
     fn is_cached(&self, hash: &Hash) -> bool;
-    fn sink(&mut self, hash: Hash) -> euphony_node::BoxProcessor;
-    fn group<I: Iterator<Item = Entry>>(&mut self, id: u64, name: &str, entries: I);
+    fn sink(&mut self, hash: &Hash) -> euphony_node::BoxProcessor;
+    fn group<I: Iterator<Item = Entry>>(&mut self, name: &str, hash: &Hash, entries: I);
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -57,8 +57,8 @@ impl Compiler {
                 .map_err(|err| error!("invalid instruction {:?}", err))?;
         }
 
-        for (id, group, entries) in self.compiler.groups() {
-            output.group(id, &group.name, entries);
+        for (_id, group, entries) in self.compiler.groups() {
+            output.group(&group.name, &group.hash, entries);
         }
 
         Ok(())
@@ -78,11 +78,12 @@ impl Compiler {
                 false
             }
 
-            fn sink(&mut self, _hash: Hash) -> euphony_node::BoxProcessor {
+            fn sink(&mut self, _hash: &Hash) -> euphony_node::BoxProcessor {
                 unimplemented!()
             }
 
-            fn group<I: Iterator<Item = Entry>>(&mut self, _id: u64, _name: &str, _entries: I) {}
+            fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, _entries: I) {
+            }
         }
 
         self.compiler.finalize(&Output)?;
@@ -116,12 +117,12 @@ mod tests {
             false
         }
 
-        fn sink(&mut self, _hash: Hash) -> euphony_node::BoxProcessor {
+        fn sink(&mut self, _hash: &Hash) -> euphony_node::BoxProcessor {
             // silence
             euphony_dsp::nodes::load(106).unwrap()
         }
 
-        fn group<I: Iterator<Item = Entry>>(&mut self, _id: u64, _name: &str, entries: I) {
+        fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, entries: I) {
             for _ in entries {}
         }
     }

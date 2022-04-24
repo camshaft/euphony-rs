@@ -13,8 +13,7 @@ pub struct Serve {
     #[structopt(long, short, default_value = "3000")]
     port: u16,
 
-    #[structopt(long)]
-    manifest_path: Option<PathBuf>,
+    input: Option<PathBuf>,
 }
 
 impl Serve {
@@ -30,21 +29,27 @@ async fn serve(serve: &Serve) -> Result<()> {
     let filter_subs = subscriptions.clone();
     let subs_filter = warp::any().map(move || filter_subs.clone());
 
-    let project = warp::path("_updates")
+    let updates = warp::path("_updates")
         .and(warp::get())
         .and(subs_filter)
         .map(|subs| warp::sse::reply(warp::sse::keep_alive().stream(Subscriber::new(subs))));
 
-    let compiler = Manifest::new(serve.manifest_path.as_deref())?;
+    let input = match serve.input.as_ref() {
+        Some(path) if path.is_dir() => Some(path.join("Cargo.toml")),
+        Some(path) => Some(path.clone()),
+        None => None,
+    };
+    let compiler = Manifest::new(input.as_deref(), None)?;
 
-    let files = warp::path("euphony").and(warp::fs::dir(compiler.root.join("target/euphony/")));
+    // TODO return index view
 
-    let routes = files
-        .or(project)
+    let routes = updates
+        .or(warp::fs::dir(compiler.root.join("target/euphony")))
         .with(warp::cors().allow_any_origin().allow_method("GET"));
 
     std::thread::spawn(move || watcher::create(subscriptions, compiler));
 
+    eprintln!("Server listening on port {}", serve.port);
     warp::serve(routes).run(([0, 0, 0, 0], serve.port)).await;
 
     Ok(())

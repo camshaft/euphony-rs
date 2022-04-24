@@ -35,6 +35,11 @@ impl Sample {
     pub fn checked_add(&mut self, samples: u64) -> Option<Self> {
         Some(Self(self.0.checked_add(samples)?))
     }
+
+    #[inline]
+    pub fn to_bytes(self) -> [u8; 8] {
+        self.0.to_le_bytes()
+    }
 }
 
 impl ops::Add<RelSample> for Sample {
@@ -61,6 +66,7 @@ impl From<Sample> for u64 {
 pub struct RelSample(u64);
 
 impl RelSample {
+    #[inline]
     pub fn to_bytes(self) -> [u8; 8] {
         self.0.to_le_bytes()
     }

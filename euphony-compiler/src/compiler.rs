@@ -136,6 +136,10 @@ impl Compiler {
                 instructions
             }));
 
+        self.groups.par_iter_mut().for_each(|(_, group)| {
+            group.update_hash(&self.sinks);
+        });
+
         Ok(())
     }
 
@@ -239,7 +243,7 @@ impl Handler for Compiler {
                 .entry(group)
                 .or_default()
                 .sinks
-                .insert(msg.id, self.samples);
+                .insert((self.samples, msg.id));
         } else if nodes::name(processor).is_none() {
             return Err(error!("non-existant processor {}", processor));
         }

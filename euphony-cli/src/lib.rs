@@ -1,10 +1,12 @@
 use anyhow::Result;
 use structopt::StructOpt;
 
-mod compile;
+mod build;
+mod compiler;
 mod disasm;
+mod export;
 mod manifest;
-mod publish;
+mod play;
 mod watcher;
 
 #[cfg(feature = "remote")]
@@ -12,21 +14,23 @@ mod serve;
 
 #[derive(Debug, StructOpt)]
 enum Arguments {
-    Compile(compile::Compile),
-    Disasm(disasm::Disasm),
-    Publish(publish::Publish),
+    Build(build::Build),
+    Play(play::Play),
     #[cfg(feature = "remote")]
     Serve(serve::Serve),
+    Disasm(disasm::Disasm),
+    Export(export::Export),
 }
 
 pub fn main() {
     let args = Arguments::from_args();
     match args {
-        Arguments::Compile(args) => args.run(),
+        Arguments::Build(args) => args.run(),
+        Arguments::Play(args) => args.run(),
         Arguments::Disasm(args) => args.run(),
-        Arguments::Publish(args) => args.run(),
         #[cfg(feature = "remote")]
         Arguments::Serve(args) => args.run(),
+        Arguments::Export(args) => args.run(),
     }
     // TODO better error message
     .unwrap()

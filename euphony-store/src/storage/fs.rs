@@ -2,7 +2,12 @@ use crate::codec::Codec;
 use base64::URL_SAFE_NO_PAD;
 use euphony_compiler::{Entry, Hash, Sample, Writer};
 use euphony_node::{BoxProcessor, SampleType, Sink};
-use std::{fs, io, marker::PhantomData, path::PathBuf};
+use std::{
+    fs,
+    io::{self, Write},
+    marker::PhantomData,
+    path::PathBuf,
+};
 
 pub type File = io::BufWriter<fs::File>;
 
@@ -30,28 +35,58 @@ impl<C: Codec<File>> Directory<C> {
     }
 
     fn path(&self, hash: &Hash) -> PathBuf {
-        let name = base64::encode_config(hash, URL_SAFE_NO_PAD);
-        let mut path = self.path.join(name);
-        path.set_extension(C::EXTENSION);
-        path
-    }
-}
-
-impl<C: Codec<File> + Sync> Writer for Directory<C> {
-    fn is_cached(&self, hash: &[u8; 32]) -> bool {
-        self.path(hash).exists()
+        let mut out = [b'A'; 64];
+        let len = base64::encode_config_slice(hash, URL_SAFE_NO_PAD, &mut out);
+        let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
+        let out = &out[..len];
+        self.path.join(out)
     }
 
-    fn sink(&mut self, hash: [u8; 32]) -> BoxProcessor {
-        let path = self.path(&hash);
-        match fs::OpenOptions::new()
+    fn create(&self, hash: &Hash) -> io::Result<Option<File>> {
+        let path = self.path(hash);
+        fs::OpenOptions::new()
             .create_new(true)
             .write(true)
             .open(path)
             .map(io::BufWriter::new)
-            .and_then(C::new)
-        {
-            Ok(file) => file.spawn(),
+            .map(Some)
+            .or_else(|err| {
+                if err.kind() == io::ErrorKind::AlreadyExists {
+                    Ok(None)
+                } else {
+                    Err(err)
+                }
+            })
+    }
+
+    fn write_group<I: Iterator<Item = Entry>>(file: Option<File>, entries: I) -> io::Result<()> {
+        if let Some(mut file) = file {
+            for entry in entries {
+                file.write_all(&entry.sample_offset.to_be_bytes())?;
+                file.write_all(&entry.hash)?;
+            }
+        }
+        Ok(())
+    }
+}
+
+impl<C: Codec<File> + Sync> Writer for Directory<C> {
+    fn is_cached(&self, hash: &Hash) -> bool {
+        self.path(hash).exists()
+    }
+
+    fn sink(&mut self, hash: &Hash) -> BoxProcessor {
+        let file = match self.create(hash) {
+            Ok(Some(file)) => file,
+            Ok(None) => return NoopSink.spawn(),
+            Err(err) => {
+                eprintln!("error while creating sink: {}", err);
+                return NoopSink.spawn();
+            }
+        };
+
+        match C::new(file) {
+            Ok(c) => c.spawn(),
             Err(err) => {
                 eprintln!("error while creating sink: {}", err);
                 NoopSink.spawn()
@@ -59,7 +94,17 @@ impl<C: Codec<File> + Sync> Writer for Directory<C> {
         }
     }
 
-    fn group<I: Iterator<Item = Entry>>(&mut self, _id: u64, _name: &str, _entries: I) {}
+    fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, hash: &Hash, entries: I) {
+        match self
+            .create(hash)
+            .and_then(|file| Self::write_group(file, entries))
+        {
+            Ok(()) => {}
+            Err(err) => {
+                eprintln!("error while creating group: {}", err);
+            }
+        }
+    }
 }
 
 struct NoopSink;

@@ -1,10 +1,8 @@
-use crate::Result;
-use euphony_compiler::Compiler;
-use euphony_store::{storage::fs::Directory, Store};
+use crate::{compiler::Compiler, Result};
 use rayon::prelude::*;
 use std::{
     collections::HashMap,
-    fs, io,
+    io,
     path::{Path, PathBuf},
     process,
 };
@@ -12,46 +10,39 @@ use std::{
 #[derive(Debug)]
 pub struct Manifest {
     pub root: PathBuf,
-    pub projects: HashMap<String, Project>,
-}
-
-#[derive(Debug)]
-pub struct Project {
-    pub compiler: Compiler,
-    pub store: Store,
-}
-
-impl Project {
-    fn new(root: &Path) -> Self {
-        let mut store: Store<Directory<_>, _> = Default::default();
-        store.storage.path = root.join("target/euphony/contents");
-        let _ = fs::create_dir_all(&store.storage.path);
-        Self {
-            compiler: Default::default(),
-            store,
-        }
-    }
+    pub out_dir: PathBuf,
+    pub projects: HashMap<String, Compiler>,
 }
 
 impl Manifest {
-    pub fn new(manifest_path: Option<&Path>) -> Result<Self> {
+    pub fn new(manifest_path: Option<&Path>, out_dir: Option<&Path>) -> Result<Self> {
         let mut projects = HashMap::new();
 
-        let root = Self::build_manifest(manifest_path, &mut projects)?;
+        let root = Self::build_manifest(manifest_path, out_dir, &mut projects)?;
+        let out_dir = out_dir.unwrap_or(&root).to_owned();
 
-        let comp = Self { root, projects };
+        let comp = Self {
+            root,
+            out_dir,
+            projects,
+        };
         Ok(comp)
     }
 
     pub fn rebuild_manifest(&mut self) -> Result<()> {
         let manifest_path = self.root.join("Cargo.toml");
-        Self::build_manifest(Some(&manifest_path), &mut self.projects)?;
+        Self::build_manifest(
+            Some(&manifest_path),
+            Some(&self.out_dir),
+            &mut self.projects,
+        )?;
         Ok(())
     }
 
     fn build_manifest(
         manifest_path: Option<&Path>,
-        projects: &mut HashMap<String, Project>,
+        out_dir: Option<&Path>,
+        projects: &mut HashMap<String, Compiler>,
     ) -> Result<PathBuf> {
         let mut cmd = cargo_metadata::MetadataCommand::new();
         if let Some(manifest_path) = manifest_path {
@@ -69,7 +60,19 @@ impl Manifest {
                 if target.kind.iter().any(|k| k == "bin")
                     && package.dependencies.iter().any(|dep| dep.name == "euphony")
                 {
-                    projects.insert(package.name.clone(), Project::new(&root));
+                    let (contents, timeline) = if let Some(out_dir) = out_dir {
+                        (
+                            out_dir.join("contents"),
+                            out_dir.join(format!("{}.euph", package.name)),
+                        )
+                    } else {
+                        (
+                            root.join("target/euphony/contents"),
+                            root.join(format!("target/euphony/{}.euph", package.name)),
+                        )
+                    };
+                    let project = Compiler::new(contents, timeline);
+                    projects.insert(package.name.clone(), project);
                 }
             }
         }
@@ -108,16 +111,7 @@ impl Manifest {
 
                 let mut stdout = io::BufReader::new(proc.stdout.unwrap());
 
-                project.compiler.compile(&mut stdout, &mut project.store)?;
-
-                let timeline = root.join(format!("target/euphony/projects/{}.json", name));
-
-                fs::create_dir_all(timeline.parent().unwrap())?;
-
-                let timeline = fs::File::create(timeline)?;
-                let mut timeline = io::BufWriter::new(timeline);
-                project.store.timeline.to_json(&mut timeline)?;
-                io::Write::flush(&mut timeline)?;
+                project.render(&mut stdout)?;
 
                 Ok(())
             })

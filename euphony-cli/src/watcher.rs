@@ -3,7 +3,9 @@ use futures::stream::{Stream, StreamExt};
 use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 use std::{
     collections::{HashMap, HashSet},
-    path::PathBuf,
+    ffi::OsStr,
+    fs,
+    path::{Path, PathBuf},
     sync::{
         atomic::{AtomicUsize, Ordering},
         mpsc::channel,
@@ -29,9 +31,14 @@ pub fn create(subs: Subscriptions, mut manifest: Manifest) {
         .watch(&manifest.root, RecursiveMode::Recursive)
         .unwrap();
 
-    loop {
-        let mut updates = HashSet::new();
+    let mut updates = HashSet::new();
 
+    let target_filter = manifest.root.join("target");
+    let target_filter = Path::new(&target_filter);
+    let project_filter = manifest.root.join("target/euphony");
+    let project_filter = Path::new(&project_filter);
+
+    loop {
         fn map_event(event: DebouncedEvent) -> Option<PathBuf> {
             use DebouncedEvent::*;
             match event {
@@ -44,43 +51,56 @@ pub fn create(subs: Subscriptions, mut manifest: Manifest) {
         let mut should_rebuild_manifest = false;
 
         if let Ok(event) = rx.recv() {
-            if let Some(path) = map_event(event) {
-                should_rebuild_manifest |= path.ends_with("Cargo.toml");
-                if !path.components().any(|c| c.as_os_str() == "target") {
-                    should_compile = true;
-                }
-
-                if path.ends_with("project.json") {
-                    updates.insert(path);
-                }
-            }
-
-            while let Ok(event) = rx.try_recv() {
+            let mut handle_event = |event| {
                 if let Some(path) = map_event(event) {
-                    should_rebuild_manifest |= path.ends_with("Cargo.toml");
-                    if !path.components().any(|c| c.as_os_str() == "target") {
+                    if path.extension() == Some(OsStr::new("euph")) {
+                        updates.insert(path);
+                        return;
+                    }
+
+                    if path.ends_with("Cargo.toml") {
+                        should_rebuild_manifest = true;
+                        return;
+                    }
+
+                    if path.strip_prefix(target_filter).is_err() {
                         should_compile = true;
                     }
-
-                    if path.ends_with("project.json") {
-                        updates.insert(path);
-                    }
                 }
+            };
+
+            handle_event(event);
+
+            while let Ok(event) = rx.try_recv() {
+                handle_event(event);
             }
         }
 
         should_compile |= should_rebuild_manifest;
 
-        for update in updates.drain() {
+        let mut msg = String::new();
+        for path in updates.drain() {
             // notify subscriptions of project updates
-            let path = update
-                .strip_prefix(manifest.root.join("target"))
-                .unwrap()
-                .display()
-                .to_string();
+            if let Ok(contents) = fs::read_to_string(&path) {
+                if msg.is_empty() {
+                    msg.push('{');
+                } else {
+                    msg.push(',');
+                }
+
+                let path = path.strip_prefix(&project_filter).unwrap().display();
+
+                msg.push_str(&format!("{:?}", path));
+                msg.push(':');
+                msg.push_str(&contents);
+            }
+        }
+
+        if !msg.is_empty() {
+            msg.push('}');
             let subs = subs.lock().unwrap();
             for sub in subs.values() {
-                let _ = sub.blocking_send(path.clone());
+                let _ = sub.blocking_send(msg.clone());
             }
         }
 

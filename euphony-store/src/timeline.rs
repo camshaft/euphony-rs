@@ -1,4 +1,4 @@
-use euphony_compiler::{DefaultSampleRate, SampleRate, Writer};
+use euphony_compiler::{DefaultSampleRate, Hash, SampleRate, Writer};
 use serde::{Deserialize, Serialize};
 use std::io;
 
@@ -38,46 +38,74 @@ impl Timeline {
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Group {
     pub name: String,
-    pub entries: Vec<Entry>,
+    pub entries: HashDisplay,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-pub struct Entry {
-    pub sample_offset: u64,
-    pub hash: Hash,
-}
+pub struct HashDisplay(#[serde(with = "base64")] Hash);
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-pub struct Hash(euphony_compiler::Hash);
+mod base64 {
+    use base64::URL_SAFE_NO_PAD;
+    use euphony_compiler::Hash;
+    use serde::{self, Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S>(bytes: &[u8], serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        if serializer.is_human_readable() {
+            let mut out = [b'A'; 64];
+            let len = base64::encode_config_slice(bytes, URL_SAFE_NO_PAD, &mut out);
+            let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
+            let out = &out[..len];
+            serializer.serialize_str(out)
+        } else {
+            serializer.serialize_bytes(bytes)
+        }
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Hash, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        if deserializer.is_human_readable() {
+            let s = <&str>::deserialize(deserializer)?;
+            let mut out = Hash::default();
+            let len = base64::decode_config_slice(s, URL_SAFE_NO_PAD, &mut out)
+                .map_err(serde::de::Error::custom)?;
+
+            if len != out.len() {
+                return Err(serde::de::Error::custom("invalid hash length"));
+            }
+
+            Ok(out)
+        } else {
+            Hash::deserialize(deserializer)
+        }
+    }
+}
 
 impl Writer for Timeline {
     #[inline]
-    fn is_cached(&self, _: &[u8; 32]) -> bool {
+    fn is_cached(&self, _: &Hash) -> bool {
         unimplemented!()
     }
 
     #[inline]
-    fn sink(&mut self, _hash: euphony_compiler::Hash) -> euphony_node::BoxProcessor {
+    fn sink(&mut self, _hash: &Hash) -> euphony_node::BoxProcessor {
         unimplemented!()
     }
 
     #[inline]
     fn group<I: Iterator<Item = euphony_compiler::Entry>>(
         &mut self,
-        _id: u64,
         name: &str,
-        entries: I,
+        hash: &Hash,
+        _entries: I,
     ) {
-        let group = Group {
+        self.groups.push(Group {
             name: name.to_string(),
-            entries: entries
-                .map(|e| Entry {
-                    sample_offset: e.sample_offset,
-                    hash: Hash(e.hash),
-                })
-                .collect(),
-        };
-
-        self.groups.push(group);
+            entries: HashDisplay(*hash),
+        });
     }
 }
