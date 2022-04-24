@@ -87,6 +87,7 @@ impl Manifest {
             .arg("build")
             .arg("--target-dir")
             .arg("target/euphony/build")
+            // .env("RUSTFLAGS", "-C linker=clang -C link-arg=-fuse-ld=mold")
             .current_dir(root)
             .spawn()?
             .wait()?;

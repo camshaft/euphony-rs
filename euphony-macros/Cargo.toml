@@ -12,7 +12,6 @@ proc-macro = true
 [dependencies]
 darling = "0.14"
 num-rational = { version = "0.4", default-features = false }
-permutate = "0.3"
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "1", features = ["full"] }

@@ -1,11 +1,15 @@
+use euphony_compiler::Hash;
 use euphony_node::Sink;
-use std::io;
 
-#[cfg(feature = "codec-wave")]
-pub mod wave;
+use crate::storage::Storage;
 
-pub trait Codec<W: io::Write>: Sink {
-    const EXTENSION: &'static str;
+pub mod raw;
 
-    fn new(w: W) -> io::Result<Self>;
+pub trait Codec<O: Output>: 'static + Send + Sync + Sink {
+    fn new<S: Storage<Output = O>>(storage: &mut S, output: O) -> Self;
+}
+
+pub trait Output: 'static + Send + Sync {
+    fn write(&mut self, bytes: &[u8]);
+    fn finish(&mut self) -> Hash;
 }

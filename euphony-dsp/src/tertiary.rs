@@ -1,4 +1,4 @@
-use crate::sample::Default as Sample;
+use crate::sample::DefaultSample;
 use euphony_node::{Input, Node};
 
 macro_rules! tertiary {
@@ -12,7 +12,7 @@ macro_rules! tertiary {
         pub struct $name;
 
         impl $name {
-            fn render(&mut self, a: Input, b: Input, c: Input, output: &mut [Sample]) {
+            fn render(&mut self, a: Input, b: Input, c: Input, output: &mut [DefaultSample]) {
                 match (a, b, c) {
                     (Input::Constant($a), Input::Constant($b), Input::Constant($c)) => {
                         let v = $value;

@@ -1,6 +1,6 @@
 use crate::{
     instruction::InternalInstruction,
-    sample::{RelSample, Sample},
+    sample::{Offset, RelOffset},
     sink::SinkMap,
     Hash, Result,
 };
@@ -13,15 +13,15 @@ use std::collections::BTreeMap;
 #[derive(Debug, Default)]
 pub struct Node {
     pub index: NodeIndex,
-    pub inputs: BTreeMap<(RelSample, u64), Value>,
+    pub inputs: BTreeMap<(RelOffset, u64), Value>,
     pub processor: u64,
-    pub start: Sample,
-    pub end: Option<RelSample>,
+    pub start: Offset,
+    pub end: Option<RelOffset>,
     pub hash: Hash,
 }
 
 impl Node {
-    pub fn set(&mut self, parameter: u64, value: u64, sample: Sample) -> Result {
+    pub fn set(&mut self, parameter: u64, value: u64, sample: Offset) -> Result {
         let value = euphony_node::ParameterValue::Constant(f64::from_bits(value));
         self.validate(parameter, value)?;
 
@@ -31,7 +31,7 @@ impl Node {
         Ok(())
     }
 
-    pub fn connect(&mut self, parameter: u64, source: u64, sample: Sample) -> Result {
+    pub fn connect(&mut self, parameter: u64, source: u64, sample: Offset) -> Result {
         let value = euphony_node::ParameterValue::Node(source);
         self.validate(parameter, value)?;
 
@@ -41,7 +41,7 @@ impl Node {
         Ok(())
     }
 
-    pub fn finish(&mut self, sample: Sample) -> Result {
+    pub fn finish(&mut self, sample: Offset) -> Result {
         if self.end.is_some() {
             return Err(error!("node has already been finished"));
         }
@@ -75,7 +75,7 @@ impl Node {
         &self,
         id: u64,
         sinks: &SinkMap,
-        instructions: &mut Vec<(Sample, InternalInstruction)>,
+        instructions: &mut Vec<(Offset, InternalInstruction)>,
     ) {
         let processor = self.processor;
         let offset = self.start;

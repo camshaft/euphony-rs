@@ -1,4 +1,7 @@
-use euphony_compiler::{DefaultSampleRate, Hash, SampleRate, Writer};
+use euphony_compiler::{
+    sample::{DefaultRate, Rate as _},
+    Hash, Writer,
+};
 use serde::{Deserialize, Serialize};
 use std::io;
 
@@ -13,7 +16,7 @@ impl Default for Timeline {
     #[inline]
     fn default() -> Self {
         Self {
-            sample_rate: DefaultSampleRate::COUNT as _,
+            sample_rate: DefaultRate::COUNT as _,
             samples: 0,
             groups: Default::default(),
         }
@@ -29,7 +32,7 @@ impl Timeline {
 
     #[inline]
     pub fn reset(&mut self) {
-        self.sample_rate = DefaultSampleRate::COUNT as _;
+        self.sample_rate = DefaultRate::COUNT as _;
         self.samples = 0;
         self.groups.clear();
     }

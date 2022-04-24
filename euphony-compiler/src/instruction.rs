@@ -1,12 +1,12 @@
-use crate::{sample::Sample, Hash};
+use crate::{sample::Offset, Hash};
 use core::fmt;
 use euphony_node::ParameterValue as Value;
 use std::collections::btree_set;
 
 #[derive(Clone, Debug)]
 pub struct Instructions<'a> {
-    pub samples: Sample,
-    pub iter: core::iter::Peekable<btree_set::Iter<'a, (Sample, InternalInstruction)>>,
+    pub samples: Offset,
+    pub iter: core::iter::Peekable<btree_set::Iter<'a, (Offset, InternalInstruction)>>,
 }
 
 impl<'a> Iterator for Instructions<'a> {

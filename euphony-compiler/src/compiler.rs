@@ -3,7 +3,7 @@ use crate::{
     instruction::{Instructions, InternalInstruction},
     node::Node,
     parallel::*,
-    sample::{default_samples_per_tick, samples_per_tick, Sample},
+    sample::{default_samples_per_tick, samples_per_tick, Offset},
     sink::{Sink, SinkMap},
     Hash, Result, Writer,
 };
@@ -25,8 +25,8 @@ pub struct Compiler {
     hashes: HashMap<Hash, u64>, // TODO use hash hasher
     active_nodes: BTreeSet<u64>,
     connections: Graph<u64, ()>,
-    instructions: BTreeSet<(Sample, InternalInstruction)>,
-    samples: Sample,
+    instructions: BTreeSet<(Offset, InternalInstruction)>,
+    samples: Offset,
     samples_per_tick: Ratio<u128>,
 }
 
@@ -152,7 +152,7 @@ impl Compiler {
         self.connections.clear();
         self.active_nodes.clear();
         self.instructions.clear();
-        self.samples = Sample::default();
+        self.samples = Offset::default();
         self.samples_per_tick = default_samples_per_tick();
     }
 

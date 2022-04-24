@@ -2,10 +2,11 @@ use euphony_compiler::{Hash, Writer};
 use std::path::PathBuf;
 
 pub mod codec;
+mod dc;
 pub mod storage;
 pub mod timeline;
 
-pub type DefaultStorage = storage::fs::Directory<codec::wave::Writer<storage::fs::File>>;
+pub type DefaultStorage = storage::fs::Directory<codec::raw::Writer<storage::fs::Output>>;
 pub type DefaultTimeline = timeline::Timeline;
 
 #[derive(Clone, Debug, Default)]

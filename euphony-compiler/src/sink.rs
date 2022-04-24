@@ -1,4 +1,4 @@
-use crate::{sample::Sample, Hash};
+use crate::{sample::Offset, Hash};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub type SinkMap = BTreeMap<u64, Sink>;
@@ -7,7 +7,7 @@ pub type SinkMap = BTreeMap<u64, Sink>;
 pub struct Sink {
     pub hash: Hash,
     pub members: BTreeSet<u64>,
-    pub start: Sample,
+    pub start: Offset,
     pub is_acyclic: bool,
     pub is_cached: bool,
 }

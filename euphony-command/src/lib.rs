@@ -126,7 +126,7 @@ impl<W: io::Write> WriteExt for W {
 
     #[inline]
     fn write_u64(&mut self, value: u64) -> io::Result<()> {
-        self.write_all(&value.to_be_bytes())?;
+        self.write_all(&value.to_le_bytes())?;
         Ok(())
     }
 }
@@ -148,7 +148,7 @@ impl<R: io::Read> ReadExt for R {
     fn read_u64(&mut self) -> io::Result<u64> {
         let mut value = [0u8; 8];
         self.read_exact(&mut value)?;
-        let value = u64::from_be_bytes(value);
+        let value = u64::from_le_bytes(value);
         Ok(value)
     }
 }

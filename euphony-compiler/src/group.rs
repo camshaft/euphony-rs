@@ -1,4 +1,4 @@
-use crate::{sample::Sample, sink::SinkMap, Entry, Hash};
+use crate::{sample::Offset, sink::SinkMap, Entry, Hash};
 use blake3::Hasher;
 use std::collections::{btree_set, hash_map, BTreeSet, HashMap};
 
@@ -8,7 +8,7 @@ pub type GroupMap = HashMap<u64, Group>;
 pub struct Group {
     pub name: String,
     pub hash: Hash,
-    pub sinks: BTreeSet<(Sample, u64)>,
+    pub sinks: BTreeSet<(Offset, u64)>,
 }
 
 impl Group {
@@ -51,7 +51,7 @@ impl<'a> Iterator for Iter<'a> {
 }
 
 pub struct Entries<'a> {
-    iter: btree_set::Iter<'a, (Sample, u64)>,
+    iter: btree_set::Iter<'a, (Offset, u64)>,
     sinks: &'a SinkMap,
 }
 

@@ -18,9 +18,12 @@ pub struct Entry {
     pub hash: Hash,
 }
 
-pub use euphony_dsp::sample::{
-    Default as Sample, DefaultRate as DefaultSampleRate, Rate as SampleRate,
-};
+#[path = "sample.rs"]
+mod internal_sample;
+pub mod sample {
+    pub(crate) use super::internal_sample::*;
+    pub use euphony_dsp::sample::*;
+}
 
 // TODO better error?
 pub type Error = std::io::Error;
@@ -33,7 +36,6 @@ mod instruction;
 mod node;
 mod parallel;
 mod render;
-mod sample;
 mod sink;
 
 #[derive(Debug, Default)]

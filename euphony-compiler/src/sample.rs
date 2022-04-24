@@ -18,12 +18,12 @@ pub fn samples_per_tick(nanos_per_tick: u64) -> Ratio<u128> {
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Sample(u64);
+pub struct Offset(u64);
 
-impl Sample {
+impl Offset {
     #[inline]
-    pub fn since(self, prev: Self) -> RelSample {
-        RelSample(self.0 - prev.0)
+    pub fn since(self, prev: Self) -> RelOffset {
+        RelOffset(self.0 - prev.0)
     }
 
     #[inline]
@@ -42,38 +42,38 @@ impl Sample {
     }
 }
 
-impl ops::Add<RelSample> for Sample {
+impl ops::Add<RelOffset> for Offset {
     type Output = Self;
 
-    fn add(self, rhs: RelSample) -> Self::Output {
+    fn add(self, rhs: RelOffset) -> Self::Output {
         Self(self.0 + rhs.0)
     }
 }
 
-impl ops::AddAssign<u64> for Sample {
+impl ops::AddAssign<u64> for Offset {
     fn add_assign(&mut self, rhs: u64) {
         self.0 += rhs;
     }
 }
 
-impl From<Sample> for u64 {
-    fn from(sample: Sample) -> u64 {
+impl From<Offset> for u64 {
+    fn from(sample: Offset) -> u64 {
         sample.0
     }
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
-pub struct RelSample(u64);
+pub struct RelOffset(u64);
 
-impl RelSample {
+impl RelOffset {
     #[inline]
     pub fn to_bytes(self) -> [u8; 8] {
         self.0.to_le_bytes()
     }
 }
 
-impl From<RelSample> for u64 {
-    fn from(sample: RelSample) -> u64 {
+impl From<RelOffset> for u64 {
+    fn from(sample: RelOffset) -> u64 {
         sample.0
     }
 }
