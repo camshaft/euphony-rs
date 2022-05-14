@@ -2,6 +2,7 @@
 name = "euphony-mix"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 dasp_frame = "0.11"

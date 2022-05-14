@@ -5,16 +5,13 @@ notice = "deny"
 yanked = "deny"
 ignore = [
     "RUSTSEC-2020-0016", # Waiting for notify to release 5.0
-    "RUSTSEC-2020-0056", # Rodio has out of date deps
-    "RUSTSEC-2020-0158", # Rodio has out of date deps
-    "RUSTSEC-2021-0047", # Rodio has out of date deps
+    "RUSTSEC-2020-0056", # cpal uses stdweb, which is deprecated
 ]
 
 [bans]
 multiple-versions = "deny"
 skip-tree = [
     { name = "euphony-cli" }, # ignore the CLI applications for now
-    { name = "euphony-player" },
 ]
 
 [sources]

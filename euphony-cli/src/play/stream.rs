@@ -1,3 +1,5 @@
+#![allow(dead_code)] // TODO implement the TUI
+
 use crate::{manifest::Manifest, watcher, Result};
 use anyhow::anyhow;
 use arc_swap::ArcSwap;

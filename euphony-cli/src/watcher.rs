@@ -83,6 +83,8 @@ pub fn watch_manifest<S: Subscriptions<Manifest>>(mut subs: S, mut manifest: Man
     }
 }
 
+// TODO use this in the remote version
+#[allow(dead_code)]
 pub fn watch_directory<S: Subscriptions<()>>(mut subs: S, root: PathBuf) {
     let (tx, rx) = channel();
 

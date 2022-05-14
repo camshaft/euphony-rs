@@ -38,7 +38,8 @@ impl Play {
         stream.set_is_looping(true);
         stream.play()?;
 
-        std::thread::sleep_ms(1_000_000);
+        // TODO replace this with the TUI
+        std::thread::sleep(core::time::Duration::from_secs(1000));
 
         Ok(())
     }

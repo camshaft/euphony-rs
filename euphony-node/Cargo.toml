@@ -2,6 +2,7 @@
 name = "euphony-node"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [features]
 reflect = ["heck", "serde", "serde_json"]
