@@ -1,0 +1,9 @@
+[package]
+name = "euphony-mix"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dasp_frame = "0.11"
+euphony-dsp = { version = "0.1", path = "../euphony-dsp" }
+euphony-units = { version = "0.1", path = "../euphony-units" }

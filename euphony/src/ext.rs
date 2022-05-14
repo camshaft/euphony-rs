@@ -29,6 +29,6 @@ where
     }
 
     fn spawn_primary(self) -> crate::runtime::JoinHandle<Self::Output> {
-        crate::runtime::spawn_primary(self)
+        crate::runtime::primary::spawn(self)
     }
 }

@@ -7,7 +7,7 @@ use structopt::StructOpt;
 pub use bach::{
     executor::JoinHandle,
     rand,
-    task::{spawn, spawn_primary},
+    task::{primary, spawn},
 };
 
 pub struct Runtime {

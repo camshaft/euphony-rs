@@ -1,12 +1,12 @@
-use crate::codec::{self, Codec};
+use crate::{codec, ext::*, storage};
 use base64::URL_SAFE_NO_PAD;
 use blake3::Hasher;
-use euphony_compiler::{sample::DefaultSample as Sample, Entry, Hash, Writer};
-use euphony_node::{BoxProcessor, SampleType, Sink};
+use euphony_compiler::{Entry, Hash, Writer};
+use euphony_node::{BoxProcessor, Sink};
+use euphony_units::coordinates::Polar;
 use std::{
     fs,
     io::{self, Write},
-    marker::PhantomData,
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -17,9 +17,8 @@ use super::Storage;
 pub type File = io::BufWriter<fs::File>;
 
 #[derive(Clone, Debug)]
-pub struct Directory<C: Codec<Output>> {
+pub struct Directory {
     state: State,
-    codec: PhantomData<C>,
 }
 
 #[derive(Clone, Debug)]
@@ -53,7 +52,7 @@ enum OState {
     },
 }
 
-impl codec::Output for Output {
+impl storage::Output for Output {
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
         let result = match &mut self.0 {
@@ -92,20 +91,19 @@ impl codec::Output for Output {
     }
 }
 
-impl<C: Codec<Output>> Default for Directory<C> {
+impl Default for Directory {
     fn default() -> Self {
         Self::new(PathBuf::from("target/euphony/contents"))
     }
 }
 
-impl<C: Codec<Output>> Directory<C> {
+impl Directory {
     pub fn new(path: PathBuf) -> Self {
         Self {
             state: State {
                 path: Arc::new(path),
                 hasher: Hasher::new(),
             },
-            codec: PhantomData,
         }
     }
 
@@ -149,8 +147,11 @@ impl<C: Codec<Output>> Directory<C> {
     }
 }
 
-impl<C: Codec<Output>> Storage for Directory<C> {
+impl Storage for Directory {
     type Output = Output;
+    type Reader = io::BufReader<fs::File>;
+    type Group = GroupReader;
+    type Sink = codec::Reader<Self::Reader>;
 
     fn create(&mut self) -> Self::Output {
         let (file, path) = NamedTempFile::new().unwrap().into_parts();
@@ -162,9 +163,25 @@ impl<C: Codec<Output>> Storage for Directory<C> {
             path: Some(path),
         })
     }
+
+    fn open_raw(&self, hash: &Hash) -> io::Result<Self::Reader> {
+        let path = self.hash_path(hash);
+        let file = fs::File::open(path)?;
+        let file = io::BufReader::new(file);
+        Ok(file)
+    }
+
+    fn open_group(&self, hash: &Hash) -> io::Result<Self::Group> {
+        let group = self.open_raw(hash)?;
+        Ok(GroupReader(group))
+    }
+
+    fn open_sink(&self, hash: &Hash) -> io::Result<Self::Sink> {
+        codec::Reader::new(self, hash)
+    }
 }
 
-impl<C: Codec<Output>> Writer for Directory<C> {
+impl Writer for Directory {
     fn is_cached(&self, hash: &Hash) -> bool {
         self.hash_path(hash).exists()
     }
@@ -172,7 +189,7 @@ impl<C: Codec<Output>> Writer for Directory<C> {
     fn sink(&mut self, hash: &Hash) -> BoxProcessor {
         if let Some(file) = self.open(hash).unwrap() {
             let output = Output(OState::PreHashed { file, hash: *hash });
-            C::new(self, output).spawn()
+            codec::Writer::new(self, output).spawn()
         } else {
             NoopSink.spawn()
         }
@@ -195,10 +212,23 @@ struct NoopSink;
 
 impl Sink for NoopSink {
     #[inline]
-    fn advance(&mut self, _: u64) {
-        // no-op
-    }
+    fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, _samples: S) {}
+}
+
+pub struct GroupReader(io::BufReader<fs::File>);
+
+impl Iterator for GroupReader {
+    type Item = io::Result<Entry>;
 
     #[inline]
-    fn write(&mut self, _ty: SampleType, _samples: &[Sample]) {}
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.0.read_u64() {
+            Ok(sample_offset) => Some(self.0.read_hash().map(|hash| Entry {
+                sample_offset,
+                hash,
+            })),
+            Err(err) if err.kind() == io::ErrorKind::UnexpectedEof => None,
+            Err(err) => Some(Err(err)),
+        }
+    }
 }

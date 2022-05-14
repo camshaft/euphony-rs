@@ -1,12 +1,15 @@
 use euphony_compiler::{Hash, Writer};
-use std::path::PathBuf;
+use euphony_mix::Mixer;
+use std::{io, path::PathBuf};
 
-pub mod codec;
+mod codec;
 mod dc;
+mod ext;
+mod mix;
 pub mod storage;
 pub mod timeline;
 
-pub type DefaultStorage = storage::fs::Directory<codec::raw::Writer<storage::fs::Output>>;
+pub type DefaultStorage = storage::fs::Directory;
 pub type DefaultTimeline = timeline::Timeline;
 
 #[derive(Clone, Debug, Default)]
@@ -22,6 +25,17 @@ impl Store {
             storage: DefaultStorage::new(path),
             timeline: Default::default(),
         }
+    }
+}
+
+impl<S: storage::Storage + Writer, T: Writer> Store<S, T> {
+    #[inline]
+    pub fn mix_group<M: Mixer<Error = E>, E: Into<io::Error>>(
+        &self,
+        group: &Hash,
+        mixer: &mut M,
+    ) -> io::Result<()> {
+        mix::mix(&self.storage, group, mixer)
     }
 }
 

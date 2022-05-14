@@ -26,7 +26,7 @@ pub mod prelude {
         processor::Processor,
         processors::{ext::*, input::*, *},
         rand,
-        runtime::{spawn, spawn_primary},
+        runtime::{primary, spawn},
         section::section,
         time::{now, set_tempo, tempo},
         units::{

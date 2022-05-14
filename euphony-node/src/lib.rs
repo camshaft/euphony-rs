@@ -78,6 +78,7 @@ pub enum Input<'a> {
 }
 
 impl<'a> Input<'a> {
+    #[inline]
     pub fn iter(&self) -> InputIter {
         match self {
             Self::Constant(v) => InputIter::Constant(*v),
@@ -94,6 +95,7 @@ pub enum InputIter<'a> {
 impl<'a> Iterator for InputIter<'a> {
     type Item = Sample;
 
+    #[inline]
     fn next(&mut self) -> Option<Self::Item> {
         match self {
             Self::Constant(v) => Some(*v),

@@ -1,4 +1,6 @@
-use crate::{BoxProcessor, Buffers, Input, Inputs, Node, Output, LEN};
+use euphony_units::coordinates::Polar;
+
+use crate::{BoxProcessor, Buffers, Inputs, Node, Output};
 
 pub trait Sink: 'static + Send + Sized {
     #[inline]
@@ -6,27 +8,7 @@ pub trait Sink: 'static + Send + Sized {
         Wrapper::spawn(self)
     }
 
-    fn advance(&mut self, samples: u64);
-
-    fn write(&mut self, ty: SampleType, samples: &[f64]);
-
-    #[inline]
-    fn write_full(&mut self, ty: SampleType, samples: &Output) {
-        self.write(ty, samples);
-    }
-
-    #[inline]
-    fn write_const(&mut self, ty: SampleType, value: f64, count: usize) {
-        let mut values = [0.0; LEN];
-        for to in values[..count].iter_mut() {
-            *to = value;
-        }
-        if count == LEN {
-            self.write_full(ty, &values)
-        } else {
-            self.write(ty, &values[..count])
-        }
-    }
+    fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: S);
 }
 
 #[repr(u8)]
@@ -57,41 +39,55 @@ impl<Inner: Sink> Wrapper<Inner> {
 }
 
 impl<Inner: Sink> Node<4, 0> for Wrapper<Inner> {
+    const DEFAULTS: [f64; 4] = [0.0, 0.0, 0.0, 0.0];
+
     #[inline]
     fn process(&mut self, inputs: Inputs<4>, _buffer: Buffers<0>, samples: &mut [f64]) {
-        macro_rules! input {
-            ($ty:expr) => {{
-                match inputs.get($ty as u8 as usize) {
-                    Input::Constant(v) => self.inner.write_const($ty, v, samples.len()),
-                    Input::Buffer(b) => self.inner.write($ty, &b[..samples.len()]),
-                };
-            }};
-        }
+        let pcm = inputs.get(0);
+        let pcm = pcm.iter().take(samples.len());
+        let azimuth = inputs.get(1);
+        let azimuth = azimuth.iter().take(samples.len());
+        let inclination = inputs.get(2);
+        let inclination = inclination.iter().take(samples.len());
+        let radius = inputs.get(3);
+        let radius = radius.iter().take(samples.len());
 
-        input!(SampleType::Pcm);
-        input!(SampleType::Azimuth);
-        input!(SampleType::Inclination);
-        input!(SampleType::Radius);
+        let coord = azimuth
+            .zip(inclination)
+            .zip(radius)
+            .map(|((azimuth, inclination), radius)| Polar {
+                azimuth,
+                inclination,
+                radius,
+            });
 
-        self.inner.advance(samples.len() as u64);
+        let samples = pcm.zip(coord);
+
+        self.inner.write(samples)
     }
 
     #[inline]
-    fn process_full(&mut self, inputs: Inputs<4>, _buffer: Buffers<0>, samples: &mut Output) {
-        macro_rules! input {
-            ($ty:expr) => {{
-                match inputs.get($ty as u8 as usize) {
-                    Input::Constant(v) => self.inner.write_const($ty, v, LEN),
-                    Input::Buffer(b) => self.inner.write_full($ty, b),
-                };
-            }};
-        }
+    fn process_full(&mut self, inputs: Inputs<4>, _buffer: Buffers<0>, _samples: &mut Output) {
+        let pcm = inputs.get(0);
+        let pcm = pcm.iter();
+        let azimuth = inputs.get(1);
+        let azimuth = azimuth.iter();
+        let inclination = inputs.get(2);
+        let inclination = inclination.iter();
+        let radius = inputs.get(3);
+        let radius = radius.iter();
 
-        input!(SampleType::Pcm);
-        input!(SampleType::Azimuth);
-        input!(SampleType::Inclination);
-        input!(SampleType::Radius);
+        let coord = azimuth
+            .zip(inclination)
+            .zip(radius)
+            .map(|((azimuth, inclination), radius)| Polar {
+                azimuth,
+                inclination,
+                radius,
+            });
 
-        self.inner.advance(samples.len() as u64);
+        let samples = pcm.zip(coord);
+
+        self.inner.write(samples)
     }
 }

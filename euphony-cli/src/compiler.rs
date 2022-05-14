@@ -1,6 +1,9 @@
 use crate::Result;
 use euphony_store::Store;
-use std::{fs, io, path::PathBuf};
+use std::{
+    fs, io,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug)]
 pub struct Compiler {
@@ -22,14 +25,22 @@ impl Compiler {
         let _ = fs::create_dir_all(&self.store.storage.path());
         let _ = fs::create_dir_all(self.timeline_path.parent().unwrap());
 
+        self.store.timeline.reset();
         self.compiler.compile(input, &mut self.store)?;
 
         let timeline = fs::File::create(&self.timeline_path)?;
         let mut timeline = io::BufWriter::new(timeline);
         self.store.timeline.to_json(&mut timeline)?;
         io::Write::flush(&mut timeline)?;
-        self.store.timeline.reset();
 
         Ok(())
+    }
+
+    pub fn timeline_path(&self) -> &Path {
+        &self.timeline_path
+    }
+
+    pub fn store(&self) -> &Store {
+        &self.store
     }
 }

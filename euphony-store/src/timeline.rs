@@ -3,7 +3,7 @@ use euphony_compiler::{
     Hash, Writer,
 };
 use serde::{Deserialize, Serialize};
-use std::io;
+use std::{io, ops};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Timeline {
@@ -46,6 +46,14 @@ pub struct Group {
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct HashDisplay(#[serde(with = "base64")] Hash);
+
+impl ops::Deref for HashDisplay {
+    type Target = Hash;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 mod base64 {
     use base64::URL_SAFE_NO_PAD;
