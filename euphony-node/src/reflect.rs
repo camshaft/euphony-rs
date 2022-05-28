@@ -31,6 +31,7 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     let mut modules = Module::default();
     let mut inputs = BTreeSet::new();
     let mut ext = vec![];
+    let mut filters = vec![];
 
     // sink parameters
     inputs.insert("azimuth".to_string());
@@ -49,6 +50,8 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
                     .map(|i| i.name.clone())
                     .collect::<Vec<_>>(),
             ));
+        } else if node.module == ["filter"] {
+            filters.push((node.name.clone(), node.docs.clone()));
         }
 
         for input in node.inputs.iter() {
@@ -132,6 +135,16 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
         level -= 1;
         w!("}}");
     }
+
+    for (name, docs) in filters {
+        let lower = name.to_snake_case();
+        w!("#[inline]");
+        w!("#[doc = {:?}]", docs);
+        w!("fn {lower}(&self) -> crate::processors::filter::{name} {{");
+        w!("    crate::processors::filter::{lower}().with_signal(self)");
+        w!("}}");
+    }
+
     level -= 1;
     w!("}}");
 
@@ -195,8 +208,8 @@ fn nodes_file<O: io::Write>(o: &mut O, nodes: &[Node]) -> io::Result<()> {
         }
     }
 
-    w!("#![deny(unreachable_patterns)]");
-    w!();
+    //w!("#![deny(unreachable_patterns)]");
+    //w!();
 
     w!("#[rustfmt::skip]");
     w!("use euphony_node::{{BoxProcessor, Error, ParameterValue as Value}};");

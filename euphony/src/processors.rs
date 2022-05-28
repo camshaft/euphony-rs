@@ -327,6 +327,91 @@ pub mod ext {
         fn trunc(&self) -> crate::processors::unary::Trunc {
             crate::processors::unary::trunc().with_input(self)
         }
+        #[inline]
+        #[doc = " Constant-gain bandpass resonator.\n"]
+        fn resonator(&self) -> crate::processors::filter::Resonator {
+            crate::processors::filter::resonator().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"]
+        fn allpole(&self) -> crate::processors::filter::Allpole {
+            crate::processors::filter::allpole().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Bandpass filter.\n"]
+        fn bandpass(&self) -> crate::processors::filter::Bandpass {
+            crate::processors::filter::bandpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Pinking filter.\n"]
+        fn pinkpass(&self) -> crate::processors::filter::Pinkpass {
+            crate::processors::filter::pinkpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " One-pole lowpass filter (1st order).\n"]
+        fn lowpole(&self) -> crate::processors::filter::Lowpole {
+            crate::processors::filter::lowpole().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Highpass filter.\n"]
+        fn highpass(&self) -> crate::processors::filter::Highpass {
+            crate::processors::filter::highpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Moog resonant lowpass filter.\n"]
+        fn moog(&self) -> crate::processors::filter::Moog {
+            crate::processors::filter::moog().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Peak filter.\n"]
+        fn peak(&self) -> crate::processors::filter::Peak {
+            crate::processors::filter::peak().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Highshelf filter.\n"]
+        fn highshelf(&self) -> crate::processors::filter::Highshelf {
+            crate::processors::filter::highshelf().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Bell filter.\n"]
+        fn bell(&self) -> crate::processors::filter::Bell {
+            crate::processors::filter::bell().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Lowpass filter.\n"]
+        fn lowpass(&self) -> crate::processors::filter::Lowpass {
+            crate::processors::filter::lowpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Butterworth lowpass filter (2nd order).\n"]
+        fn butterpass(&self) -> crate::processors::filter::Butterpass {
+            crate::processors::filter::butterpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Notch filter.\n"]
+        fn notch(&self) -> crate::processors::filter::Notch {
+            crate::processors::filter::notch().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Lowshelf filter.\n"]
+        fn lowshelf(&self) -> crate::processors::filter::Lowshelf {
+            crate::processors::filter::lowshelf().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Allpass filter.\n"]
+        fn allpass(&self) -> crate::processors::filter::Allpass {
+            crate::processors::filter::allpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " One-pole, one-zero highpass filter (1st order).\n"]
+        fn highpole(&self) -> crate::processors::filter::Highpole {
+            crate::processors::filter::highpole().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Morphing filter that morphs between lowpass, peak and highpass modes.\n"]
+        fn morph(&self) -> crate::processors::filter::Morph {
+            crate::processors::filter::morph().with_signal(self)
+        }
     }
     impl<T> ProcessorExt for T
     where
@@ -346,14 +431,54 @@ pub mod input {
         fn set_azimuth(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
+    pub trait bandwidth<Value> {
+        fn with_bandwidth(self, value: Value) -> Self;
+        fn set_bandwidth(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait center<Value> {
+        fn with_center(self, value: Value) -> Self;
+        fn set_center(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
     pub trait cond<Value> {
         fn with_cond(self, value: Value) -> Self;
         fn set_cond(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
+    pub trait cutoff<Value> {
+        fn with_cutoff(self, value: Value) -> Self;
+        fn set_cutoff(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait decay<Value> {
+        fn with_decay(self, value: Value) -> Self;
+        fn set_decay(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait delay<Value> {
+        fn with_delay(self, value: Value) -> Self;
+        fn set_delay(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait duration<Value> {
+        fn with_duration(self, value: Value) -> Self;
+        fn set_duration(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait duty_cycle<Value> {
+        fn with_duty_cycle(self, value: Value) -> Self;
+        fn set_duty_cycle(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
     pub trait frequency<Value> {
         fn with_frequency(self, value: Value) -> Self;
         fn set_frequency(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait gain<Value> {
+        fn with_gain(self, value: Value) -> Self;
+        fn set_gain(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
     pub trait incline<Value> {
@@ -364,6 +489,11 @@ pub mod input {
     pub trait input<Value> {
         fn with_input(self, value: Value) -> Self;
         fn set_input(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait length<Value> {
+        fn with_length(self, value: Value) -> Self;
+        fn set_length(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
     pub trait lhs<Value> {
@@ -379,6 +509,11 @@ pub mod input {
     pub trait min<Value> {
         fn with_min(self, value: Value) -> Self;
         fn set_min(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait morph<Value> {
+        fn with_morph(self, value: Value) -> Self;
+        fn set_morph(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
     pub trait mul<Value> {
@@ -401,6 +536,11 @@ pub mod input {
         fn set_positive(&self, value: Value) -> &Self;
     }
     #[allow(non_camel_case_types)]
+    pub trait q<Value> {
+        fn with_q(self, value: Value) -> Self;
+        fn set_q(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
     pub trait radius<Value> {
         fn with_radius(self, value: Value) -> Self;
         fn set_radius(&self, value: Value) -> &Self;
@@ -409,6 +549,26 @@ pub mod input {
     pub trait rhs<Value> {
         fn with_rhs(self, value: Value) -> Self;
         fn set_rhs(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait seed<Value> {
+        fn with_seed(self, value: Value) -> Self;
+        fn set_seed(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait signal<Value> {
+        fn with_signal(self, value: Value) -> Self;
+        fn set_signal(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait target<Value> {
+        fn with_target(self, value: Value) -> Self;
+        fn set_target(&self, value: Value) -> &Self;
+    }
+    #[allow(non_camel_case_types)]
+    pub trait value<Value> {
+        fn with_value(self, value: Value) -> Self;
+        fn set_value(&self, value: Value) -> &Self;
     }
 }
 
@@ -626,6 +786,307 @@ mod api {
             }
         );
     }
+    pub mod env {
+        define_processor!(
+            #[id = 200]
+            #[lower = linear]
+            struct Linear {
+                #[with = with_target]
+                #[set = set_target]
+                target: f64<0>,
+                #[with = with_duration]
+                #[set = set_duration]
+                duration: f64<1>,
+                #[with = with_value]
+                #[set = set_value]
+                value: f64<2>,
+            }
+        );
+    }
+    pub mod filter {
+        define_processor!(
+            #[doc = " Butterworth lowpass filter (2nd order).\n"]
+            #[id = 300]
+            #[lower = butterpass]
+            struct Butterpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " One-pole lowpass filter (1st order).\n"]
+            #[id = 301]
+            #[lower = lowpole]
+            struct Lowpole {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"]
+            #[id = 302]
+            #[lower = allpole]
+            struct Allpole {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_delay]
+                #[set = set_delay]
+                delay: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " One-pole, one-zero highpass filter (1st order).\n"]
+            #[id = 303]
+            #[lower = highpole]
+            struct Highpole {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Constant-gain bandpass resonator.\n"]
+            #[id = 304]
+            #[lower = resonator]
+            struct Resonator {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+                #[with = with_bandwidth]
+                #[set = set_bandwidth]
+                bandwidth: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Moog resonant lowpass filter.\n"]
+            #[id = 305]
+            #[lower = moog]
+            struct Moog {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Morphing filter that morphs between lowpass, peak and highpass modes.\n"]
+            #[id = 306]
+            #[lower = morph]
+            struct Morph {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+                #[with = with_morph]
+                #[set = set_morph]
+                morph: Parameter<3>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Pinking filter.\n"]
+            #[id = 307]
+            #[lower = pinkpass]
+            struct Pinkpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Lowpass filter.\n"]
+            #[id = 308]
+            #[lower = lowpass]
+            struct Lowpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Highpass filter.\n"]
+            #[id = 309]
+            #[lower = highpass]
+            struct Highpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Bandpass filter.\n"]
+            #[id = 310]
+            #[lower = bandpass]
+            struct Bandpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_cutoff]
+                #[set = set_cutoff]
+                cutoff: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Notch filter.\n"]
+            #[id = 311]
+            #[lower = notch]
+            struct Notch {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Peak filter.\n"]
+            #[id = 312]
+            #[lower = peak]
+            struct Peak {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Allpass filter.\n"]
+            #[id = 313]
+            #[lower = allpass]
+            struct Allpass {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Bell filter.\n"]
+            #[id = 314]
+            #[lower = bell]
+            struct Bell {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+                #[with = with_gain]
+                #[set = set_gain]
+                gain: Parameter<3>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Lowshelf filter.\n"]
+            #[id = 315]
+            #[lower = lowshelf]
+            struct Lowshelf {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+                #[with = with_gain]
+                #[set = set_gain]
+                gain: Parameter<3>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Highshelf filter.\n"]
+            #[id = 316]
+            #[lower = highshelf]
+            struct Highshelf {
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[with = with_center]
+                #[set = set_center]
+                center: Parameter<1>,
+                #[with = with_q]
+                #[set = set_q]
+                q: Parameter<2>,
+                #[with = with_gain]
+                #[set = set_gain]
+                gain: Parameter<3>,
+            }
+        );
+    }
     pub mod osc {
         define_processor!(
             #[doc = " Accurate (slow) sine oscillator\n\n # frequency\n\n # phase (trigger)\n"]
@@ -730,6 +1191,88 @@ mod api {
                 phase: f64<1>,
             }
         );
+
+        pub mod nes {
+            define_processor!(
+                #[id = 108]
+                #[lower = pulse]
+                struct Pulse {
+                    #[with = with_frequency]
+                    #[set = set_frequency]
+                    frequency: Parameter<0>,
+                    #[with = with_duty_cycle]
+                    #[set = set_duty_cycle]
+                    duty_cycle: Parameter<1>,
+                    #[with = with_decay]
+                    #[set = set_decay]
+                    decay: Parameter<2>,
+                    #[with = with_phase]
+                    #[set = set_phase]
+                    phase: f64<3>,
+                }
+            );
+
+            define_processor!(
+                #[id = 109]
+                #[lower = triangle]
+                struct Triangle {
+                    #[with = with_frequency]
+                    #[set = set_frequency]
+                    frequency: Parameter<0>,
+                    #[with = with_phase]
+                    #[set = set_phase]
+                    phase: f64<1>,
+                }
+            );
+        }
+        pub mod noise {
+            define_processor!(
+                #[doc = " White noise generator.\n"]
+                #[id = 110]
+                #[lower = white]
+                struct White {
+                    #[with = with_seed]
+                    #[set = set_seed]
+                    seed: f64<0>,
+                }
+            );
+
+            define_processor!(
+                #[doc = " Maximum Length Sequence noise generator from an `n`-bit sequence.\n"]
+                #[id = 111]
+                #[lower = mls]
+                struct Mls {
+                    #[with = with_seed]
+                    #[set = set_seed]
+                    seed: f64<0>,
+                    #[with = with_length]
+                    #[set = set_length]
+                    length: f64<1>,
+                }
+            );
+
+            define_processor!(
+                #[doc = " Pink noise generator.\n"]
+                #[id = 112]
+                #[lower = pink]
+                struct Pink {
+                    #[with = with_seed]
+                    #[set = set_seed]
+                    seed: f64<0>,
+                }
+            );
+
+            define_processor!(
+                #[doc = " Brown noise generator.\n"]
+                #[id = 113]
+                #[lower = brown]
+                struct Brown {
+                    #[with = with_seed]
+                    #[set = set_seed]
+                    seed: f64<0>,
+                }
+            );
+        }
     }
     pub mod tertiary {
         define_processor!(

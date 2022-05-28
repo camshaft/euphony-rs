@@ -1,0 +1,28 @@
+---
+source: euphony-dsp/src/osc/noise.rs
+expression: node
+---
+Node {
+    name: "Mls",
+    module: [
+        "osc",
+        "noise",
+    ],
+    impl_path: "euphony_dsp::osc::noise",
+    id: 111,
+    inputs: [
+        Input {
+            name: "seed",
+            id: 0,
+            trigger: true,
+            default: 0.0,
+        },
+        Input {
+            name: "length",
+            id: 1,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: " Maximum Length Sequence noise generator from an `n`-bit sequence.\n",
+}

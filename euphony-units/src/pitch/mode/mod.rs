@@ -144,6 +144,14 @@ impl core::ops::Mul<Interval> for Mode {
     }
 }
 
+impl core::ops::Mul<Mode> for Interval {
+    type Output = Interval;
+
+    fn mul(self, mode: Mode) -> Self::Output {
+        mode.expand(self, Default::default())
+    }
+}
+
 impl core::ops::Div<Mode> for Interval {
     type Output = Interval;
 

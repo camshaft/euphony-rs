@@ -1,0 +1,29 @@
+{
+  "name": "Highpass",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 309,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "cutoff",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "q",
+      "id": 2,
+      "trigger": false,
+      "default": 0.1
+    }
+  ],
+  "docs": " Highpass filter.\n"
+}

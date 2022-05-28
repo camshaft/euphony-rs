@@ -1,5 +1,5 @@
 use crate::{node::Node, output::*};
-use euphony_units::ratio::Ratio;
+use euphony_units::{pitch::frequency::Frequency, ratio::Ratio};
 
 #[derive(Clone, Debug)]
 pub struct Parameter(pub(crate) ParameterValue);
@@ -51,6 +51,13 @@ impl From<f64> for Parameter {
     #[inline]
     fn from(value: f64) -> Self {
         Self(ParameterValue::Constant(value))
+    }
+}
+
+impl From<Frequency> for Parameter {
+    #[inline]
+    fn from(value: Frequency) -> Self {
+        Self(ParameterValue::Constant(value.into()))
     }
 }
 

@@ -12,6 +12,13 @@ impl From<BaseFrequency> for Frequency {
     }
 }
 
+impl From<Frequency> for f64 {
+    #[inline]
+    fn from(freq: Frequency) -> Self {
+        freq.0
+    }
+}
+
 impl Mul<BaseFrequency> for FrequencyRatio {
     type Output = Frequency;
 

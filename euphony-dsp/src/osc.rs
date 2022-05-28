@@ -1,7 +1,13 @@
-use crate::sample::{DefaultRate as Rate, Rate as _};
+use crate::{
+    sample::{DefaultRate as Rate, Rate as _},
+    zip::Zip,
+};
 use core::f64::consts::TAU;
 use euphony_node::{Input, Node};
 use fastapprox::{fast, faster};
+
+pub mod nes;
+pub mod noise;
 
 #[derive(Debug, Clone, Copy, Default, Node)]
 #[node(id = 107, module = "osc")]
@@ -46,10 +52,13 @@ impl Phase {
 
 macro_rules! phase_osc {
     ($(#[doc = $doc:literal])* $id:literal, $name:ident, | $phase:ident | $sample:expr) => {
+        phase_osc!($(#[doc = $doc])* $id, $name, 0.0, |$phase| $sample);
+    };
+    ($(#[doc = $doc:literal])* $id:literal, $name:ident, $default_phase:literal, | $phase:ident | $sample:expr) => {
         #[derive(Default, Node)]
         #[node(id = $id, module = "osc")]
         #[input(frequency, default = 440.0)]
-        #[input(phase, trigger = set_phase)]
+        #[input(phase, default = $default_phase, trigger = set_phase)]
         $(
             #[doc = $doc]
         )*
@@ -78,7 +87,7 @@ macro_rules! phase_osc {
                         }
                     }
                     Input::Buffer(freq) => {
-                        for (frame, freq) in output.iter_mut().zip(freq.iter()) {
+                        for (freq, frame) in (freq, output.iter_mut()).zip() {
                             let $phase = self.phase.next(*freq);
                             *frame = $sample;
                         }
@@ -123,6 +132,7 @@ phase_osc!(
     /// A triangle oscillator
     105,
     Triangle,
+    0.75,
     |phase| ((0.5 - phase).abs() - 0.25) * 4.0
 );
 
@@ -132,5 +142,21 @@ pub struct Silence;
 
 impl Silence {
     #[inline]
-    pub fn render(&mut self, _output: &mut [f64]) {}
+    pub fn render(&mut self, output: &mut [f64]) {
+        output.fill(0.0);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn triangle_test() {
+        let mut osc = Triangle::new();
+        let mut out = [0.0; 500];
+        osc.render(480.0.into(), &mut out);
+        eprintln!("{:?}", out);
+        //panic!();
+    }
 }

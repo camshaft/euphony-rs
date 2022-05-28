@@ -1,0 +1,29 @@
+{
+  "name": "Allpass",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 313,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "center",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "q",
+      "id": 2,
+      "trigger": false,
+      "default": 0.1
+    }
+  ],
+  "docs": " Allpass filter.\n"
+}

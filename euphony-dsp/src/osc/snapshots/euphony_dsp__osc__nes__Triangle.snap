@@ -1,0 +1,28 @@
+---
+source: euphony-dsp/src/osc/nes.rs
+expression: node
+---
+Node {
+    name: "Triangle",
+    module: [
+        "osc",
+        "nes",
+    ],
+    impl_path: "euphony_dsp::osc::nes",
+    id: 109,
+    inputs: [
+        Input {
+            name: "frequency",
+            id: 0,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "phase",
+            id: 1,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: "",
+}

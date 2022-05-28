@@ -1,0 +1,33 @@
+---
+source: euphony-dsp/src/filter.rs
+expression: node
+---
+Node {
+    name: "Notch",
+    module: [
+        "filter",
+    ],
+    impl_path: "euphony_dsp::filter",
+    id: 311,
+    inputs: [
+        Input {
+            name: "signal",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "center",
+            id: 1,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "q",
+            id: 2,
+            trigger: false,
+            default: 0.1,
+        },
+    ],
+    docs: " Notch filter.\n",
+}

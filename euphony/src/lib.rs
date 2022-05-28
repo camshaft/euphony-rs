@@ -30,7 +30,7 @@ pub mod prelude {
         section::section,
         time::{now, set_tempo, tempo},
         units::{
-            pitch::Interval,
+            pitch::{frequency::*, mode, tuning, Interval},
             time::{Beat, Tempo},
         },
     };

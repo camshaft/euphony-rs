@@ -1,0 +1,21 @@
+---
+source: euphony-dsp/src/filter.rs
+expression: node
+---
+Node {
+    name: "Pinkpass",
+    module: [
+        "filter",
+    ],
+    impl_path: "euphony_dsp::filter",
+    id: 307,
+    inputs: [
+        Input {
+            name: "signal",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    docs: " Pinking filter.\n",
+}

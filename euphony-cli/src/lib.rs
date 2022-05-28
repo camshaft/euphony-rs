@@ -8,6 +8,7 @@ mod export;
 mod gc;
 mod manifest;
 mod play;
+mod render;
 mod watcher;
 
 #[cfg(feature = "remote")]
@@ -21,6 +22,7 @@ enum Arguments {
     Serve(serve::Serve),
     Disasm(disasm::Disasm),
     Export(export::Export),
+    Render(render::Render),
     Gc(gc::Gc),
 }
 
@@ -33,6 +35,7 @@ pub fn main() {
         #[cfg(feature = "remote")]
         Arguments::Serve(args) => args.run(),
         Arguments::Export(args) => args.run(),
+        Arguments::Render(args) => args.run(),
         Arguments::Gc(args) => args.run(),
     }
     // TODO better error message

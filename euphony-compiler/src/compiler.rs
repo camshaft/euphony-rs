@@ -67,6 +67,7 @@ impl Compiler {
             let index = node.index;
 
             let mut start = node.start;
+            let mut end = None;
 
             let conns = &self.connections;
             let mut hasher = hasher.clone();
@@ -88,6 +89,7 @@ impl Compiler {
                             let source = &self.nodes[source];
                             // compute the earlier of the start times
                             let base = dep.start.min(source.start);
+                            end = end.max(source.end);
                             // compute the relative sample to the base
                             let sample = (dep.start + *sample).since(base);
                             hasher.update(&sample.to_bytes());
@@ -103,6 +105,7 @@ impl Compiler {
             });
 
             sink.start = start;
+            sink.end = end.unwrap_or_default();
             sink.hash = *hasher.finalize().as_bytes();
             sink.is_cached = cache.is_cached(&sink.hash);
         });

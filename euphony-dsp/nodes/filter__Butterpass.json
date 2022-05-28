@@ -1,0 +1,23 @@
+{
+  "name": "Butterpass",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 300,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "cutoff",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    }
+  ],
+  "docs": " Butterworth lowpass filter (2nd order).\n"
+}

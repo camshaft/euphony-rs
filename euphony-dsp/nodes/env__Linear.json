@@ -1,0 +1,29 @@
+{
+  "name": "Linear",
+  "module": [
+    "env"
+  ],
+  "impl_path": "euphony_dsp::env",
+  "id": 200,
+  "inputs": [
+    {
+      "name": "target",
+      "id": 0,
+      "trigger": true,
+      "default": 0.0
+    },
+    {
+      "name": "duration",
+      "id": 1,
+      "trigger": true,
+      "default": 0.01
+    },
+    {
+      "name": "value",
+      "id": 2,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "docs": ""
+}

@@ -1,0 +1,22 @@
+---
+source: euphony-dsp/src/osc/noise.rs
+expression: node
+---
+Node {
+    name: "Pink",
+    module: [
+        "osc",
+        "noise",
+    ],
+    impl_path: "euphony_dsp::osc::noise",
+    id: 112,
+    inputs: [
+        Input {
+            name: "seed",
+            id: 0,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: " Pink noise generator.\n",
+}

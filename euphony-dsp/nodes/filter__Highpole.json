@@ -1,0 +1,23 @@
+{
+  "name": "Highpole",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 303,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "cutoff",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    }
+  ],
+  "docs": " One-pole, one-zero highpass filter (1st order).\n"
+}

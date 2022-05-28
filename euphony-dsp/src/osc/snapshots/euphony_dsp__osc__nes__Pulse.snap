@@ -1,0 +1,40 @@
+---
+source: euphony-dsp/src/osc/nes.rs
+expression: node
+---
+Node {
+    name: "Pulse",
+    module: [
+        "osc",
+        "nes",
+    ],
+    impl_path: "euphony_dsp::osc::nes",
+    id: 108,
+    inputs: [
+        Input {
+            name: "frequency",
+            id: 0,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "duty_cycle",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "decay",
+            id: 2,
+            trigger: false,
+            default: 0.001,
+        },
+        Input {
+            name: "phase",
+            id: 3,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    docs: "",
+}

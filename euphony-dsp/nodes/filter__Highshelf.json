@@ -1,0 +1,35 @@
+{
+  "name": "Highshelf",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 316,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "center",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "q",
+      "id": 2,
+      "trigger": false,
+      "default": 0.1
+    },
+    {
+      "name": "gain",
+      "id": 3,
+      "trigger": false,
+      "default": 1.0
+    }
+  ],
+  "docs": " Highshelf filter.\n"
+}

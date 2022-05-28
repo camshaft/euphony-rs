@@ -16,7 +16,7 @@
       "name": "phase",
       "id": 1,
       "trigger": true,
-      "default": 0.0
+      "default": 0.75
     }
   ],
   "docs": " A triangle oscillator\n\n # frequency\n\n # phase (trigger)\n"

@@ -1,0 +1,27 @@
+---
+source: euphony-dsp/src/filter.rs
+expression: node
+---
+Node {
+    name: "Allpole",
+    module: [
+        "filter",
+    ],
+    impl_path: "euphony_dsp::filter",
+    id: 302,
+    inputs: [
+        Input {
+            name: "signal",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "delay",
+            id: 1,
+            trigger: false,
+            default: 1.0,
+        },
+    ],
+    docs: " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n",
+}

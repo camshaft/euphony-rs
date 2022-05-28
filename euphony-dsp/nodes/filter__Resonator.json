@@ -1,0 +1,29 @@
+{
+  "name": "Resonator",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 304,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "cutoff",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "bandwidth",
+      "id": 2,
+      "trigger": false,
+      "default": 110.0
+    }
+  ],
+  "docs": " Constant-gain bandpass resonator.\n"
+}

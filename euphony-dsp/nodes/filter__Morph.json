@@ -1,0 +1,35 @@
+{
+  "name": "Morph",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::filter",
+  "id": 306,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "center",
+      "id": 1,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "q",
+      "id": 2,
+      "trigger": false,
+      "default": 0.1
+    },
+    {
+      "name": "morph",
+      "id": 3,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "docs": " Morphing filter that morphs between lowpass, peak and highpass modes.\n"
+}

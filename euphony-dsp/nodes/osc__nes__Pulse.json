@@ -1,0 +1,36 @@
+{
+  "name": "Pulse",
+  "module": [
+    "osc",
+    "nes"
+  ],
+  "impl_path": "euphony_dsp::osc::nes",
+  "id": 108,
+  "inputs": [
+    {
+      "name": "frequency",
+      "id": 0,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "duty_cycle",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "decay",
+      "id": 2,
+      "trigger": false,
+      "default": 0.001
+    },
+    {
+      "name": "phase",
+      "id": 3,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "docs": ""
+}

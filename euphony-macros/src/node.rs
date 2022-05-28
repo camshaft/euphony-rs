@@ -128,9 +128,18 @@ impl ToTokens for Node {
             }
 
             impl #name {
+                pub fn new() -> Self {
+                    let mut node = Self::default();
+                    // initialize the triggers with the defaults
+                    for (idx, default) in Self::DEFAULTS.iter().enumerate() {
+                        node.trigger(idx as _, *default);
+                    }
+                    node
+                }
+
                 #[inline]
                 pub fn spawn() -> ::euphony_node::BoxProcessor {
-                    ::euphony_node::spawn::<#input_len, #buffer_len, Self>(Self::default())
+                    ::euphony_node::spawn::<#input_len, #buffer_len, Self>(Self::new())
                 }
 
                 #[inline]

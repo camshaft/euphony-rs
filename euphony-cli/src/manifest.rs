@@ -159,4 +159,8 @@ impl Manifest {
     ) -> std::thread::JoinHandle<()> {
         std::thread::spawn(move || crate::watcher::watch_manifest(subscriptions, self))
     }
+
+    pub fn finish(self) -> Vec<Compiler> {
+        self.projects.into_values().collect()
+    }
 }

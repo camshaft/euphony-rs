@@ -1,0 +1,33 @@
+---
+source: euphony-dsp/src/filter.rs
+expression: node
+---
+Node {
+    name: "Moog",
+    module: [
+        "filter",
+    ],
+    impl_path: "euphony_dsp::filter",
+    id: 305,
+    inputs: [
+        Input {
+            name: "signal",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "cutoff",
+            id: 1,
+            trigger: false,
+            default: 1000.0,
+        },
+        Input {
+            name: "q",
+            id: 2,
+            trigger: false,
+            default: 0.1,
+        },
+    ],
+    docs: " Moog resonant lowpass filter.\n",
+}

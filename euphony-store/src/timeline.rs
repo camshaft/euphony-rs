@@ -8,7 +8,6 @@ use std::{io, ops};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Timeline {
     pub sample_rate: u32,
-    pub samples: u64,
     pub groups: Vec<Group>,
 }
 
@@ -17,7 +16,6 @@ impl Default for Timeline {
     fn default() -> Self {
         Self {
             sample_rate: DefaultRate::COUNT as _,
-            samples: 0,
             groups: Default::default(),
         }
     }
@@ -33,7 +31,6 @@ impl Timeline {
     #[inline]
     pub fn reset(&mut self) {
         self.sample_rate = DefaultRate::COUNT as _;
-        self.samples = 0;
         self.groups.clear();
     }
 }

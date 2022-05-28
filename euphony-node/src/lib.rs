@@ -80,10 +80,31 @@ pub enum Input<'a> {
 impl<'a> Input<'a> {
     #[inline]
     pub fn iter(&self) -> InputIter {
+        self.into_iter()
+    }
+}
+
+impl<'a> IntoIterator for Input<'a> {
+    type Item = Sample;
+    type IntoIter = InputIter<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
         match self {
-            Self::Constant(v) => InputIter::Constant(*v),
+            Self::Constant(v) => InputIter::Constant(v),
             Self::Buffer(v) => InputIter::Buffer(v.iter()),
         }
+    }
+}
+
+impl<'a> From<f64> for Input<'a> {
+    fn from(value: f64) -> Self {
+        Self::Constant(value)
+    }
+}
+
+impl<'a> From<&'a Output> for Input<'a> {
+    fn from(buffer: &'a Output) -> Self {
+        Self::Buffer(buffer)
     }
 }
 

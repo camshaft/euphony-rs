@@ -18,10 +18,15 @@ macro_rules! unsafe_assert {
     }};
 }
 
+mod fun;
+mod zip;
+
 pub mod nodes;
 pub mod sample;
 
 mod binary;
+mod env;
+mod filter;
 mod osc;
 mod tertiary;
 mod unary;

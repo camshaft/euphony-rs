@@ -4,12 +4,10 @@ use cpal::{traits::*, Device, Host, SampleFormat, SampleRate, SupportedStreamCon
 use std::path::Path;
 use structopt::StructOpt;
 
-// TODO read input
-// * if local file, compile and watch
-// * else if remote file, download, and subscribe
-// start player TUI
+// TODO if remote file, download, and subscribe
 
 mod stream;
+mod ui;
 
 #[derive(Debug, StructOpt)]
 pub struct Play {
@@ -25,6 +23,9 @@ pub struct Play {
     #[structopt(long, short)]
     channels: Option<u16>,
 
+    #[structopt(long)]
+    paused: bool,
+
     input: Option<String>,
 }
 
@@ -35,11 +36,11 @@ impl Play {
         let config = self.device_config(&device)?;
         let stream = self.watch(&device, &config)?;
 
-        stream.set_is_looping(true);
-        stream.play()?;
+        if !self.paused {
+            stream.play()?;
+        }
 
-        // TODO replace this with the TUI
-        std::thread::sleep(core::time::Duration::from_secs(1000));
+        ui::start(stream)?;
 
         Ok(())
     }
