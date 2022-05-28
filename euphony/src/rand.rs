@@ -1,7 +1,27 @@
+use crate::prelude::Beat;
 use core::future::Future;
 use once_cell::sync::Lazy;
 
 pub use bach::rand::*;
+
+pub fn rhythm(length: Beat, durations: impl IntoIterator<Item = Beat>) -> Vec<Beat> {
+    let durations: Vec<_> = durations.into_iter().collect();
+    let mut beats = vec![];
+    let mut total = Beat(0, 1);
+    while total < length {
+        let b = *one_of(&durations);
+        let new_total = total + b;
+        if new_total > length {
+            let b = length - total;
+            beats.push(b);
+            break;
+        } else {
+            total = new_total;
+            beats.push(b);
+        }
+    }
+    beats
+}
 
 pub static SEED: Lazy<u64> = Lazy::new(|| {
     if let Ok(seed) = std::env::var("EUPHONY_SEED") {

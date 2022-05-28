@@ -15,7 +15,8 @@ pub trait Handler {
 }
 
 fn push_msg<T: fmt::Display>(output: &mut String, v: T) -> io::Result<()> {
-    output.push_str(&format!("{}\n", v));
+    use std::fmt::Write;
+    let _ = writeln!(output, "{}", v);
     Ok(())
 }
 

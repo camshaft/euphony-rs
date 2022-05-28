@@ -38,6 +38,10 @@ impl Beat {
     pub const SIXTY_FOURTH: Beat = Beat(1, 64);
     pub const THIRTY_SECOND: Beat = Beat(1, 32);
     pub const WHOLE: Beat = Beat(1, 1);
+
+    pub fn vec(denominators: impl IntoIterator<Item = u64>) -> alloc::vec::Vec<Self> {
+        denominators.into_iter().map(|d| Beat(1, d)).collect()
+    }
 }
 
 impl Mul<TimeSignature> for Beat {
