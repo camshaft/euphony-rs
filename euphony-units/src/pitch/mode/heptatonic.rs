@@ -29,6 +29,10 @@ named_mode!(PHRYGIAN(4, PRIMA));
 named_mode!(LYDIAN(5, PRIMA));
 named_mode!(MIXOLYDIAN(6, PRIMA));
 
+pub static HEPTATONIC: &[Mode; 7] = &[
+    AEOLIAN, LOCRIAN, IONIAN, DORIAN, PHRYGIAN, LYDIAN, MIXOLYDIAN,
+];
+
 pub const MINOR: Mode = AEOLIAN;
 pub const MAJOR: Mode = IONIAN;
 

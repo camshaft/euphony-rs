@@ -1,5 +1,6 @@
 pub use crate::{
     buffer::{self, Buffer, BufferExt},
+    cell::Cell,
     ext::*,
     group::*,
     processor::Processor,
@@ -13,8 +14,17 @@ pub use crate::{
     section::section,
     time::{now, set_tempo, tempo},
     units::{
-        pitch::{frequency::*, mode, tuning, Interval},
+        pitch::{
+            frequency::*,
+            mode::{self, Mode},
+            tuning, Interval,
+        },
         time::{Beat, Tempo},
+        zip::Zip as ZipExt,
     },
 };
 pub use futures::{FutureExt, StreamExt};
+
+pub mod western {
+    pub use super::{mode::western::*, tuning::western::*};
+}

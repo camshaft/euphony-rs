@@ -6,6 +6,7 @@ mod processor;
 
 mod args;
 pub mod buffer;
+pub mod cell;
 pub mod ext;
 pub mod group;
 mod node;

@@ -1,5 +1,7 @@
-use crate::fun::{self, an, AudioNode};
-use euphony_node::Node;
+use crate::{
+    fun::{self, an, AudioNode},
+    prelude::*,
+};
 
 #[derive(Node)]
 #[node(id = 110, module = "osc::noise")]
@@ -23,7 +25,7 @@ impl White {
     }
 
     #[inline]
-    pub fn render(&mut self, output: &mut [f64]) {
+    pub fn render(&mut self, output: &mut [Sample]) {
         for output in output.iter_mut() {
             *output = self.inner.tick(&Default::default())[0];
         }
@@ -57,7 +59,7 @@ impl Mls {
     }
 
     #[inline]
-    pub fn render(&mut self, output: &mut [f64]) {
+    pub fn render(&mut self, output: &mut [Sample]) {
         for output in output.iter_mut() {
             *output = self.inner.tick(&Default::default())[0];
         }

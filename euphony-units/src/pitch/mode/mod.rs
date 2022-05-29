@@ -14,7 +14,7 @@ pub mod position;
 macro_rules! named_mode {
     ($name:ident($position:expr, $system:ident)) => {
         pub const $name: $crate::pitch::mode::Mode =
-            $crate::pitch::mode::Mode::new($position, $system);
+            $crate::pitch::mode::Mode::new_named($position, $system, stringify!($name));
     };
 }
 
@@ -32,6 +32,7 @@ pub mod western {
 pub struct Mode {
     pub ascending: ModePosition,
     pub descending: ModePosition,
+    pub name: Option<&'static str>,
 }
 
 impl Default for Mode {
@@ -42,10 +43,16 @@ impl Default for Mode {
 
 impl fmt::Debug for Mode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if self.ascending == self.descending {
-            return write!(f, "Mode({})", self.ascending);
+        if let Some(name) = self.name {
+            return f.debug_tuple("Mode").field(&name).finish();
         }
-        write!(f, "Mode(TODO)")
+        if self.ascending == self.descending {
+            return f.debug_tuple("Mode").field(&self.ascending).finish();
+        }
+        f.debug_struct("Mode")
+            .field("ascending", &self.ascending)
+            .field("descending", &self.descending)
+            .finish()
     }
 }
 
@@ -54,6 +61,15 @@ impl Mode {
         Self {
             ascending: ModePosition(position, system),
             descending: ModePosition(position, system),
+            name: None,
+        }
+    }
+
+    pub const fn new_named(position: usize, system: ModeSystem, name: &'static str) -> Self {
+        Self {
+            ascending: ModePosition(position, system),
+            descending: ModePosition(position, system),
+            name: Some(name),
         }
     }
 
@@ -108,6 +124,7 @@ impl core::ops::Shr<usize> for Mode {
         Self {
             ascending: self.ascending.shr(rhs),
             descending: self.descending.shr(rhs),
+            name: None,
         }
     }
 }
@@ -125,6 +142,7 @@ impl core::ops::Shl<usize> for Mode {
         Self {
             ascending: self.ascending.shl(rhs),
             descending: self.descending.shl(rhs),
+            name: None,
         }
     }
 }

@@ -1,5 +1,4 @@
-use crate::{sample::DefaultSample as Sample, zip::*};
-use euphony_node::{Buffer, Node};
+use crate::prelude::*;
 
 #[derive(Debug, Default, Node)]
 #[node(id = 500, module = "buffer")]

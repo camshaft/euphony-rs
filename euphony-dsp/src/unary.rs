@@ -1,5 +1,4 @@
-use crate::sample::DefaultSample;
-use euphony_node::{Input, Node};
+use crate::prelude::*;
 
 macro_rules! unary {
     ($(#[doc = $doc:literal])* $id:literal, $name:ident, | $input:ident | $value:expr) => {
@@ -10,7 +9,7 @@ macro_rules! unary {
         pub struct $name;
 
         impl $name {
-            fn render(&mut self, input: Input, output: &mut [DefaultSample]) {
+            fn render(&mut self, input: Input, output: &mut [Sample]) {
                 match input {
                     Input::Constant($input) => {
                         let v = $value;
@@ -19,7 +18,8 @@ macro_rules! unary {
                         }
                     }
                     Input::Buffer(a) => {
-                        for (sample, $input) in output.iter_mut().zip(a.iter().copied()) {
+                        for (sample, input) in (output.iter_mut(), a).zip() {
+                            let $input = *input;
                             *sample = $value;
                         }
                     }

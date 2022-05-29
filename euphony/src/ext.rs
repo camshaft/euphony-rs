@@ -32,3 +32,20 @@ where
         crate::runtime::primary::spawn(self)
     }
 }
+
+pub trait ForAllExt {
+    fn for_all<F: FnMut() -> T, T>(&self, f: F) -> Vec<T>;
+}
+
+impl<U> ForAllExt for [U] {
+    fn for_all<F: FnMut() -> T, T>(&self, mut f: F) -> Vec<T> {
+        let len = self.len();
+        (0..len).map(|_| f()).collect()
+    }
+}
+
+impl ForAllExt for usize {
+    fn for_all<F: FnMut() -> T, T>(&self, mut f: F) -> Vec<T> {
+        (0..*self).map(|_| f()).collect()
+    }
+}

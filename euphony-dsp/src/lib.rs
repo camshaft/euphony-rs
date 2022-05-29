@@ -19,7 +19,7 @@ macro_rules! unsafe_assert {
 }
 
 mod fun;
-mod zip;
+mod prelude;
 
 pub mod nodes;
 pub mod sample;

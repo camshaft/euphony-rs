@@ -1,9 +1,5 @@
-use crate::{
-    sample::{DefaultRate as Rate, Rate as _, Sample},
-    zip::*,
-};
+use crate::prelude::*;
 use core::num::Wrapping;
-use euphony_node::{Input, Node};
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Phase(Wrapping<u16>);
@@ -91,7 +87,7 @@ impl Pulse {
         frequency: Input,
         duty_cycle: Input,
         decay: Input,
-        output: &mut [f64],
+        output: &mut [Sample],
     ) {
         for (freq, duty_cycle, decay, frame) in
             (frequency, duty_cycle, decay, output.iter_mut()).zip()
@@ -175,7 +171,7 @@ impl Triangle {
     }
 
     #[inline]
-    pub fn render(&mut self, frequency: Input, output: &mut [f64]) {
+    pub fn render(&mut self, frequency: Input, output: &mut [Sample]) {
         for (freq, frame) in (frequency, output.iter_mut()).zip() {
             *frame = self.next(freq);
         }

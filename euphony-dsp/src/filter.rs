@@ -1,8 +1,7 @@
 use crate::{
     fun::{self, an, AudioNode},
-    zip::*,
+    prelude::*,
 };
-use euphony_node::{Input, Node};
 
 #[derive(Node)]
 #[node(id = 300, module = "filter")]
@@ -10,7 +9,7 @@ use euphony_node::{Input, Node};
 #[input(cutoff, default = 440.0)]
 /// Butterworth lowpass filter (2nd order).
 pub struct Butterpass {
-    inner: fun::ButterLowpass<f64, f64, fun::U2>,
+    inner: fun::ButterLowpass<Sample, Sample, fun::U2>,
 }
 
 impl Default for Butterpass {
@@ -23,7 +22,7 @@ impl Default for Butterpass {
 
 impl Butterpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [Sample]) {
         for (signal, cutoff, output) in (signal, cutoff, output.iter_mut()).zip() {
             let input = [signal, cutoff];
             *output = self.inner.tick(&input.into())[0];
@@ -37,7 +36,7 @@ impl Butterpass {
 #[input(cutoff, default = 440.0)]
 /// One-pole lowpass filter (1st order).
 pub struct Lowpole {
-    inner: fun::Lowpole<f64, f64, fun::U2>,
+    inner: fun::Lowpole<Sample, Sample, fun::U2>,
 }
 
 impl Default for Lowpole {
@@ -50,7 +49,7 @@ impl Default for Lowpole {
 
 impl Lowpole {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [Sample]) {
         for (signal, cutoff, output) in (signal, cutoff, output.iter_mut()).zip() {
             let input = [signal, cutoff];
             *output = self.inner.tick(&input.into())[0];
@@ -64,7 +63,7 @@ impl Lowpole {
 #[input(delay, default = 1.0)]
 /// Allpass filter with adjustable delay (delay > 0) in samples at DC.
 pub struct Allpole {
-    inner: fun::Allpole<f64, f64, fun::U2>,
+    inner: fun::Allpole<Sample, Sample, fun::U2>,
 }
 
 impl Default for Allpole {
@@ -77,7 +76,7 @@ impl Default for Allpole {
 
 impl Allpole {
     #[inline]
-    pub fn render(&mut self, signal: Input, delay: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, delay: Input, output: &mut [Sample]) {
         for (signal, delay, output) in (signal, delay, output.iter_mut()).zip() {
             let input = [signal, delay];
             *output = self.inner.tick(&input.into())[0];
@@ -91,7 +90,7 @@ impl Allpole {
 #[input(cutoff, default = 440.0)]
 /// One-pole, one-zero highpass filter (1st order).
 pub struct Highpole {
-    inner: fun::Highpole<f64, f64, fun::U2>,
+    inner: fun::Highpole<Sample, Sample, fun::U2>,
 }
 
 impl Default for Highpole {
@@ -104,7 +103,7 @@ impl Default for Highpole {
 
 impl Highpole {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, output: &mut [Sample]) {
         for (signal, cutoff, output) in (signal, cutoff, output.iter_mut()).zip() {
             let input = [signal, cutoff];
             *output = self.inner.tick(&input.into())[0];
@@ -119,7 +118,7 @@ impl Highpole {
 #[input(bandwidth, default = 110.0)]
 /// Constant-gain bandpass resonator.
 pub struct Resonator {
-    inner: fun::Resonator<f64, f64, fun::U3>,
+    inner: fun::Resonator<Sample, Sample, fun::U3>,
 }
 
 impl Default for Resonator {
@@ -132,7 +131,13 @@ impl Default for Resonator {
 
 impl Resonator {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, bandwidth: Input, output: &mut [f64]) {
+    pub fn render(
+        &mut self,
+        signal: Input,
+        cutoff: Input,
+        bandwidth: Input,
+        output: &mut [Sample],
+    ) {
         for (signal, cutoff, bandwidth, output) in
             (signal, cutoff, bandwidth, output.iter_mut()).zip()
         {
@@ -149,7 +154,7 @@ impl Resonator {
 #[input(q, default = 0.1)]
 /// Moog resonant lowpass filter.
 pub struct Moog {
-    inner: fun::Moog<f64, f64, fun::U3>,
+    inner: fun::Moog<Sample, Sample, fun::U3>,
 }
 
 impl Default for Moog {
@@ -162,7 +167,7 @@ impl Default for Moog {
 
 impl Moog {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [Sample]) {
         for (signal, cutoff, q, output) in (signal, cutoff, q, output.iter_mut()).zip() {
             let input = [signal, cutoff, q];
             *output = self.inner.tick(&input.into())[0];
@@ -178,7 +183,7 @@ impl Moog {
 #[input(morph, default = 0.0)]
 /// Morphing filter that morphs between lowpass, peak and highpass modes.
 pub struct Morph {
-    inner: fundsp::prelude::Morph<f64, f64>,
+    inner: fundsp::prelude::Morph<Sample, Sample>,
 }
 
 impl Default for Morph {
@@ -197,7 +202,7 @@ impl Morph {
         cutoff: Input,
         q: Input,
         morph: Input,
-        output: &mut [f64],
+        output: &mut [Sample],
     ) {
         for (signal, cutoff, q, morph, output) in
             (signal, cutoff, q, morph, output.iter_mut()).zip()
@@ -213,7 +218,7 @@ impl Morph {
 #[input(signal, default = 0.0)]
 /// Pinking filter.
 pub struct Pinkpass {
-    inner: fundsp::prelude::Pinkpass<f64, f64>,
+    inner: fundsp::prelude::Pinkpass<Sample, Sample>,
 }
 
 impl Default for Pinkpass {
@@ -226,7 +231,7 @@ impl Default for Pinkpass {
 
 impl Pinkpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, output: &mut [Sample]) {
         for (signal, output) in (signal, output.iter_mut()).zip() {
             let input = [signal];
             *output = self.inner.tick(&input.into())[0];
@@ -241,7 +246,7 @@ impl Pinkpass {
 #[input(q, default = 0.1)]
 /// Lowpass filter.
 pub struct Lowpass {
-    inner: fun::Svf<f64, f64, fun::LowpassMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::LowpassMode<Sample>>,
 }
 
 impl Default for Lowpass {
@@ -254,7 +259,7 @@ impl Default for Lowpass {
 
 impl Lowpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [Sample]) {
         for (signal, cutoff, q, output) in (signal, cutoff, q, output.iter_mut()).zip() {
             let input = [signal, cutoff, q];
             *output = self.inner.tick(&input.into())[0];
@@ -269,7 +274,7 @@ impl Lowpass {
 #[input(q, default = 0.1)]
 /// Highpass filter.
 pub struct Highpass {
-    inner: fun::Svf<f64, f64, fun::HighpassMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::HighpassMode<Sample>>,
 }
 
 impl Default for Highpass {
@@ -282,7 +287,7 @@ impl Default for Highpass {
 
 impl Highpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [Sample]) {
         for (signal, cutoff, q, output) in (signal, cutoff, q, output.iter_mut()).zip() {
             let input = [signal, cutoff, q];
             *output = self.inner.tick(&input.into())[0];
@@ -297,7 +302,7 @@ impl Highpass {
 #[input(q, default = 0.1)]
 /// Bandpass filter.
 pub struct Bandpass {
-    inner: fun::Svf<f64, f64, fun::BandpassMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::BandpassMode<Sample>>,
 }
 
 impl Default for Bandpass {
@@ -310,7 +315,7 @@ impl Default for Bandpass {
 
 impl Bandpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, cutoff: Input, q: Input, output: &mut [Sample]) {
         for (signal, cutoff, q, output) in (signal, cutoff, q, output.iter_mut()).zip() {
             let input = [signal, cutoff, q];
             *output = self.inner.tick(&input.into())[0];
@@ -325,7 +330,7 @@ impl Bandpass {
 #[input(q, default = 0.1)]
 /// Notch filter.
 pub struct Notch {
-    inner: fun::Svf<f64, f64, fun::NotchMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::NotchMode<Sample>>,
 }
 
 impl Default for Notch {
@@ -338,7 +343,7 @@ impl Default for Notch {
 
 impl Notch {
     #[inline]
-    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [Sample]) {
         for (signal, center, q, output) in (signal, center, q, output.iter_mut()).zip() {
             let input = [signal, center, q];
             *output = self.inner.tick(&input.into())[0];
@@ -353,7 +358,7 @@ impl Notch {
 #[input(q, default = 0.1)]
 /// Peak filter.
 pub struct Peak {
-    inner: fun::Svf<f64, f64, fun::PeakMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::PeakMode<Sample>>,
 }
 
 impl Default for Peak {
@@ -366,7 +371,7 @@ impl Default for Peak {
 
 impl Peak {
     #[inline]
-    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [Sample]) {
         for (signal, center, q, output) in (signal, center, q, output.iter_mut()).zip() {
             let input = [signal, center, q];
             *output = self.inner.tick(&input.into())[0];
@@ -381,7 +386,7 @@ impl Peak {
 #[input(q, default = 0.1)]
 /// Allpass filter.
 pub struct Allpass {
-    inner: fun::Svf<f64, f64, fun::AllpassMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::AllpassMode<Sample>>,
 }
 
 impl Default for Allpass {
@@ -394,7 +399,7 @@ impl Default for Allpass {
 
 impl Allpass {
     #[inline]
-    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [f64]) {
+    pub fn render(&mut self, signal: Input, center: Input, q: Input, output: &mut [Sample]) {
         for (signal, center, q, output) in (signal, center, q, output.iter_mut()).zip() {
             let input = [signal, center, q];
             *output = self.inner.tick(&input.into())[0];
@@ -410,7 +415,7 @@ impl Allpass {
 #[input(gain, default = 1.0)]
 /// Bell filter.
 pub struct Bell {
-    inner: fun::Svf<f64, f64, fun::BellMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::BellMode<Sample>>,
 }
 
 impl Default for Bell {
@@ -429,7 +434,7 @@ impl Bell {
         center: Input,
         q: Input,
         gain: Input,
-        output: &mut [f64],
+        output: &mut [Sample],
     ) {
         for (signal, center, q, gain, output) in (signal, center, q, gain, output.iter_mut()).zip()
         {
@@ -447,7 +452,7 @@ impl Bell {
 #[input(gain, default = 1.0)]
 /// Lowshelf filter.
 pub struct Lowshelf {
-    inner: fun::Svf<f64, f64, fun::LowshelfMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::LowshelfMode<Sample>>,
 }
 
 impl Default for Lowshelf {
@@ -466,7 +471,7 @@ impl Lowshelf {
         center: Input,
         q: Input,
         gain: Input,
-        output: &mut [f64],
+        output: &mut [Sample],
     ) {
         for (signal, center, q, gain, output) in (signal, center, q, gain, output.iter_mut()).zip()
         {
@@ -484,7 +489,7 @@ impl Lowshelf {
 #[input(gain, default = 1.0)]
 /// Highshelf filter.
 pub struct Highshelf {
-    inner: fun::Svf<f64, f64, fun::HighshelfMode<f64>>,
+    inner: fun::Svf<Sample, Sample, fun::HighshelfMode<Sample>>,
 }
 
 impl Default for Highshelf {
@@ -503,7 +508,7 @@ impl Highshelf {
         center: Input,
         q: Input,
         gain: Input,
-        output: &mut [f64],
+        output: &mut [Sample],
     ) {
         for (signal, center, q, gain, output) in (signal, center, q, gain, output.iter_mut()).zip()
         {

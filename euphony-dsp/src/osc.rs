@@ -1,9 +1,5 @@
-use crate::{
-    sample::{DefaultRate as Rate, Rate as _},
-    zip::Zip,
-};
+use crate::prelude::*;
 use core::f64::consts::TAU;
-use euphony_node::{Input, Node};
 use fastapprox::{fast, faster};
 
 pub mod nes;

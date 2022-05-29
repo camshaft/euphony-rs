@@ -4,6 +4,7 @@ pub trait Zip {
     fn zip(self) -> Self::Iter;
 }
 
+#[derive(Clone, Copy)]
 pub struct ZipIter<T>(T);
 
 macro_rules! zip {

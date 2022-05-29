@@ -23,6 +23,10 @@ pub fn rhythm(length: Beat, durations: impl IntoIterator<Item = Beat>) -> Vec<Be
     beats
 }
 
+pub fn with_seed<F: FnOnce() -> R, R>(seed: u64, f: F) -> R {
+    scope::with(Scope::new(seed), f)
+}
+
 pub static SEED: Lazy<u64> = Lazy::new(|| {
     if let Ok(seed) = std::env::var("EUPHONY_SEED") {
         u64::from_str_radix(&seed, 16).unwrap()

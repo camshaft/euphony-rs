@@ -1,5 +1,4 @@
-use crate::sample::{DefaultRate as Rate, Rate as _};
-use euphony_node::Node;
+use crate::prelude::*;
 
 #[derive(Debug, Default, Node)]
 #[node(id = 200, module = "env")]

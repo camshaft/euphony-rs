@@ -1,4 +1,4 @@
-use crate::sample::{DefaultRate as Rate, Rate as _};
+use crate::prelude::*;
 pub use fundsp::*;
 pub use hacker::*;
 

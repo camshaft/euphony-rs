@@ -5,6 +5,13 @@ use crate::pitch::{
 use core::ops::Mul;
 use euphony_macros::cents;
 
+pub mod western {
+    pub static ET12: super::Tuning = super::Tuning {
+        base: super::BaseFrequency(440, 1),
+        system: &super::ET12,
+    };
+}
+
 #[derive(Clone, Copy)]
 pub struct Tuning {
     pub base: BaseFrequency,
