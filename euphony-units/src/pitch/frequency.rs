@@ -46,6 +46,33 @@ impl Mul<f64> for BaseFrequency {
     }
 }
 
+impl Mul<f64> for Frequency {
+    type Output = Frequency;
+
+    #[inline]
+    fn mul(self, rhs: f64) -> Self::Output {
+        Frequency(self.0 * rhs)
+    }
+}
+
+impl Mul<Frequency> for f64 {
+    type Output = Frequency;
+
+    #[inline]
+    fn mul(self, rhs: Frequency) -> Self::Output {
+        Frequency(self * rhs.0)
+    }
+}
+
+impl Mul<Frequency> for Frequency {
+    type Output = Frequency;
+
+    #[inline]
+    fn mul(self, rhs: Frequency) -> Self::Output {
+        Frequency(self.0 * rhs.0)
+    }
+}
+
 impl Mul<BaseFrequency> for f64 {
     type Output = Frequency;
 

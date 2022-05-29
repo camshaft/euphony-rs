@@ -80,7 +80,9 @@ where
     fn mix(&mut self, samples: &[crate::SpatialSample]) -> Result<(), Self::Error> {
         let mut frame = [0.0f64, 0.0f64];
         for s in samples.iter() {
-            let x = s.coordinate.x;
+            // TODO
+            // let x = dbg!(s.coordinate.x);
+            let x = 0.5;
             frame[0] += s.value * x;
             frame[1] += s.value * x;
         }

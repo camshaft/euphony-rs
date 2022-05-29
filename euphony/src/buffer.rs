@@ -18,7 +18,7 @@ where
         async move {
             // TODO delay for duration
             let _ = duration;
-            Beat(8, 1).delay().await;
+            Beat(1, 1).delay().await;
             play.fin();
         }
         .spawn_primary()
