@@ -328,9 +328,9 @@ pub mod ext {
             crate::processors::unary::trunc().with_input(self)
         }
         #[inline]
-        #[doc = " Constant-gain bandpass resonator.\n"]
-        fn resonator(&self) -> crate::processors::filter::Resonator {
-            crate::processors::filter::resonator().with_signal(self)
+        #[doc = " Allpass filter.\n"]
+        fn allpass(&self) -> crate::processors::filter::Allpass {
+            crate::processors::filter::allpass().with_signal(self)
         }
         #[inline]
         #[doc = " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"]
@@ -343,44 +343,9 @@ pub mod ext {
             crate::processors::filter::bandpass().with_signal(self)
         }
         #[inline]
-        #[doc = " Pinking filter.\n"]
-        fn pinkpass(&self) -> crate::processors::filter::Pinkpass {
-            crate::processors::filter::pinkpass().with_signal(self)
-        }
-        #[inline]
-        #[doc = " One-pole lowpass filter (1st order).\n"]
-        fn lowpole(&self) -> crate::processors::filter::Lowpole {
-            crate::processors::filter::lowpole().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Highpass filter.\n"]
-        fn highpass(&self) -> crate::processors::filter::Highpass {
-            crate::processors::filter::highpass().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Moog resonant lowpass filter.\n"]
-        fn moog(&self) -> crate::processors::filter::Moog {
-            crate::processors::filter::moog().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Peak filter.\n"]
-        fn peak(&self) -> crate::processors::filter::Peak {
-            crate::processors::filter::peak().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Highshelf filter.\n"]
-        fn highshelf(&self) -> crate::processors::filter::Highshelf {
-            crate::processors::filter::highshelf().with_signal(self)
-        }
-        #[inline]
         #[doc = " Bell filter.\n"]
         fn bell(&self) -> crate::processors::filter::Bell {
             crate::processors::filter::bell().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Lowpass filter.\n"]
-        fn lowpass(&self) -> crate::processors::filter::Lowpass {
-            crate::processors::filter::lowpass().with_signal(self)
         }
         #[inline]
         #[doc = " Butterworth lowpass filter (2nd order).\n"]
@@ -388,19 +353,9 @@ pub mod ext {
             crate::processors::filter::butterpass().with_signal(self)
         }
         #[inline]
-        #[doc = " Notch filter.\n"]
-        fn notch(&self) -> crate::processors::filter::Notch {
-            crate::processors::filter::notch().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Lowshelf filter.\n"]
-        fn lowshelf(&self) -> crate::processors::filter::Lowshelf {
-            crate::processors::filter::lowshelf().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Allpass filter.\n"]
-        fn allpass(&self) -> crate::processors::filter::Allpass {
-            crate::processors::filter::allpass().with_signal(self)
+        #[doc = " Highpass filter.\n"]
+        fn highpass(&self) -> crate::processors::filter::Highpass {
+            crate::processors::filter::highpass().with_signal(self)
         }
         #[inline]
         #[doc = " One-pole, one-zero highpass filter (1st order).\n"]
@@ -408,9 +363,54 @@ pub mod ext {
             crate::processors::filter::highpole().with_signal(self)
         }
         #[inline]
+        #[doc = " Highshelf filter.\n"]
+        fn highshelf(&self) -> crate::processors::filter::Highshelf {
+            crate::processors::filter::highshelf().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Lowpass filter.\n"]
+        fn lowpass(&self) -> crate::processors::filter::Lowpass {
+            crate::processors::filter::lowpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " One-pole lowpass filter (1st order).\n"]
+        fn lowpole(&self) -> crate::processors::filter::Lowpole {
+            crate::processors::filter::lowpole().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Lowshelf filter.\n"]
+        fn lowshelf(&self) -> crate::processors::filter::Lowshelf {
+            crate::processors::filter::lowshelf().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Moog resonant lowpass filter.\n"]
+        fn moog(&self) -> crate::processors::filter::Moog {
+            crate::processors::filter::moog().with_signal(self)
+        }
+        #[inline]
         #[doc = " Morphing filter that morphs between lowpass, peak and highpass modes.\n"]
         fn morph(&self) -> crate::processors::filter::Morph {
             crate::processors::filter::morph().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Notch filter.\n"]
+        fn notch(&self) -> crate::processors::filter::Notch {
+            crate::processors::filter::notch().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Peak filter.\n"]
+        fn peak(&self) -> crate::processors::filter::Peak {
+            crate::processors::filter::peak().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Pinking filter.\n"]
+        fn pinkpass(&self) -> crate::processors::filter::Pinkpass {
+            crate::processors::filter::pinkpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Constant-gain bandpass resonator.\n"]
+        fn resonator(&self) -> crate::processors::filter::Resonator {
+            crate::processors::filter::resonator().with_signal(self)
         }
     }
     impl<T> ProcessorExt for T

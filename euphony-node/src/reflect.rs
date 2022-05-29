@@ -65,6 +65,7 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     }
 
     ext.sort();
+    filters.sort_by(|a, b| a.0.cmp(&b.0));
 
     let mut level = 0;
     macro_rules! w {

@@ -28,11 +28,17 @@ pub mod western {
     pub use super::{chromatic::*, heptatonic::*};
 }
 
-#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Clone, Copy, PartialOrd, Eq, Ord)]
 pub struct Mode {
     pub ascending: ModePosition,
     pub descending: ModePosition,
     pub name: Option<&'static str>,
+}
+
+impl PartialEq for Mode {
+    fn eq(&self, other: &Self) -> bool {
+        self.ascending.eq(&other.ascending) && self.descending.eq(&other.descending)
+    }
 }
 
 impl Default for Mode {
