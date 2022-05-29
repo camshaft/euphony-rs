@@ -10,7 +10,7 @@ pub trait Storage {
     type Group: Iterator<Item = io::Result<Entry>>;
     type Sink: Iterator<Item = io::Result<SpatialSample>>;
 
-    fn create(&mut self) -> Self::Output;
+    fn create(&self) -> Self::Output;
 
     fn open_raw(&self, hash: &Hash) -> io::Result<Self::Reader>;
 

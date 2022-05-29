@@ -1,0 +1,29 @@
+{
+  "name": "Play",
+  "module": [
+    "buffer"
+  ],
+  "impl_path": "euphony_dsp::buffer",
+  "id": 500,
+  "inputs": [
+    {
+      "name": "repeat",
+      "id": 0,
+      "trigger": true,
+      "default": 0.0
+    },
+    {
+      "name": "reset",
+      "id": 1,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "buffers": [
+    {
+      "name": "buffer",
+      "id": 0
+    }
+  ],
+  "docs": " Plays a buffer\n"
+}

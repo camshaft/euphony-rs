@@ -5,6 +5,7 @@ pub use euphony_units as units;
 mod processor;
 
 mod args;
+pub mod buffer;
 pub mod ext;
 pub mod group;
 mod node;
@@ -19,23 +20,7 @@ pub mod time;
 
 mod processors;
 
-pub mod prelude {
-    pub use crate::{
-        ext::*,
-        group::*,
-        processor::Processor,
-        processors::{ext::*, input::*, *},
-        rand,
-        runtime::{primary, spawn},
-        section::section,
-        time::{now, set_tempo, tempo},
-        units::{
-            pitch::{frequency::*, mode, tuning, Interval},
-            time::{Beat, Tempo},
-        },
-    };
-    pub use futures::{FutureExt, StreamExt};
-}
+pub mod prelude;
 
 #[cfg(test)]
 mod tests;

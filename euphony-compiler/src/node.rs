@@ -31,6 +31,22 @@ impl Node {
         Ok(())
     }
 
+    pub fn set_buffer(
+        &mut self,
+        parameter: u64,
+        buffer: u64,
+        channel: u64,
+        sample: Offset,
+    ) -> Result {
+        let value = euphony_node::ParameterValue::Buffer((buffer, channel));
+        self.validate(parameter, value)?;
+
+        let sample = sample.since(self.start);
+        self.inputs.insert((sample, parameter), value);
+
+        Ok(())
+    }
+
     pub fn connect(&mut self, parameter: u64, source: u64, sample: Offset) -> Result {
         let value = euphony_node::ParameterValue::Node(source);
         self.validate(parameter, value)?;
@@ -110,6 +126,17 @@ impl Node {
                             target_node,
                             target_parameter,
                             value: value.to_bits(),
+                        },
+                    ));
+                }
+                Value::Buffer((buffer, buffer_channel)) => {
+                    instructions.push((
+                        offset,
+                        InternalInstruction::SetBuffer {
+                            target_node,
+                            target_parameter,
+                            buffer,
+                            buffer_channel,
                         },
                     ));
                 }

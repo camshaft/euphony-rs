@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/filter.rs
+assertion_line: 479
 expression: node
 ---
 Node {
@@ -35,5 +36,6 @@ Node {
             default: 1.0,
         },
     ],
+    buffers: [],
     docs: " Highshelf filter.\n",
 }

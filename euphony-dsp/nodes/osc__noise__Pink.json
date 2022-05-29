@@ -14,5 +14,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Pink noise generator.\n"
 }

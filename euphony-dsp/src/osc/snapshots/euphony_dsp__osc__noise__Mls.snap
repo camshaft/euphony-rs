@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc/noise.rs
+assertion_line: 33
 expression: node
 ---
 Node {
@@ -24,5 +25,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Maximum Length Sequence noise generator from an `n`-bit sequence.\n",
 }

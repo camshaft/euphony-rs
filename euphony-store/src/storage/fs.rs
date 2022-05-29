@@ -1,4 +1,8 @@
-use crate::{codec, ext::*, storage};
+use crate::{
+    codec,
+    ext::*,
+    storage::{self, Output as _, Storage},
+};
 use base64::URL_SAFE_NO_PAD;
 use blake3::Hasher;
 use euphony_compiler::{Entry, Hash, Writer};
@@ -11,8 +15,6 @@ use std::{
     sync::Arc,
 };
 use tempfile::{NamedTempFile, TempPath};
-
-use super::Storage;
 
 pub type File = io::BufWriter<fs::File>;
 
@@ -153,7 +155,7 @@ impl Storage for Directory {
     type Group = GroupReader;
     type Sink = codec::Reader<Self::Reader>;
 
-    fn create(&mut self) -> Self::Output {
+    fn create(&self) -> Self::Output {
         let (file, path) = NamedTempFile::new().unwrap().into_parts();
         let file = io::BufWriter::new(file);
         let state = self.state.clone();
@@ -205,6 +207,73 @@ impl Writer for Directory {
                 eprintln!("error while creating group: {}", err);
             }
         }
+    }
+
+    fn buffer<
+        F: FnOnce(
+            Box<dyn euphony_compiler::BufferReader>,
+        ) -> euphony_compiler::Result<Vec<euphony_compiler::ConvertedBuffer>, E>,
+        E,
+    >(
+        &self,
+        path: &str,
+        sample_rate: u64,
+        init: F,
+    ) -> euphony_compiler::Result<Vec<euphony_compiler::CachedBuffer>, E> {
+        let mut hasher = Hasher::new();
+        hasher.update(&sample_rate.to_le_bytes());
+        hasher.update(path.as_bytes());
+        let path_hash = *hasher.finalize().as_bytes();
+        let contents = std::fs::File::open(path).unwrap();
+
+        let mut buffers = vec![];
+
+        if let Ok(mut reader) = self.open_raw(&path_hash) {
+            let contents_modified = contents.metadata().unwrap().modified().unwrap();
+            let hashes_modified = reader.get_ref().metadata().unwrap().modified().unwrap();
+
+            // only return if the hashes are newer than the original contents
+            if hashes_modified >= contents_modified {
+                while let Some(hash) = read_result(reader.read_hash()).unwrap() {
+                    let mut input = self.open_raw(&hash).unwrap();
+                    let mut samples = vec![];
+                    while let Some(sample) = read_result(input.read_f64()).unwrap() {
+                        samples.push(sample);
+                    }
+                    let samples = Arc::from(samples);
+                    buffers.push(euphony_compiler::CachedBuffer { samples, hash });
+                }
+
+                return Ok(buffers);
+            }
+        }
+
+        let res = init(Box::new(contents))?;
+
+        let mut hashes = self.open(&path_hash).unwrap().unwrap();
+        for samples in res {
+            let mut out = self.create();
+            let ptr = samples.as_ptr();
+            let len = samples.len() * 8;
+            let bytes = unsafe { core::slice::from_raw_parts(ptr as _, len) };
+            out.write(bytes);
+
+            let hash = out.finish();
+            hashes.write_all(&hash).unwrap();
+
+            let samples = Arc::from(samples);
+            buffers.push(euphony_compiler::CachedBuffer { samples, hash });
+        }
+
+        Ok(buffers)
+    }
+}
+
+fn read_result<T>(result: io::Result<T>) -> io::Result<Option<T>> {
+    match result {
+        Ok(value) => Ok(Some(value)),
+        Err(err) if err.kind() == io::ErrorKind::UnexpectedEof => Ok(None),
+        Err(err) => Err(err),
     }
 }
 

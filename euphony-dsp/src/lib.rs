@@ -1,4 +1,4 @@
-#![cfg_attr(not(any(feature = "std", test)), no_std)]
+// #![cfg_attr(not(any(feature = "std", test)), no_std)]
 
 /// Asserts that a boolean expression is true at runtime, only if debug_assertions are enabled.
 ///
@@ -25,6 +25,7 @@ pub mod nodes;
 pub mod sample;
 
 mod binary;
+mod buffer;
 mod env;
 mod filter;
 mod osc;

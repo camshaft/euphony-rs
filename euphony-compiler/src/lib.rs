@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, sync::Arc};
 
 macro_rules! error {
     ($fmt:literal $($tt:tt)*) => {
@@ -10,6 +10,24 @@ pub trait Writer: Sync {
     fn is_cached(&self, hash: &Hash) -> bool;
     fn sink(&mut self, hash: &Hash) -> euphony_node::BoxProcessor;
     fn group<I: Iterator<Item = Entry>>(&mut self, name: &str, hash: &Hash, entries: I);
+    fn buffer<F: FnOnce(Box<dyn BufferReader>) -> Result<Vec<ConvertedBuffer>, E>, E>(
+        &self,
+        path: &str,
+        sample_rate: u64,
+        init: F,
+    ) -> Result<Vec<CachedBuffer>, E>;
+}
+
+pub trait BufferReader: io::Read + Send + Sync + 'static {}
+
+impl<T: io::Read + Send + Sync + 'static> BufferReader for T {}
+
+pub type ConvertedBuffer = Vec<sample::DefaultSample>;
+
+#[derive(Clone, Debug)]
+pub struct CachedBuffer {
+    pub samples: Arc<[f64]>,
+    pub hash: Hash,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -30,6 +48,7 @@ pub type Error = std::io::Error;
 pub type Result<T = (), E = Error> = core::result::Result<T, E>;
 pub type Hash = [u8; 32];
 
+mod buffer;
 mod compiler;
 mod group;
 mod instruction;
@@ -51,7 +70,8 @@ impl Compiler {
         self.render.reset();
 
         euphony_command::decode(input, &mut self.compiler)?;
-        self.compiler.finalize(output)?;
+        let buffers = self.compiler.finalize(output)?;
+        self.render.set_buffers(buffers);
 
         for instruction in self.compiler.instructions() {
             self.render
@@ -85,6 +105,15 @@ impl Compiler {
             }
 
             fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, _entries: I) {
+            }
+
+            fn buffer<F: FnOnce(Box<dyn BufferReader>) -> Result<Vec<ConvertedBuffer>, E>, E>(
+                &self,
+                _path: &str,
+                _sample_rate: u64,
+                _init: F,
+            ) -> Result<Vec<CachedBuffer>, E> {
+                unimplemented!()
             }
         }
 
@@ -126,6 +155,15 @@ mod tests {
 
         fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, entries: I) {
             for _ in entries {}
+        }
+
+        fn buffer<F: FnOnce(Box<dyn BufferReader>) -> Result<Vec<ConvertedBuffer>, E>, E>(
+            &self,
+            _path: &str,
+            _sample_rate: u64,
+            _init: F,
+        ) -> Result<Vec<CachedBuffer>, E> {
+            Ok(vec![])
         }
     }
 

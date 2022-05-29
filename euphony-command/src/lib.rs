@@ -12,6 +12,8 @@ pub trait Handler {
     fn set_parameter(&mut self, msg: SetParameter) -> io::Result<()>;
     fn pipe_parameter(&mut self, msg: PipeParameter) -> io::Result<()>;
     fn finish_node(&mut self, msg: FinishNode) -> io::Result<()>;
+    fn load_buffer(&mut self, msg: LoadBuffer) -> io::Result<()>;
+    fn set_buffer(&mut self, msg: SetBuffer) -> io::Result<()>;
 }
 
 fn push_msg<T: fmt::Display>(output: &mut String, v: T) -> io::Result<()> {
@@ -46,6 +48,14 @@ impl Handler for String {
     }
 
     fn finish_node(&mut self, msg: FinishNode) -> io::Result<()> {
+        push_msg(self, msg)
+    }
+
+    fn load_buffer(&mut self, msg: LoadBuffer) -> io::Result<()> {
+        push_msg(self, msg)
+    }
+
+    fn set_buffer(&mut self, msg: SetBuffer) -> io::Result<()> {
         push_msg(self, msg)
     }
 }
@@ -97,6 +107,14 @@ pub fn decode_one<R: io::Read, H: Handler>(
             let msg = FinishNode::decode(tag, input)?;
             handler.finish_node(msg)?;
         }
+        LoadBuffer::TAG => {
+            let msg = LoadBuffer::decode(tag, input)?;
+            handler.load_buffer(msg)?;
+        }
+        SetBuffer::TAG => {
+            let msg = SetBuffer::decode(tag, input)?;
+            handler.set_buffer(msg)?;
+        }
         _ => {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidData,
@@ -115,6 +133,7 @@ pub trait Codec: Sized {
 
 trait WriteExt {
     fn write_u8(&mut self, value: u8) -> io::Result<()>;
+    fn write_u16(&mut self, value: u16) -> io::Result<()>;
     fn write_u64(&mut self, value: u64) -> io::Result<()>;
 }
 
@@ -122,6 +141,12 @@ impl<W: io::Write> WriteExt for W {
     #[inline]
     fn write_u8(&mut self, value: u8) -> io::Result<()> {
         self.write_all(&[value])?;
+        Ok(())
+    }
+
+    #[inline]
+    fn write_u16(&mut self, value: u16) -> io::Result<()> {
+        self.write_all(&value.to_le_bytes())?;
         Ok(())
     }
 
@@ -134,7 +159,9 @@ impl<W: io::Write> WriteExt for W {
 
 trait ReadExt {
     fn read_u8(&mut self) -> io::Result<u8>;
+    fn read_u16(&mut self) -> io::Result<u16>;
     fn read_u64(&mut self) -> io::Result<u64>;
+    fn read_string(&mut self, len: usize) -> io::Result<String>;
 }
 
 impl<R: io::Read> ReadExt for R {
@@ -146,11 +173,36 @@ impl<R: io::Read> ReadExt for R {
     }
 
     #[inline]
+    fn read_u16(&mut self) -> io::Result<u16> {
+        let mut value = [0u8; 2];
+        self.read_exact(&mut value)?;
+        let value = u16::from_le_bytes(value);
+        Ok(value)
+    }
+
+    #[inline]
     fn read_u64(&mut self) -> io::Result<u64> {
         let mut value = [0u8; 8];
         self.read_exact(&mut value)?;
         let value = u64::from_le_bytes(value);
         Ok(value)
+    }
+
+    #[inline]
+    fn read_string(&mut self, len: usize) -> io::Result<String> {
+        Ok(if len > 0 {
+            let mut name = vec![0; len as usize];
+            self.read_exact(&mut name)?;
+            match String::from_utf8_lossy(&name) {
+                std::borrow::Cow::Owned(v) => v,
+                std::borrow::Cow::Borrowed(_) => unsafe {
+                    // the lossy will check that this is valid
+                    String::from_utf8_unchecked(name)
+                },
+            }
+        } else {
+            String::new()
+        })
     }
 }
 
@@ -166,7 +218,7 @@ impl AdvanceTime {
 
 impl fmt::Display for AdvanceTime {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "ADV {:?}", self.ticks)
+        write!(f, "ADVANCE ticks = {:?}", self.ticks)
     }
 }
 
@@ -198,7 +250,7 @@ impl SetNanosPerTick {
 
 impl fmt::Display for SetNanosPerTick {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "  NPT {}", self.nanos)
+        write!(f, "  NANOS_PER_TICK nanos = {}", self.nanos)
     }
 }
 
@@ -232,7 +284,7 @@ impl CreateGroup {
 
 impl fmt::Display for CreateGroup {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "  GRP {},{:?}", self.id, self.name)
+        write!(f, "  GROUP id = {}, name = {:?}", self.id, self.name)
     }
 }
 
@@ -254,19 +306,7 @@ impl Codec for CreateGroup {
         debug_assert_eq!(Self::TAG, tag);
         let id = input.read_u64()?;
         let len = input.read_u8()?;
-        let name = if len > 0 {
-            let mut name = vec![0; len as usize];
-            input.read_exact(&mut name)?;
-            match String::from_utf8_lossy(&name) {
-                std::borrow::Cow::Owned(v) => v,
-                std::borrow::Cow::Borrowed(_) => unsafe {
-                    // the lossy will check that this is valid
-                    String::from_utf8_unchecked(name)
-                },
-            }
-        } else {
-            String::new()
-        };
+        let name = input.read_string(len as usize)?;
         Ok(Self { id, name })
     }
 }
@@ -287,7 +327,11 @@ impl SpawnNode {
 impl fmt::Display for SpawnNode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // TODO map generator to name
-        write!(f, "  SPN {},{}", self.id, self.processor)?;
+        write!(
+            f,
+            "  SPAWN id = {}, processor = {}",
+            self.id, self.processor
+        )?;
         Ok(())
     }
 }
@@ -342,7 +386,7 @@ impl fmt::Display for SetParameter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "  SET {},{},{}",
+            "  SET node = {}, param = {}, value = {}",
             self.target_node,
             self.target_parameter,
             f64::from_bits(self.value)
@@ -403,7 +447,7 @@ impl fmt::Display for PipeParameter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "  PIP {},{},{}",
+            "  PIPE node = {}, param = {}, source = {}",
             self.target_node, self.target_parameter, self.source_node
         )
     }
@@ -460,7 +504,7 @@ impl FinishNode {
 
 impl fmt::Display for FinishNode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "  FIN {}", self.node)
+        write!(f, "  FIN node = {}", self.node)
     }
 }
 
@@ -480,18 +524,109 @@ impl Codec for FinishNode {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(test, derive(TypeGenerator))]
-pub struct LoadFile<'a> {
+pub struct LoadBuffer {
     pub id: u64,
-    pub path: &'a str,
+    #[cfg_attr(test, generator(gen::<String>().with().len(0usize..64)))]
+    pub path: String,
+    #[cfg_attr(test, generator(gen::<String>().with().len(0usize..64)))]
+    pub ext: String,
 }
 
-#[derive(Clone, Copy, Debug)]
+impl LoadBuffer {
+    const TAG: u8 = b'B';
+}
+
+impl fmt::Display for LoadBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "  LOAD_BUF id = {}, path = {:?}, ext = {:?}",
+            self.id, self.path, self.ext
+        )
+    }
+}
+
+impl Codec for LoadBuffer {
+    #[inline]
+    fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
+        output.write_u8(Self::TAG)?;
+        output.write_u64(self.id)?;
+        output.write_u16(self.path.len() as _)?;
+        output.write_all(self.path.as_bytes())?;
+        if !self.ext.is_empty() {
+            output.write_u8(self.ext.len() as _)?;
+            output.write_all(self.ext.as_bytes())?;
+        } else {
+            output.write_u8(0)?;
+        }
+        Ok(())
+    }
+
+    #[inline]
+    fn decode<R: io::Read>(tag: u8, input: &mut R) -> io::Result<Self> {
+        debug_assert_eq!(Self::TAG, tag);
+        let id = input.read_u64()?;
+        let len = input.read_u16()?;
+        let path = input.read_string(len as usize)?;
+        let ext_len = input.read_u8()?;
+        let ext = if ext_len > 0 {
+            input.read_string(ext_len as _)?
+        } else {
+            String::new()
+        };
+        Ok(Self { id, path, ext })
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(test, derive(TypeGenerator))]
-pub struct LoadBuffer<'a> {
-    pub id: u64,
-    pub buffer: &'a [u8],
+pub struct SetBuffer {
+    pub target_node: u64,
+    pub target_parameter: u64,
+    pub buffer: u64,
+    pub buffer_channel: u64,
+}
+
+impl SetBuffer {
+    const TAG: u8 = b'u';
+}
+
+impl fmt::Display for SetBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "  SET_BUFFER node = {}, param = {}, buffer = {}, channel = {}",
+            self.target_node, self.target_parameter, self.buffer, self.buffer_channel
+        )
+    }
+}
+
+impl Codec for SetBuffer {
+    #[inline]
+    fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
+        output.write_u8(Self::TAG)?;
+        output.write_u64(self.target_node)?;
+        output.write_u64(self.target_parameter)?;
+        output.write_u64(self.buffer)?;
+        output.write_u64(self.buffer_channel)?;
+        Ok(())
+    }
+
+    #[inline]
+    fn decode<R: io::Read>(_tag: u8, input: &mut R) -> io::Result<Self> {
+        let target_node = input.read_u64()?;
+        let target_parameter = input.read_u64()?;
+        let buffer = input.read_u64()?;
+        let buffer_channel = input.read_u64()?;
+        Ok(Self {
+            target_node,
+            target_parameter,
+            buffer,
+            buffer_channel,
+        })
+    }
 }
 
 #[cfg(test)]
@@ -542,5 +677,15 @@ mod tests {
     #[test]
     fn finish_node() {
         check!().with_type::<FinishNode>().for_each(round_trip);
+    }
+
+    #[test]
+    fn load_buffer() {
+        check!().with_type::<LoadBuffer>().for_each(round_trip);
+    }
+
+    #[test]
+    fn set_buffer() {
+        check!().with_type::<SetBuffer>().for_each(round_trip);
     }
 }

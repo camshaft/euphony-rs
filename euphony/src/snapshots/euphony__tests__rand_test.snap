@@ -1,41 +1,42 @@
 ---
 source: euphony/src/tests.rs
+assertion_line: 37
 expression: dump
 ---
-  SPN 0,100
-  SET 0,0,1
-ADV 2048
-  SET 0,0,1
-ADV 2048
-  SET 0,0,0
-ADV 2048
-  SET 0,0,1
-ADV 2048
-  SET 0,0,0
-ADV 2048
-  FIN 0
-  SPN 1,100
-  SET 1,0,2
-ADV 2048
-  SET 1,0,2
-ADV 2048
-  SET 1,0,0
-ADV 2048
-  SET 1,0,0
-ADV 2048
-  SET 1,0,0
-ADV 2048
-  FIN 1
-  SPN 2,100
-  SET 2,0,1
-ADV 2048
-  SET 2,0,1
-ADV 2048
-  SET 2,0,0
-ADV 2048
-  SET 2,0,1
-ADV 2048
-  SET 2,0,0
-ADV 2048
-  FIN 2
+  SPAWN id = 0, processor = 100
+  SET node = 0, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 0, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 0, param = 0, value = 0
+ADVANCE ticks = 2048
+  SET node = 0, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 0, param = 0, value = 0
+ADVANCE ticks = 2048
+  FIN node = 0
+  SPAWN id = 1, processor = 100
+  SET node = 1, param = 0, value = 2
+ADVANCE ticks = 2048
+  SET node = 1, param = 0, value = 2
+ADVANCE ticks = 2048
+  SET node = 1, param = 0, value = 0
+ADVANCE ticks = 2048
+  SET node = 1, param = 0, value = 0
+ADVANCE ticks = 2048
+  SET node = 1, param = 0, value = 0
+ADVANCE ticks = 2048
+  FIN node = 1
+  SPAWN id = 2, processor = 100
+  SET node = 2, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 2, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 2, param = 0, value = 0
+ADVANCE ticks = 2048
+  SET node = 2, param = 0, value = 1
+ADVANCE ticks = 2048
+  SET node = 2, param = 0, value = 0
+ADVANCE ticks = 2048
+  FIN node = 2
 

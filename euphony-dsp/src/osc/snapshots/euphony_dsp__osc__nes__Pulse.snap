@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc/nes.rs
+assertion_line: 26
 expression: node
 ---
 Node {
@@ -36,5 +37,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: "",
 }

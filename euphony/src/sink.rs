@@ -1,6 +1,10 @@
 use crate::{node::Node, parameter::Parameter, processor::Definition, processors::input};
 
-static SINK: Definition = Definition { id: 0, inputs: 4 };
+static SINK: Definition = Definition {
+    id: 0,
+    inputs: 4,
+    buffers: 0,
+};
 
 #[derive(Clone, Debug)]
 pub struct Sink(Node);
@@ -31,7 +35,7 @@ impl Sink {
     }
 }
 
-impl<V: Into<Parameter>> input::azimuth<V> for Sink {
+impl<V: Into<Parameter>> input::AzimuthInput<V> for Sink {
     #[inline]
     fn with_azimuth(self, value: V) -> Self {
         self.0.set(1, value);
@@ -45,7 +49,7 @@ impl<V: Into<Parameter>> input::azimuth<V> for Sink {
     }
 }
 
-impl<V: Into<Parameter>> input::incline<V> for Sink {
+impl<V: Into<Parameter>> input::InclineInput<V> for Sink {
     #[inline]
     fn with_incline(self, value: V) -> Self {
         self.0.set(2, value);
@@ -59,7 +63,7 @@ impl<V: Into<Parameter>> input::incline<V> for Sink {
     }
 }
 
-impl<V: Into<Parameter>> input::radius<V> for Sink {
+impl<V: Into<Parameter>> input::RadiusInput<V> for Sink {
     #[inline]
     fn with_radius(self, value: V) -> Self {
         self.0.set(3, value);

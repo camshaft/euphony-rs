@@ -19,5 +19,6 @@
       "default": 440.0
     }
   ],
+  "buffers": [],
   "docs": " One-pole, one-zero highpass filter (1st order).\n"
 }

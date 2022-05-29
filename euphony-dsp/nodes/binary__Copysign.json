@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Returns a number composed of the magnitude of `lhs` and the sign of `rhs`.\n\n Equal to `lhs` if the sign of `lhs` and `rhs` are the same, otherwise equal\n to `-lhs`. If `lhs` is a `NAN`, then a `NAN` with the sign of `rhs` is returned.\n"
 }

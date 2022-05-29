@@ -13,5 +13,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Computes the arccosine of a number. Return value is in radians in the\n range [0, pi] or NaN if the number is outside the range [-1, 1].\n"
 }

@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Calculates the length of the hypotenuse of a right-angle triangle given legs of length `x` and `y`.\n"
 }

@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/filter.rs
+assertion_line: 173
 expression: node
 ---
 Node {
@@ -35,5 +36,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Morphing filter that morphs between lowpass, peak and highpass modes.\n",
 }

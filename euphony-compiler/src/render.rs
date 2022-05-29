@@ -1,7 +1,7 @@
 use crate::{instruction::Instruction, Hash, Writer};
 use euphony_dsp::nodes::load as load_dsp;
 use euphony_graph::Graph;
-use euphony_node::{Config, Context, ParameterValue, Value};
+use euphony_node::{BufferMap, Config, Context, ParameterValue, Value};
 
 pub type Error = euphony_graph::Error<u64>;
 pub type Result<T = (), E = Error> = core::result::Result<T, E>;
@@ -14,6 +14,11 @@ pub struct Renderer {
 }
 
 impl Renderer {
+    #[inline]
+    pub fn set_buffers(&mut self, buffers: Box<dyn BufferMap>) {
+        self.context.buffers = buffers;
+    }
+
     #[inline]
     pub fn push<W: Writer>(&mut self, instr: Instruction, writer: &mut W) -> Result {
         match instr {
@@ -30,6 +35,7 @@ impl Renderer {
     }
 
     pub fn reset(&mut self) {
+        *self = Default::default();
         // TODO self.graph.clear();
     }
 
@@ -87,6 +93,9 @@ impl Renderer {
             }
             ParameterValue::Node(source) => {
                 self.graph.connect(id, param, source)?;
+            }
+            ParameterValue::Buffer(key) => {
+                self.graph.set(id, param, Value::Buffer(key))?;
             }
         }
         Ok(())

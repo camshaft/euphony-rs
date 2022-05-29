@@ -24,7 +24,7 @@ impl Node {
 impl ToTokens for Node {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let mut inputs: Vec<Input> = vec![];
-        let buffers: Vec<()> = vec![];
+        let mut buffers: Vec<Buffer> = vec![];
         let mut has_error = false;
         let mut docs = String::new();
         for attr in &self.attrs {
@@ -43,7 +43,15 @@ impl ToTokens for Node {
             }
 
             if attr.path.is_ident("buffer") {
-                // TODO
+                match Attribute::parse_args(attr) {
+                    Ok(v) => {
+                        buffers.push(v);
+                    }
+                    Err(err) => {
+                        has_error = true;
+                        err.to_compile_error().to_tokens(tokens);
+                    }
+                }
                 continue;
             }
 
@@ -80,7 +88,7 @@ impl ToTokens for Node {
 
         let mut test_inputs = quote!();
         let mut process_inputs = quote!();
-        let process_buffers = quote!();
+        let mut process_buffers = quote!();
         let mut triggers = quote!();
         let mut defaults = quote!();
         let mut input_len: usize = 0;
@@ -108,7 +116,17 @@ impl ToTokens for Node {
             quote!(inputs.get(#id), ).to_tokens(&mut process_inputs);
         }
 
+        let mut test_buffers = quote!();
         let buffer_len = buffers.len();
+
+        for (id, buffer) in buffers.iter().enumerate() {
+            let id = buffer.id.unwrap_or(id as u64);
+
+            buffer.test(id, &mut test_buffers);
+
+            let id = id as usize;
+            quote!(buffers.get(#id), ).to_tokens(&mut process_buffers);
+        }
 
         quote!(
             #[test]
@@ -120,6 +138,7 @@ impl ToTokens for Node {
                     impl_path: module_path!().to_string(),
                     id: #id,
                     inputs: vec![#test_inputs],
+                    buffers: vec![#test_buffers],
                     docs: #docs.to_string(),
                 };
 
@@ -263,5 +282,49 @@ impl parse::Parse for Input {
         }
 
         Ok(input)
+    }
+}
+
+#[derive(Debug)]
+struct Buffer {
+    name: Ident,
+    id: Option<u64>,
+}
+
+impl Buffer {
+    fn test(&self, id: u64, tokens: &mut TokenStream) {
+        let name = self.name.to_string();
+        quote!(
+            ::euphony_node::reflect::Buffer {
+                name: #name.to_string(),
+                id: #id,
+            },
+        )
+        .to_tokens(tokens)
+    }
+}
+
+impl parse::Parse for Buffer {
+    fn parse(parser: parse::ParseStream) -> parse::Result<Self> {
+        let name = parser.parse()?;
+
+        let mut buffer = Self { name, id: None };
+
+        while !parser.is_empty() {
+            let _: Token![,] = parser.parse()?;
+
+            let l = parser.lookahead1();
+            if l.peek(kw::id) {
+                let _: kw::id = parser.parse()?;
+                let _: Token![=] = parser.parse()?;
+                let id: syn::LitInt = parser.parse()?;
+                let id = id.base10_parse()?;
+                buffer.id = Some(id);
+            } else {
+                return Err(l.error());
+            }
+        }
+
+        Ok(buffer)
     }
 }

@@ -1,4 +1,5 @@
 use crate::{
+    buffer::Buffer,
     group::{self, GroupMap},
     instruction::{Instructions, InternalInstruction},
     node::Node,
@@ -9,7 +10,7 @@ use crate::{
 };
 use euphony_command::{self as message, Handler};
 use euphony_dsp::nodes;
-use euphony_node::ParameterValue as Value;
+use euphony_node::{BufferMap, ParameterValue as Value};
 use euphony_units::ratio::Ratio;
 use petgraph::{
     visit::{depth_first_search, DfsEvent},
@@ -28,6 +29,7 @@ pub struct Compiler {
     instructions: BTreeSet<(Offset, InternalInstruction)>,
     samples: Offset,
     samples_per_tick: Ratio<u128>,
+    pending_buffers: HashMap<u64, (String, String)>,
 }
 
 impl Default for Compiler {
@@ -42,12 +44,13 @@ impl Default for Compiler {
             instructions: Default::default(),
             samples: Default::default(),
             samples_per_tick: default_samples_per_tick(),
+            pending_buffers: Default::default(),
         }
     }
 }
 
 impl Compiler {
-    pub fn finalize<W: Writer>(&mut self, cache: &W) -> Result {
+    pub fn finalize<W: Writer>(&mut self, cache: &W) -> Result<Box<dyn BufferMap>> {
         let samples = self.samples;
 
         let hasher = blake3::Hasher::new();
@@ -59,6 +62,22 @@ impl Compiler {
 
             node.hash(&hasher);
         });
+
+        let buffers = self
+            .pending_buffers
+            .par_iter()
+            .flat_map(
+                |(id, (path, ext))| match Buffer::load(*id, path, ext, cache) {
+                    Ok(values) => values,
+                    Err(err) => {
+                        dbg!(err);
+                        // TODO log error
+                        vec![]
+                    }
+                },
+            )
+            .collect();
+        let buffers = crate::buffer::Map::new(buffers);
 
         // TODO iterate over each node and call optimize
 
@@ -85,16 +104,25 @@ impl Compiler {
 
                     // make sure to include all of the hashes of the deps
                     for ((sample, param), input) in &dep.inputs {
-                        if let Value::Node(source) = input {
-                            let source = &self.nodes[source];
-                            // compute the earlier of the start times
-                            let base = dep.start.min(source.start);
-                            end = end.max(source.end);
-                            // compute the relative sample to the base
-                            let sample = (dep.start + *sample).since(base);
-                            hasher.update(&sample.to_bytes());
-                            hasher.update(&param.to_le_bytes());
-                            hasher.update(&source.hash);
+                        match input {
+                            Value::Node(source) => {
+                                let source = &self.nodes[source];
+                                // compute the earlier of the start times
+                                let base = dep.start.min(source.start);
+                                end = end.max(source.end);
+                                // compute the relative sample to the base
+                                let sample = (dep.start + *sample).since(base);
+                                hasher.update(&sample.to_bytes());
+                                hasher.update(&param.to_le_bytes());
+                                hasher.update(&source.hash);
+                            }
+                            Value::Buffer((id, channel)) => {
+                                let buffer = buffers.get(*id, *channel);
+                                hasher.update(&sample.to_bytes());
+                                hasher.update(&param.to_le_bytes());
+                                hasher.update(&buffer.hash[..]);
+                            }
+                            _ => (),
                         }
                     }
                 }
@@ -143,7 +171,7 @@ impl Compiler {
             group.update_hash(&self.sinks);
         });
 
-        Ok(())
+        Ok(Box::new(buffers))
     }
 
     #[inline]
@@ -155,6 +183,7 @@ impl Compiler {
         self.connections.clear();
         self.active_nodes.clear();
         self.instructions.clear();
+        self.pending_buffers.clear();
         self.samples = Offset::default();
         self.samples_per_tick = default_samples_per_tick();
     }
@@ -316,6 +345,31 @@ impl Handler for Compiler {
         let samples = self.samples;
         let node = self.node(msg.node)?;
         node.finish(samples)?;
+        Ok(())
+    }
+
+    #[inline]
+    fn load_buffer(&mut self, msg: message::LoadBuffer) -> std::io::Result<()> {
+        let message::LoadBuffer { id, path, ext } = msg;
+
+        self.pending_buffers.insert(id, (path, ext));
+
+        Ok(())
+    }
+
+    #[inline]
+    fn set_buffer(&mut self, msg: message::SetBuffer) -> std::io::Result<()> {
+        let message::SetBuffer {
+            target_node,
+            target_parameter,
+            buffer,
+            buffer_channel,
+        } = msg;
+
+        let samples = self.samples;
+        let node = self.node(target_node)?;
+        node.set_buffer(target_parameter, buffer, buffer_channel, samples)?;
+
         Ok(())
     }
 }

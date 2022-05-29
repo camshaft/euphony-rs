@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc.rs
+assertion_line: 131
 expression: node
 ---
 Node {
@@ -23,5 +24,6 @@ Node {
             default: 0.75,
         },
     ],
+    buffers: [],
     docs: " A triangle oscillator\n\n # frequency\n\n # phase (trigger)\n",
 }

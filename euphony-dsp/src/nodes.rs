@@ -89,6 +89,7 @@ pub fn load(processor: u64) -> Option<BoxProcessor> {
         314 => Some(crate::filter::Bell::spawn()),
         315 => Some(crate::filter::Lowshelf::spawn()),
         316 => Some(crate::filter::Highshelf::spawn()),
+        500 => Some(crate::buffer::Play::spawn()),
         _ => None,
     }
 }
@@ -181,6 +182,7 @@ pub fn name(processor: u64) -> Option<&'static str> {
         314 => Some("Bell"),
         315 => Some("Lowshelf"),
         316 => Some("Highshelf"),
+        500 => Some("Play"),
         _ => None,
     }
 }
@@ -273,6 +275,7 @@ pub fn validate_parameter(processor: u64, parameter: u64, value: Value) -> Resul
         314 => crate::filter::Bell::validate_parameter(parameter, value),
         315 => crate::filter::Lowshelf::validate_parameter(parameter, value),
         316 => crate::filter::Highshelf::validate_parameter(parameter, value),
+        500 => crate::buffer::Play::validate_parameter(parameter, value),
         _ => unreachable!("processor ({}) param ({}) doesn't exist", processor, parameter)
     }
 }

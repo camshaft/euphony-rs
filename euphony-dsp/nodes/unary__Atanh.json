@@ -13,5 +13,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Inverse hyperbolic tangent function.\n"
 }

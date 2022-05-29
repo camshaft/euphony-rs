@@ -7,6 +7,7 @@ license = "MIT"
 
 [dependencies]
 bach = "=0.0.6"
+euphony-buffer = { version = "0.1", path = "../euphony-buffer" }
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-macros = { version = "0.1", path = "../euphony-macros" }
 euphony-units = { version = "0.1", path = "../euphony-units" }

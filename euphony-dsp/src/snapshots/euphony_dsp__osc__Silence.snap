@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc.rs
+assertion_line: 139
 expression: node
 ---
 Node {
@@ -10,5 +11,6 @@ Node {
     impl_path: "euphony_dsp::osc",
     id: 106,
     inputs: [],
+    buffers: [],
     docs: "",
 }

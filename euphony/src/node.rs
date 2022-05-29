@@ -4,6 +4,7 @@ use crate::{
     processor::Definition,
     sink::Sink,
 };
+use euphony_buffer::AsChannel;
 use std::{
     cell::RefCell,
     sync::{Arc, Mutex},
@@ -32,6 +33,7 @@ impl Counter {
 struct OwnedNode {
     id: u64,
     parameters: Mutex<Vec<Parameter>>,
+    buffers: u64,
 }
 
 impl Drop for OwnedNode {
@@ -63,6 +65,7 @@ impl Node {
                 Parameter(ParameterValue::Unset);
                 definition.inputs as usize
             ]),
+            buffers: definition.buffers,
         };
 
         Node(Arc::new(node))
@@ -72,6 +75,28 @@ impl Node {
         let value = value.into();
         value.set(self.id(), index);
         self.0.parameters.lock().unwrap()[index as usize] = value;
+    }
+
+    pub fn set_buffer<C: AsChannel>(&self, index: u64, channel: C) {
+        let buffer = channel.buffer(|id, path, ext| {
+            // load the buffer if needed
+            emit(LoadBuffer {
+                id,
+                path: path.display().to_string(),
+                ext: ext.to_owned(),
+            });
+        });
+        let buffer_channel = channel.channel() as u64;
+
+        // update the buffer for the node
+        emit(SetBuffer {
+            target_node: self.id(),
+            target_parameter: index,
+            buffer,
+            buffer_channel,
+        });
+
+        assert!(self.0.buffers > index);
     }
 
     pub fn sink(&self) -> Sink {

@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc.rs
+assertion_line: 101
 expression: node
 ---
 Node {
@@ -23,5 +24,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Accurate (slow) sine oscillator\n\n # frequency\n\n # phase (trigger)\n",
 }

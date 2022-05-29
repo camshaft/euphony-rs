@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Computes the four quadrant arctangent of `lhs` (`y`) and `rhs` (`x`) in radians.\n\n * `x = 0`, `y = 0`: `0`\n * `x >= 0`: `arctan(y/x)` -> `[-pi/2, pi/2]`\n * `y >= 0`: `arctan(y/x) + pi` -> `(pi/2, pi]`\n * `y < 0`: `arctan(y/x) - pi` -> `(-pi, -pi/2)`\n"
 }

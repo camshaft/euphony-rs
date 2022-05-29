@@ -25,5 +25,6 @@
       "default": 110.0
     }
   ],
+  "buffers": [],
   "docs": " Constant-gain bandpass resonator.\n"
 }

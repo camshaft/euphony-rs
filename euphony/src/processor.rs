@@ -17,6 +17,7 @@ where
 pub(crate) struct Definition {
     pub id: u64,
     pub inputs: u64,
+    pub buffers: u64,
 }
 
 impl Definition {
@@ -80,8 +81,24 @@ macro_rules! define_processor_binary_op {
 
 macro_rules! define_processor {
     (
-        $(#[doc = $doc:literal])? #[id = $id:literal] #[lower = $lower:ident]struct
-        $name:ident { $(#[with = $with:ident] #[set = $set:ident] $input:ident : $input_ty:ident < $input_id:literal > ,)* }
+        $(#[doc = $doc:literal])?
+        #[id = $id:literal]
+        #[lower = $lower:ident]
+        struct $name:ident {
+            $(
+                #[buffer]
+                #[trait = $trait_buffer_name:ident]
+                #[with = $with_buffer:ident]
+                #[set = $set_buffer:ident]
+                $buffer:ident: Buffer<$buffer_id:literal>,
+            )*
+            $(
+                #[trait = $trait_name:ident]
+                #[with = $with:ident]
+                #[set = $set:ident]
+                $input:ident: $input_ty:ident<$input_id:literal>,
+            )*
+        }
     ) => {
         $(#[doc = $doc])?
         #[derive(Clone, Debug)]
@@ -97,81 +114,103 @@ macro_rules! define_processor {
             use super::*;
             use crate::parameter::Parameter;
 
-        impl Default for $name {
-            #[inline]
-            fn default() -> Self {
-                use crate::processor::Definition;
-                static DEF: Definition = Definition { id: $id, inputs: $({
-                    let _ = $input_id;
-                    1
-                } +)* 0 };
-                Self(DEF.spawn())
-            }
-        }
-
-        impl crate::processor::Processor for $name {
-            #[inline]
-            fn sink(&self) -> crate::sink::Sink {
-                self.0.sink()
-            }
-        }
-
-        $(
-            impl<V: Into<$input_ty>> crate::processors::input::$input<V> for $name {
+            impl Default for $name {
                 #[inline]
-                fn $with(self, value: V) -> Self {
-                    self.0.set($input_id, value.into());
-                    self
-                }
-
-                #[inline]
-                fn $set(&self, value: V) -> &Self {
-                    self.0.set($input_id, value.into());
-                    self
+                fn default() -> Self {
+                    use crate::processor::Definition;
+                    static DEF: Definition = Definition {
+                        id: $id,
+                        inputs: $({
+                            let _ = $input_id;
+                            1
+                        } +)* 0,
+                        buffers: $({
+                            let _ = $buffer_id;
+                            1
+                        } +)* 0,
+                    };
+                    Self(DEF.spawn())
                 }
             }
-        )*
 
-        impl From<$name> for Parameter {
-            #[inline]
-            fn from(node: $name) -> Self {
-                node.0.into()
+            impl crate::processor::Processor for $name {
+                #[inline]
+                fn sink(&self) -> crate::sink::Sink {
+                    self.0.sink()
+                }
             }
-        }
 
-        impl From<&$name> for Parameter {
-            #[inline]
-            fn from(node: &$name) -> Self {
-                (&node.0).into()
+            $(
+                impl<V: euphony_buffer::AsChannel> crate::processors::input::$trait_buffer_name<V> for $name {
+                    #[inline]
+                    fn $with_buffer(self, value: V) -> Self {
+                        self.0.set_buffer($buffer_id, value);
+                        self
+                    }
+
+                    #[inline]
+                    fn $set_buffer(&self, value: V) -> &Self {
+                        self.0.set_buffer($buffer_id, value);
+                        self
+                    }
+                }
+            )*
+
+            $(
+                impl<V: Into<$input_ty>> crate::processors::input::$trait_name<V> for $name {
+                    #[inline]
+                    fn $with(self, value: V) -> Self {
+                        self.0.set($input_id, value.into());
+                        self
+                    }
+
+                    #[inline]
+                    fn $set(&self, value: V) -> &Self {
+                        self.0.set($input_id, value.into());
+                        self
+                    }
+                }
+            )*
+
+            impl From<$name> for Parameter {
+                #[inline]
+                fn from(node: $name) -> Self {
+                    node.0.into()
+                }
             }
-        }
 
-        define_processor_binary_op!($name, Add, add);
-        define_processor_binary_op!($name, Div, div);
-        define_processor_binary_op!($name, Mul, mul);
-        define_processor_binary_op!($name, Rem, rem);
-        define_processor_binary_op!($name, Sub, sub);
-
-        impl core::ops::Neg for $name {
-            type Output = crate::processors::unary::Neg;
-
-            #[inline]
-            fn neg(self) -> Self::Output {
-                use crate::processors::input::*;
-                crate::processors::unary::neg().with_input(self)
+            impl From<&$name> for Parameter {
+                #[inline]
+                fn from(node: &$name) -> Self {
+                    (&node.0).into()
+                }
             }
-        }
 
-        impl core::ops::Neg for &$name {
-            type Output = crate::processors::unary::Neg;
+            define_processor_binary_op!($name, Add, add);
+            define_processor_binary_op!($name, Div, div);
+            define_processor_binary_op!($name, Mul, mul);
+            define_processor_binary_op!($name, Rem, rem);
+            define_processor_binary_op!($name, Sub, sub);
 
-            #[inline]
-            fn neg(self) -> Self::Output {
-                use crate::processors::input::*;
-                crate::processors::unary::neg().with_input(self)
+            impl core::ops::Neg for $name {
+                type Output = crate::processors::unary::Neg;
+
+                #[inline]
+                fn neg(self) -> Self::Output {
+                    use crate::processors::input::*;
+                    crate::processors::unary::neg().with_input(self)
+                }
             }
-        }
 
+            impl core::ops::Neg for &$name {
+                type Output = crate::processors::unary::Neg;
+
+                #[inline]
+                fn neg(self) -> Self::Output {
+                    use crate::processors::input::*;
+                    crate::processors::unary::neg().with_input(self)
+                }
+            }
         }
     };
 }

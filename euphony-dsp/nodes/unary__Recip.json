@@ -13,5 +13,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Takes the reciprocal (inverse) of a number, 1/x.\n"
 }

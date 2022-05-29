@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/binary.rs
+assertion_line: 134
 expression: node
 ---
 Node {
@@ -23,5 +24,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Raises a number to an integer power.\n\n Using this function is generally faster than using `powf`\n",
 }

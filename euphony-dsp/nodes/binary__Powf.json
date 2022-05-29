@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Raises a number to a floating point power.\n"
 }

@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " A pulse (square) oscillator\n\n # frequency\n\n # phase (trigger)\n"
 }

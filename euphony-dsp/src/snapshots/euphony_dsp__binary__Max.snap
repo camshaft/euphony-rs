@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/binary.rs
+assertion_line: 104
 expression: node
 ---
 Node {
@@ -23,5 +24,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Returns the maximum of the two numbers.\n\n Follows the IEEE-754 2008 semantics for maxNum, except for handling of signaling `NAN`s. This\n matches the behavior of libm’s fmax.\n",
 }

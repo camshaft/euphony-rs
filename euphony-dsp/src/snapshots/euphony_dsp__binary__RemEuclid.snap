@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/binary.rs
+assertion_line: 148
 expression: node
 ---
 Node {
@@ -23,5 +24,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Calculates the least nonnegative remainder of `lhs (mod rhs)`.\n\n In particular, the return value `r` satisfies `0.0 <= r < rhs.abs()` in\n most cases. However, due to a floating point round-off error it can\n result in `r == rhs.abs()`, violating the mathematical definition, if\n `lhs` is much smaller than `rhs.abs()` in magnitude and `lhs < 0.0`.\n This result is not an element of the function's codomain, but it is the\n closest floating point number in the real numbers and thus fulfills the\n property `lhs == self.div_euclid(rhs) * rhs + lhs.rem_euclid(rhs)`\n approximatively.\n",
 }

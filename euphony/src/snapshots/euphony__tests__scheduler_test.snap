@@ -1,80 +1,81 @@
 ---
 source: euphony/src/tests.rs
+assertion_line: 37
 expression: dump
 ---
-  SPN 0,100
-  SET 0,0,0
-  SPN 1,103
-  SET 1,0,0
-ADV 1024
-  FIN 1
-  SPN 2,103
-  SET 2,0,0.25
-ADV 1024
-  FIN 0
-  SPN 3,100
-  SET 3,0,0.5
-  FIN 2
-  SPN 4,103
-  SET 4,0,0.5
-ADV 1024
-  FIN 4
-  SPN 5,103
-  SET 5,0,0.75
-ADV 1024
-  FIN 3
-  SPN 6,100
-  SET 6,0,1
-  FIN 5
-  SPN 7,103
-  SET 7,0,1
-ADV 1024
-  FIN 7
-  SPN 8,103
-  SET 8,0,1.25
-ADV 1024
-  FIN 6
-  SPN 9,100
-  SET 9,0,1.5
-  FIN 8
-  SPN 10,103
-  SET 10,0,1.5
-ADV 1024
-  FIN 10
-  SPN 11,103
-  SET 11,0,1.75
-ADV 1024
-  FIN 9
-  SPN 12,100
-  SET 12,0,2
-  FIN 11
-  SPN 13,103
-  SET 13,0,2
-ADV 1024
-  FIN 13
-  SPN 14,103
-  SET 14,0,2.25
-ADV 1024
-  FIN 12
-  SPN 15,100
-  SET 15,0,2.5
-  FIN 14
-ADV 2048
-  FIN 15
-  SPN 16,100
-  SET 16,0,3
-ADV 2048
-  FIN 16
-  SPN 17,100
-  SET 17,0,3.5
-ADV 2048
-  FIN 17
-  SPN 18,100
-  SET 18,0,4
-ADV 2048
-  FIN 18
-  SPN 19,100
-  SET 19,0,4.5
-ADV 2048
-  FIN 19
+  SPAWN id = 0, processor = 100
+  SET node = 0, param = 0, value = 0
+  SPAWN id = 1, processor = 103
+  SET node = 1, param = 0, value = 0
+ADVANCE ticks = 1024
+  FIN node = 1
+  SPAWN id = 2, processor = 103
+  SET node = 2, param = 0, value = 0.25
+ADVANCE ticks = 1024
+  FIN node = 0
+  SPAWN id = 3, processor = 100
+  SET node = 3, param = 0, value = 0.5
+  FIN node = 2
+  SPAWN id = 4, processor = 103
+  SET node = 4, param = 0, value = 0.5
+ADVANCE ticks = 1024
+  FIN node = 4
+  SPAWN id = 5, processor = 103
+  SET node = 5, param = 0, value = 0.75
+ADVANCE ticks = 1024
+  FIN node = 3
+  SPAWN id = 6, processor = 100
+  SET node = 6, param = 0, value = 1
+  FIN node = 5
+  SPAWN id = 7, processor = 103
+  SET node = 7, param = 0, value = 1
+ADVANCE ticks = 1024
+  FIN node = 7
+  SPAWN id = 8, processor = 103
+  SET node = 8, param = 0, value = 1.25
+ADVANCE ticks = 1024
+  FIN node = 6
+  SPAWN id = 9, processor = 100
+  SET node = 9, param = 0, value = 1.5
+  FIN node = 8
+  SPAWN id = 10, processor = 103
+  SET node = 10, param = 0, value = 1.5
+ADVANCE ticks = 1024
+  FIN node = 10
+  SPAWN id = 11, processor = 103
+  SET node = 11, param = 0, value = 1.75
+ADVANCE ticks = 1024
+  FIN node = 9
+  SPAWN id = 12, processor = 100
+  SET node = 12, param = 0, value = 2
+  FIN node = 11
+  SPAWN id = 13, processor = 103
+  SET node = 13, param = 0, value = 2
+ADVANCE ticks = 1024
+  FIN node = 13
+  SPAWN id = 14, processor = 103
+  SET node = 14, param = 0, value = 2.25
+ADVANCE ticks = 1024
+  FIN node = 12
+  SPAWN id = 15, processor = 100
+  SET node = 15, param = 0, value = 2.5
+  FIN node = 14
+ADVANCE ticks = 2048
+  FIN node = 15
+  SPAWN id = 16, processor = 100
+  SET node = 16, param = 0, value = 3
+ADVANCE ticks = 2048
+  FIN node = 16
+  SPAWN id = 17, processor = 100
+  SET node = 17, param = 0, value = 3.5
+ADVANCE ticks = 2048
+  FIN node = 17
+  SPAWN id = 18, processor = 100
+  SET node = 18, param = 0, value = 4
+ADVANCE ticks = 2048
+  FIN node = 18
+  SPAWN id = 19, processor = 100
+  SET node = 19, param = 0, value = 4.5
+ADVANCE ticks = 2048
+  FIN node = 19
 

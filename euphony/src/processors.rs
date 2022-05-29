@@ -328,34 +328,29 @@ pub mod ext {
             crate::processors::unary::trunc().with_input(self)
         }
         #[inline]
+        #[doc = " Highpass filter.\n"]
+        fn highpass(&self) -> crate::processors::filter::Highpass {
+            crate::processors::filter::highpass().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Notch filter.\n"]
+        fn notch(&self) -> crate::processors::filter::Notch {
+            crate::processors::filter::notch().with_signal(self)
+        }
+        #[inline]
         #[doc = " Constant-gain bandpass resonator.\n"]
         fn resonator(&self) -> crate::processors::filter::Resonator {
             crate::processors::filter::resonator().with_signal(self)
         }
         #[inline]
-        #[doc = " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"]
-        fn allpole(&self) -> crate::processors::filter::Allpole {
-            crate::processors::filter::allpole().with_signal(self)
+        #[doc = " Morphing filter that morphs between lowpass, peak and highpass modes.\n"]
+        fn morph(&self) -> crate::processors::filter::Morph {
+            crate::processors::filter::morph().with_signal(self)
         }
         #[inline]
-        #[doc = " Bandpass filter.\n"]
-        fn bandpass(&self) -> crate::processors::filter::Bandpass {
-            crate::processors::filter::bandpass().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Pinking filter.\n"]
-        fn pinkpass(&self) -> crate::processors::filter::Pinkpass {
-            crate::processors::filter::pinkpass().with_signal(self)
-        }
-        #[inline]
-        #[doc = " One-pole lowpass filter (1st order).\n"]
-        fn lowpole(&self) -> crate::processors::filter::Lowpole {
-            crate::processors::filter::lowpole().with_signal(self)
-        }
-        #[inline]
-        #[doc = " Highpass filter.\n"]
-        fn highpass(&self) -> crate::processors::filter::Highpass {
-            crate::processors::filter::highpass().with_signal(self)
+        #[doc = " Butterworth lowpass filter (2nd order).\n"]
+        fn butterpass(&self) -> crate::processors::filter::Butterpass {
+            crate::processors::filter::butterpass().with_signal(self)
         }
         #[inline]
         #[doc = " Moog resonant lowpass filter.\n"]
@@ -363,14 +358,19 @@ pub mod ext {
             crate::processors::filter::moog().with_signal(self)
         }
         #[inline]
-        #[doc = " Peak filter.\n"]
-        fn peak(&self) -> crate::processors::filter::Peak {
-            crate::processors::filter::peak().with_signal(self)
+        #[doc = " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"]
+        fn allpole(&self) -> crate::processors::filter::Allpole {
+            crate::processors::filter::allpole().with_signal(self)
         }
         #[inline]
-        #[doc = " Highshelf filter.\n"]
-        fn highshelf(&self) -> crate::processors::filter::Highshelf {
-            crate::processors::filter::highshelf().with_signal(self)
+        #[doc = " One-pole lowpass filter (1st order).\n"]
+        fn lowpole(&self) -> crate::processors::filter::Lowpole {
+            crate::processors::filter::lowpole().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Bandpass filter.\n"]
+        fn bandpass(&self) -> crate::processors::filter::Bandpass {
+            crate::processors::filter::bandpass().with_signal(self)
         }
         #[inline]
         #[doc = " Bell filter.\n"]
@@ -383,14 +383,19 @@ pub mod ext {
             crate::processors::filter::lowpass().with_signal(self)
         }
         #[inline]
-        #[doc = " Butterworth lowpass filter (2nd order).\n"]
-        fn butterpass(&self) -> crate::processors::filter::Butterpass {
-            crate::processors::filter::butterpass().with_signal(self)
+        #[doc = " Allpass filter.\n"]
+        fn allpass(&self) -> crate::processors::filter::Allpass {
+            crate::processors::filter::allpass().with_signal(self)
         }
         #[inline]
-        #[doc = " Notch filter.\n"]
-        fn notch(&self) -> crate::processors::filter::Notch {
-            crate::processors::filter::notch().with_signal(self)
+        #[doc = " Peak filter.\n"]
+        fn peak(&self) -> crate::processors::filter::Peak {
+            crate::processors::filter::peak().with_signal(self)
+        }
+        #[inline]
+        #[doc = " Highshelf filter.\n"]
+        fn highshelf(&self) -> crate::processors::filter::Highshelf {
+            crate::processors::filter::highshelf().with_signal(self)
         }
         #[inline]
         #[doc = " Lowshelf filter.\n"]
@@ -398,19 +403,14 @@ pub mod ext {
             crate::processors::filter::lowshelf().with_signal(self)
         }
         #[inline]
-        #[doc = " Allpass filter.\n"]
-        fn allpass(&self) -> crate::processors::filter::Allpass {
-            crate::processors::filter::allpass().with_signal(self)
-        }
-        #[inline]
         #[doc = " One-pole, one-zero highpass filter (1st order).\n"]
         fn highpole(&self) -> crate::processors::filter::Highpole {
             crate::processors::filter::highpole().with_signal(self)
         }
         #[inline]
-        #[doc = " Morphing filter that morphs between lowpass, peak and highpass modes.\n"]
-        fn morph(&self) -> crate::processors::filter::Morph {
-            crate::processors::filter::morph().with_signal(self)
+        #[doc = " Pinking filter.\n"]
+        fn pinkpass(&self) -> crate::processors::filter::Pinkpass {
+            crate::processors::filter::pinkpass().with_signal(self)
         }
     }
     impl<T> ProcessorExt for T
@@ -420,153 +420,135 @@ pub mod ext {
     {}
 }
 pub mod input {
-    #[allow(non_camel_case_types)]
-    pub trait add<Value> {
+    pub trait AddInput<Value> {
         fn with_add(self, value: Value) -> Self;
         fn set_add(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait azimuth<Value> {
+    pub trait AzimuthInput<Value> {
         fn with_azimuth(self, value: Value) -> Self;
         fn set_azimuth(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait bandwidth<Value> {
+    pub trait BandwidthInput<Value> {
         fn with_bandwidth(self, value: Value) -> Self;
         fn set_bandwidth(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait center<Value> {
+    pub trait BufferInput<Value> {
+        fn with_buffer(self, value: Value) -> Self;
+        fn set_buffer(&self, value: Value) -> &Self;
+    }
+    pub trait CenterInput<Value> {
         fn with_center(self, value: Value) -> Self;
         fn set_center(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait cond<Value> {
+    pub trait CondInput<Value> {
         fn with_cond(self, value: Value) -> Self;
         fn set_cond(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait cutoff<Value> {
+    pub trait CutoffInput<Value> {
         fn with_cutoff(self, value: Value) -> Self;
         fn set_cutoff(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait decay<Value> {
+    pub trait DecayInput<Value> {
         fn with_decay(self, value: Value) -> Self;
         fn set_decay(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait delay<Value> {
+    pub trait DelayInput<Value> {
         fn with_delay(self, value: Value) -> Self;
         fn set_delay(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait duration<Value> {
+    pub trait DurationInput<Value> {
         fn with_duration(self, value: Value) -> Self;
         fn set_duration(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait duty_cycle<Value> {
+    pub trait DutyCycleInput<Value> {
         fn with_duty_cycle(self, value: Value) -> Self;
         fn set_duty_cycle(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait frequency<Value> {
+    pub trait FrequencyInput<Value> {
         fn with_frequency(self, value: Value) -> Self;
         fn set_frequency(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait gain<Value> {
+    pub trait GainInput<Value> {
         fn with_gain(self, value: Value) -> Self;
         fn set_gain(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait incline<Value> {
+    pub trait InclineInput<Value> {
         fn with_incline(self, value: Value) -> Self;
         fn set_incline(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait input<Value> {
+    pub trait InputInput<Value> {
         fn with_input(self, value: Value) -> Self;
         fn set_input(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait length<Value> {
+    pub trait LengthInput<Value> {
         fn with_length(self, value: Value) -> Self;
         fn set_length(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait lhs<Value> {
+    pub trait LhsInput<Value> {
         fn with_lhs(self, value: Value) -> Self;
         fn set_lhs(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait max<Value> {
+    pub trait MaxInput<Value> {
         fn with_max(self, value: Value) -> Self;
         fn set_max(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait min<Value> {
+    pub trait MinInput<Value> {
         fn with_min(self, value: Value) -> Self;
         fn set_min(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait morph<Value> {
+    pub trait MorphInput<Value> {
         fn with_morph(self, value: Value) -> Self;
         fn set_morph(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait mul<Value> {
+    pub trait MulInput<Value> {
         fn with_mul(self, value: Value) -> Self;
         fn set_mul(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait negative<Value> {
+    pub trait NegativeInput<Value> {
         fn with_negative(self, value: Value) -> Self;
         fn set_negative(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait phase<Value> {
+    pub trait PhaseInput<Value> {
         fn with_phase(self, value: Value) -> Self;
         fn set_phase(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait positive<Value> {
+    pub trait PositiveInput<Value> {
         fn with_positive(self, value: Value) -> Self;
         fn set_positive(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait q<Value> {
+    pub trait QInput<Value> {
         fn with_q(self, value: Value) -> Self;
         fn set_q(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait radius<Value> {
+    pub trait RadiusInput<Value> {
         fn with_radius(self, value: Value) -> Self;
         fn set_radius(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait rhs<Value> {
+    pub trait RepeatInput<Value> {
+        fn with_repeat(self, value: Value) -> Self;
+        fn set_repeat(&self, value: Value) -> &Self;
+    }
+    pub trait ResetInput<Value> {
+        fn with_reset(self, value: Value) -> Self;
+        fn set_reset(&self, value: Value) -> &Self;
+    }
+    pub trait RhsInput<Value> {
         fn with_rhs(self, value: Value) -> Self;
         fn set_rhs(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait seed<Value> {
+    pub trait SeedInput<Value> {
         fn with_seed(self, value: Value) -> Self;
         fn set_seed(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait signal<Value> {
+    pub trait SignalInput<Value> {
         fn with_signal(self, value: Value) -> Self;
         fn set_signal(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait target<Value> {
+    pub trait TargetInput<Value> {
         fn with_target(self, value: Value) -> Self;
         fn set_target(&self, value: Value) -> &Self;
     }
-    #[allow(non_camel_case_types)]
-    pub trait value<Value> {
+    pub trait ValueInput<Value> {
         fn with_value(self, value: Value) -> Self;
         fn set_value(&self, value: Value) -> &Self;
     }
@@ -581,9 +563,11 @@ mod api {
             #[id = 50]
             #[lower = add]
             struct Add {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -595,9 +579,11 @@ mod api {
             #[id = 51]
             #[lower = atan2]
             struct Atan2 {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -609,9 +595,11 @@ mod api {
             #[id = 52]
             #[lower = copysign]
             struct Copysign {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -623,9 +611,11 @@ mod api {
             #[id = 53]
             #[lower = div]
             struct Div {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -637,9 +627,11 @@ mod api {
             #[id = 54]
             #[lower = div_euclid]
             struct DivEuclid {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -651,9 +643,11 @@ mod api {
             #[id = 55]
             #[lower = hypot]
             struct Hypot {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -665,9 +659,11 @@ mod api {
             #[id = 56]
             #[lower = log]
             struct Log {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -679,9 +675,11 @@ mod api {
             #[id = 57]
             #[lower = max]
             struct Max {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -693,9 +691,11 @@ mod api {
             #[id = 58]
             #[lower = min]
             struct Min {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -707,9 +707,11 @@ mod api {
             #[id = 59]
             #[lower = mul]
             struct Mul {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -721,9 +723,11 @@ mod api {
             #[id = 60]
             #[lower = powf]
             struct Powf {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -735,9 +739,11 @@ mod api {
             #[id = 61]
             #[lower = powi]
             struct Powi {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -749,9 +755,11 @@ mod api {
             #[id = 62]
             #[lower = rem]
             struct Rem {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -763,9 +771,11 @@ mod api {
             #[id = 63]
             #[lower = rem_euclid]
             struct RemEuclid {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
@@ -777,12 +787,36 @@ mod api {
             #[id = 64]
             #[lower = sub]
             struct Sub {
+                #[trait = RhsInput]
                 #[with = with_rhs]
                 #[set = set_rhs]
                 rhs: Parameter<0>,
+                #[trait = LhsInput]
                 #[with = with_lhs]
                 #[set = set_lhs]
                 lhs: Parameter<1>,
+            }
+        );
+    }
+    pub mod buffer {
+        define_processor!(
+            #[doc = " Plays a buffer\n"]
+            #[id = 500]
+            #[lower = play]
+            struct Play {
+                #[buffer]
+                #[trait = BufferInput]
+                #[with = with_buffer]
+                #[set = set_buffer]
+                buffer: Buffer<0>,
+                #[trait = RepeatInput]
+                #[with = with_repeat]
+                #[set = set_repeat]
+                repeat: f64<0>,
+                #[trait = ResetInput]
+                #[with = with_reset]
+                #[set = set_reset]
+                reset: f64<1>,
             }
         );
     }
@@ -791,12 +825,15 @@ mod api {
             #[id = 200]
             #[lower = linear]
             struct Linear {
+                #[trait = TargetInput]
                 #[with = with_target]
                 #[set = set_target]
                 target: f64<0>,
+                #[trait = DurationInput]
                 #[with = with_duration]
                 #[set = set_duration]
                 duration: f64<1>,
+                #[trait = ValueInput]
                 #[with = with_value]
                 #[set = set_value]
                 value: f64<2>,
@@ -809,9 +846,11 @@ mod api {
             #[id = 300]
             #[lower = butterpass]
             struct Butterpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
@@ -823,9 +862,11 @@ mod api {
             #[id = 301]
             #[lower = lowpole]
             struct Lowpole {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
@@ -837,9 +878,11 @@ mod api {
             #[id = 302]
             #[lower = allpole]
             struct Allpole {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = DelayInput]
                 #[with = with_delay]
                 #[set = set_delay]
                 delay: Parameter<1>,
@@ -851,9 +894,11 @@ mod api {
             #[id = 303]
             #[lower = highpole]
             struct Highpole {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
@@ -865,12 +910,15 @@ mod api {
             #[id = 304]
             #[lower = resonator]
             struct Resonator {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
+                #[trait = BandwidthInput]
                 #[with = with_bandwidth]
                 #[set = set_bandwidth]
                 bandwidth: Parameter<2>,
@@ -882,12 +930,15 @@ mod api {
             #[id = 305]
             #[lower = moog]
             struct Moog {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -899,15 +950,19 @@ mod api {
             #[id = 306]
             #[lower = morph]
             struct Morph {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
+                #[trait = MorphInput]
                 #[with = with_morph]
                 #[set = set_morph]
                 morph: Parameter<3>,
@@ -919,6 +974,7 @@ mod api {
             #[id = 307]
             #[lower = pinkpass]
             struct Pinkpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
@@ -930,12 +986,15 @@ mod api {
             #[id = 308]
             #[lower = lowpass]
             struct Lowpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -947,12 +1006,15 @@ mod api {
             #[id = 309]
             #[lower = highpass]
             struct Highpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -964,12 +1026,15 @@ mod api {
             #[id = 310]
             #[lower = bandpass]
             struct Bandpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CutoffInput]
                 #[with = with_cutoff]
                 #[set = set_cutoff]
                 cutoff: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -981,12 +1046,15 @@ mod api {
             #[id = 311]
             #[lower = notch]
             struct Notch {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -998,12 +1066,15 @@ mod api {
             #[id = 312]
             #[lower = peak]
             struct Peak {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -1015,12 +1086,15 @@ mod api {
             #[id = 313]
             #[lower = allpass]
             struct Allpass {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
@@ -1032,15 +1106,19 @@ mod api {
             #[id = 314]
             #[lower = bell]
             struct Bell {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
+                #[trait = GainInput]
                 #[with = with_gain]
                 #[set = set_gain]
                 gain: Parameter<3>,
@@ -1052,15 +1130,19 @@ mod api {
             #[id = 315]
             #[lower = lowshelf]
             struct Lowshelf {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
+                #[trait = GainInput]
                 #[with = with_gain]
                 #[set = set_gain]
                 gain: Parameter<3>,
@@ -1072,15 +1154,19 @@ mod api {
             #[id = 316]
             #[lower = highshelf]
             struct Highshelf {
+                #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+                #[trait = CenterInput]
                 #[with = with_center]
                 #[set = set_center]
                 center: Parameter<1>,
+                #[trait = QInput]
                 #[with = with_q]
                 #[set = set_q]
                 q: Parameter<2>,
+                #[trait = GainInput]
                 #[with = with_gain]
                 #[set = set_gain]
                 gain: Parameter<3>,
@@ -1093,9 +1179,11 @@ mod api {
             #[id = 100]
             #[lower = sine]
             struct Sine {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1107,9 +1195,11 @@ mod api {
             #[id = 101]
             #[lower = sine_fast]
             struct SineFast {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1121,9 +1211,11 @@ mod api {
             #[id = 102]
             #[lower = sine_faster]
             struct SineFaster {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1135,9 +1227,11 @@ mod api {
             #[id = 103]
             #[lower = pulse]
             struct Pulse {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1149,9 +1243,11 @@ mod api {
             #[id = 104]
             #[lower = sawtooth]
             struct Sawtooth {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1163,9 +1259,11 @@ mod api {
             #[id = 105]
             #[lower = triangle]
             struct Triangle {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1183,9 +1281,11 @@ mod api {
             #[id = 107]
             #[lower = phase]
             struct Phase {
+                #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]
                 frequency: Parameter<0>,
+                #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
@@ -1197,15 +1297,19 @@ mod api {
                 #[id = 108]
                 #[lower = pulse]
                 struct Pulse {
+                    #[trait = FrequencyInput]
                     #[with = with_frequency]
                     #[set = set_frequency]
                     frequency: Parameter<0>,
+                    #[trait = DutyCycleInput]
                     #[with = with_duty_cycle]
                     #[set = set_duty_cycle]
                     duty_cycle: Parameter<1>,
+                    #[trait = DecayInput]
                     #[with = with_decay]
                     #[set = set_decay]
                     decay: Parameter<2>,
+                    #[trait = PhaseInput]
                     #[with = with_phase]
                     #[set = set_phase]
                     phase: f64<3>,
@@ -1216,9 +1320,11 @@ mod api {
                 #[id = 109]
                 #[lower = triangle]
                 struct Triangle {
+                    #[trait = FrequencyInput]
                     #[with = with_frequency]
                     #[set = set_frequency]
                     frequency: Parameter<0>,
+                    #[trait = PhaseInput]
                     #[with = with_phase]
                     #[set = set_phase]
                     phase: f64<1>,
@@ -1231,6 +1337,7 @@ mod api {
                 #[id = 110]
                 #[lower = white]
                 struct White {
+                    #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
                     seed: f64<0>,
@@ -1242,9 +1349,11 @@ mod api {
                 #[id = 111]
                 #[lower = mls]
                 struct Mls {
+                    #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
                     seed: f64<0>,
+                    #[trait = LengthInput]
                     #[with = with_length]
                     #[set = set_length]
                     length: f64<1>,
@@ -1256,6 +1365,7 @@ mod api {
                 #[id = 112]
                 #[lower = pink]
                 struct Pink {
+                    #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
                     seed: f64<0>,
@@ -1267,6 +1377,7 @@ mod api {
                 #[id = 113]
                 #[lower = brown]
                 struct Brown {
+                    #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
                     seed: f64<0>,
@@ -1280,12 +1391,15 @@ mod api {
             #[id = 75]
             #[lower = add_mul]
             struct AddMul {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
+                #[trait = AddInput]
                 #[with = with_add]
                 #[set = set_add]
                 add: Parameter<1>,
+                #[trait = MulInput]
                 #[with = with_mul]
                 #[set = set_mul]
                 mul: Parameter<2>,
@@ -1297,12 +1411,15 @@ mod api {
             #[id = 76]
             #[lower = clamp]
             struct Clamp {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
+                #[trait = MinInput]
                 #[with = with_min]
                 #[set = set_min]
                 min: Parameter<1>,
+                #[trait = MaxInput]
                 #[with = with_max]
                 #[set = set_max]
                 max: Parameter<2>,
@@ -1314,12 +1431,15 @@ mod api {
             #[id = 77]
             #[lower = mul_add]
             struct MulAdd {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
+                #[trait = MulInput]
                 #[with = with_mul]
                 #[set = set_mul]
                 mul: Parameter<1>,
+                #[trait = AddInput]
                 #[with = with_add]
                 #[set = set_add]
                 add: Parameter<2>,
@@ -1331,12 +1451,15 @@ mod api {
             #[id = 78]
             #[lower = select]
             struct Select {
+                #[trait = CondInput]
                 #[with = with_cond]
                 #[set = set_cond]
                 cond: Parameter<0>,
+                #[trait = PositiveInput]
                 #[with = with_positive]
                 #[set = set_positive]
                 positive: Parameter<1>,
+                #[trait = NegativeInput]
                 #[with = with_negative]
                 #[set = set_negative]
                 negative: Parameter<2>,
@@ -1349,6 +1472,7 @@ mod api {
             #[id = 1]
             #[lower = abs]
             struct Abs {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1360,6 +1484,7 @@ mod api {
             #[id = 2]
             #[lower = acos]
             struct Acos {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1371,6 +1496,7 @@ mod api {
             #[id = 3]
             #[lower = acosh]
             struct Acosh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1382,6 +1508,7 @@ mod api {
             #[id = 4]
             #[lower = asin]
             struct Asin {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1393,6 +1520,7 @@ mod api {
             #[id = 5]
             #[lower = asinh]
             struct Asinh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1404,6 +1532,7 @@ mod api {
             #[id = 6]
             #[lower = atan]
             struct Atan {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1415,6 +1544,7 @@ mod api {
             #[id = 7]
             #[lower = atanh]
             struct Atanh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1426,6 +1556,7 @@ mod api {
             #[id = 8]
             #[lower = cbrt]
             struct Cbrt {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1437,6 +1568,7 @@ mod api {
             #[id = 9]
             #[lower = ceil]
             struct Ceil {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1448,6 +1580,7 @@ mod api {
             #[id = 10]
             #[lower = cos]
             struct Cos {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1459,6 +1592,7 @@ mod api {
             #[id = 11]
             #[lower = cosh]
             struct Cosh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1470,6 +1604,7 @@ mod api {
             #[id = 12]
             #[lower = exp]
             struct Exp {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1481,6 +1616,7 @@ mod api {
             #[id = 13]
             #[lower = exp2]
             struct Exp2 {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1492,6 +1628,7 @@ mod api {
             #[id = 14]
             #[lower = exp_m1]
             struct ExpM1 {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1503,6 +1640,7 @@ mod api {
             #[id = 15]
             #[lower = floor]
             struct Floor {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1514,6 +1652,7 @@ mod api {
             #[id = 16]
             #[lower = fract]
             struct Fract {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1525,6 +1664,7 @@ mod api {
             #[id = 17]
             #[lower = ln]
             struct Ln {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1536,6 +1676,7 @@ mod api {
             #[id = 18]
             #[lower = ln1p]
             struct Ln1p {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1547,6 +1688,7 @@ mod api {
             #[id = 19]
             #[lower = log10]
             struct Log10 {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1558,6 +1700,7 @@ mod api {
             #[id = 20]
             #[lower = log2]
             struct Log2 {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1569,6 +1712,7 @@ mod api {
             #[id = 21]
             #[lower = norm]
             struct Norm {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1580,6 +1724,7 @@ mod api {
             #[id = 22]
             #[lower = recip]
             struct Recip {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1591,6 +1736,7 @@ mod api {
             #[id = 23]
             #[lower = round]
             struct Round {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1602,6 +1748,7 @@ mod api {
             #[id = 24]
             #[lower = signum]
             struct Signum {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1613,6 +1760,7 @@ mod api {
             #[id = 25]
             #[lower = sin]
             struct Sin {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1624,6 +1772,7 @@ mod api {
             #[id = 26]
             #[lower = sinh]
             struct Sinh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1635,6 +1784,7 @@ mod api {
             #[id = 27]
             #[lower = sqrt]
             struct Sqrt {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1646,6 +1796,7 @@ mod api {
             #[id = 28]
             #[lower = tan]
             struct Tan {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1657,6 +1808,7 @@ mod api {
             #[id = 29]
             #[lower = tanh]
             struct Tanh {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1668,6 +1820,7 @@ mod api {
             #[id = 30]
             #[lower = to_degrees]
             struct ToDegrees {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1679,6 +1832,7 @@ mod api {
             #[id = 31]
             #[lower = to_radians]
             struct ToRadians {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1690,6 +1844,7 @@ mod api {
             #[id = 32]
             #[lower = trunc]
             struct Trunc {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,
@@ -1701,6 +1856,7 @@ mod api {
             #[id = 33]
             #[lower = neg]
             struct Neg {
+                #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
                 input: Parameter<0>,

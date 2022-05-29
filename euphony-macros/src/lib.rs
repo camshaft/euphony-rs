@@ -25,7 +25,7 @@ pub fn main(_args: TokenStream, input: TokenStream) -> TokenStream {
     quote!(#main).into()
 }
 
-#[proc_macro_derive(Node, attributes(node, input))]
+#[proc_macro_derive(Node, attributes(node, input, buffer))]
 pub fn derive_processor(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as syn::DeriveInput);
     node::Node::parse(&input).into()

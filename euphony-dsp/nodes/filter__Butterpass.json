@@ -19,5 +19,6 @@
       "default": 440.0
     }
   ],
+  "buffers": [],
   "docs": " Butterworth lowpass filter (2nd order).\n"
 }

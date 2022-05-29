@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/filter.rs
+assertion_line: 293
 expression: node
 ---
 Node {
@@ -29,5 +30,6 @@ Node {
             default: 0.1,
         },
     ],
+    buffers: [],
     docs: " Bandpass filter.\n",
 }

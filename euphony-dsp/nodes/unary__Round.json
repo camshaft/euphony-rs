@@ -13,5 +13,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Returns the nearest integer to a number. Round half-way cases away from `0.0`.\n"
 }

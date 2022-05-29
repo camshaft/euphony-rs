@@ -19,5 +19,6 @@
       "default": 1.0
     }
   ],
+  "buffers": [],
   "docs": " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n"
 }

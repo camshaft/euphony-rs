@@ -18,18 +18,40 @@ pub fn spawn<const I: usize, const B: usize, N: Node<I, B>>(node: N) -> BoxProce
     Box::new(StaticNode::new(node))
 }
 
-type BufferMap = ();
+pub type Hash = [u8; 32];
+
+pub trait BufferMap: 'static + core::fmt::Debug + Send + Sync {
+    fn get(&self, id: u64, channel: u64) -> Buffer;
+}
+
+impl BufferMap for () {
+    fn get(&self, _id: u64, _channel: u64) -> Buffer {
+        Buffer {
+            samples: &[][..],
+            hash: &[0; 32],
+        }
+    }
+}
 
 pub type Sample = f64;
 pub const LEN: usize = 4000 / (core::mem::size_of::<Sample>() / 8);
 pub type Output = [Sample; LEN];
 
-type BufferKey = u64;
+type BufferKey = (u64, u64);
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Context {
-    pub buffers: BufferMap,
+    pub buffers: Box<dyn BufferMap>,
     pub partial: Option<usize>,
+}
+
+impl Default for Context {
+    fn default() -> Self {
+        Self {
+            buffers: Box::new(()),
+            partial: None,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Default)]
@@ -48,6 +70,7 @@ type Parameter = u64;
 pub enum ParameterValue {
     Constant(f64),
     Node(u64),
+    Buffer(BufferKey),
 }
 
 pub enum Value {
@@ -125,10 +148,23 @@ impl<'a> Iterator for InputIter<'a> {
     }
 }
 
-#[allow(dead_code)] // TODO
 pub struct Buffers<'a, const B: usize> {
-    buffers: &'a BufferMap,
+    buffers: &'a dyn BufferMap,
     keys: &'a [BufferKey; B],
+}
+
+impl<'a, const B: usize> Buffers<'a, B> {
+    #[inline]
+    pub fn get(&self, index: usize) -> Buffer {
+        debug_assert!(index < B);
+        let (buffer, channel) = unsafe { *self.keys.get_unchecked(index) };
+        self.buffers.get(buffer, channel)
+    }
+}
+
+pub struct Buffer<'a> {
+    pub samples: &'a [f64],
+    pub hash: &'a Hash,
 }
 
 pub struct StaticNode<const I: usize, const B: usize, P: Node<I, B>> {
@@ -224,7 +260,7 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
         };
 
         let buffers = Buffers {
-            buffers: &context.buffers,
+            buffers: context.buffers.as_ref(),
             keys: &self.buffers,
         };
 

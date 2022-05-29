@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/unary.rs
+assertion_line: 81
 expression: node
 ---
 Node {
@@ -17,5 +18,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Returns the smallest integer greater than or equal to a number.\n",
 }

@@ -1,5 +1,6 @@
 ---
 source: euphony-dsp/src/osc/noise.rs
+assertion_line: 107
 expression: node
 ---
 Node {
@@ -18,5 +19,6 @@ Node {
             default: 0.0,
         },
     ],
+    buffers: [],
     docs: " Brown noise generator.\n",
 }

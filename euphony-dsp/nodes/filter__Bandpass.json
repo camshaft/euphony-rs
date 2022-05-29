@@ -25,5 +25,6 @@
       "default": 0.1
     }
   ],
+  "buffers": [],
   "docs": " Bandpass filter.\n"
 }

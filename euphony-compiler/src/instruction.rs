@@ -91,6 +91,13 @@ impl fmt::Display for Instruction {
                 Value::Constant(value) => {
                     write!(f, "  SET {},{},{}", target_node, target_parameter, value)
                 }
+                Value::Buffer((buffer, channel)) => {
+                    write!(
+                        f,
+                        "  BUF {},{},{},{}",
+                        target_node, target_parameter, buffer, channel
+                    )
+                }
             },
             Instruction::FinishNode { node } => write!(f, "  FIN {}", node),
         }
@@ -111,6 +118,16 @@ impl From<InternalInstruction> for Instruction {
                 target_node,
                 target_parameter,
                 value: Value::Constant(f64::from_bits(value)),
+            },
+            SetBuffer {
+                target_node,
+                target_parameter,
+                buffer,
+                buffer_channel,
+            } => Self::SetParameter {
+                target_node,
+                target_parameter,
+                value: Value::Buffer((buffer, buffer_channel)),
             },
             ConnectParameter {
                 target_node,
@@ -140,6 +157,12 @@ pub enum InternalInstruction {
         target_node: u64,
         target_parameter: u64,
         value: u64,
+    },
+    SetBuffer {
+        target_node: u64,
+        target_parameter: u64,
+        buffer: u64,
+        buffer_channel: u64,
     },
     ConnectParameter {
         target_node: u64,

@@ -116,4 +116,18 @@ impl Writer for Timeline {
             entries: HashDisplay(*hash),
         });
     }
+
+    fn buffer<
+        F: FnOnce(
+            Box<dyn euphony_compiler::BufferReader>,
+        ) -> euphony_compiler::Result<Vec<euphony_compiler::ConvertedBuffer>, E>,
+        E,
+    >(
+        &self,
+        _path: &str,
+        _sample_rate: u64,
+        _init: F,
+    ) -> euphony_compiler::Result<Vec<euphony_compiler::CachedBuffer>, E> {
+        unimplemented!()
+    }
 }

@@ -19,5 +19,6 @@
       "default": 0.75
     }
   ],
+  "buffers": [],
   "docs": " A triangle oscillator\n\n # frequency\n\n # phase (trigger)\n"
 }

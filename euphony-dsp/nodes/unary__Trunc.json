@@ -13,5 +13,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Returns the integer part of a number.\n"
 }

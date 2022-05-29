@@ -31,5 +31,6 @@
       "default": 1.0
     }
   ],
+  "buffers": [],
   "docs": " Highshelf filter.\n"
 }

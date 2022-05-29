@@ -19,5 +19,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Mostly accurate, but faster sine oscillator\n\n # frequency\n\n # phase (trigger)\n"
 }

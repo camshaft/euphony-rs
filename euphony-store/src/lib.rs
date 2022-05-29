@@ -60,4 +60,18 @@ impl<S: Writer, T: Writer> Writer for Store<S, T> {
         self.storage.group(name, hash, entries);
         self.timeline.group(name, hash, None.into_iter());
     }
+
+    fn buffer<
+        F: FnOnce(
+            Box<dyn euphony_compiler::BufferReader>,
+        ) -> euphony_compiler::Result<Vec<euphony_compiler::ConvertedBuffer>, E>,
+        E,
+    >(
+        &self,
+        path: &str,
+        sample_rate: u64,
+        init: F,
+    ) -> euphony_compiler::Result<Vec<euphony_compiler::CachedBuffer>, E> {
+        self.storage.buffer(path, sample_rate, init)
+    }
 }

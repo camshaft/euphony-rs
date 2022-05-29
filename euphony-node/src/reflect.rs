@@ -57,6 +57,9 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
         for input in node.inputs.iter() {
             inputs.insert(input.name.clone());
         }
+        for buffer in node.buffers.iter() {
+            inputs.insert(buffer.name.clone());
+        }
 
         modules.insert(node);
     }
@@ -160,8 +163,8 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     w!("pub mod input {{");
     level += 1;
     for input in &inputs {
-        w!("#[allow(non_camel_case_types)]");
-        w!("pub trait {}<Value> {{", input);
+        let trait_name = input.to_pascal_case();
+        w!("pub trait {}Input<Value> {{", trait_name);
         w!("    fn with_{}(self, value: Value) -> Self;", input);
         w!("    fn set_{}(&self, value: Value) -> &Self;", input);
         w!("}}");
@@ -264,6 +267,7 @@ pub struct Node {
     pub impl_path: String,
     pub id: u64,
     pub inputs: Vec<Input>,
+    pub buffers: Vec<Buffer>,
     pub docs: String,
 }
 
@@ -296,6 +300,12 @@ pub struct Input {
     pub id: u64,
     pub trigger: bool,
     pub default: f64,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Buffer {
+    pub name: String,
+    pub id: u64,
 }
 
 fn sync_file<C: AsRef<[u8]>>(path: &Path, contents: C) {
@@ -355,7 +365,16 @@ impl Module {
             w!("struct {} {{", node.name);
             level += 1;
 
+            for buffer in &node.buffers {
+                w!("#[buffer]");
+                w!("#[trait = {}Input]", buffer.name.to_pascal_case());
+                w!("#[with = with_{}]", buffer.name);
+                w!("#[set = set_{}]", buffer.name);
+                w!("{}: Buffer<{}>,", buffer.name, buffer.id);
+            }
+
             for input in &node.inputs {
+                w!("#[trait = {}Input]", input.name.to_pascal_case());
                 w!("#[with = with_{}]", input.name);
                 w!("#[set = set_{}]", input.name);
                 if input.trigger {

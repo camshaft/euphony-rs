@@ -20,5 +20,6 @@
       "default": 0.0
     }
   ],
+  "buffers": [],
   "docs": " Maximum Length Sequence noise generator from an `n`-bit sequence.\n"
 }
