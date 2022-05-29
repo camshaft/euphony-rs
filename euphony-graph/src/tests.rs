@@ -130,7 +130,6 @@ impl super::Processor<Config> for Processor {
 
 fn model(ops: &[Op]) -> Result<(), Error<u8>> {
     let mut subject = Graph::<Config>::default();
-    let context = ();
 
     let mut ids = Ids::default();
 
@@ -169,7 +168,7 @@ fn model(ops: &[Op]) -> Result<(), Error<u8>> {
                 // update all of the levels before rendering
                 subject.update()?;
 
-                subject.process(&context);
+                subject.process(&());
 
                 // make sure the render function was called for each one
                 for id in ids.iter() {

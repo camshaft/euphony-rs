@@ -2,6 +2,7 @@ use crate::{manifest::Manifest, watcher::Subscriptions, Result};
 use futures::StreamExt as _;
 use std::{
     collections::HashSet,
+    fmt::Write as _,
     path::{Path, PathBuf},
 };
 use structopt::StructOpt;
@@ -87,7 +88,7 @@ impl<Context> Subscriptions<Context> for SseSubs {
 
                 let path = path.strip_prefix(&self.project_filter).unwrap().display();
 
-                msg.push_str(&format!("{:?}", path));
+                write!(msg, "{:?}", path).unwrap();
                 msg.push(':');
                 msg.push_str(&contents);
             }
