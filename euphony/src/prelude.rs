@@ -23,6 +23,7 @@ pub use crate::{
         zip::Zip as ZipExt,
     },
 };
+pub use euphony_samples as samples;
 pub use futures::{FutureExt, StreamExt};
 
 pub mod western {

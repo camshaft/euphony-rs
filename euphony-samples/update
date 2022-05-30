@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+clone() {
+  if [ ! -d "etc/$2" ]; then
+    git clone https://github.com/$1/$2.git etc/$2
+  else
+    cd etc/$2
+    git pull
+    cd ../..
+  fi
+}
+
+clone tidalcycles Dirt-Samples
+clone sonic-pi-net sonic-pi
+clone KristofferKarlAxelEkstrand AKWF-FREE
+#clone camshaft euphony-samples
+
+EUPHONY_SAMPLES_GEN=1 cargo test --release -- --nocapture
+rustfmt src/samples.rs src/waveforms.rs

@@ -16,6 +16,7 @@ pub mod hash;
 
 static TARGET_DIR: Lazy<PathBuf> = Lazy::new(|| {
     let dir = std::env::var("EUPHONY_TARGET_DIR").unwrap_or_else(|_| "target/euphony".to_owned());
+    std::fs::create_dir_all(&dir).unwrap();
     PathBuf::from(dir).canonicalize().unwrap()
 });
 
@@ -114,11 +115,17 @@ impl Values {
             return self.meta(source).contents.to_owned();
         }
 
-        // TODO get from url
-        let ext = "";
+        eprintln!(" Downloading {}", source);
+
+        let ext = Path::new(source)
+            .extension()
+            .and_then(|e| e.to_str())
+            .unwrap_or("");
 
         hash::create(&*BUFFER_DIR, ext, |writer| {
             reqwest::blocking::get(source)
+                .unwrap()
+                .error_for_status()
                 .unwrap()
                 .copy_to(writer)
                 .unwrap();

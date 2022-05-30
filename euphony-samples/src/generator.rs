@@ -7,8 +7,14 @@ use std::{
     path::{Path, PathBuf},
 };
 
+macro_rules! p {
+    ($p:literal) => {
+        concat!(env!("CARGO_MANIFEST_DIR"), "/", $p)
+    };
+}
+
 const SAMPLE_RATE: u32 = 48_000;
-const SAMPLE_DIR: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/samples");
+const SAMPLE_DIR: &str = p!("etc/euphony-samples");
 
 #[test]
 fn generate() {
@@ -18,6 +24,11 @@ fn generate() {
 
     fs::create_dir_all(SAMPLE_DIR).unwrap();
 
+    samples().unwrap();
+    waveforms().unwrap();
+}
+
+fn samples() -> io::Result<()> {
     let mut groups = vec![];
 
     dirt(&mut groups);
@@ -25,9 +36,35 @@ fn generate() {
 
     groups.sort_by(|a, b| a.path.cmp(&b.path));
 
-    for g in &groups {
-        eprintln!("{:?}", &g.path);
+    let mut root = GroupNode::default();
+
+    for mut g in groups {
+        g.path.reverse();
+        root.insert(g);
     }
+
+    root.to_file(p!("src/samples.rs"))?;
+
+    Ok(())
+}
+
+fn waveforms() -> io::Result<()> {
+    let mut groups = vec![];
+
+    akwf(&mut groups);
+
+    groups.sort_by(|a, b| a.path.cmp(&b.path));
+
+    let mut root = GroupNode::default();
+
+    for mut g in groups {
+        g.path.reverse();
+        root.insert(g);
+    }
+
+    root.to_file(p!("src/waveforms.rs"))?;
+
+    Ok(())
 }
 
 #[derive(Default)]
@@ -37,8 +74,28 @@ struct GroupNode {
 }
 
 impl GroupNode {
+    pub fn to_file(&self, out: &str) -> io::Result<()> {
+        let s = fs::File::create(out)?;
+        let mut s = io::BufWriter::new(s);
+
+        writeln!(s, "#![allow(non_upper_case_globals)]")?;
+
+        self.write("", &mut s)
+    }
+
     pub fn insert(&mut self, mut group: Group) {
-        if let Some(child) = group.path.pop() {
+        if let Some(mut child) = group.path.pop() {
+            if child == "808" {
+                child = "tr808".to_owned();
+            } else if child == "909" {
+                child = "tr909".to_owned();
+            } else if child == "loop" {
+                child = "loops".to_owned();
+            } else if child == "if" {
+                child = "iff".to_owned();
+            } else if child == "3d_printer" {
+                child = "printer".to_owned();
+            }
             let c = self.children.entry(child).or_default();
             c.insert(group);
             return;
@@ -47,13 +104,31 @@ impl GroupNode {
         self.samples.extend(group.samples);
     }
 
-    pub fn samples<W: Write>(&self, w: &mut W) -> io::Result<()> {
-        writeln!(w, "&[")?;
-        for sample in &self.samples {
-            let hash = sample.path.file_stem().unwrap().to_str().unwrap();
-            writeln!(w, "b!({:?}),", hash)?;
+    fn write<W: Write>(&self, name: &str, w: &mut W) -> io::Result<()> {
+        if !self.samples.is_empty() {
+            writeln!(w, "g!({},", name)?;
+            for sample in &self.samples {
+                let hash = sample.path.file_stem().unwrap().to_str().unwrap();
+                writeln!(w, "{:?},", hash)?;
+            }
+            writeln!(w, ");")?
         }
-        writeln!(w, "]")
+
+        if self.children.is_empty() {
+            return Ok(());
+        }
+
+        if !name.is_empty() {
+            writeln!(w, "pub mod {} {{", name)?;
+        }
+        for (name, group) in &self.children {
+            group.write(name, w)?;
+        }
+        if !name.is_empty() {
+            writeln!(w, "}}")?;
+        }
+
+        Ok(())
     }
 }
 
@@ -67,7 +142,7 @@ struct Sample {
 }
 
 impl Sample {
-    pub fn new(path: &Path) -> Result<Self> {
+    pub fn new(path: &Path, resample: bool) -> Result<Self> {
         let file = fs::File::open(path)?;
         let ext = path.extension().and_then(|ext| ext.to_str()).unwrap_or("");
         let mut reader = decode::reader(file, ext)?;
@@ -77,9 +152,11 @@ impl Sample {
             return Err(io::Error::new(io::ErrorKind::Other, "empty file").into());
         }
 
-        samples
-            .resample(SAMPLE_RATE)
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+        if resample {
+            samples
+                .resample(SAMPLE_RATE)
+                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+        }
 
         if samples.channels.len() == 2 {
             // if the 2 channels are the same then just make it mono
@@ -112,32 +189,16 @@ impl Sample {
 }
 
 fn dirt(groups: &mut Vec<Group>) {
-    let entries = concat!(env!("CARGO_MANIFEST_DIR"), "/etc/dirt");
-    let mut dirs = vec![];
-    for entry in fs::read_dir(entries).unwrap() {
-        let entry = entry.unwrap();
-        if !entry.file_type().unwrap().is_dir() {
-            continue;
-        }
-
-        dirs.push(entry.path());
-    }
+    let entries = p!("etc/Dirt-Samples");
+    let dirs = dirs(Path::new(entries));
 
     let g = dirs.par_iter().filter_map(|dir| {
         let name = dir.file_name().unwrap().to_str().unwrap();
-        let mut files = vec![];
-        for entry in fs::read_dir(dir).unwrap() {
-            let entry = entry.unwrap();
-            if !entry.file_type().unwrap().is_file() {
-                continue;
-            }
-
-            files.push(entry.path());
-        }
+        let files = files(dir);
 
         let samples = files
             .par_iter()
-            .filter_map(|sample| Sample::new(sample).ok())
+            .filter_map(|sample| Sample::new(sample, true).ok())
             .collect::<Vec<_>>();
 
         if samples.is_empty() {
@@ -162,7 +223,7 @@ fn dirt(groups: &mut Vec<Group>) {
 }
 
 fn sonic_pi(groups: &mut Vec<Group>) {
-    let entries = concat!(env!("CARGO_MANIFEST_DIR"), "/etc/sonic-pi/etc/samples");
+    let entries = p!("etc/sonic-pi/etc/samples");
     let mut samples = vec![];
     for entry in fs::read_dir(entries).unwrap() {
         let entry = entry.unwrap();
@@ -176,7 +237,7 @@ fn sonic_pi(groups: &mut Vec<Group>) {
     let samples: Vec<_> = samples
         .par_iter()
         .filter_map(|path| {
-            Sample::new(path).ok().map(|s| {
+            Sample::new(path, true).ok().map(|s| {
                 let stem = path.file_stem().unwrap().to_str().unwrap().to_owned();
                 (stem, s)
             })
@@ -191,4 +252,71 @@ fn sonic_pi(groups: &mut Vec<Group>) {
             samples: vec![sample],
         })
     }
+}
+
+fn akwf(groups: &mut Vec<Group>) {
+    let entries = p!("etc/AKWF-FREE/AKWF");
+    let dirs = dirs(Path::new(entries));
+
+    let g = dirs.par_iter().filter_map(|dir| {
+        let name = dir.file_name().unwrap().to_str().unwrap();
+
+        let files = files(dir);
+
+        let samples = files
+            .par_iter()
+            .filter_map(|sample| {
+                if sample.extension().and_then(|e| e.to_str()) != Some("wav") {
+                    return None;
+                }
+                Sample::new(sample, false).ok()
+            })
+            .collect::<Vec<_>>();
+
+        if samples.is_empty() {
+            return None;
+        }
+
+        let mut path = vec!["akwf".to_owned()];
+
+        if name.starts_with("AKWF_00") {
+            // uncategorized - put in the root
+        } else if let Some(name) = name.strip_prefix("AKWF_bw_") {
+            path.push("bw".to_owned());
+            path.push(name.to_owned());
+        } else {
+            let name = name.strip_prefix("AKWF_").unwrap();
+            path.push(name.to_owned());
+        }
+
+        Some(Group { path, samples })
+    });
+
+    groups.par_extend(g);
+}
+
+fn dirs(dir: &Path) -> Vec<PathBuf> {
+    let mut dirs = vec![];
+    for entry in fs::read_dir(dir).unwrap() {
+        let entry = entry.unwrap();
+        if !entry.file_type().unwrap().is_dir() {
+            continue;
+        }
+
+        dirs.push(entry.path());
+    }
+    dirs
+}
+
+fn files(dir: &Path) -> Vec<PathBuf> {
+    let mut files = vec![];
+    for entry in fs::read_dir(dir).unwrap() {
+        let entry = entry.unwrap();
+        if !entry.file_type().unwrap().is_file() {
+            continue;
+        }
+
+        files.push(entry.path());
+    }
+    files
 }

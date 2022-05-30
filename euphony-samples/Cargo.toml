@@ -2,7 +2,7 @@
 name = "euphony-samples"
 version = "0.1.0"
 edition = "2021"
-license = "CC0 1.0"
+license = "MIT"
 
 [dependencies]
 euphony-buffer = { version = "0.1", path = "../euphony-buffer", default-features = false }
