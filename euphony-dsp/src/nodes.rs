@@ -71,6 +71,7 @@ pub fn load(processor: u64) -> Option<BoxProcessor> {
         111 => Some(crate::osc::noise::Mls::spawn()),
         112 => Some(crate::osc::noise::Pink::spawn()),
         113 => Some(crate::osc::noise::Brown::spawn()),
+        114 => Some(crate::osc::wave::Wave::spawn()),
         200 => Some(crate::env::Linear::spawn()),
         300 => Some(crate::filter::Butterpass::spawn()),
         301 => Some(crate::filter::Lowpole::spawn()),
@@ -89,6 +90,7 @@ pub fn load(processor: u64) -> Option<BoxProcessor> {
         314 => Some(crate::filter::Bell::spawn()),
         315 => Some(crate::filter::Lowshelf::spawn()),
         316 => Some(crate::filter::Highshelf::spawn()),
+        317 => Some(crate::osc::wave::Shaper::spawn()),
         500 => Some(crate::buffer::Play::spawn()),
         _ => None,
     }
@@ -164,6 +166,7 @@ pub fn name(processor: u64) -> Option<&'static str> {
         111 => Some("Mls"),
         112 => Some("Pink"),
         113 => Some("Brown"),
+        114 => Some("Wave"),
         200 => Some("Linear"),
         300 => Some("Butterpass"),
         301 => Some("Lowpole"),
@@ -182,6 +185,7 @@ pub fn name(processor: u64) -> Option<&'static str> {
         314 => Some("Bell"),
         315 => Some("Lowshelf"),
         316 => Some("Highshelf"),
+        317 => Some("Shaper"),
         500 => Some("Play"),
         _ => None,
     }
@@ -257,6 +261,7 @@ pub fn validate_parameter(processor: u64, parameter: u64, value: Value) -> Resul
         111 => crate::osc::noise::Mls::validate_parameter(parameter, value),
         112 => crate::osc::noise::Pink::validate_parameter(parameter, value),
         113 => crate::osc::noise::Brown::validate_parameter(parameter, value),
+        114 => crate::osc::wave::Wave::validate_parameter(parameter, value),
         200 => crate::env::Linear::validate_parameter(parameter, value),
         300 => crate::filter::Butterpass::validate_parameter(parameter, value),
         301 => crate::filter::Lowpole::validate_parameter(parameter, value),
@@ -275,6 +280,7 @@ pub fn validate_parameter(processor: u64, parameter: u64, value: Value) -> Resul
         314 => crate::filter::Bell::validate_parameter(parameter, value),
         315 => crate::filter::Lowshelf::validate_parameter(parameter, value),
         316 => crate::filter::Highshelf::validate_parameter(parameter, value),
+        317 => crate::osc::wave::Shaper::validate_parameter(parameter, value),
         500 => crate::buffer::Play::validate_parameter(parameter, value),
         _ => unreachable!("processor ({}) param ({}) doesn't exist", processor, parameter)
     }

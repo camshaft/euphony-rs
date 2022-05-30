@@ -412,6 +412,11 @@ pub mod ext {
         fn resonator(&self) -> crate::processors::filter::Resonator {
             crate::processors::filter::resonator().with_signal(self)
         }
+        #[inline]
+        #[doc = ""]
+        fn shaper(&self) -> crate::processors::filter::Shaper {
+            crate::processors::filter::shaper().with_signal(self)
+        }
     }
     impl<T> ProcessorExt for T
     where
@@ -1172,6 +1177,22 @@ mod api {
                 gain: Parameter<3>,
             }
         );
+
+        define_processor!(
+            #[id = 317]
+            #[lower = shaper]
+            struct Shaper {
+                #[buffer]
+                #[trait = BufferInput]
+                #[with = with_buffer]
+                #[set = set_buffer]
+                buffer: Buffer<0>,
+                #[trait = SignalInput]
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+            }
+        );
     }
     pub mod osc {
         define_processor!(
@@ -1281,6 +1302,26 @@ mod api {
             #[id = 107]
             #[lower = phase]
             struct Phase {
+                #[trait = FrequencyInput]
+                #[with = with_frequency]
+                #[set = set_frequency]
+                frequency: Parameter<0>,
+                #[trait = PhaseInput]
+                #[with = with_phase]
+                #[set = set_phase]
+                phase: f64<1>,
+            }
+        );
+
+        define_processor!(
+            #[id = 114]
+            #[lower = wave]
+            struct Wave {
+                #[buffer]
+                #[trait = BufferInput]
+                #[with = with_buffer]
+                #[set = set_buffer]
+                buffer: Buffer<0>,
                 #[trait = FrequencyInput]
                 #[with = with_frequency]
                 #[set = set_frequency]

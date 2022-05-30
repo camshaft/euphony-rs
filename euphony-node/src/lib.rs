@@ -163,7 +163,7 @@ impl<'a, const B: usize> Buffers<'a, B> {
 }
 
 pub struct Buffer<'a> {
-    pub samples: &'a [f64],
+    pub samples: &'a [Sample],
     pub hash: &'a Hash,
 }
 

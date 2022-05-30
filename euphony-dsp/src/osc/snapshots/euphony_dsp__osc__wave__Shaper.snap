@@ -1,0 +1,28 @@
+---
+source: euphony-dsp/src/osc/wave.rs
+assertion_line: 39
+expression: node
+---
+Node {
+    name: "Shaper",
+    module: [
+        "filter",
+    ],
+    impl_path: "euphony_dsp::osc::wave",
+    id: 317,
+    inputs: [
+        Input {
+            name: "signal",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    buffers: [
+        Buffer {
+            name: "buffer",
+            id: 0,
+        },
+    ],
+    docs: "",
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Wave",
+  "module": [
+    "osc"
+  ],
+  "impl_path": "euphony_dsp::osc::wave",
+  "id": 114,
+  "inputs": [
+    {
+      "name": "frequency",
+      "id": 0,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "phase",
+      "id": 1,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "buffers": [
+    {
+      "name": "buffer",
+      "id": 0
+    }
+  ],
+  "docs": ""
+}

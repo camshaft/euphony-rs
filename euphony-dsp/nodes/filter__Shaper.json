@@ -1,0 +1,23 @@
+{
+  "name": "Shaper",
+  "module": [
+    "filter"
+  ],
+  "impl_path": "euphony_dsp::osc::wave",
+  "id": 317,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "buffers": [
+    {
+      "name": "buffer",
+      "id": 0
+    }
+  ],
+  "docs": ""
+}

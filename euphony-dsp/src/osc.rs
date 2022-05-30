@@ -4,6 +4,7 @@ use fastapprox::{fast, faster};
 
 pub mod nes;
 pub mod noise;
+pub mod wave;
 
 #[derive(Debug, Clone, Copy, Default, Node)]
 #[node(id = 107, module = "osc")]
