@@ -12,6 +12,7 @@ use std::{
 
 thread_local! {
     static NODE_ID: Counter = Counter::new();
+    static BUFFER_ID: Counter = Counter::new();
 }
 
 struct Counter(RefCell<u64>);
@@ -78,13 +79,15 @@ impl Node {
     }
 
     pub fn set_buffer<C: AsChannel>(&self, index: u64, channel: C) {
-        let buffer = channel.buffer(|id, path, ext| {
+        let buffer = channel.buffer(|path, ext| {
+            let id = BUFFER_ID.with(|v| v.next());
             // load the buffer if needed
             emit(LoadBuffer {
                 id,
                 path: path.display().to_string(),
                 ext: ext.to_owned(),
             });
+            id
         });
         let buffer_channel = channel.channel() as u64;
 

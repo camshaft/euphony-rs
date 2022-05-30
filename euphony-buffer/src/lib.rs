@@ -4,14 +4,15 @@ use serde::{Deserialize, Serialize};
 use std::{
     ffi::OsStr,
     fmt,
-    io::{self, Read, Seek, SeekFrom, Write},
+    io::{Read, Write},
     path::{Path, PathBuf},
-    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, SystemTime},
 };
-use symphonia::core::{codecs::CodecParameters, probe::Hint};
+use symphonia::core::codecs::CodecParameters;
 
 pub use symphonia;
+pub mod decode;
+pub mod hash;
 
 static TARGET_DIR: Lazy<PathBuf> = Lazy::new(|| {
     let dir = std::env::var("EUPHONY_TARGET_DIR").unwrap_or_else(|_| "target/euphony".to_owned());
@@ -48,7 +49,7 @@ impl<S> Buffer<S> {
 
 impl<S: AsRef<str>> Buffer<S> {
     #[doc(hidden)]
-    pub fn initialize<F: FnOnce(u64, &Path, &str)>(&self, init: F) -> u64 {
+    pub fn initialize<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64 {
         self.values.initialize(self.source.as_ref(), init)
     }
 
@@ -87,21 +88,17 @@ impl Values {
         }
     }
 
-    fn initialize<F: FnOnce(u64, &Path, &str)>(&self, source: &str, init: F) -> u64 {
+    fn initialize<F: FnOnce(&Path, &str) -> u64>(&self, source: &str, init: F) -> u64 {
         *self.id.get_or_init(|| {
-            static IDS: AtomicU64 = AtomicU64::new(0);
-            let id = IDS.fetch_add(1, Ordering::SeqCst);
-
             let contents = self.contents_path(source);
             let meta = self.meta(source);
-            init(id, contents, meta.ext.as_deref().unwrap_or(""));
-
-            id
+            init(contents, meta.ext.as_deref().unwrap_or(""))
         })
     }
 
     fn contents_path(&self, source: &str) -> &Path {
         self.contents_path.get_or_init(|| {
+            #[cfg(feature = "http")]
             if source.starts_with("https://") || source.starts_with("http://") {
                 return self.http(source);
             }
@@ -110,28 +107,24 @@ impl Values {
         })
     }
 
+    #[cfg(feature = "http")]
     fn http(&self, source: &str) -> PathBuf {
         let meta_path = self.meta_path(source);
         if meta_path.exists() {
             return self.meta(source).contents.to_owned();
         }
 
-        let mut tmp = tempfile::NamedTempFile::new().unwrap();
-        {
-            let mut buf = std::io::BufWriter::new(&mut tmp);
+        // TODO get from url
+        let ext = "";
+
+        hash::create(&*BUFFER_DIR, ext, |writer| {
             reqwest::blocking::get(source)
                 .unwrap()
-                .copy_to(&mut buf)
+                .copy_to(writer)
                 .unwrap();
-            buf.flush().unwrap();
-        }
-
-        tmp.seek(SeekFrom::Start(0)).unwrap();
-
-        let hash = hash_reader(&mut tmp);
-        let path = hash_path(&*BUFFER_DIR, &hash);
-        tmp.persist(&path).unwrap();
-        path
+            Ok(())
+        })
+        .unwrap()
     }
 
     fn local(&self, source: &str) -> PathBuf {
@@ -175,7 +168,7 @@ impl Values {
 
             let contents_path = self.contents_path(source);
             let contents = std::fs::File::open(contents_path).unwrap();
-            let format = open_stream(contents, ext.unwrap_or("")).unwrap();
+            let format = decode::reader(contents, ext.unwrap_or("")).unwrap();
 
             let mut meta = Meta {
                 contents: contents_path.to_owned(),
@@ -199,31 +192,6 @@ impl Values {
     }
 }
 
-pub fn open_stream(
-    contents: impl io::Read + Send + Sync + 'static,
-    ext: &str,
-) -> symphonia::core::errors::Result<Box<dyn symphonia::core::formats::FormatReader>> {
-    let contents = std::io::BufReader::new(contents);
-    let contents = symphonia::core::io::ReadOnlySource::new(contents);
-
-    let contents =
-        symphonia::core::io::MediaSourceStream::new(Box::new(contents), Default::default());
-
-    let mut hint = Hint::new();
-    if !ext.is_empty() {
-        hint.with_extension(ext);
-    }
-
-    let res = symphonia::default::get_probe().format(
-        &hint,
-        contents,
-        &Default::default(),
-        &Default::default(),
-    )?;
-
-    Ok(res.format)
-}
-
 pub struct Channel<'a, Buffer>(&'a Buffer, u64);
 
 impl<'a, B> Channel<'a, B> {
@@ -237,13 +205,13 @@ impl<'a, B> Channel<'a, B> {
 }
 
 pub trait AsChannel {
-    fn buffer<F: FnOnce(u64, &Path, &str)>(&self, init: F) -> u64;
+    fn buffer<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64;
     fn duration(&self) -> Duration;
     fn channel(&self) -> u64;
 }
 
 impl<T: AsChannel> AsChannel for &T {
-    fn buffer<F: FnOnce(u64, &Path, &str)>(&self, init: F) -> u64 {
+    fn buffer<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64 {
         (*self).buffer(init)
     }
 
@@ -257,7 +225,7 @@ impl<T: AsChannel> AsChannel for &T {
 }
 
 impl<'a, S: AsRef<str>> AsChannel for Channel<'a, Buffer<S>> {
-    fn buffer<F: FnOnce(u64, &Path, &str)>(&self, init: F) -> u64 {
+    fn buffer<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64 {
         self.0.initialize(init)
     }
 
@@ -271,7 +239,7 @@ impl<'a, S: AsRef<str>> AsChannel for Channel<'a, Buffer<S>> {
 }
 
 impl<S: AsRef<str>> AsChannel for Buffer<S> {
-    fn buffer<F: FnOnce(u64, &Path, &str)>(&self, init: F) -> u64 {
+    fn buffer<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64 {
         self.initialize(init)
     }
 

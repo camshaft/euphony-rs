@@ -10,7 +10,7 @@ parallel = ["rayon", "euphony-graph/rayon"]
 
 [dependencies]
 blake3 = "1"
-euphony-buffer = { version = "0.1", path = "../euphony-buffer" }
+euphony-buffer = { version = "0.1", path = "../euphony-buffer", features = ["resample"] }
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-dsp = { version = "0.1", path = "../euphony-dsp" }
 euphony-graph = { version = "0.1", path = "../euphony-graph" }
@@ -18,7 +18,6 @@ euphony-node = { version = "0.1", path = "../euphony-node" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
 petgraph = "0.6"
 rayon = { version = "1", optional = true }
-rubato = "0.12"
 
 [dev-dependencies]
 bolero = "0.6"

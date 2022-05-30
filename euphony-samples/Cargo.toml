@@ -1,0 +1,15 @@
+[package]
+name = "euphony-samples"
+version = "0.1.0"
+edition = "2021"
+license = "CC0 1.0"
+
+[dependencies]
+euphony-buffer = { version = "0.1", path = "../euphony-buffer", default-features = false }
+
+[dev-dependencies]
+blake3 = "1"
+euphony-buffer = { version = "0.1", path = "../euphony-buffer", features = ["resample"] }
+hound = "3"
+rayon = "1"
+rubato = "0.12"
