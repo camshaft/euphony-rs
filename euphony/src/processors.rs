@@ -425,6 +425,10 @@ pub mod ext {
     {}
 }
 pub mod input {
+    pub trait AInput<Value> {
+        fn with_a(self, value: Value) -> Self;
+        fn set_a(&self, value: Value) -> &Self;
+    }
     pub trait AddInput<Value> {
         fn with_add(self, value: Value) -> Self;
         fn set_add(&self, value: Value) -> &Self;
@@ -432,6 +436,10 @@ pub mod input {
     pub trait AzimuthInput<Value> {
         fn with_azimuth(self, value: Value) -> Self;
         fn set_azimuth(&self, value: Value) -> &Self;
+    }
+    pub trait BInput<Value> {
+        fn with_b(self, value: Value) -> Self;
+        fn set_b(&self, value: Value) -> &Self;
     }
     pub trait BandwidthInput<Value> {
         fn with_bandwidth(self, value: Value) -> Self;
@@ -516,6 +524,10 @@ pub mod input {
     pub trait PhaseInput<Value> {
         fn with_phase(self, value: Value) -> Self;
         fn set_phase(&self, value: Value) -> &Self;
+    }
+    pub trait PositionInput<Value> {
+        fn with_position(self, value: Value) -> Self;
+        fn set_position(&self, value: Value) -> &Self;
     }
     pub trait PositiveInput<Value> {
         fn with_positive(self, value: Value) -> Self;
@@ -1330,6 +1342,35 @@ mod api {
                 #[with = with_phase]
                 #[set = set_phase]
                 phase: f64<1>,
+            }
+        );
+
+        define_processor!(
+            #[id = 115]
+            #[lower = morph]
+            struct Morph {
+                #[buffer]
+                #[trait = AInput]
+                #[with = with_a]
+                #[set = set_a]
+                a: Buffer<0>,
+                #[buffer]
+                #[trait = BInput]
+                #[with = with_b]
+                #[set = set_b]
+                b: Buffer<1>,
+                #[trait = FrequencyInput]
+                #[with = with_frequency]
+                #[set = set_frequency]
+                frequency: Parameter<0>,
+                #[trait = PositionInput]
+                #[with = with_position]
+                #[set = set_position]
+                position: Parameter<1>,
+                #[trait = PhaseInput]
+                #[with = with_phase]
+                #[set = set_phase]
+                phase: f64<2>,
             }
         );
 

@@ -1,0 +1,44 @@
+---
+source: euphony-dsp/src/osc/wave.rs
+assertion_line: 36
+expression: node
+---
+Node {
+    name: "Morph",
+    module: [
+        "osc",
+    ],
+    impl_path: "euphony_dsp::osc::wave",
+    id: 115,
+    inputs: [
+        Input {
+            name: "frequency",
+            id: 0,
+            trigger: false,
+            default: 440.0,
+        },
+        Input {
+            name: "position",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "phase",
+            id: 2,
+            trigger: true,
+            default: 0.0,
+        },
+    ],
+    buffers: [
+        Buffer {
+            name: "a",
+            id: 0,
+        },
+        Buffer {
+            name: "b",
+            id: 1,
+        },
+    ],
+    docs: "",
+}

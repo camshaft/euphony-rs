@@ -167,6 +167,15 @@ pub struct Buffer<'a> {
     pub hash: &'a Hash,
 }
 
+impl<'a> From<&'a [Sample]> for Buffer<'a> {
+    fn from(samples: &'a [Sample]) -> Self {
+        Self {
+            samples,
+            hash: &[0; 32],
+        }
+    }
+}
+
 pub struct StaticNode<const I: usize, const B: usize, P: Node<I, B>> {
     inputs: [graph::Input<f64>; I],
     buffers: [BufferKey; B],

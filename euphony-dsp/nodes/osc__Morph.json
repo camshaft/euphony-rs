@@ -1,0 +1,39 @@
+{
+  "name": "Morph",
+  "module": [
+    "osc"
+  ],
+  "impl_path": "euphony_dsp::osc::wave",
+  "id": 115,
+  "inputs": [
+    {
+      "name": "frequency",
+      "id": 0,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "position",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "phase",
+      "id": 2,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "buffers": [
+    {
+      "name": "a",
+      "id": 0
+    },
+    {
+      "name": "b",
+      "id": 1
+    }
+  ],
+  "docs": ""
+}
