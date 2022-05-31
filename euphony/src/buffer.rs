@@ -1,11 +1,12 @@
-use crate::prelude::*;
 pub use crate::processors::buffer::*;
+use crate::{parameter::Parameter, prelude::*};
 use bach::executor::JoinHandle;
 use euphony_buffer::AsChannel;
 pub use euphony_buffer::Buffer;
 
 pub trait BufferExt {
     fn play(&self) -> JoinHandle<()>;
+    fn play_amp<A: Into<Parameter>>(&self, amp: A) -> JoinHandle<()>;
 }
 
 impl<T> BufferExt for T
@@ -15,6 +16,18 @@ where
     fn play(&self) -> JoinHandle<()> {
         let duration = self.duration();
         let play = play().with_buffer(self).sink();
+        async move {
+            // TODO delay for duration
+            let _ = duration;
+            Beat(1, 1).delay().await;
+            play.fin();
+        }
+        .spawn_primary()
+    }
+
+    fn play_amp<A: Into<Parameter>>(&self, amp: A) -> JoinHandle<()> {
+        let duration = self.duration();
+        let play = (play().with_buffer(self) * amp).sink();
         async move {
             // TODO delay for duration
             let _ = duration;
