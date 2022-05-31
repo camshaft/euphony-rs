@@ -81,7 +81,7 @@ impl Morph {
 
         for (freq, position, output) in (frequency, position, output.iter_mut()).zip() {
             let phase = self.phase.next(freq);
-            let position = position.fract();
+            let position = position.fract().abs();
             // interpolate the phase onto the buffer's len
             let a_position = phase * a_len;
             let b_position = phase * b_len;
@@ -110,8 +110,9 @@ impl Shaper {
         let len = buffer.samples.len() as f64;
 
         for (t, output) in (signal, output.iter_mut()).zip() {
-            // interpolate the signal onto the buffer's len
+            // interpolate the signal (-1..1) to 0..1
             let t = (t * 0.5 + 0.5).fract();
+            // interpolate the signal onto the buffer's len
             let position = t * len;
             *output = lerp_buffer(buffer.samples, position);
         }

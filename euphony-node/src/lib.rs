@@ -158,6 +158,12 @@ impl<'a, const B: usize> Buffers<'a, B> {
     pub fn get(&self, index: usize) -> Buffer {
         debug_assert!(index < B);
         let (buffer, channel) = unsafe { *self.keys.get_unchecked(index) };
+
+        // return an empty buffer if not set
+        if buffer == u64::MAX {
+            return ().get(buffer, channel);
+        }
+
         self.buffers.get(buffer, channel)
     }
 }
@@ -196,7 +202,7 @@ impl<const I: usize, const B: usize, P: Node<I, B>> StaticNode<I, B, P> {
 
         Self {
             inputs,
-            buffers: [BufferKey::default(); B],
+            buffers: [(u64::MAX, u64::MAX); B],
             output: [0.0; LEN],
             processor,
         }
