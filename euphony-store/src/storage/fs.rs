@@ -250,7 +250,7 @@ impl Writer for Directory {
 
         let res = init(Box::new(contents))?;
 
-        let mut hashes = self.open(&path_hash).unwrap().unwrap();
+        let mut hashes = self.open(&path_hash).unwrap();
         for samples in res {
             let mut out = self.create();
             let ptr = samples.as_ptr();
@@ -259,7 +259,9 @@ impl Writer for Directory {
             out.write(bytes);
 
             let hash = out.finish();
-            hashes.write_all(&hash).unwrap();
+            if let Some(hashes) = hashes.as_mut() {
+                hashes.write_all(&hash).unwrap();
+            }
 
             let samples = Arc::from(samples);
             buffers.push(euphony_compiler::CachedBuffer { samples, hash });

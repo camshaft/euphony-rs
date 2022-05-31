@@ -13,11 +13,17 @@ use std::collections::BTreeMap;
 #[derive(Debug, Default)]
 pub struct Node {
     pub index: NodeIndex,
-    pub inputs: BTreeMap<(RelOffset, u64), Value>,
+    pub inputs: BTreeMap<(RelOffset, u64, InputType), Value>,
     pub processor: u64,
     pub start: Offset,
     pub end: Option<RelOffset>,
     pub hash: Hash,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord)]
+pub enum InputType {
+    Signal,
+    Buffer,
 }
 
 impl Node {
@@ -26,7 +32,8 @@ impl Node {
         self.validate(parameter, value)?;
 
         let sample = sample.since(self.start);
-        self.inputs.insert((sample, parameter), value);
+        self.inputs
+            .insert((sample, parameter, InputType::Signal), value);
 
         Ok(())
     }
@@ -42,7 +49,8 @@ impl Node {
         self.validate(parameter, value)?;
 
         let sample = sample.since(self.start);
-        self.inputs.insert((sample, parameter), value);
+        self.inputs
+            .insert((sample, parameter, InputType::Buffer), value);
 
         Ok(())
     }
@@ -52,7 +60,8 @@ impl Node {
         self.validate(parameter, value)?;
 
         let sample = sample.since(self.start);
-        self.inputs.insert((sample, parameter), value);
+        self.inputs
+            .insert((sample, parameter, InputType::Signal), value);
 
         Ok(())
     }
@@ -72,7 +81,7 @@ impl Node {
         hasher.update(&self.processor.to_le_bytes());
         hasher.update(&self.end.unwrap().to_bytes());
 
-        for ((sample, param), value) in self.inputs.iter() {
+        for ((sample, param, _type), value) in self.inputs.iter() {
             hasher.update(&sample.to_bytes());
             hasher.update(&param.to_le_bytes());
 
@@ -103,7 +112,7 @@ impl Node {
             instructions.push((offset, InternalInstruction::SpawnNode { id, processor }));
         }
 
-        for ((sample, parameter), value) in &self.inputs {
+        for ((sample, parameter, _type), value) in &self.inputs {
             let offset = offset + *sample;
             let target_node = id;
             let target_parameter = *parameter;

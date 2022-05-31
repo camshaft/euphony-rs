@@ -103,7 +103,7 @@ impl Compiler {
                     start = start.min(dep.start);
 
                     // make sure to include all of the hashes of the deps
-                    for ((sample, param), input) in &dep.inputs {
+                    for ((sample, param, _type), input) in &dep.inputs {
                         match input {
                             Value::Node(source) => {
                                 let source = &self.nodes[source];
