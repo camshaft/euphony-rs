@@ -829,11 +829,11 @@ mod api {
                 #[trait = RepeatInput]
                 #[with = with_repeat]
                 #[set = set_repeat]
-                repeat: f64<0>,
+                repeat: Trigger<0>,
                 #[trait = ResetInput]
                 #[with = with_reset]
                 #[set = set_reset]
-                reset: f64<1>,
+                reset: Trigger<1>,
             }
         );
     }
@@ -845,15 +845,15 @@ mod api {
                 #[trait = TargetInput]
                 #[with = with_target]
                 #[set = set_target]
-                target: f64<0>,
+                target: Trigger<0>,
                 #[trait = DurationInput]
                 #[with = with_duration]
                 #[set = set_duration]
-                duration: f64<1>,
+                duration: Trigger<1>,
                 #[trait = ValueInput]
                 #[with = with_value]
                 #[set = set_value]
-                value: f64<2>,
+                value: Trigger<2>,
             }
         );
     }
@@ -1219,7 +1219,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1235,7 +1235,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1251,7 +1251,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1267,7 +1267,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1283,7 +1283,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1299,7 +1299,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1321,7 +1321,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1341,7 +1341,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<1>,
+                phase: Trigger<1>,
             }
         );
 
@@ -1370,7 +1370,7 @@ mod api {
                 #[trait = PhaseInput]
                 #[with = with_phase]
                 #[set = set_phase]
-                phase: f64<2>,
+                phase: Trigger<2>,
             }
         );
 
@@ -1394,7 +1394,7 @@ mod api {
                     #[trait = PhaseInput]
                     #[with = with_phase]
                     #[set = set_phase]
-                    phase: f64<3>,
+                    phase: Trigger<3>,
                 }
             );
 
@@ -1409,7 +1409,7 @@ mod api {
                     #[trait = PhaseInput]
                     #[with = with_phase]
                     #[set = set_phase]
-                    phase: f64<1>,
+                    phase: Trigger<1>,
                 }
             );
         }
@@ -1422,7 +1422,7 @@ mod api {
                     #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
-                    seed: f64<0>,
+                    seed: Trigger<0>,
                 }
             );
 
@@ -1434,11 +1434,11 @@ mod api {
                     #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
-                    seed: f64<0>,
+                    seed: Trigger<0>,
                     #[trait = LengthInput]
                     #[with = with_length]
                     #[set = set_length]
-                    length: f64<1>,
+                    length: Trigger<1>,
                 }
             );
 
@@ -1450,7 +1450,7 @@ mod api {
                     #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
-                    seed: f64<0>,
+                    seed: Trigger<0>,
                 }
             );
 
@@ -1462,7 +1462,7 @@ mod api {
                     #[trait = SeedInput]
                     #[with = with_seed]
                     #[set = set_seed]
-                    seed: f64<0>,
+                    seed: Trigger<0>,
                 }
             );
         }

@@ -27,6 +27,9 @@ impl Parameter {
 }
 
 #[derive(Clone, Debug)]
+pub struct Trigger(pub(crate) ParameterValue);
+
+#[derive(Clone, Debug)]
 pub(crate) enum ParameterValue {
     Unset,
     Constant(f64),
@@ -47,23 +50,51 @@ impl From<&Node> for Parameter {
     }
 }
 
-impl From<f64> for Parameter {
+impl From<Trigger> for Parameter {
     #[inline]
-    fn from(value: f64) -> Self {
-        Self(ParameterValue::Constant(value))
+    fn from(value: Trigger) -> Self {
+        Self(value.0)
     }
 }
 
-impl From<Frequency> for Parameter {
-    #[inline]
-    fn from(value: Frequency) -> Self {
-        Self(ParameterValue::Constant(value.into()))
-    }
+macro_rules! impl_convert {
+    ($name:ident) => {
+        impl From<f64> for $name {
+            #[inline]
+            fn from(value: f64) -> Self {
+                Self(ParameterValue::Constant(value))
+            }
+        }
+
+        impl From<Frequency> for $name {
+            #[inline]
+            fn from(value: Frequency) -> Self {
+                Self(ParameterValue::Constant(value.into()))
+            }
+        }
+
+        impl From<crate::prelude::Beat> for $name {
+            #[inline]
+            fn from(value: crate::prelude::Beat) -> Self {
+                (crate::time::tempo() * value).into()
+            }
+        }
+
+        impl From<core::time::Duration> for $name {
+            #[inline]
+            fn from(value: core::time::Duration) -> Self {
+                value.as_secs_f64().into()
+            }
+        }
+
+        impl From<Ratio<u64>> for $name {
+            #[inline]
+            fn from(value: Ratio<u64>) -> Self {
+                (value.0 as f64 / value.1 as f64).into()
+            }
+        }
+    };
 }
 
-impl From<Ratio<u64>> for Parameter {
-    #[inline]
-    fn from(value: Ratio<u64>) -> Self {
-        (value.0 as f64 / value.1 as f64).into()
-    }
-}
+impl_convert!(Parameter);
+impl_convert!(Trigger);

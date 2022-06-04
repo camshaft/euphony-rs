@@ -379,7 +379,7 @@ impl Module {
                 w!("#[with = with_{}]", input.name);
                 w!("#[set = set_{}]", input.name);
                 if input.trigger {
-                    w!("{}: f64<{}>,", input.name, input.id);
+                    w!("{}: Trigger<{}>,", input.name, input.id);
                 } else {
                     w!("{}: Parameter<{}>,", input.name, input.id);
                 }

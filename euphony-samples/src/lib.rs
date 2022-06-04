@@ -8,7 +8,7 @@ macro_rules! g {
             &[
             $({
                 static B: Buffer = Buffer::new(concat!(
-                    "https://camshaft.github.io/euphony-samples/",
+                    "https://raw.githubusercontent.com/camshaft/euphony-samples/main/",
                     $hash,
                     ".wav"
                 ));

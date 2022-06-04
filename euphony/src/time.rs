@@ -1,6 +1,8 @@
 use crate::units::time::{Beat, Tempo};
 
-pub(crate) use bach::time::scheduler::{self, Scheduler, Timer};
+pub(crate) use bach::time::scheduler::{self, Scheduler};
+
+pub use bach::time::scheduler::Timer;
 
 bach::scope::define!(resolution, Beat);
 
@@ -20,7 +22,7 @@ pub fn set_tempo(tempo: Tempo) -> Tempo {
     tempo::scope::set(Some(tempo)).unwrap_or(Tempo::DEFAULT)
 }
 
-pub fn delay(beats: Beat) -> scheduler::Timer {
+pub fn delay(beats: Beat) -> Timer {
     scheduler::scope::borrow_with(|handle| {
         let ticks = beats / beats_per_tick();
         let ticks = ticks.whole();

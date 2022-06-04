@@ -10,6 +10,14 @@ pub use bach::{
     task::{primary, spawn},
 };
 
+/*
+pub fn spawn<F: 'static + Future<Output = T> + Send, T: 'static + Send>(
+    future: F,
+) -> JoinHandle<T> {
+    scope::borrow_with(|h| h.spawn(future))
+}
+*/
+
 pub struct Runtime {
     executor: Executor<Env>,
 }

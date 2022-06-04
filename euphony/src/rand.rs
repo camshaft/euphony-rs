@@ -1,4 +1,5 @@
 use crate::prelude::Beat;
+use ::rand::distributions;
 use core::future::Future;
 use once_cell::sync::Lazy;
 
@@ -35,12 +36,67 @@ pub static SEED: Lazy<u64> = Lazy::new(|| {
     }
 });
 
-pub trait Ext: Sized {
+pub trait OneOfExt<'a> {
+    type Output;
+
+    fn one_of(&'a self) -> Self::Output;
+
+    fn pick(&'a self) -> Self::Output {
+        self.one_of()
+    }
+}
+
+impl<'a, T: 'a> OneOfExt<'a> for [T] {
+    type Output = &'a T;
+
+    fn one_of(&'a self) -> Self::Output {
+        one_of(self)
+    }
+}
+
+impl<'a> OneOfExt<'a> for usize {
+    type Output = usize;
+
+    fn one_of(&'a self) -> Self::Output {
+        (0..*self).one_of()
+    }
+}
+
+impl<'a> OneOfExt<'a> for u64 {
+    type Output = u64;
+
+    fn one_of(&'a self) -> Self::Output {
+        (0..*self).one_of()
+    }
+}
+
+macro_rules! one_of_range {
+    ($range:ident) => {
+        impl<'a, T> OneOfExt<'a> for core::ops::$range<T>
+        where
+            core::ops::$range<T>: distributions::uniform::SampleRange<T>,
+            T: Copy + distributions::uniform::SampleUniform + PartialOrd,
+        {
+            type Output = T;
+
+            fn one_of(&'a self) -> Self::Output {
+                gen_range(self.clone())
+            }
+        }
+    };
+}
+
+one_of_range!(Range);
+one_of_range!(RangeTo);
+one_of_range!(RangeInclusive);
+one_of_range!(RangeToInclusive);
+
+pub trait TaskExt: Sized {
     fn seed(self, seed: u64) -> Task<Self>;
     fn inhert_seed(self) -> Task<Self>;
 }
 
-impl<T> Ext for T
+impl<T> TaskExt for T
 where
     T: Future,
 {
