@@ -1,5 +1,6 @@
 [package]
 name = "euphony-buffer"
+description = "buffer utilities for euphony applications"
 version = "0.1.0"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2021"

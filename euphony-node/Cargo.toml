@@ -1,6 +1,8 @@
 [package]
 name = "euphony-node"
+description = "types for DSP nodes in a euphony graph"
 version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2021"
 license = "MIT"
 
@@ -9,7 +11,7 @@ reflect = ["heck", "serde", "serde_json"]
 
 [dependencies]
 euphony-graph = { version = "0.1", path = "../euphony-graph" }
-euphony-macros = { version = "0.1", path = "../euphony-macros" }
+euphony-macros = { version = "0.2", path = "../euphony-macros" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
 heck = { version = "0.4", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }

@@ -1,6 +1,8 @@
 [package]
 name = "euphony-samples"
+description = "easy-to-consume samples and waveforms for euphony applications"
 version = "0.1.0"
+authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2021"
 license = "MIT"
 
