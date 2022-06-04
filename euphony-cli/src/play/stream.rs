@@ -304,8 +304,7 @@ impl Stream {
                                     tracks.fill(buffer)
                                 },
                                 |err| {
-                                    // TODO log
-                                    dbg!(err);
+                                    log::error!("could not open output: {}", err);
                                 }
                             )?
                         }

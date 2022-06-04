@@ -37,7 +37,7 @@ impl Init {
         self.write(".rustfmt.toml", templates::WS_RUSTFMT)?;
         self.write("common/Cargo.toml", templates::COMMON_CARGO)?;
         self.write("common/src/lib.rs", templates::COMMON_LIB)?;
-        eprintln!("workspace initialized in {}", self.path.display());
+        log::info!("workspace initialized in {}", self.path.display());
         Ok(())
     }
 
@@ -60,7 +60,7 @@ impl New {
         self.write(&root, "src/main.rs", templates::COMP_MAIN)?;
         self.write(&root, "Cargo.toml", templates::COMP_CARGO)?;
         self.add_to_cargo(&root)?;
-        eprintln!("new composition created {:?}", self.name);
+        log::info!("new composition created {}", self.name);
         Ok(())
     }
 

@@ -16,6 +16,7 @@ euphony-dsp = { version = "0.1", path = "../euphony-dsp" }
 euphony-graph = { version = "0.1", path = "../euphony-graph" }
 euphony-node = { version = "0.1", path = "../euphony-node" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
+log = "0.4"
 petgraph = "0.6"
 rayon = { version = "1", optional = true }
 

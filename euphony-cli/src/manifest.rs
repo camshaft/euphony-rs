@@ -114,17 +114,21 @@ impl Manifest {
     pub fn compile(&mut self) -> Result<()> {
         let root = &self.root;
 
-        let status = std::process::Command::new("cargo")
+        let mut build = std::process::Command::new("cargo");
+
+        build
             .arg("build")
             .arg("--target-dir")
             .arg("target/euphony/build")
-            .current_dir(root)
-            .spawn()?
-            .wait()?;
+            .current_dir(root);
+
+        crate::logger::cmd(&mut build);
+        let mut child = build.spawn()?;
+        crate::logger::cmd_stderr(child.stderr.take());
+        let status = child.wait()?;
 
         if !status.success() {
-            eprintln!("cargo build failed");
-            return Err(anyhow::anyhow!("build command failed"));
+            return Err(anyhow::anyhow!("cargo build command failed"));
         }
 
         let res: Result<()> = self
@@ -138,8 +142,10 @@ impl Manifest {
                     .env("EUPHONY_OUTPUT", "-")
                     .current_dir(root);
 
-                let proc = proc.spawn()?;
+                crate::logger::cmd(&mut proc);
 
+                let mut proc = proc.spawn()?;
+                crate::logger::cmd_stderr(proc.stderr.take());
                 let mut stdout = io::BufReader::new(proc.stdout.unwrap());
 
                 project.render(&mut stdout)?;

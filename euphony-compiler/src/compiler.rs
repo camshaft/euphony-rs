@@ -70,8 +70,7 @@ impl Compiler {
                 |(id, (path, ext))| match Buffer::load(*id, path, ext, cache) {
                     Ok(values) => values,
                     Err(err) => {
-                        dbg!(err);
-                        // TODO log error
+                        log::error!("could not load buffer {:?}: {}", path, err);
                         vec![]
                     }
                 },

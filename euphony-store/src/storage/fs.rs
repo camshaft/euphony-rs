@@ -65,9 +65,8 @@ impl storage::Output for Output {
             }
         };
 
-        // TODO log result to slog
         if let Err(err) = result {
-            eprintln!("error writing samples to output: {:?}", err);
+            log::error!("could write samples to output: {}", err);
         }
     }
 
@@ -197,14 +196,14 @@ impl Writer for Directory {
         }
     }
 
-    fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, hash: &Hash, entries: I) {
+    fn group<I: Iterator<Item = Entry>>(&mut self, name: &str, hash: &Hash, entries: I) {
         match self
             .open(hash)
             .and_then(|file| Self::write_group(file, entries))
         {
             Ok(()) => {}
             Err(err) => {
-                eprintln!("error while creating group: {}", err);
+                log::error!("could not create group {:?}: {}", name, err);
             }
         }
     }

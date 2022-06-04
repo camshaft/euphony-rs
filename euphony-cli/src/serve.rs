@@ -53,7 +53,7 @@ async fn serve(serve: &Serve) -> Result<()> {
 
     manifest.watch(subs);
 
-    eprintln!("Server listening on port {}", serve.port);
+    log::info!("Server listening on port {}", serve.port);
     warp::serve(routes).run(([0, 0, 0, 0], serve.port)).await;
 
     Ok(())

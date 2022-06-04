@@ -52,7 +52,7 @@ impl Render {
                 writer.write_sample(sample)?;
             }
             writer.finalize()?;
-            println!("rendered {:?}", path);
+            log::info!("rendered {:?}", path);
         }
         Ok(())
     }
@@ -72,8 +72,7 @@ where
             let mut mixer = Mono::new(writer);
 
             if let Err(err) = store.mix_group(hash, &mut mixer) {
-                // TODO log
-                dbg!(err);
+                log::error!("could not mix group: {}", err);
             }
 
             mixer.finish()
@@ -90,8 +89,7 @@ where
             let mut mixer = Stereo::new(writer);
 
             if let Err(err) = store.mix_group(hash, &mut mixer) {
-                // TODO log
-                dbg!(err);
+                log::error!("could not mix group: {}", err);
             }
 
             mixer.finish()
