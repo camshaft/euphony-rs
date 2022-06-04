@@ -4,16 +4,6 @@ members = [
     "euphony",
 ]
 
-#[profile.dev]
-#debug = false
-#debug-assertions = false
-#
-#[profile.dev.package."*"]
-#opt-level = 3
-#
-#[profile.dev.build-override]
-#opt-level = 3
-
 [profile.release]
 lto = true
 codegen-units = 1
