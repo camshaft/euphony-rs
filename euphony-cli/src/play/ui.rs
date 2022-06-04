@@ -10,7 +10,7 @@ use tui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::Span,
-    widgets::{Block, BorderType, Borders},
+    widgets::{Block, Borders},
     Frame, Terminal,
 };
 use tui_logger::{TuiLoggerWidget, TuiWidgetState};
