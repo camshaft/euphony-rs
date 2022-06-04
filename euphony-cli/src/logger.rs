@@ -36,7 +36,9 @@ pub fn cmd_stderr(stderr: Option<ChildStderr>) {
         let stderr = BufReader::new(stderr);
         std::thread::spawn(move || {
             for line in stderr.lines().filter_map(Result::ok) {
-                log::info!("{}", line);
+                if !line.is_empty() {
+                    log::info!("{}", line);
+                }
             }
         });
     }

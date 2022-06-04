@@ -36,6 +36,7 @@ toml_edit = "0.14"
 tokio = { version = "1", optional = true, features = ["full"] }
 tokio-stream = { version = "0.1", features = ["sync"] }
 tui = "0.18"
+# TODO use this when a new release is published to crates
 # tui-logger = "0.7"
-tui-logger = { git = "https://github.com/gin66/tui-logger" }
+tui-logger = { git = "https://github.com/gin66/tui-logger", rev = "cd7e42665a8eac60adac6ab5d570730dfbcb3a12" }
 warp = { version = "0.3", optional = true, default-features = false }
