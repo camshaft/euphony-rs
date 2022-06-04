@@ -1,22 +1,41 @@
-use crate::output;
+use crate::{group::Grouped, output};
 use bach::executor::{Environment, Executor, Handle};
 use core::{future::Future, task::Poll};
 use euphony_units::time::Tempo;
 use structopt::StructOpt;
 
-pub use bach::{
-    executor::JoinHandle,
-    rand,
-    task::{primary, spawn},
-};
+pub use bach::{executor::JoinHandle, rand};
 
-/*
+pub mod primary {
+    use super::*;
+    pub use bach::task::primary::*;
+
+    pub fn spawn<F: 'static + Future<Output = T> + Send, T: 'static + Send>(
+        future: F,
+    ) -> JoinHandle<T> {
+        // try to inherit the parent group
+        crate::group::scope::try_borrow_with(|group| {
+            if let Some(group) = group {
+                bach::task::primary::spawn(Grouped::new(future, *group))
+            } else {
+                bach::task::primary::spawn(future)
+            }
+        })
+    }
+}
+
 pub fn spawn<F: 'static + Future<Output = T> + Send, T: 'static + Send>(
     future: F,
 ) -> JoinHandle<T> {
-    scope::borrow_with(|h| h.spawn(future))
+    // try to inherit the parent group
+    crate::group::scope::try_borrow_with(|group| {
+        if let Some(group) = group {
+            bach::task::spawn(Grouped::new(future, *group))
+        } else {
+            bach::task::spawn(future)
+        }
+    })
 }
-*/
 
 pub struct Runtime {
     executor: Executor<Env>,

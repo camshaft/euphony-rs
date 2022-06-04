@@ -68,6 +68,12 @@ pub struct Grouped<Inner> {
     group: Group,
 }
 
+impl<Inner> Grouped<Inner> {
+    pub fn new(inner: Inner, group: Group) -> Self {
+        Self { inner, group }
+    }
+}
+
 impl<Inner> Future for Grouped<Inner>
 where
     Inner: Future,
