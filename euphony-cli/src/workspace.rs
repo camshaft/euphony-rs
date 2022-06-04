@@ -9,27 +9,27 @@ mod templates;
 
 #[derive(Debug, StructOpt)]
 pub enum Workspace {
-    #[structopt(aliases = &["i", "init"])]
-    Initialize(Initialize),
-    #[structopt(aliases = &["g", "gen"])]
-    Generate(Generate),
+    #[structopt(aliases = &["i", "initialize"])]
+    Init(Init),
+    #[structopt(aliases = &["g", "gen", "generate"])]
+    New(New),
 }
 
 impl Workspace {
     pub fn run(&self) -> Result<()> {
         match self {
-            Self::Initialize(cmd) => cmd.run(),
-            Self::Generate(cmd) => cmd.run(),
+            Self::Init(cmd) => cmd.run(),
+            Self::New(cmd) => cmd.run(),
         }
     }
 }
 
 #[derive(Debug, StructOpt)]
-pub struct Initialize {
+pub struct Init {
     path: PathBuf,
 }
 
-impl Initialize {
+impl Init {
     pub fn run(&self) -> Result<()> {
         self.write("Cargo.toml", templates::WS_CARGO)?;
         self.write("rust-toolchain", "stable\n")?;
@@ -37,6 +37,7 @@ impl Initialize {
         self.write(".rustfmt.toml", templates::WS_RUSTFMT)?;
         self.write("common/Cargo.toml", templates::COMMON_CARGO)?;
         self.write("common/src/lib.rs", templates::COMMON_LIB)?;
+        eprintln!("workspace initialized in {}", self.path.display());
         Ok(())
     }
 
@@ -49,16 +50,17 @@ impl Initialize {
 }
 
 #[derive(Debug, StructOpt)]
-pub struct Generate {
+pub struct New {
     name: String,
 }
 
-impl Generate {
+impl New {
     pub fn run(&self) -> Result<()> {
         let root = self.root()?;
         self.write(&root, "src/main.rs", templates::COMP_MAIN)?;
         self.write(&root, "Cargo.toml", templates::COMP_CARGO)?;
         self.add_to_cargo(&root)?;
+        eprintln!("new composition created {:?}", self.name);
         Ok(())
     }
 

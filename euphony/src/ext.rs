@@ -73,16 +73,15 @@ impl<T> DelayStream<T> {
     }
 }
 
+type DelayStreamWith<Stream, IntoIter, Item> =
+    stream::Map<stream::Zip<Stream, stream::Iter<IntoIter>>, fn(((), Item)) -> Item>;
+
 impl<T> DelayStream<T>
 where
     T: Iterator + Unpin,
     T::Item: DelayExt,
 {
-    pub fn with<V: IntoIterator>(
-        self,
-        values: V,
-    ) -> stream::Map<stream::Zip<Self, stream::Iter<V::IntoIter>>, fn(((), V::Item)) -> V::Item>
-    {
+    pub fn with<V: IntoIterator>(self, values: V) -> DelayStreamWith<Self, V::IntoIter, V::Item> {
         self.zip(stream::iter(values.into_iter())).map(|(_, v)| v)
     }
 }
