@@ -132,6 +132,7 @@ macro_rules! define_processor {
     ) => {
         $(#[doc = $doc])?
         #[derive(Clone, Debug)]
+        #[must_use = "nodes do nothing unless routed to a Sink"]
         pub struct $name(crate::node::Node);
 
         #[inline]

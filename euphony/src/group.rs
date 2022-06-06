@@ -61,6 +61,7 @@ where
     }
 }
 
+#[must_use = "futures do nothing unless polled"]
 #[pin_project]
 pub struct Grouped<Inner> {
     #[pin]

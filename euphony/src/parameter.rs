@@ -66,6 +66,13 @@ macro_rules! impl_convert {
             }
         }
 
+        impl From<u64> for $name {
+            #[inline]
+            fn from(value: u64) -> Self {
+                Self(ParameterValue::Constant(value as _))
+            }
+        }
+
         impl From<Frequency> for $name {
             #[inline]
             fn from(value: Frequency) -> Self {
