@@ -3,6 +3,7 @@ pub use crate::{
     cell::Cell,
     ext::*,
     group::*,
+    parameter::{Buffer as BufferParameter, Parameter, Trigger},
     processor::Processor,
     processors::{
         ext::*,
@@ -12,6 +13,7 @@ pub use crate::{
     rand,
     runtime::{primary, spawn},
     section::section,
+    sink::Sink,
     time::{now, set_tempo, tempo},
     units::{
         pitch::{
@@ -22,6 +24,7 @@ pub use crate::{
         time::{Beat, Tempo},
         zip::Zip as ZipExt,
     },
+    value,
 };
 pub use euphony_samples as samples;
 pub use futures::{FutureExt, StreamExt};

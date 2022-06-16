@@ -1,8 +1,8 @@
 use crate::{
     output::*,
-    parameter::{Parameter, ParameterValue},
     processor::Definition,
     sink::Sink,
+    value::{Parameter, ParameterValue},
 };
 use euphony_buffer::AsChannel;
 use std::{

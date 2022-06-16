@@ -1,0 +1,23 @@
+---
+source: euphony-dsp/src/unary.rs
+assertion_line: 252
+expression: node
+---
+Node {
+    name: "Pass",
+    module: [
+        "unary",
+    ],
+    impl_path: "euphony_dsp::unary",
+    id: 34,
+    inputs: [
+        Input {
+            name: "input",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    buffers: [],
+    docs: " Passes the input signal to the output signal\n",
+}

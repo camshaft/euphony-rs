@@ -18,6 +18,7 @@ pub mod section;
 pub mod set;
 mod sink;
 pub mod time;
+pub mod value;
 
 mod processors;
 

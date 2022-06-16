@@ -18,6 +18,12 @@ impl<T> Cell<T> {
     }
 }
 
+impl<T> From<T> for Cell<T> {
+    fn from(value: T) -> Self {
+        Self::new(value)
+    }
+}
+
 unsafe impl<T> Send for Cell<T> {}
 unsafe impl<T> Sync for Cell<T> {}
 

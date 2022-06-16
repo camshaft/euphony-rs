@@ -1,4 +1,4 @@
-use crate::{parameter::Parameter, prelude::*};
+use crate::{prelude::*, value::Parameter};
 use bach::executor::JoinHandle;
 use core::{future::Future, time::Duration};
 use euphony_buffer::AsChannel;

@@ -1,4 +1,4 @@
-use crate::{node::Node, parameter::Parameter, processor::Definition, processors::input};
+use crate::{node::Node, processor::Definition, processors::input, value::Parameter};
 
 static SINK: Definition = Definition {
     id: 0,

@@ -249,3 +249,9 @@ unary!(
     Neg,
     |input| -input
 );
+unary!(
+    /// Passes the input signal to the output signal
+    34,
+    Pass,
+    |input| input
+);

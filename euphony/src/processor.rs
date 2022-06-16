@@ -1,4 +1,4 @@
-use crate::{node::Node, parameter::Parameter, sink::Sink};
+use crate::{node::Node, sink::Sink, value::Parameter};
 
 pub trait Processor: Sized
 where
@@ -53,7 +53,7 @@ macro_rules! define_processor_binary_op {
             }
         }
 
-        impl<Rhs: Into<crate::parameter::Parameter>> core::ops::$op<Rhs> for $name {
+        impl<Rhs: Into<crate::value::Parameter>> core::ops::$op<Rhs> for $name {
             type Output = crate::processors::binary::$op;
 
             #[inline]
@@ -65,7 +65,7 @@ macro_rules! define_processor_binary_op {
             }
         }
 
-        impl<Rhs: Into<crate::parameter::Parameter>> core::ops::$op<Rhs> for &$name {
+        impl<Rhs: Into<crate::value::Parameter>> core::ops::$op<Rhs> for &$name {
             type Output = crate::processors::binary::$op;
 
             #[inline]
@@ -145,7 +145,7 @@ macro_rules! define_processor {
             use super::*;
 
             #[allow(unused_imports)]
-            use crate::parameter::{Parameter, Trigger};
+            use crate::value::{Parameter, Trigger};
 
             impl Default for $name {
                 #[inline]
@@ -164,6 +164,26 @@ macro_rules! define_processor {
                     };
                     Self(DEF.spawn())
                 }
+            }
+
+            impl $name {
+                $(
+                    pub fn $input(&self) -> crate::parameter::$input_ty {
+                        crate::parameter::$input_ty {
+                            node: self.0.clone(),
+                            index: $input_id,
+                        }
+                    }
+                )*
+
+                $(
+                    pub fn $buffer(&self) -> crate::parameter::Buffer {
+                        crate::parameter::Buffer {
+                            node: self.0.clone(),
+                            index: $buffer_id,
+                        }
+                    }
+                )*
             }
 
             impl crate::processor::Processor for $name {

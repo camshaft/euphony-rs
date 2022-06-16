@@ -1,6 +1,6 @@
 #[rustfmt::skip]
 pub mod ext {
-    use crate::parameter::Parameter;
+    use crate::value::Parameter;
     use super::input::*;
     pub trait ProcessorExt: crate::processor::Processor
     where
@@ -222,6 +222,11 @@ pub mod ext {
         #[doc = " Normalizes a number.\n\n * `-0.0` will be converted into `0.0`\n * `NAN` will be converted into `0.0`\n * `INFINITY` will be converted into `MAX`\n * `NEG_INFINITY` will be converted into `MIN`\n"]
         fn norm(&self) -> crate::processors::unary::Norm {
             crate::processors::unary::norm().with_input(self)
+        }
+        #[inline]
+        #[doc = " Passes the input signal to the output signal\n"]
+        fn pass(&self) -> crate::processors::unary::Pass {
+            crate::processors::unary::pass().with_input(self)
         }
         #[inline]
         #[doc = " Raises a number to a floating point power.\n"]
@@ -1938,6 +1943,18 @@ mod api {
             #[id = 33]
             #[lower = neg]
             struct Neg {
+                #[trait = InputInput]
+                #[with = with_input]
+                #[set = set_input]
+                input: Parameter<0>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Passes the input signal to the output signal\n"]
+            #[id = 34]
+            #[lower = pass]
+            struct Pass {
                 #[trait = InputInput]
                 #[with = with_input]
                 #[set = set_input]
