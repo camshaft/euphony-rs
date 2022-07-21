@@ -38,7 +38,7 @@ pub trait System: 'static + Send + Sync {
     fn to_frequency(&self, base: BaseFrequency, interval: Interval) -> Frequency;
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd)]
 pub struct Octave<T>(&'static [T])
 where
     T: 'static + Copy + core::ops::Mul<BaseFrequency, Output = Frequency>,

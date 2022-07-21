@@ -83,7 +83,7 @@ impl core::ops::Deref for TracksIter {
     type Target = [Arc<TrackControl>];
 
     fn deref(&self) -> &Self::Target {
-        &*self.guard
+        &self.guard
     }
 }
 

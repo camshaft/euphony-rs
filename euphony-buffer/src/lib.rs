@@ -122,7 +122,7 @@ impl Values {
             .and_then(|e| e.to_str())
             .unwrap_or("");
 
-        hash::create(&*BUFFER_DIR, ext, |writer| {
+        hash::create(&BUFFER_DIR, ext, |writer| {
             reqwest::blocking::get(source)
                 .unwrap()
                 .error_for_status()
@@ -150,7 +150,7 @@ impl Values {
 
         let mut file = std::fs::File::open(source).unwrap();
         let hash = hash_reader(&mut file);
-        let path = hash_path(&*BUFFER_DIR, &hash);
+        let path = hash_path(&BUFFER_DIR, &hash);
         std::fs::copy(source, &path).unwrap();
         path
     }
@@ -158,7 +158,7 @@ impl Values {
     fn meta_path(&self, source: &str) -> &Path {
         self.meta_path.get_or_init(|| {
             let hash = blake3::hash(source.as_bytes());
-            hash_path(&*BUFFER_DIR, &hash)
+            hash_path(&BUFFER_DIR, &hash)
         })
     }
 

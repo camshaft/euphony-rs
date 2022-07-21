@@ -107,7 +107,7 @@ where
     {
         let mut writer = <TrackWriter<CHANNELS, Sample>>::new();
         for group in store.timeline.groups.iter() {
-            writer = mix(&*group.entries, writer, store);
+            writer = mix(&group.entries, writer, store);
             writer.cursor = 0;
         }
         writer.buffer
