@@ -7,6 +7,8 @@ where
 {
     fn sink(&self) -> Sink;
 
+    fn node(&self) -> Node;
+
     #[inline]
     fn fin(self) {
         drop(self)
@@ -191,6 +193,11 @@ macro_rules! define_processor {
                 fn sink(&self) -> crate::sink::Sink {
                     self.0.sink()
                 }
+
+                #[inline]
+                fn node(&self) -> crate::node::Node {
+                    self.0.node()
+                }
             }
 
             $(
@@ -236,6 +243,14 @@ macro_rules! define_processor {
                 #[inline]
                 fn from(node: &$name) -> Self {
                     (&node.0).into()
+                }
+            }
+
+            impl core::ops::Deref for $name {
+                type Target = crate::node::Node;
+
+                fn deref(&self) -> &Self::Target {
+                    &self.0
                 }
             }
 

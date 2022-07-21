@@ -153,3 +153,92 @@ impl EachExt for usize {
         (0..*self).map(|v| f(&v)).collect()
     }
 }
+
+pub trait MixIterExt {
+    fn mix(self) -> crate::node::Node;
+}
+
+impl<I: IntoIterator<Item = T>, T: crate::processor::Processor> MixIterExt for I
+where
+    for<'a> &'a T: Into<crate::value::Parameter>,
+{
+    fn mix(self) -> crate::node::Node {
+        self.into_iter().map(|v| v.node()).sum()
+    }
+}
+
+impl core::iter::Sum for crate::node::Node {
+    fn sum<I: Iterator<Item = Self>>(mut items: I) -> Self {
+        use crate::processor::Processor;
+
+        if let Some(acc) = items.next() {
+            let mut acc = acc.node();
+            for item in items {
+                acc = (acc + item).node();
+            }
+            acc
+        } else {
+            crate::processors::osc::silence().node()
+        }
+    }
+}
+
+pub trait MixTupleExt {
+    fn mix(&self) -> crate::node::Node;
+}
+
+macro_rules! sum_tuple {
+    () => {};
+    ($H:ident $(,$T:ident)* $(,)?) => {
+        impl<$H, $($T,)*> MixTupleExt for ($H, $($T,)*)
+        where
+            $H: crate::processor::Processor,
+            for<'a> &'a $H: Into<crate::value::Parameter>,
+            $(
+                $T: crate::processor::Processor,
+                for<'a> &'a $T: Into<crate::value::Parameter>,
+            )*
+        {
+            #[allow(non_snake_case)]
+            fn mix(&self) -> crate::node::Node {
+                #[allow(unused_imports)]
+                use crate::processor::Processor;
+
+                let (
+                    $H,
+                    $(
+                        $T,
+                    )*
+                ) = self;
+
+                let acc = $H.node();
+
+                $(
+                    let acc = (acc + $T).node();
+                )*
+
+                acc
+            }
+        }
+
+        sum_tuple!($($T),*);
+    };
+}
+
+sum_tuple!(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z);
+
+pub trait FreqExt {
+    fn freq(&self) -> crate::prelude::Frequency;
+}
+
+impl FreqExt for crate::prelude::Interval {
+    fn freq(&self) -> crate::prelude::Frequency {
+        (crate::pitch::mode() * *self) * crate::pitch::tuning()
+    }
+}
+
+impl FreqExt for f64 {
+    fn freq(&self) -> crate::prelude::Frequency {
+        (*self).into()
+    }
+}

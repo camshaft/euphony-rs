@@ -22,11 +22,11 @@ impl Phase {
     fn next(&mut self, freq: f64) -> f64 {
         let value = self.0;
         unsafe {
-            unsafe_assert!(!value.is_nan());
-            unsafe_assert!(value.is_finite());
-            unsafe_assert!((0.0..=1.0).contains(&value));
+            unsafe_assert!(!value.is_nan(), "value: {:?}", value);
+            unsafe_assert!(value.is_finite(), "value: {:?}", value);
+            unsafe_assert!((0.0..=1.0).contains(&value), "value: {:?}", value);
         }
-        self.0 = Rate::PERIOD.mul_add(freq, value).fract();
+        self.0 = Rate::PERIOD.mul_add(freq, value).fract().abs();
         value
     }
 

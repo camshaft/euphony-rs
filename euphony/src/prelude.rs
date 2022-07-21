@@ -4,6 +4,10 @@ pub use crate::{
     ext::*,
     group::*,
     parameter::{Buffer as BufferParameter, Parameter, Trigger},
+    pitch::{
+        mode::{self, Mode},
+        tuning,
+    },
     processor::Processor,
     processors::{
         ext::*,
@@ -16,11 +20,7 @@ pub use crate::{
     sink::Sink,
     time::{now, set_tempo, tempo},
     units::{
-        pitch::{
-            frequency::*,
-            mode::{self, Mode},
-            tuning, Interval,
-        },
+        pitch::{frequency::*, Interval},
         time::{Beat, Tempo},
         zip::Zip as ZipExt,
     },

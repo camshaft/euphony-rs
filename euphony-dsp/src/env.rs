@@ -17,7 +17,7 @@ impl Linear {
     #[inline]
     fn set_value(&mut self, value: f64) {
         self.value = value;
-        self.samples = 0;
+        self.update();
     }
 
     #[inline]
@@ -35,8 +35,12 @@ impl Linear {
     fn update(&mut self) {
         let diff = self.target - self.value;
         let samples = (self.duration * Rate::VALUE).round();
-        self.step = diff / samples;
         self.samples = samples as _;
+        if self.samples > 0 {
+            self.step = diff / samples;
+        } else {
+            self.step = 0.0;
+        }
     }
 
     #[inline]

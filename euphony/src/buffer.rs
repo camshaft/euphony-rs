@@ -62,6 +62,10 @@ impl Processor for PlayBuf {
     fn sink(&self) -> crate::sink::Sink {
         self.play.sink()
     }
+
+    fn node(&self) -> crate::node::Node {
+        self.play.node()
+    }
 }
 
 impl From<PlayBuf> for Parameter {
@@ -75,8 +79,6 @@ impl From<&PlayBuf> for Parameter {
         Parameter::from(&play.play)
     }
 }
-
-define_processor_ops!(PlayBuf);
 
 impl SpawnExt for PlayBuf {
     type Output = ();

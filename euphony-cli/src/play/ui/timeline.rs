@@ -72,7 +72,7 @@ impl<'a> Timeline<'a> {
     fn position(&self, value: Duration, width: u16) -> u16 {
         let value = value.as_secs_f64() / self.duration.as_secs_f64();
         let value = f64::from(width) * value;
-        value.round() as u16
+        width.min(value.round() as u16)
     }
 }
 

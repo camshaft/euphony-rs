@@ -57,6 +57,13 @@ impl From<Trigger> for Parameter {
     }
 }
 
+impl From<&Trigger> for Parameter {
+    #[inline]
+    fn from(value: &Trigger) -> Self {
+        Self(value.0.clone())
+    }
+}
+
 macro_rules! impl_convert {
     ($name:ident) => {
         impl From<f64> for $name {
@@ -91,6 +98,14 @@ macro_rules! impl_convert {
             #[inline]
             fn from(value: core::time::Duration) -> Self {
                 value.as_secs_f64().into()
+            }
+        }
+
+        impl From<crate::prelude::Interval> for $name {
+            #[inline]
+            fn from(value: crate::prelude::Interval) -> Self {
+                use crate::ext::*;
+                value.freq().into()
             }
         }
 

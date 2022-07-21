@@ -169,11 +169,12 @@ impl Stream {
 
     pub fn seek_back(&self, duration: Duration) {
         let samples = (self.controls.sample_rate as f64 * duration.as_secs_f64()) as usize;
+        let end = self.controls.total_samples.load(Ordering::Relaxed);
         let _ = self
             .controls
             .playhead
             .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |prev| {
-                Some(prev.saturating_sub(samples))
+                Some(prev.min(end).saturating_sub(samples))
             });
     }
 

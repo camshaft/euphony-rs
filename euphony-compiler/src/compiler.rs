@@ -25,11 +25,20 @@ pub struct Compiler {
     sinks: SinkMap,
     hashes: HashMap<Hash, u64>, // TODO use hash hasher
     active_nodes: BTreeSet<u64>,
-    connections: Graph<u64, ()>,
+    connections: Graph<u64, Edge>,
     instructions: BTreeSet<(Offset, InternalInstruction)>,
     samples: Offset,
     samples_per_tick: Ratio<u128>,
     pending_buffers: HashMap<u64, (String, String)>,
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+struct Edge;
+
+impl core::fmt::Display for Edge {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        "".fmt(f)
+    }
 }
 
 impl Default for Compiler {
@@ -52,6 +61,8 @@ impl Default for Compiler {
 impl Compiler {
     pub fn finalize<W: Writer>(&mut self, cache: &W) -> Result<Box<dyn BufferMap>> {
         let samples = self.samples;
+
+        // println!("{}", petgraph::dot::Dot::new(&self.connections));
 
         let hasher = blake3::Hasher::new();
 
@@ -334,7 +345,7 @@ impl Handler for Compiler {
         node.connect(target_parameter, source_node, samples)?;
         let target_idx = node.index;
 
-        self.connections.add_edge(target_idx, source_idx, ());
+        self.connections.add_edge(target_idx, source_idx, Edge);
 
         Ok(())
     }

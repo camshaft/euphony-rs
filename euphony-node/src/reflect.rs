@@ -83,7 +83,7 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     w!("#[rustfmt::skip]");
     w!("pub mod ext {{");
     level += 1;
-    w!("use crate::parameter::Parameter;");
+    w!("use crate::value::Parameter;");
     w!("use super::input::*;");
     w!("pub trait ProcessorExt: crate::processor::Processor");
     w!("where");

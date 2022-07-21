@@ -6,6 +6,7 @@ yanked = "deny"
 ignore = [
     "RUSTSEC-2020-0016", # Waiting for notify to release 5.0
     "RUSTSEC-2020-0056", # cpal uses stdweb, which is deprecated
+    "RUSTSEC-2020-0071", # tui-logger needs to update chrono
 ]
 
 [bans]
@@ -32,6 +33,7 @@ allow = [
     "MIT",
     "MPL-2.0",
     "OpenSSL",
+    "Unicode-DFS-2016",
     "Zlib",
 ]
 

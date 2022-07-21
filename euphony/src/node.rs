@@ -44,14 +44,15 @@ impl Drop for OwnedNode {
 }
 
 #[derive(Clone, Debug)]
-pub(crate) struct Node(Arc<OwnedNode>);
+#[must_use = "nodes do nothing unless routed to a Sink"]
+pub struct Node(Arc<OwnedNode>);
 
 impl Node {
-    pub fn id(&self) -> u64 {
+    pub(crate) fn id(&self) -> u64 {
         self.0.id
     }
 
-    pub fn new(definition: &Definition, group: Option<u64>) -> Self {
+    pub(crate) fn new(definition: &Definition, group: Option<u64>) -> Self {
         let id = NODE_ID.with(|v| v.next());
 
         emit(SpawnNode {
@@ -72,13 +73,13 @@ impl Node {
         Node(Arc::new(node))
     }
 
-    pub fn set<V: Into<Parameter>>(&self, index: u64, value: V) {
+    pub(crate) fn set<V: Into<Parameter>>(&self, index: u64, value: V) {
         let value = value.into();
         value.set(self.id(), index);
         self.0.parameters.lock().unwrap()[index as usize] = value;
     }
 
-    pub fn set_buffer<C: AsChannel>(&self, index: u64, channel: C) {
+    pub(crate) fn set_buffer<C: AsChannel>(&self, index: u64, channel: C) {
         let buffer = channel.buffer(|path, ext| {
             let id = BUFFER_ID.with(|v| v.next());
             // load the buffer if needed
@@ -106,3 +107,15 @@ impl Node {
         Sink::default().with(self)
     }
 }
+
+impl crate::processor::Processor for Node {
+    fn sink(&self) -> Sink {
+        Sink::default().with(self)
+    }
+
+    fn node(&self) -> Node {
+        self.clone()
+    }
+}
+
+define_processor_ops!(Node);
