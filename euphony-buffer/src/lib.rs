@@ -251,7 +251,7 @@ impl<S: AsRef<str>> AsChannel for Buffer<S> {
     }
 
     fn duration(&self) -> Duration {
-        (&*self).duration()
+        self.duration()
     }
 
     fn channel(&self) -> u64 {

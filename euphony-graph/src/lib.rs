@@ -409,7 +409,7 @@ impl<'a, C: Config> ops::Index<NodeKey> for Inputs<'a, C> {
             );
         }
 
-        unsafe { &*self.nodes.get_unchecked(key.0).output() }
+        unsafe { self.nodes.get_unchecked(key.0).output() }
     }
 }
 

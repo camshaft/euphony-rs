@@ -24,7 +24,7 @@ impl BufferMap for Map {
             .get(&(id, channel))
             .unwrap_or_else(|| panic!("missing buffer {} channel {}", id, channel));
         euphony_node::Buffer {
-            samples: &*buffer,
+            samples: buffer,
             hash: &buffer.hash,
         }
     }
