@@ -8,6 +8,7 @@ mod export;
 mod gc;
 mod logger;
 mod manifest;
+#[cfg(feature = "play")]
 mod play;
 mod render;
 mod watcher;
@@ -19,6 +20,7 @@ mod serve;
 #[derive(Debug, StructOpt)]
 enum Arguments {
     Build(build::Build),
+    #[cfg(feature = "play")]
     #[structopt(alias = "p")]
     Play(play::Play),
     #[cfg(feature = "remote")]
@@ -37,17 +39,26 @@ pub fn is_alt_screen() -> bool {
     unsafe { IS_ALT_SCREEN }
 }
 
+fn init_logger(args: &Arguments) {
+    #[cfg(feature = "play")]
+    {
+        if matches!(args, Arguments::Play(_)) {
+            logger::init_tui();
+        }
+    }
+
+    logger::init();
+    let _ = args;
+}
+
 pub fn main() {
     let args = Arguments::from_args();
 
-    if matches!(args, Arguments::Play(_)) {
-        logger::init_tui();
-    } else {
-        logger::init();
-    }
+    init_logger(&args);
 
     let res = match args {
         Arguments::Build(args) => args.run(),
+        #[cfg(feature = "play")]
         Arguments::Play(args) => args.run(),
         Arguments::Disasm(args) => args.run(),
         #[cfg(feature = "remote")]

@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "play"), allow(dead_code))]
+
 use crate::{compiler::Compiler, Result};
 use anyhow::anyhow;
 use rayon::prelude::*;

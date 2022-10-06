@@ -11,6 +11,7 @@ pub fn is_alt_screen() -> bool {
     unsafe { IS_ALT_SCREEN }
 }
 
+#[allow(dead_code)]
 pub fn init_tui() {
     tui_logger::init_logger(log::LevelFilter::Info).unwrap();
     tui_logger::set_default_level(log::LevelFilter::Off);
