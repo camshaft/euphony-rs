@@ -18,6 +18,8 @@ pub fn init_tui() {
 
     // TODO add other targets or make tui_logger support prefixes
     tui_logger::set_level_for_target("euphony_cli::logger", log::LevelFilter::Info);
+    // the buffer logs any downloads
+    tui_logger::set_level_for_target("euphony_buffer", log::LevelFilter::Info);
 
     unsafe {
         IS_ALT_SCREEN = true;

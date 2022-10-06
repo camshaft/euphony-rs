@@ -44,6 +44,7 @@ fn init_logger(args: &Arguments) {
     {
         if matches!(args, Arguments::Play(_)) {
             logger::init_tui();
+            return;
         }
     }
 
