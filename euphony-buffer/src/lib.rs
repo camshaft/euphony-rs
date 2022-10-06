@@ -4,13 +4,17 @@ use serde::{Deserialize, Serialize};
 use std::{
     ffi::OsStr,
     fmt,
-    io::{Read, Write},
+    io::Read,
     path::{Path, PathBuf},
     time::{Duration, SystemTime},
 };
+
+#[cfg(feature = "decode")]
 use symphonia::core::codecs::CodecParameters;
 
+#[cfg(feature = "decode")]
 pub use symphonia;
+#[cfg(feature = "decode")]
 pub mod decode;
 pub mod hash;
 
@@ -51,7 +55,8 @@ impl<S> Buffer<S> {
 impl<S: AsRef<str>> Buffer<S> {
     #[doc(hidden)]
     pub fn initialize<F: FnOnce(&Path, &str) -> u64>(&self, init: F) -> u64 {
-        self.values.initialize(self.source.as_ref(), init)
+        self.values
+            .initialize(&BUFFER_DIR, self.source.as_ref(), init)
     }
 
     pub fn duration(&self) -> Duration {
@@ -68,7 +73,25 @@ impl<S: AsRef<str>> Buffer<S> {
     }
 
     fn meta(&self) -> &Meta {
-        self.values.meta(self.source.as_ref())
+        self.values.meta(&BUFFER_DIR, self.source.as_ref())
+    }
+}
+
+#[cfg(feature = "host")]
+impl Buffer<String> {
+    pub fn init(msg: euphony_command::InitBuffer) -> std::io::Result<()> {
+        let buffer = Self::new(msg.source);
+
+        let meta = buffer
+            .values
+            .meta_path
+            .get_or_init(|| PathBuf::from(msg.meta));
+
+        let buffer_dir = meta.parent().expect("missing parent path");
+
+        buffer.values.load_meta(buffer_dir, &buffer.source)?;
+
+        Ok(())
     }
 }
 
@@ -89,40 +112,49 @@ impl Values {
         }
     }
 
-    fn initialize<F: FnOnce(&Path, &str) -> u64>(&self, source: &str, init: F) -> u64 {
+    fn initialize<F: FnOnce(&Path, &str) -> u64>(
+        &self,
+        buffer_dir: &Path,
+        source: &str,
+        init: F,
+    ) -> u64 {
         *self.id.get_or_init(|| {
-            let contents = self.contents_path(source);
-            let meta = self.meta(source);
+            let meta = self.meta(buffer_dir, source);
+            let contents = self.contents_path(buffer_dir, source);
             init(contents, meta.ext.as_deref().unwrap_or(""))
         })
     }
 
-    fn contents_path(&self, source: &str) -> &Path {
+    fn contents_path(&self, buffer_dir: &Path, source: &str) -> &Path {
         self.contents_path.get_or_init(|| {
-            #[cfg(feature = "http")]
             if source.starts_with("https://") || source.starts_with("http://") {
-                return self.http(source);
+                return self.http(buffer_dir, source);
             }
 
-            self.local(source)
+            self.local(buffer_dir, source)
         })
     }
 
+    #[cfg(not(feature = "http"))]
+    fn http(&self, buffer_dir: &Path, source: &str) -> PathBuf {
+        self.meta(buffer_dir, source).contents.to_owned()
+    }
+
     #[cfg(feature = "http")]
-    fn http(&self, source: &str) -> PathBuf {
-        let meta_path = self.meta_path(source);
+    fn http(&self, buffer_dir: &Path, source: &str) -> PathBuf {
+        let meta_path = self.meta_path(buffer_dir, source);
         if meta_path.exists() {
-            return self.meta(source).contents.to_owned();
+            return self.meta(buffer_dir, source).contents.to_owned();
         }
 
-        eprintln!(" Downloading {}", source);
+        log::info!(" Downloading {}", source);
 
         let ext = Path::new(source)
             .extension()
             .and_then(|e| e.to_str())
             .unwrap_or("");
 
-        hash::create(&BUFFER_DIR, ext, |writer| {
+        hash::create(buffer_dir, ext, |writer| {
             reqwest::blocking::get(source)
                 .unwrap()
                 .error_for_status()
@@ -134,14 +166,14 @@ impl Values {
         .unwrap()
     }
 
-    fn local(&self, source: &str) -> PathBuf {
-        let meta_path = self.meta_path(source);
+    fn local(&self, buffer_dir: &Path, source: &str) -> PathBuf {
+        let meta_path = self.meta_path(buffer_dir, source);
 
         if meta_path.exists() {
             let source_modifed = modified(&source);
-            let meta_modifed = modified(&self.meta_path(source));
+            let meta_modifed = modified(&self.meta_path(buffer_dir, source));
             if source_modifed <= meta_modifed {
-                return self.meta(source).contents.to_owned();
+                return self.meta(buffer_dir, source).contents.to_owned();
             } else {
                 // remove the old path since the source has been updated
                 let _ = std::fs::remove_file(meta_path);
@@ -155,27 +187,52 @@ impl Values {
         path
     }
 
-    fn meta_path(&self, source: &str) -> &Path {
+    fn meta_path(&self, buffer_dir: &Path, source: &str) -> &Path {
         self.meta_path.get_or_init(|| {
             let hash = blake3::hash(source.as_bytes());
-            hash_path(&BUFFER_DIR, &hash)
+            hash_path(buffer_dir, &hash)
         })
     }
 
-    fn meta(&self, source: &str) -> &Meta {
+    fn meta(&self, buffer_dir: &Path, source: &str) -> &Meta {
         self.meta.get_or_init(|| {
-            let meta_path = self.meta_path(source);
-            if meta_path.exists() {
-                let file = std::fs::File::open(meta_path).unwrap();
-                let file = std::io::BufReader::new(file);
-                return serde_json::from_reader(file).unwrap();
+            self.load_meta(buffer_dir, source)
+                .unwrap_or_else(|err| panic!("error while loading buffer {:?} - {:?}", source, err))
+        })
+    }
+
+    fn load_meta(&self, buffer_dir: &Path, source: &str) -> std::io::Result<Meta> {
+        let meta_path = self.meta_path(buffer_dir, source);
+        if meta_path.exists() {
+            return json_from_path(meta_path);
+        }
+
+        #[cfg(not(feature = "decode"))]
+        {
+            euphony_command::api::init_buffer(source.to_string(), meta_path);
+            euphony_command::api::flush();
+
+            for i in 0..7 {
+                std::thread::sleep(core::time::Duration::from_millis(100 * 2u64.pow(i)));
+                if meta_path.exists() {
+                    return json_from_path(meta_path);
+                }
             }
+
+            panic!("{:?} was not downloaded", source);
+        }
+
+        #[cfg(feature = "decode")]
+        {
+            use std::io::Write;
 
             let ext = Path::new(source).extension().and_then(|e| e.to_str());
 
-            let contents_path = self.contents_path(source);
-            let contents = std::fs::File::open(contents_path).unwrap();
-            let format = decode::reader(contents, ext.unwrap_or("")).unwrap();
+            let contents_path = self.contents_path(buffer_dir, source);
+
+            let contents = std::fs::File::open(contents_path)?;
+            let format = decode::reader(contents, ext.unwrap_or(""))
+                .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
 
             let mut meta = Meta {
                 contents: contents_path.to_owned(),
@@ -189,13 +246,13 @@ impl Values {
                 meta.update(&track.codec_params);
             }
 
-            let meta_file = std::fs::File::create(meta_path).unwrap();
+            let meta_file = std::fs::File::create(meta_path)?;
             let mut meta_file = std::io::BufWriter::new(meta_file);
-            serde_json::to_writer(&mut meta_file, &meta).unwrap();
-            meta_file.flush().unwrap();
+            serde_json::to_writer(&mut meta_file, &meta)?;
+            meta_file.flush()?;
 
-            meta
-        })
+            Ok(meta)
+        }
     }
 }
 
@@ -272,6 +329,7 @@ struct Meta {
 }
 
 impl Meta {
+    #[cfg(feature = "decode")]
     fn update(&mut self, params: &CodecParameters) {
         if let Some(frames) = params.n_frames {
             self.frames = frames;
@@ -293,6 +351,12 @@ impl Meta {
         }
         Duration::from_secs(self.frames) / self.sample_rate
     }
+}
+
+fn json_from_path<T: serde::de::DeserializeOwned>(path: &Path) -> std::io::Result<T> {
+    let file = std::fs::File::open(path)?;
+    let file = std::io::BufReader::new(file);
+    Ok(serde_json::from_reader(file)?)
 }
 
 fn modified(path: &impl AsRef<OsStr>) -> SystemTime {

@@ -359,6 +359,12 @@ impl Handler for Compiler {
     }
 
     #[inline]
+    fn init_buffer(&mut self, msg: message::InitBuffer) -> std::io::Result<()> {
+        euphony_buffer::Buffer::init(msg)?;
+        Ok(())
+    }
+
+    #[inline]
     fn load_buffer(&mut self, msg: message::LoadBuffer) -> std::io::Result<()> {
         let message::LoadBuffer { id, path, ext } = msg;
 

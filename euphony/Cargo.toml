@@ -8,7 +8,7 @@ license = "MIT"
 
 [dependencies]
 bach = "=0.0.6"
-euphony-buffer = { version = "0.1", path = "../euphony-buffer" }
+euphony-buffer = { version = "0.1", path = "../euphony-buffer", default-features = false }
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-macros = { version = "0.2", path = "../euphony-macros" }
 euphony-samples = { version = "0.1", path = "../euphony-samples" }
@@ -17,7 +17,6 @@ futures = "0.3"
 once_cell = "1"
 pin-project = "1"
 rand = { version = "0.8", default-features = false }
-structopt = "0.3"
 
 [dev-dependencies]
 insta = "1"

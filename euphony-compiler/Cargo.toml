@@ -10,7 +10,7 @@ parallel = ["rayon", "euphony-graph/rayon"]
 
 [dependencies]
 blake3 = "1"
-euphony-buffer = { version = "0.1", path = "../euphony-buffer", features = ["resample"] }
+euphony-buffer = { version = "0.1", path = "../euphony-buffer" }
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-dsp = { version = "0.1", path = "../euphony-dsp" }
 euphony-graph = { version = "0.1", path = "../euphony-graph" }

@@ -2,7 +2,6 @@ use crate::{group::Grouped, output};
 use bach::executor::{Environment, Executor, Handle};
 use core::{future::Future, task::Poll};
 use euphony_units::time::Tempo;
-use structopt::StructOpt;
 
 pub use bach::{executor::JoinHandle, rand};
 

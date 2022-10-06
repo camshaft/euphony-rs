@@ -1,6 +1,8 @@
 use core::{fmt, ops::ControlFlow};
 use std::io;
 
+pub mod api;
+
 #[cfg(test)]
 use bolero::generator::*;
 
@@ -12,6 +14,7 @@ pub trait Handler {
     fn set_parameter(&mut self, msg: SetParameter) -> io::Result<()>;
     fn pipe_parameter(&mut self, msg: PipeParameter) -> io::Result<()>;
     fn finish_node(&mut self, msg: FinishNode) -> io::Result<()>;
+    fn init_buffer(&mut self, msg: InitBuffer) -> io::Result<()>;
     fn load_buffer(&mut self, msg: LoadBuffer) -> io::Result<()>;
     fn set_buffer(&mut self, msg: SetBuffer) -> io::Result<()>;
 }
@@ -48,6 +51,10 @@ impl Handler for String {
     }
 
     fn finish_node(&mut self, msg: FinishNode) -> io::Result<()> {
+        push_msg(self, msg)
+    }
+
+    fn init_buffer(&mut self, msg: InitBuffer) -> io::Result<()> {
         push_msg(self, msg)
     }
 
@@ -107,6 +114,10 @@ pub fn decode_one<R: io::Read, H: Handler>(
             let msg = FinishNode::decode(tag, input)?;
             handler.finish_node(msg)?;
         }
+        InitBuffer::TAG => {
+            let msg = InitBuffer::decode(tag, input)?;
+            handler.init_buffer(msg)?;
+        }
         LoadBuffer::TAG => {
             let msg = LoadBuffer::decode(tag, input)?;
             handler.load_buffer(msg)?;
@@ -134,6 +145,7 @@ pub trait Codec: Sized {
 trait WriteExt {
     fn write_u8(&mut self, value: u8) -> io::Result<()>;
     fn write_u16(&mut self, value: u16) -> io::Result<()>;
+    fn write_u32(&mut self, value: u32) -> io::Result<()>;
     fn write_u64(&mut self, value: u64) -> io::Result<()>;
 }
 
@@ -151,6 +163,12 @@ impl<W: io::Write> WriteExt for W {
     }
 
     #[inline]
+    fn write_u32(&mut self, value: u32) -> io::Result<()> {
+        self.write_all(&value.to_le_bytes())?;
+        Ok(())
+    }
+
+    #[inline]
     fn write_u64(&mut self, value: u64) -> io::Result<()> {
         self.write_all(&value.to_le_bytes())?;
         Ok(())
@@ -160,6 +178,7 @@ impl<W: io::Write> WriteExt for W {
 trait ReadExt {
     fn read_u8(&mut self) -> io::Result<u8>;
     fn read_u16(&mut self) -> io::Result<u16>;
+    fn read_u32(&mut self) -> io::Result<u32>;
     fn read_u64(&mut self) -> io::Result<u64>;
     fn read_string(&mut self, len: usize) -> io::Result<String>;
 }
@@ -177,6 +196,14 @@ impl<R: io::Read> ReadExt for R {
         let mut value = [0u8; 2];
         self.read_exact(&mut value)?;
         let value = u16::from_le_bytes(value);
+        Ok(value)
+    }
+
+    #[inline]
+    fn read_u32(&mut self) -> io::Result<u32> {
+        let mut value = [0u8; 4];
+        self.read_exact(&mut value)?;
+        let value = u32::from_le_bytes(value);
         Ok(value)
     }
 
@@ -526,6 +553,47 @@ impl Codec for FinishNode {
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(test, derive(TypeGenerator))]
+pub struct InitBuffer {
+    #[cfg_attr(test, generator(gen::<String>().with().len(0usize..64)))]
+    pub source: String,
+    #[cfg_attr(test, generator(gen::<String>().with().len(0usize..64)))]
+    pub meta: String,
+}
+
+impl InitBuffer {
+    const TAG: u8 = b'I';
+}
+
+impl fmt::Display for InitBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "  INIT_BUF path = {:?}", self.source)
+    }
+}
+
+impl Codec for InitBuffer {
+    #[inline]
+    fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
+        output.write_u8(Self::TAG)?;
+        output.write_u32(self.source.len() as _)?;
+        output.write_all(self.source.as_bytes())?;
+        output.write_u32(self.meta.len() as _)?;
+        output.write_all(self.meta.as_bytes())?;
+        Ok(())
+    }
+
+    #[inline]
+    fn decode<R: io::Read>(tag: u8, input: &mut R) -> io::Result<Self> {
+        debug_assert_eq!(Self::TAG, tag);
+        let len = input.read_u32()?;
+        let source = input.read_string(len as usize)?;
+        let len = input.read_u32()?;
+        let meta = input.read_string(len as usize)?;
+        Ok(Self { source, meta })
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(test, derive(TypeGenerator))]
 pub struct LoadBuffer {
     pub id: u64,
     #[cfg_attr(test, generator(gen::<String>().with().len(0usize..64)))]
@@ -553,7 +621,7 @@ impl Codec for LoadBuffer {
     fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
         output.write_u8(Self::TAG)?;
         output.write_u64(self.id)?;
-        output.write_u16(self.path.len() as _)?;
+        output.write_u32(self.path.len() as _)?;
         output.write_all(self.path.as_bytes())?;
         if !self.ext.is_empty() {
             output.write_u8(self.ext.len() as _)?;
@@ -568,7 +636,7 @@ impl Codec for LoadBuffer {
     fn decode<R: io::Read>(tag: u8, input: &mut R) -> io::Result<Self> {
         debug_assert_eq!(Self::TAG, tag);
         let id = input.read_u64()?;
-        let len = input.read_u16()?;
+        let len = input.read_u32()?;
         let path = input.read_string(len as usize)?;
         let ext_len = input.read_u8()?;
         let ext = if ext_len > 0 {
