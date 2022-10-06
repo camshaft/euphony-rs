@@ -22,7 +22,7 @@ impl Compiler {
     }
 
     pub fn render<I: io::Read>(&mut self, input: &mut I) -> Result<()> {
-        let _ = fs::create_dir_all(&self.store.storage.path());
+        let _ = fs::create_dir_all(self.store.storage.path());
         let _ = fs::create_dir_all(self.timeline_path.parent().unwrap());
 
         self.store.timeline.reset();

@@ -67,7 +67,7 @@ impl New {
     fn write(&self, root: &Path, path: &str, tmpl: &str) -> Result<()> {
         let path = root.join(&self.name).join(path);
         let dir = path.parent().unwrap();
-        fs::create_dir_all(&dir)?;
+        fs::create_dir_all(dir)?;
         let dir = dir.canonicalize()?;
         let name = Path::new(&self.name).file_stem().unwrap().to_str().unwrap();
         let mut common_path = String::new();

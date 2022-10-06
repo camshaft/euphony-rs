@@ -19,7 +19,7 @@ remote = ["tokio", "warp"]
 anyhow = "1"
 arc-swap = "1"
 cargo_metadata = "0.15"
-crossterm = "0.25"
+crossterm = "0.23"
 cpal = { version = "0.14", optional = true }
 env_logger = "0.9"
 euphony-command = { version = "0.1", path = "../euphony-command" }
