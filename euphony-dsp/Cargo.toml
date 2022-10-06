@@ -1,6 +1,7 @@
 [package]
 name = "euphony-dsp"
-version = "0.1.0"
+description = "implementation of euphony's signal processing nodes"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 

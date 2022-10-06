@@ -1,43 +1,13 @@
 #![allow(dead_code)]
 
 use crate::{
-    bformat,
     frame::{Frame, N2},
     Mixer, Writer,
 };
 use euphony_dsp::sample::Sample;
-use euphony_units::coordinates::Polar;
 
-#[derive(Clone, Copy, Debug)]
-pub struct Config {
-    left: bformat::Weights,
-    right: bformat::Weights,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self {
-            left: bformat::Weights::new(
-                Polar {
-                    azimuth: -0.5,
-                    inclination: 0.0,
-                    radius: 1.0,
-                }
-                .into(),
-                0.1,
-            ),
-            right: bformat::Weights::new(
-                Polar {
-                    azimuth: 0.5,
-                    inclination: 0.0,
-                    radius: 1.0,
-                }
-                .into(),
-                0.1,
-            ),
-        }
-    }
-}
+#[derive(Clone, Copy, Debug, Default)]
+pub struct Config {}
 
 #[derive(Debug)]
 pub struct Stereo<W: Writer> {
@@ -80,8 +50,7 @@ where
     fn mix(&mut self, samples: &[crate::SpatialSample]) -> Result<(), Self::Error> {
         let mut frame = [0.0f64, 0.0f64];
         for s in samples.iter() {
-            // TODO
-            // let x = dbg!(s.coordinate.x);
+            // TODO use the bformat
             let x = 0.5;
             frame[0] += s.value * x;
             frame[1] += s.value * x;

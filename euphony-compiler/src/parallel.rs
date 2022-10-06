@@ -41,6 +41,14 @@ mod polyfill {
         }
     }
 
+    impl<'a, K: 'a, V: 'a> ParIter<'a> for HashMap<K, V> {
+        type ParIter = hash_map::Iter<'a, K, V>;
+
+        fn par_iter(&'a self) -> Self::ParIter {
+            self.iter()
+        }
+    }
+
     impl<'a, K: 'a, V: 'a> ParIterMut<'a> for HashMap<K, V> {
         type ParIterMut = hash_map::IterMut<'a, K, V>;
 

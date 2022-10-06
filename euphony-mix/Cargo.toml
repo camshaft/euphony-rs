@@ -1,6 +1,7 @@
 [package]
 name = "euphony-mix"
-version = "0.1.0"
+version = "0.1.1"
+description = "mixing logic for euphony compositions"
 edition = "2021"
 license = "MIT"
 

@@ -1,7 +1,7 @@
 [package]
 name = "euphony-graph"
 description = "parallel graph computation framework"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Cameron Bytheway <bytheway.cameron@gmail.com>"]
 edition = "2021"
 license = "MIT"
