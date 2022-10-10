@@ -10,6 +10,7 @@ pub mod cell;
 pub mod env;
 pub mod ext;
 pub mod group;
+pub mod midi;
 pub mod node;
 mod output;
 pub mod parameter;
