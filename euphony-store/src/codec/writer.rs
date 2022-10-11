@@ -10,6 +10,7 @@ pub struct Writer<O: storage::Output> {
     leak_dc: LeakDc,
     samples: O,
     coordinates: O,
+    coord_buffer: Option<(Cartesian<f64>, u32)>,
     sink: O,
 }
 
@@ -25,8 +26,38 @@ impl<O: storage::Output> Writer<O> {
             leak_dc: Default::default(),
             samples: storage.create(),
             coordinates: storage.create(),
+            coord_buffer: None,
             sink,
         }
+    }
+
+    #[inline]
+    fn write_coord(&mut self, coord: Cartesian<f64>) {
+        if let Some((prev, count)) = self.coord_buffer.as_mut() {
+            if *prev == coord {
+                if let Some(next_count) = count.checked_add(1) {
+                    *count = next_count;
+                    return;
+                }
+            }
+
+            let prev = *prev;
+            let count = *count;
+            self.flush_coord(prev, count);
+        } else {
+            self.coord_buffer = Some((coord, 0));
+        }
+    }
+
+    #[inline]
+    fn flush_coord(&mut self, coord: Cartesian<f64>, count: u32) {
+        let mut bytes = [0u8; 4 * 4];
+        bytes[..4].copy_from_slice(&count.to_le_bytes());
+        bytes[4..8].copy_from_slice(&(coord.x as f32).to_ne_bytes());
+        bytes[8..12].copy_from_slice(&(coord.y as f32).to_ne_bytes());
+        bytes[12..].copy_from_slice(&(coord.z as f32).to_ne_bytes());
+
+        self.coordinates.write(&bytes);
     }
 }
 
@@ -38,20 +69,21 @@ impl<W: storage::Output> Sink for Writer<W> {
             let sample = sample.to_ne_bytes();
             self.samples.write(&sample);
 
-            let cart: Cartesian<f64> = coord.into();
-            let mut bytes = [0u8; 4 * 3];
-            bytes[..4].copy_from_slice(&(cart.x as f32).to_ne_bytes());
-            bytes[4..8].copy_from_slice(&(cart.y as f32).to_ne_bytes());
-            bytes[8..].copy_from_slice(&(cart.z as f32).to_ne_bytes());
-            self.coordinates.write(&bytes);
+            self.write_coord(coord.into());
         }
     }
 }
 
 impl<W: storage::Output> Drop for Writer<W> {
+    #[inline]
     fn drop(&mut self) {
         let a = self.samples.finish();
         self.sink.write(&a);
+
+        if let Some((coord, count)) = self.coord_buffer.take() {
+            self.flush_coord(coord, count);
+        }
+
         let b = self.coordinates.finish();
         self.sink.write(&b);
     }

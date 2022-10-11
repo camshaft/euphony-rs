@@ -5,7 +5,7 @@ pub struct Polar<T> {
     pub radius: T,
 }
 
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cartesian<T> {
     pub x: T,
     pub y: T,
