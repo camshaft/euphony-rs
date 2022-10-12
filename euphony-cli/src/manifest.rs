@@ -45,6 +45,9 @@ impl Manifest {
     }
 
     pub fn default_project(&self) -> Option<&str> {
+        if let Some(p) = self.project.as_ref() {
+            return Some(p);
+        }
         self.projects.keys().next().map(|v| v.as_str())
     }
 
@@ -124,6 +127,10 @@ impl Manifest {
             .arg("target/euphony/build")
             .current_dir(root);
 
+        if let Some(project) = self.project.as_ref() {
+            build.arg("--package").arg(project);
+        }
+
         crate::logger::cmd(&mut build);
         let mut child = build.spawn()?;
         crate::logger::cmd_stderr(child.stderr.take());
@@ -133,27 +140,33 @@ impl Manifest {
             return Err(anyhow::anyhow!("cargo build command failed"));
         }
 
+        fn render(root: &Path, name: &str, compiler: &mut Compiler) -> Result<()> {
+            let mut proc = process::Command::new(format!("target/euphony/build/debug/{}", name));
+
+            proc.stdout(process::Stdio::piped())
+                .env("EUPHONY_OUTPUT", "-")
+                .current_dir(root);
+
+            crate::logger::cmd(&mut proc);
+
+            let mut proc = proc.spawn()?;
+            crate::logger::cmd_stderr(proc.stderr.take());
+            let mut stdout = io::BufReader::new(proc.stdout.unwrap());
+
+            compiler.render(&mut stdout)?;
+
+            Ok(())
+        }
+
+        if let Some(project) = self.project.as_ref() {
+            let compiler = self.projects.get_mut(project).unwrap();
+            return render(root, project, compiler);
+        }
+
         let res: Result<()> = self
             .projects
             .par_iter_mut()
-            .map(|(name, project)| {
-                let mut proc =
-                    process::Command::new(format!("target/euphony/build/debug/{}", name));
-
-                proc.stdout(process::Stdio::piped())
-                    .env("EUPHONY_OUTPUT", "-")
-                    .current_dir(root);
-
-                crate::logger::cmd(&mut proc);
-
-                let mut proc = proc.spawn()?;
-                crate::logger::cmd_stderr(proc.stderr.take());
-                let mut stdout = io::BufReader::new(proc.stdout.unwrap());
-
-                project.render(&mut stdout)?;
-
-                Ok(())
-            })
+            .map(|(name, compiler)| render(root, name, compiler))
             .collect();
 
         res?;
