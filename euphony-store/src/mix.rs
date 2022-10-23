@@ -1,6 +1,9 @@
 use crate::{storage::Storage, Hash};
+use core::mem::size_of;
 use euphony_mix::{Mixer, SpatialSample};
 use std::{collections::VecDeque, io};
+
+const SAMPLE_CAPACITY: usize = 4096 / size_of::<SpatialSample>();
 
 pub fn mix<S: Storage, M: Mixer<Error = E>, E: Into<io::Error>>(
     storage: &S,
@@ -11,7 +14,7 @@ pub fn mix<S: Storage, M: Mixer<Error = E>, E: Into<io::Error>>(
     let group = storage.open_group(group)?;
 
     let mut exporter: Exporter<S, M, E> = Exporter {
-        samples: Vec::with_capacity(4096),
+        samples: Vec::with_capacity(SAMPLE_CAPACITY),
         entries: VecDeque::with_capacity(16),
         mixer,
     };
@@ -55,16 +58,17 @@ impl<'a, S: Storage, W: Mixer<Error = E>, E: Into<io::Error>> Exporter<'a, S, W,
     #[inline]
     pub fn finalize(&mut self) -> io::Result<()> {
         self.write(None)?;
-
         Ok(())
     }
 
     #[inline]
-    fn write(&mut self, limit: Option<u64>) -> io::Result<()> {
-        let mut remaining = limit.unwrap_or(u64::MAX);
+    fn write(&mut self, samples: Option<u64>) -> io::Result<()> {
+        let mut remaining = samples.unwrap_or(u64::MAX);
+        let mut entries_len = self.entries.len();
+        let mut finished = vec![];
 
-        while remaining > 0 && !self.entries.is_empty() {
-            let mut finished = vec![];
+        while remaining > 0 && entries_len > 0 {
+            remaining -= 1;
 
             for (idx, entry) in self.entries.iter_mut().enumerate() {
                 if let Some(sample) = entry.next() {
@@ -74,53 +78,42 @@ impl<'a, S: Storage, W: Mixer<Error = E>, E: Into<io::Error>> Exporter<'a, S, W,
                 }
             }
 
-            remaining -= 1;
-            if finished.is_empty() {
+            // mix the buffer when we change the number of active entries or hit the capacity
+            if finished.is_empty() && self.samples.len() < SAMPLE_CAPACITY {
                 continue;
             }
 
-            self.mix_buffer()?;
+            self.mix_buffer(entries_len)?;
 
-            for idx in finished.into_iter().rev() {
+            for idx in finished.drain(..).rev() {
                 self.entries.remove(idx);
+            }
+
+            entries_len = self.entries.len();
+
+            // if the last iteration cleared all of the entires, we wouldn't have pushed a sample
+            // so we need to undo the decrement
+            if entries_len == 0 {
+                remaining += 1;
             }
         }
 
-        self.mix_buffer()?;
+        if !self.samples.is_empty() {
+            self.mix_buffer(entries_len)?;
+        }
 
-        if limit.is_some() && remaining > 0 {
+        if samples.is_some() && remaining > 0 {
             self.mixer.skip(remaining as _).map_err(|e| e.into())?;
         }
 
         Ok(())
     }
 
-    #[inline(never)]
-    fn mix_buffer(&mut self) -> io::Result<()> {
-        let sample_len = self.samples.len();
-        let entries_len = self.entries.len();
-
-        if sample_len == 0 {
-            return Ok(());
+    #[inline]
+    fn mix_buffer(&mut self, entries_len: usize) -> io::Result<()> {
+        for chunk in self.samples.chunks(entries_len) {
+            self.mixer.mix(chunk).map_err(|e| e.into())?;
         }
-
-        let mixed_samples = if entries_len > 0 {
-            let mixed_samples = sample_len / entries_len * entries_len;
-
-            if mixed_samples > 0 {
-                for chunk in self.samples.chunks(mixed_samples) {
-                    self.mixer.mix(chunk).map_err(|e| e.into())?;
-                }
-            }
-
-            mixed_samples
-        } else {
-            0
-        };
-
-        self.mixer
-            .mix(&self.samples[mixed_samples..])
-            .map_err(|e| e.into())?;
 
         self.samples.clear();
 

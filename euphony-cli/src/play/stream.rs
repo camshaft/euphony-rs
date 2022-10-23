@@ -624,8 +624,8 @@ where
     #[inline]
     fn skip(&mut self, frames: usize) -> Result<(), Self::Error> {
         let samples = CHANNELS * frames;
-        if self.track.start == 0 {
-            self.track.start = samples as _;
+        if self.track.buffer.is_empty() {
+            self.track.start += samples as usize;
         } else {
             let new_len = self.track.buffer.len() + samples;
             self.track.buffer.resize(new_len, Sample::EQUILIBRIUM);
