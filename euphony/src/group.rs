@@ -1,3 +1,5 @@
+#![allow(dead_code)] // ignore pin_project unused functions
+
 use core::{
     future::Future,
     pin::Pin,
