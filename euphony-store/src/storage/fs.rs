@@ -48,21 +48,68 @@ enum OState {
         hash: Hash,
     },
     Incremental {
-        file: File,
+        file: fs::File,
+        buffer: Vec<u8>,
         path: Option<TempPath>,
         state: State,
     },
 }
 
+#[inline]
+fn write_buffered(
+    file: &mut fs::File,
+    buffer: &mut Vec<u8>,
+    state: &mut State,
+    bytes: &[u8],
+) -> io::Result<()> {
+    if bytes.len() > 1024 {
+        flush_buffered(file, buffer, state)?;
+
+        state.hasher.update(bytes);
+        file.write_all(bytes)?;
+        return Ok(());
+    }
+
+    if buffer.capacity() == 0 {
+        buffer.reserve(8 * 1024);
+    }
+    buffer.extend_from_slice(bytes);
+
+    if buffer.len() > 8 * 1024 {
+        flush_buffered(file, buffer, state)?;
+    }
+
+    Ok(())
+}
+
+#[inline]
+fn flush_buffered(file: &mut fs::File, buffer: &mut Vec<u8>, state: &mut State) -> io::Result<()> {
+    if buffer.is_empty() {
+        return Ok(());
+    }
+
+    state.hasher.update(buffer);
+    file.write_all(buffer)?;
+    buffer.clear();
+
+    Ok(())
+}
+
 impl storage::Output for Output {
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
+        if bytes.is_empty() {
+            return;
+        }
+
         let result = match &mut self.0 {
             OState::PreHashed { file, .. } => file.write_all(bytes),
-            OState::Incremental { file, state, .. } => {
-                state.hasher.update(bytes);
-                file.write_all(bytes)
-            }
+            OState::Incremental {
+                file,
+                buffer,
+                state,
+                ..
+            } => write_buffered(file, buffer, state, bytes),
         };
 
         if let Err(err) = result {
@@ -74,10 +121,18 @@ impl storage::Output for Output {
     fn finish(&mut self) -> Hash {
         let result = match &mut self.0 {
             OState::PreHashed { file, hash } => file.flush().map(|_| *hash),
-            OState::Incremental { file, state, path } => {
+            OState::Incremental {
+                file,
+                buffer,
+                state,
+                path,
+            } => {
                 let tmp_path = path.take().expect("cannot finalize twice");
-                let hash = *state.hasher.finalize().as_bytes();
-                file.flush().and_then(|_| {
+
+                let result = flush_buffered(file, buffer, state);
+
+                result.and_then(|_| file.flush()).and_then(|_| {
+                    let hash = *state.hasher.finalize().as_bytes();
                     let new_path = state.hash_path(&hash);
 
                     tmp_path
@@ -156,10 +211,10 @@ impl Storage for Directory {
 
     fn create(&self) -> Self::Output {
         let (file, path) = NamedTempFile::new().unwrap().into_parts();
-        let file = io::BufWriter::new(file);
         let state = self.state.clone();
         Output(OState::Incremental {
             file,
+            buffer: vec![],
             state,
             path: Some(path),
         })
