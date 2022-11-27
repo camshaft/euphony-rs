@@ -7,7 +7,7 @@ Music composition environment for programmers
 Install `euphony` with `cargo`:
 
 ```sh
-$ cargo install --git https://github.com/camshaft/euphony-rs --bins euphony-cli
+$ RUSTFLAGS="-C target-cpu=native" cargo install euphony-cli
 ```
 
 ## Getting started
