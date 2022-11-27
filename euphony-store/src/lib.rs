@@ -1,4 +1,4 @@
-use euphony_compiler::{Hash, Writer};
+use euphony_compiler::{midi, Hash, Writer};
 use euphony_mix::Mixer;
 use std::{io, path::PathBuf};
 
@@ -56,9 +56,10 @@ impl<S: Writer, T: Writer> Writer for Store<S, T> {
         name: &str,
         hash: &Hash,
         entries: I,
+        midi: &midi::Writer,
     ) {
-        self.storage.group(name, hash, entries);
-        self.timeline.group(name, hash, None.into_iter());
+        self.storage.group(name, hash, entries, midi);
+        self.timeline.group(name, hash, None.into_iter(), midi);
     }
 
     fn buffer<

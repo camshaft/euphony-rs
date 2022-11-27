@@ -91,6 +91,10 @@ impl<T: Copy + Integer> Ratio<T> {
         self.as_ratio().to_integer()
     }
 
+    pub fn inverse(self) -> Self {
+        Self(self.1, self.0)
+    }
+
     pub fn try_into_whole(&self) -> Option<T> {
         if self.is_whole() {
             Some(self.whole())

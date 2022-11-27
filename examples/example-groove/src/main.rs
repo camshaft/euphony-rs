@@ -59,7 +59,9 @@ async fn main() {
 }
 
 async fn bass(interval: Interval) {
-    let freq = interval * MINOR * ET12;
+    let note = interval * MINOR;
+    let freq = note * ET12;
+    euphony::midi::on(note, 127);
 
     let osc = osc::sine().with_frequency(freq);
 
@@ -77,6 +79,8 @@ async fn bass(interval: Interval) {
     env.set_target(0.0);
 
     delay!(decay);
+
+    euphony::midi::off(note, 127);
 
     sink.fin();
 }

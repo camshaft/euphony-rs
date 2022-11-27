@@ -1,4 +1,5 @@
 use euphony_compiler::{
+    midi,
     sample::{DefaultRate, Rate as _},
     Hash, Writer,
 };
@@ -39,6 +40,8 @@ impl Timeline {
 pub struct Group {
     pub name: String,
     pub entries: HashDisplay,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub midi: Option<HashDisplay>,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -110,10 +113,16 @@ impl Writer for Timeline {
         name: &str,
         hash: &Hash,
         _entries: I,
+        midi: &midi::Writer,
     ) {
         self.groups.push(Group {
             name: name.to_string(),
             entries: HashDisplay(*hash),
+            midi: if midi.is_empty() {
+                None
+            } else {
+                Some(HashDisplay(*midi.hash()))
+            },
         });
     }
 

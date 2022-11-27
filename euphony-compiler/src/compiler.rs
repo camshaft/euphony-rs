@@ -11,7 +11,7 @@ use crate::{
 use euphony_command::{self as message, Handler};
 use euphony_dsp::nodes;
 use euphony_node::{BufferMap, ParameterValue as Value};
-use euphony_units::ratio::Ratio;
+use euphony_units::{ratio::Ratio, time::Beat};
 use petgraph::{
     visit::{depth_first_search, DfsEvent},
     Graph,
@@ -28,6 +28,8 @@ pub struct Compiler {
     connections: Graph<u64, Edge>,
     instructions: BTreeSet<(Offset, InternalInstruction)>,
     samples: Offset,
+    beats: Beat,
+    ticks_per_beat: u64,
     samples_per_tick: Ratio<u128>,
     pending_buffers: HashMap<u64, (String, String)>,
 }
@@ -52,6 +54,8 @@ impl Default for Compiler {
             connections: Default::default(),
             instructions: Default::default(),
             samples: Default::default(),
+            beats: Default::default(),
+            ticks_per_beat: Beat::DEFAULT_TICKS_PER_BEAT,
             samples_per_tick: default_samples_per_tick(),
             pending_buffers: Default::default(),
         }
@@ -249,16 +253,19 @@ impl Handler for Compiler {
             .checked_add(samples)
             .ok_or_else(|| error!("sample overflow"))?;
 
+        self.beats += Beat(msg.ticks, self.ticks_per_beat);
+
         Ok(())
     }
 
     #[inline]
-    fn set_nanos_per_tick(&mut self, msg: message::SetNanosPerTick) -> Result {
-        if msg.nanos == 0 {
+    fn set_timing(&mut self, msg: message::SetTiming) -> Result {
+        if msg.nanos_per_tick == 0 {
             return Err(error!("nanos per tick must be non-zero"));
         }
 
-        self.samples_per_tick = samples_per_tick(msg.nanos);
+        self.samples_per_tick = samples_per_tick(msg.nanos_per_tick);
+        self.ticks_per_beat = msg.ticks_per_beat;
         Ok(())
     }
 
@@ -308,6 +315,17 @@ impl Handler for Compiler {
             return Err(error!("node id {} was reused", msg.id));
         }
 
+        Ok(())
+    }
+
+    #[inline]
+    fn emit_midi(&mut self, msg: message::EmitMidi) -> Result {
+        let group = msg.group.unwrap_or(0);
+        self.groups
+            .entry(group)
+            .or_default()
+            .midi
+            .write(self.samples, self.beats, msg.data);
         Ok(())
     }
 

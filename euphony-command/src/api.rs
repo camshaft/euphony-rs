@@ -34,9 +34,10 @@ pub fn advance_time(ticks: u64) {
     emit(AdvanceTime { ticks })
 }
 
-pub fn set_tick_duration(duration: Duration) {
-    emit(SetNanosPerTick {
-        nanos: duration.as_nanos() as _,
+pub fn set_timing(nanos_per_tick: Duration, ticks_per_beat: u64) {
+    emit(SetTiming {
+        nanos_per_tick: nanos_per_tick.as_nanos() as _,
+        ticks_per_beat,
     })
 }
 

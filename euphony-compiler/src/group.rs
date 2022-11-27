@@ -1,4 +1,4 @@
-use crate::{sample::Offset, sink::SinkMap, Entry, Hash};
+use crate::{midi, sample::Offset, sink::SinkMap, Entry, Hash};
 use blake3::Hasher;
 use std::collections::{btree_map, btree_set, BTreeMap, BTreeSet};
 
@@ -9,6 +9,7 @@ pub struct Group {
     pub name: String,
     pub hash: Hash,
     pub sinks: BTreeSet<(Offset, u64)>,
+    pub midi: midi::Writer,
 }
 
 impl Group {
@@ -20,6 +21,8 @@ impl Group {
             hasher.update(&sample.to_bytes());
             hasher.update(&sink.hash);
         }
+        self.midi.finish();
+        hasher.update(self.midi.hash());
         self.hash = *hasher.finalize().as_bytes();
     }
 }

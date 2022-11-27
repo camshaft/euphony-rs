@@ -5,7 +5,7 @@ use crate::{
 };
 use base64::URL_SAFE_NO_PAD;
 use blake3::Hasher;
-use euphony_compiler::{Entry, Hash, Writer};
+use euphony_compiler::{midi, Entry, Hash, Writer};
 use euphony_node::{BoxProcessor, Sink};
 use euphony_units::coordinates::Polar;
 use std::{
@@ -201,6 +201,20 @@ impl Directory {
         }
         Ok(())
     }
+
+    fn write_midi(&self, midi: &midi::Writer) -> io::Result<()> {
+        if midi.is_empty() {
+            return Ok(());
+        }
+
+        if let Some(file) = self.open(midi.hash())? {
+            // no need to buffer the contents
+            let mut file = file.into_inner()?;
+            file.write_all(midi)?;
+        }
+
+        Ok(())
+    }
 }
 
 impl Storage for Directory {
@@ -251,10 +265,17 @@ impl Writer for Directory {
         }
     }
 
-    fn group<I: Iterator<Item = Entry>>(&mut self, name: &str, hash: &Hash, entries: I) {
+    fn group<I: Iterator<Item = Entry>>(
+        &mut self,
+        name: &str,
+        hash: &Hash,
+        entries: I,
+        midi: &midi::Writer,
+    ) {
         match self
             .open(hash)
             .and_then(|file| Self::write_group(file, entries))
+            .and_then(|_| self.write_midi(midi))
         {
             Ok(()) => {}
             Err(err) => {
