@@ -10,4 +10,4 @@ license = "MIT"
 bach = "0.0.6"
 
 [dev-dependencies]
-bolero = "0.7"
+bolero = "0.8"
