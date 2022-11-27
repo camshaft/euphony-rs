@@ -11,7 +11,7 @@ euphony-graph = { version = "0.1", path = "../euphony-graph" }
 euphony-node = { version = "0.1", path = "../euphony-node" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
 fastapprox = "0.3"
-fundsp = "0.9"
+fundsp = { version = "0.10", default-features = false }
 
 [dev-dependencies]
 euphony-node = { path = "../euphony-node", features = ["reflect"] }

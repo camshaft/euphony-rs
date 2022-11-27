@@ -218,7 +218,7 @@ impl<R: io::Read> ReadExt for R {
     #[inline]
     fn read_string(&mut self, len: usize) -> io::Result<String> {
         Ok(if len > 0 {
-            let mut name = vec![0; len as usize];
+            let mut name = vec![0; len];
             self.read_exact(&mut name)?;
             match String::from_utf8_lossy(&name) {
                 std::borrow::Cow::Owned(v) => v,
