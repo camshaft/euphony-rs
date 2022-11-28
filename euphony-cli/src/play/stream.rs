@@ -58,7 +58,7 @@ pub struct TrackControl {
     name: String,
     is_muted: AtomicBool,
     is_soloed: AtomicBool,
-    end: usize,
+    end: AtomicUsize,
 }
 
 impl TrackControl {
@@ -72,6 +72,10 @@ impl TrackControl {
 
     pub fn is_soloed(&self) -> bool {
         self.is_soloed.load(Ordering::Relaxed)
+    }
+
+    pub fn end(&self) -> usize {
+        self.end.load(Ordering::Relaxed)
     }
 }
 
@@ -387,25 +391,37 @@ where
             .map(|group| {
                 let hash = *group.entries;
 
-                // if we've already computed this track, then just clone the previous version
-                if let Some(index) = tracks.iter().position(|t| t.hash == hash) {
-                    let track = tracks[index].clone();
-                    let control = controls[index].clone();
-                    return (track, control);
-                }
+                let (controls, idx) = if let Some((idx, control)) = controls
+                    .iter()
+                    .enumerate()
+                    .find(|(_, track)| track.name == group.name)
+                {
+                    control.end.store(0, Ordering::Relaxed);
+                    (control.clone(), Some(idx))
+                } else {
+                    let control = Arc::new(TrackControl {
+                        name: group.name.to_string(),
+                        is_muted: AtomicBool::new(false),
+                        is_soloed: AtomicBool::new(false),
+                        end: AtomicUsize::new(0),
+                    });
+                    (control, None)
+                };
 
-                let writer = <TrackWriter<CHANNELS, Sample>>::new(hash);
-                let writer = mix(&hash, writer, store);
-                let track = writer.track;
+                let track = if let Some(track) =
+                    idx.and_then(|idx| tracks.get(idx).filter(|track| track.hash == hash))
+                {
+                    track.clone()
+                } else {
+                    let writer = <TrackWriter<CHANNELS, Sample>>::new(hash);
+                    let writer = mix(&hash, writer, store);
+                    let track = writer.track;
 
-                let track = Arc::new(track);
+                    Arc::new(track)
+                };
 
-                let controls = Arc::new(TrackControl {
-                    name: group.name.to_string(),
-                    is_muted: AtomicBool::new(false),
-                    is_soloed: AtomicBool::new(false),
-                    end: track.start + track.buffer.len(),
-                });
+                let end = track.start + track.buffer.len();
+                controls.end.store(end, Ordering::Relaxed);
 
                 (track, controls)
             })
@@ -418,7 +434,7 @@ where
             if control.is_soloed.load(Ordering::Relaxed) {
                 soloed_count += 1;
             }
-            total_samples = total_samples.max(control.end);
+            total_samples = total_samples.max(control.end());
         }
 
         self.tracks
