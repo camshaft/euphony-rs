@@ -3,52 +3,52 @@ source: euphony/src/tests.rs
 assertion_line: 37
 expression: dump
 ---
-  NANOS_PER_TICK nanos = 244140
+  SET_TIMING nanos_per_tick = 244140, ticks_per_beat = 4096
   SPAWN id = 0, processor = 100
   SET node = 0, param = 0, value = 0
 ADVANCE ticks = 2048
   FIN node = 0
-  NANOS_PER_TICK nanos = 209263
+  SET_TIMING nanos_per_tick = 209263, ticks_per_beat = 4096
   SPAWN id = 1, processor = 100
   SET node = 1, param = 0, value = 0.5
 ADVANCE ticks = 2048
   FIN node = 1
-  NANOS_PER_TICK nanos = 183105
+  SET_TIMING nanos_per_tick = 183105, ticks_per_beat = 4096
   SPAWN id = 2, processor = 100
   SET node = 2, param = 0, value = 1
 ADVANCE ticks = 2048
   FIN node = 2
-  NANOS_PER_TICK nanos = 162760
+  SET_TIMING nanos_per_tick = 162760, ticks_per_beat = 4096
   SPAWN id = 3, processor = 100
   SET node = 3, param = 0, value = 1.5
 ADVANCE ticks = 2048
   FIN node = 3
-  NANOS_PER_TICK nanos = 146484
+  SET_TIMING nanos_per_tick = 146484, ticks_per_beat = 4096
   SPAWN id = 4, processor = 100
   SET node = 4, param = 0, value = 2
 ADVANCE ticks = 2048
   FIN node = 4
-  NANOS_PER_TICK nanos = 133167
+  SET_TIMING nanos_per_tick = 133167, ticks_per_beat = 4096
   SPAWN id = 5, processor = 100
   SET node = 5, param = 0, value = 2.5
 ADVANCE ticks = 2048
   FIN node = 5
-  NANOS_PER_TICK nanos = 122070
+  SET_TIMING nanos_per_tick = 122070, ticks_per_beat = 4096
   SPAWN id = 6, processor = 100
   SET node = 6, param = 0, value = 3
 ADVANCE ticks = 2048
   FIN node = 6
-  NANOS_PER_TICK nanos = 112680
+  SET_TIMING nanos_per_tick = 112680, ticks_per_beat = 4096
   SPAWN id = 7, processor = 100
   SET node = 7, param = 0, value = 3.5
 ADVANCE ticks = 2048
   FIN node = 7
-  NANOS_PER_TICK nanos = 104631
+  SET_TIMING nanos_per_tick = 104631, ticks_per_beat = 4096
   SPAWN id = 8, processor = 100
   SET node = 8, param = 0, value = 4
 ADVANCE ticks = 2048
   FIN node = 8
-  NANOS_PER_TICK nanos = 97656
+  SET_TIMING nanos_per_tick = 97656, ticks_per_beat = 4096
   SPAWN id = 9, processor = 100
   SET node = 9, param = 0, value = 4.5
 ADVANCE ticks = 2048

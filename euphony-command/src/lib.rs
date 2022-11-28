@@ -289,8 +289,8 @@ impl fmt::Display for SetTiming {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "  NANOS_PER_TICK nanos_per_tick = {}",
-            self.nanos_per_tick
+            "  SET_TIMING nanos_per_tick = {}, ticks_per_beat = {}",
+            self.nanos_per_tick, self.ticks_per_beat,
         )
     }
 }
