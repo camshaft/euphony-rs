@@ -90,7 +90,7 @@ impl Node {
             });
             id
         });
-        let buffer_channel = channel.channel() as u64;
+        let buffer_channel = channel.channel();
 
         // update the buffer for the node
         emit(SetBuffer {

@@ -40,6 +40,10 @@ impl Offset {
     pub fn to_bytes(self) -> [u8; 8] {
         self.0.to_le_bytes()
     }
+
+    pub(crate) fn new(value: u64) -> Self {
+        Self(value)
+    }
 }
 
 impl ops::Add<RelOffset> for Offset {

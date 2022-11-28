@@ -9,7 +9,13 @@ macro_rules! error {
 pub trait Writer: Sync {
     fn is_cached(&self, hash: &Hash) -> bool;
     fn sink(&mut self, hash: &Hash) -> euphony_node::BoxProcessor;
-    fn group<I: Iterator<Item = Entry>>(&mut self, name: &str, hash: &Hash, entries: I);
+    fn group<I: Iterator<Item = Entry>>(
+        &mut self,
+        name: &str,
+        hash: &Hash,
+        entries: I,
+        midi: &midi::Writer,
+    );
     fn buffer<F: FnOnce(Box<dyn BufferReader>) -> Result<Vec<ConvertedBuffer>, E>, E>(
         &self,
         path: &str,
@@ -52,6 +58,7 @@ mod buffer;
 mod compiler;
 mod group;
 mod instruction;
+pub mod midi;
 mod node;
 mod parallel;
 mod render;
@@ -80,7 +87,7 @@ impl Compiler {
         }
 
         for (_id, group, entries) in self.compiler.groups() {
-            output.group(&group.name, &group.hash, entries);
+            output.group(&group.name, &group.hash, entries, &group.midi);
         }
 
         Ok(())
@@ -104,7 +111,13 @@ impl Compiler {
                 unimplemented!()
             }
 
-            fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, _entries: I) {
+            fn group<I: Iterator<Item = Entry>>(
+                &mut self,
+                _name: &str,
+                _hash: &Hash,
+                _entries: I,
+                _midi: &midi::Writer,
+            ) {
             }
 
             fn buffer<F: FnOnce(Box<dyn BufferReader>) -> Result<Vec<ConvertedBuffer>, E>, E>(
@@ -153,7 +166,13 @@ mod tests {
             euphony_dsp::nodes::load(106).unwrap()
         }
 
-        fn group<I: Iterator<Item = Entry>>(&mut self, _name: &str, _hash: &Hash, entries: I) {
+        fn group<I: Iterator<Item = Entry>>(
+            &mut self,
+            _name: &str,
+            _hash: &Hash,
+            entries: I,
+            _midi: &midi::Writer,
+        ) {
             for _ in entries {}
         }
 

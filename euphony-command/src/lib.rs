@@ -8,9 +8,10 @@ use bolero::generator::*;
 
 pub trait Handler {
     fn advance_time(&mut self, msg: AdvanceTime) -> io::Result<()>;
-    fn set_nanos_per_tick(&mut self, msg: SetNanosPerTick) -> io::Result<()>;
+    fn set_timing(&mut self, msg: SetTiming) -> io::Result<()>;
     fn create_group(&mut self, msg: CreateGroup) -> io::Result<()>;
     fn spawn_node(&mut self, msg: SpawnNode) -> io::Result<()>;
+    fn emit_midi(&mut self, msg: EmitMidi) -> io::Result<()>;
     fn set_parameter(&mut self, msg: SetParameter) -> io::Result<()>;
     fn pipe_parameter(&mut self, msg: PipeParameter) -> io::Result<()>;
     fn finish_node(&mut self, msg: FinishNode) -> io::Result<()>;
@@ -30,7 +31,7 @@ impl Handler for String {
         push_msg(self, msg)
     }
 
-    fn set_nanos_per_tick(&mut self, msg: SetNanosPerTick) -> io::Result<()> {
+    fn set_timing(&mut self, msg: SetTiming) -> io::Result<()> {
         push_msg(self, msg)
     }
 
@@ -39,6 +40,10 @@ impl Handler for String {
     }
 
     fn spawn_node(&mut self, msg: SpawnNode) -> io::Result<()> {
+        push_msg(self, msg)
+    }
+
+    fn emit_midi(&mut self, msg: EmitMidi) -> io::Result<()> {
         push_msg(self, msg)
     }
 
@@ -90,9 +95,9 @@ pub fn decode_one<R: io::Read, H: Handler>(
             let msg = AdvanceTime::decode(tag, input)?;
             handler.advance_time(msg)?;
         }
-        SetNanosPerTick::TAG => {
-            let msg = SetNanosPerTick::decode(tag, input)?;
-            handler.set_nanos_per_tick(msg)?;
+        SetTiming::TAG => {
+            let msg = SetTiming::decode(tag, input)?;
+            handler.set_timing(msg)?;
         }
         CreateGroup::TAG => {
             let msg = CreateGroup::decode(tag, input)?;
@@ -101,6 +106,10 @@ pub fn decode_one<R: io::Read, H: Handler>(
         SpawnNode::TAG_NO_GROUP | SpawnNode::TAG_WITH_GROUP => {
             let msg = SpawnNode::decode(tag, input)?;
             handler.spawn_node(msg)?;
+        }
+        EmitMidi::TAG_NO_GROUP | EmitMidi::TAG_WITH_GROUP => {
+            let msg = EmitMidi::decode(tag, input)?;
+            handler.emit_midi(msg)?;
         }
         SetParameter::TAG_PARAM | SetParameter::TAG_NONE => {
             let msg = SetParameter::decode(tag, input)?;
@@ -267,33 +276,43 @@ impl Codec for AdvanceTime {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(test, derive(TypeGenerator))]
-pub struct SetNanosPerTick {
-    pub nanos: u64,
+pub struct SetTiming {
+    pub nanos_per_tick: u64,
+    pub ticks_per_beat: u64,
 }
 
-impl SetNanosPerTick {
+impl SetTiming {
     const TAG: u8 = b'T';
 }
 
-impl fmt::Display for SetNanosPerTick {
+impl fmt::Display for SetTiming {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "  NANOS_PER_TICK nanos = {}", self.nanos)
+        write!(
+            f,
+            "  SET_TIMING nanos_per_tick = {}, ticks_per_beat = {}",
+            self.nanos_per_tick, self.ticks_per_beat,
+        )
     }
 }
 
-impl Codec for SetNanosPerTick {
+impl Codec for SetTiming {
     #[inline]
     fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
         output.write_u8(Self::TAG)?;
-        output.write_u64(self.nanos)?;
+        output.write_u64(self.nanos_per_tick)?;
+        output.write_u64(self.ticks_per_beat)?;
         Ok(())
     }
 
     #[inline]
     fn decode<R: io::Read>(tag: u8, input: &mut R) -> io::Result<Self> {
         debug_assert_eq!(Self::TAG, tag);
-        let nanos = input.read_u64()?;
-        Ok(Self { nanos })
+        let nanos_per_tick = input.read_u64()?;
+        let ticks_per_beat = input.read_u64()?;
+        Ok(Self {
+            nanos_per_tick,
+            ticks_per_beat,
+        })
     }
 }
 
@@ -393,6 +412,53 @@ impl Codec for SpawnNode {
             processor: generator,
             group,
         })
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(test, derive(TypeGenerator))]
+pub struct EmitMidi {
+    pub data: [u8; 3],
+    pub group: Option<u64>,
+}
+
+impl EmitMidi {
+    const TAG_NO_GROUP: u8 = b'm';
+    const TAG_WITH_GROUP: u8 = b'M';
+}
+
+impl fmt::Display for EmitMidi {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "  MIDI data = {:?}", self.data)?;
+        Ok(())
+    }
+}
+
+impl Codec for EmitMidi {
+    #[inline]
+    fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
+        if self.group.is_some() {
+            output.write_u8(Self::TAG_WITH_GROUP)?;
+        } else {
+            output.write_u8(Self::TAG_NO_GROUP)?;
+        }
+        output.write_all(&self.data)?;
+        if let Some(group) = self.group {
+            output.write_u64(group)?;
+        }
+        Ok(())
+    }
+
+    #[inline]
+    fn decode<R: io::Read>(tag: u8, input: &mut R) -> io::Result<Self> {
+        let mut data = [0; 3];
+        input.read_exact(&mut data)?;
+        let group = if tag == Self::TAG_WITH_GROUP {
+            Some(input.read_u64()?)
+        } else {
+            None
+        };
+        Ok(Self { data, group })
     }
 }
 
@@ -718,8 +784,8 @@ mod tests {
     }
 
     #[test]
-    fn set_nanos_per_tick() {
-        check!().with_type::<SetNanosPerTick>().for_each(round_trip);
+    fn set_timing() {
+        check!().with_type::<SetTiming>().for_each(round_trip);
     }
 
     #[test]

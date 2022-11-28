@@ -17,8 +17,16 @@ pub fn tempo() -> Tempo {
 }
 
 pub fn set_tempo(tempo: Tempo) -> Tempo {
-    let duration = tempo * beats_per_tick();
-    crate::output::set_tick_duration(duration);
+    let beats_per_tick = beats_per_tick();
+    let duration = tempo * beats_per_tick;
+    crate::output::set_timing(
+        duration,
+        beats_per_tick
+            .as_ratio()
+            .inverse()
+            .try_into_whole()
+            .unwrap(),
+    );
     tempo::scope::set(Some(tempo)).unwrap_or(Tempo::DEFAULT)
 }
 

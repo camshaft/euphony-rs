@@ -27,7 +27,8 @@ impl Rem<Beat> for Instant {
 }
 
 impl Beat {
-    pub const DEFAULT_RESOLUTION: Self = Beat(1, 4096);
+    pub const DEFAULT_RESOLUTION: Self = Beat(1, Self::DEFAULT_TICKS_PER_BEAT);
+    pub const DEFAULT_TICKS_PER_BEAT: u64 = 4096;
 
     pub const EIGHTH: Beat = Beat(1, 8);
     pub const EIGHTH_TRIPLET: Beat = Beat(1, 6);

@@ -3,6 +3,7 @@ use euphony_units::time::Beat;
 use futures::{FutureExt, Stream};
 use midly::{num, Format, MidiMessage, Smf, Timing, TrackEvent, TrackEventKind};
 
+#[derive(Debug)]
 pub struct File<'a> {
     smf: Smf<'a>,
 }
@@ -203,5 +204,88 @@ impl From<MidiMessage> for Message {
                 bend: bend.as_int(),
             },
         }
+    }
+}
+
+impl Message {
+    pub fn emit(&self) {
+        use crate::output::EmitMidi;
+        let data = self.as_bytes();
+        let group = crate::group::scope::try_borrow_with(|g| g.map(|g| g.as_u64()));
+        crate::output::emit(EmitMidi { data, group })
+    }
+
+    /// Write the data part of this message, including the channel
+    pub(crate) fn as_bytes(self) -> [u8; 3] {
+        let mut data = match self {
+            Self::NoteOff { key, velocity } => [0x8, key, velocity],
+            Self::NoteOn { key, velocity } => [0x9, key, velocity],
+            Self::Aftertouch { key, velocity } => [0xA, key, velocity],
+            Self::Controller { controller, value } => [0xB, controller, value],
+            Self::ProgramChange { program } => [0xC, program, 0],
+            Self::ChannelAftertouch { velocity } => [0xD, velocity, 0],
+            Self::PitchBend { bend } => {
+                let [a, b] = bend.to_be_bytes();
+                [0xE, a, b]
+            }
+        };
+        data[0] <<= 4;
+        data
+    }
+}
+
+pub fn on<K: IntoKey>(key: K, velocity: u8) {
+    Message::NoteOn {
+        key: key.into_key(),
+        velocity,
+    }
+    .emit();
+}
+
+pub fn off<K: IntoKey>(key: K, velocity: u8) {
+    Message::NoteOff {
+        key: key.into_key(),
+        velocity,
+    }
+    .emit();
+}
+
+pub fn aftertouch<K: IntoKey>(key: K, velocity: u8) {
+    Message::Aftertouch {
+        key: key.into_key(),
+        velocity,
+    }
+    .emit();
+}
+
+pub fn controller(controller: u8, value: u8) {
+    Message::Controller { controller, value }.emit();
+}
+
+pub fn program_change(program: u8) {
+    Message::ProgramChange { program }.emit();
+}
+
+pub fn channel_aftertouch(velocity: u8) {
+    Message::ChannelAftertouch { velocity }.emit();
+}
+
+pub fn pitch_bend(bend: i16) {
+    Message::PitchBend { bend }.emit();
+}
+
+pub trait IntoKey {
+    fn into_key(self) -> u8;
+}
+
+impl IntoKey for u8 {
+    fn into_key(self) -> u8 {
+        self
+    }
+}
+
+impl IntoKey for crate::prelude::Interval {
+    fn into_key(self) -> u8 {
+        (self * 12i64 + 69i64).whole().clamp(0, 127) as u8
     }
 }

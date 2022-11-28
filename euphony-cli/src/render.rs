@@ -1,11 +1,11 @@
 use crate::{build::Build, Result};
-use euphony_compiler::{sample, Hash};
+use euphony_compiler::{midi, sample, Hash};
 use euphony_mix::{
     frame::{self, Frame as _},
     mono::Mono,
     stereo::Stereo,
 };
-use euphony_store::Store;
+use euphony_store::{storage::Storage, Store};
 use std::marker::PhantomData;
 use structopt::StructOpt;
 
@@ -38,8 +38,9 @@ impl Render {
                 }
             };
 
-            let mut path = comp.timeline_path().to_owned();
-            path.set_extension("wav");
+            let timeline = comp.timeline_path();
+            let mut wav = timeline.to_owned();
+            wav.set_extension("wav");
 
             let spec = hound::WavSpec {
                 channels: self.channels,
@@ -47,12 +48,37 @@ impl Render {
                 bits_per_sample: 32,
                 sample_format: hound::SampleFormat::Float,
             };
-            let mut writer = hound::WavWriter::create(&path, spec)?;
+            let mut writer = hound::WavWriter::create(&wav, spec)?;
             for sample in buffer {
                 writer.write_sample(sample)?;
             }
             writer.finalize()?;
-            log::info!("rendered {:?}", path);
+
+            let mut timeline_created = false;
+
+            for group in store.timeline.groups.iter() {
+                if let Some(midi) = group.midi.as_ref() {
+                    let midi = store.storage.open_raw(midi)?;
+                    let mut midi = midi::Reader::new(midi);
+
+                    let mut path = timeline.to_owned();
+                    path.set_extension("");
+
+                    if !timeline_created {
+                        let _ = std::fs::create_dir_all(&path);
+                        timeline_created = true;
+                    }
+
+                    path.push(&group.name);
+                    path.set_extension("mid");
+
+                    let out = std::fs::File::create(&path)?;
+                    let out = std::io::BufWriter::new(out);
+                    midi.write_smf(out)?;
+                }
+            }
+
+            log::info!("rendered {:?}", wav);
         }
         Ok(())
     }
