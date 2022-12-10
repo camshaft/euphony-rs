@@ -6,7 +6,7 @@ thread_local! {
 }
 
 fn borrow<F: FnOnce(&mut Builder) -> R, R>(f: F) -> R {
-    INSTRUCTIONS.with(|b| f(&mut *b.borrow_mut()))
+    INSTRUCTIONS.with(|b| f(&mut b.borrow_mut()))
 }
 
 #[derive(Clone, Debug, Default)]
@@ -19,6 +19,7 @@ struct Builder {
     cells: Vec<Event>,
     outputs: Vec<(String, Output)>,
     inputs: Vec<(String, Input)>,
+    constants: HashMap<Event, Local>,
     tables: usize,
 }
 
@@ -66,6 +67,20 @@ fn emit<T: Into<Transform>>(transform: T) -> usize {
     })
 }
 
+pub fn constant<T: Into<Event>>(value: T) -> Local {
+    let value = value.into();
+    if let Some(l) = borrow(|b| b.constants.get(&value).copied()) {
+        return l;
+    }
+
+    let destination = local();
+
+    borrow(|b| b.constants.insert(value.clone(), destination));
+
+    emit(Transform::Constant { value, destination });
+    destination
+}
+
 macro_rules! ext {
     ($name:ident, $variant:ident, $ty:ty, $field:ident) => {
         pub fn $name<T: Into<$ty>>($field: T) -> Local {
@@ -79,7 +94,6 @@ macro_rules! ext {
     };
 }
 
-ext!(constant, Constant, Event, value);
 ext!(math, Math, Math, math);
 ext!(logic, Logic, Logic, logic);
 ext!(midi, Midi, Midi, midi);

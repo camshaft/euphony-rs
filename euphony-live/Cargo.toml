@@ -11,7 +11,6 @@ futures = { version = "0.3" }
 midir = "0.8"
 midly = { version = "0.5", default-features = false, features = ["std"] }
 slotmap = "1"
-structopt = "0.3"
 tokio = { version = "1", features = ["full"] }
 
 [dev-dependencies]
