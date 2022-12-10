@@ -3,6 +3,7 @@ pub use crate::{
     cell::Cell,
     ext::*,
     group::*,
+    midi,
     parameter::{Buffer as BufferParameter, Parameter, Trigger},
     pitch::{
         mode::{self, Mode},
@@ -35,6 +36,15 @@ macro_rules! delay {
         $crate::prelude::delay!($crate::prelude::Beat($n, 1))
     };
     ($n:literal / $d:literal) => {
+        $crate::prelude::delay!($crate::prelude::Beat($n, $d))
+    };
+    ($n:literal / $d:ident) => {
+        $crate::prelude::delay!($crate::prelude::Beat($n, $d))
+    };
+    ($n:ident / $d:literal) => {
+        $crate::prelude::delay!($crate::prelude::Beat($n, $d))
+    };
+    ($n:ident / $d:ident) => {
         $crate::prelude::delay!($crate::prelude::Beat($n, $d))
     };
     ($expr:expr) => {

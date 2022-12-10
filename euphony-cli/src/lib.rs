@@ -42,9 +42,11 @@ pub fn is_alt_screen() -> bool {
 fn init_logger(args: &Arguments) {
     #[cfg(feature = "play")]
     {
-        if matches!(args, Arguments::Play(_)) {
-            logger::init_tui();
-            return;
+        if let Arguments::Play(args) = args {
+            if !args.headless {
+                logger::init_tui();
+                return;
+            }
         }
     }
 

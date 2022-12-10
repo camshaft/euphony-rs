@@ -41,6 +41,13 @@ impl PartialEq for Mode {
     }
 }
 
+impl core::hash::Hash for Mode {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        self.ascending.hash(state);
+        self.descending.hash(state);
+    }
+}
+
 impl Default for Mode {
     fn default() -> Self {
         heptatonic::MAJOR
