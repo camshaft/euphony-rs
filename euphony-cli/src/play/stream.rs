@@ -20,12 +20,15 @@ use std::{
     time::Duration,
 };
 
+mod midi;
+
 #[derive(Debug)]
 struct Controls {
     playhead: AtomicUsize,
     is_playing: AtomicBool,
     is_looping: AtomicBool,
     is_clipped: AtomicBool,
+    is_loaded: AtomicBool,
     soloed_count: AtomicUsize,
     clip_start: AtomicUsize,
     clip_end: AtomicUsize,
@@ -33,6 +36,7 @@ struct Controls {
     volume: AtomicI16,
     sample_rate: u32,
     tracks: ArcSwap<Vec<Arc<TrackControl>>>,
+    channels: usize,
 }
 
 impl Default for Controls {
@@ -42,6 +46,7 @@ impl Default for Controls {
             is_playing: Default::default(),
             is_looping: Default::default(),
             is_clipped: Default::default(),
+            is_loaded: Default::default(),
             soloed_count: Default::default(),
             clip_start: AtomicUsize::new(usize::MAX),
             clip_end: AtomicUsize::new(usize::MAX),
@@ -49,7 +54,14 @@ impl Default for Controls {
             volume: AtomicI16::new(i16::MAX),
             sample_rate: 0,
             tracks: Default::default(),
+            channels: 0,
         }
+    }
+}
+
+impl Controls {
+    pub fn playhead(&self) -> usize {
+        self.playhead.load(Ordering::Relaxed) / self.channels
     }
 }
 
@@ -76,6 +88,16 @@ impl TrackControl {
 
     pub fn end(&self) -> usize {
         self.end.load(Ordering::Relaxed)
+    }
+
+    fn can_play(&self, any_soloed: bool) -> bool {
+        let mut can_play = !self.is_muted();
+
+        if any_soloed {
+            can_play &= self.is_soloed();
+        }
+
+        can_play
     }
 }
 
@@ -113,6 +135,10 @@ impl Stream {
 
     pub fn is_clipped(&self) -> bool {
         self.controls.is_clipped.load(Ordering::Relaxed)
+    }
+
+    pub fn is_loaded(&self) -> bool {
+        self.controls.is_loaded.load(Ordering::Relaxed)
     }
 
     pub fn play_toggle(&self) -> Result<()> {
@@ -248,7 +274,8 @@ impl Stream {
     }
 
     fn samples_to_duration(&self, samples: usize) -> Duration {
-        let secs = samples as f64 / self.controls.sample_rate as f64;
+        let secs =
+            samples as f64 / self.controls.channels as f64 / self.controls.sample_rate as f64;
         Duration::from_secs_f64(secs)
     }
 }
@@ -275,6 +302,7 @@ impl Stream {
 
                             controls = Arc::new(Controls {
                                 sample_rate: 48_000,
+                                channels: config.channels() as _,
                                 ..Default::default()
                             });
 
@@ -284,6 +312,8 @@ impl Stream {
                                 1 => {
                                     let subscriber: Subscriber<1, $sample> = Subscriber {
                                         tracks: tracks.clone(),
+                                        midi_output: midi::Output::new(controls.clone()),
+                                        midi_groups: vec![],
                                         target,
                                     };
 
@@ -292,6 +322,8 @@ impl Stream {
                                 2 => {
                                     let subscriber: Subscriber<2, $sample> = Subscriber {
                                         tracks: tracks.clone(),
+                                        midi_output: midi::Output::new(controls.clone()),
+                                        midi_groups: vec![],
                                         target,
                                     };
 
@@ -326,6 +358,8 @@ impl Stream {
 
 pub struct Subscriber<const CHANNELS: usize, Sample: Copy> {
     tracks: Tracks<Sample>,
+    midi_output: midi::Output,
+    midi_groups: Vec<Option<midi::Group>>,
     target: PathBuf,
 }
 
@@ -383,8 +417,9 @@ where
 
         let tracks = self.tracks.tracks.load();
         let controls = self.tracks.controls.tracks.load();
+        let midi_groups = &self.midi_groups;
 
-        let (tracks, controls): (Vec<_>, Vec<_>) = store
+        let (tracks, (controls, midi_groups)): (Vec<_>, (Vec<_>, Vec<_>)) = store
             .timeline
             .groups
             .par_iter()
@@ -396,7 +431,6 @@ where
                     .enumerate()
                     .find(|(_, track)| track.name == group.name)
                 {
-                    control.end.store(0, Ordering::Relaxed);
                     (control.clone(), Some(idx))
                 } else {
                     let control = Arc::new(TrackControl {
@@ -420,10 +454,15 @@ where
                     Arc::new(track)
                 };
 
-                let end = track.start + track.buffer.len();
+                let midi = midi::Group::read(group.midi.as_deref(), &store.storage, midi_groups);
+
+                let track_end = track.start + track.buffer.len();
+                let midi_end = midi.as_ref().map(|m| m.end()).unwrap_or_default() as usize;
+                let end = track_end.max(midi_end * CHANNELS);
+
                 controls.end.store(end, Ordering::Relaxed);
 
-                (track, controls)
+                (track, (controls, midi))
             })
             .collect();
 
@@ -446,8 +485,23 @@ where
             .soloed_count
             .store(soloed_count, Ordering::Relaxed);
 
+        self.midi_groups = midi_groups;
+        self.midi_output.update(&controls, &self.midi_groups);
+
         self.tracks.controls.tracks.swap(Arc::new(controls));
         self.tracks.tracks.swap(Arc::new(tracks));
+
+        let was_loaded = self.tracks.controls.is_loaded.load(Ordering::Relaxed);
+
+        // give the MIDI connections time to register
+        if !was_loaded {
+            std::thread::sleep(core::time::Duration::from_millis(500));
+        }
+
+        self.tracks
+            .controls
+            .is_loaded
+            .store(true, Ordering::Relaxed);
     }
 }
 
@@ -480,7 +534,9 @@ where
             *sample = Sample::EQUILIBRIUM;
         }
 
-        if !self.controls.is_playing.load(Ordering::Relaxed) {
+        if !self.controls.is_playing.load(Ordering::Relaxed)
+            || !self.controls.is_loaded.load(Ordering::Relaxed)
+        {
             return;
         }
 
@@ -503,13 +559,7 @@ where
             };
 
             for (track, controls) in tracks.iter().zip(controls.iter()) {
-                let mut can_play = !controls.is_muted.load(Ordering::Relaxed);
-
-                if is_soloed {
-                    can_play &= controls.is_soloed();
-                }
-
-                let adv = if can_play {
+                let adv = if controls.can_play(is_soloed) {
                     track.fill(playhead, buffer)
                 } else {
                     track.advance(playhead, buffer.len())

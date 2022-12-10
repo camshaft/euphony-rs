@@ -26,6 +26,12 @@ pub struct Play {
     #[structopt(long)]
     paused: bool,
 
+    #[structopt(long)]
+    looped: bool,
+
+    #[structopt(long)]
+    pub headless: bool,
+
     input: Option<String>,
 }
 
@@ -36,11 +42,22 @@ impl Play {
         let config = self.device_config(&device)?;
         let stream = self.watch(&device, &config)?;
 
-        if !self.paused {
+        if self.looped {
+            stream.loop_toggle();
+        }
+
+        if !self.paused || self.headless {
             stream.play()?;
         }
 
-        ui::start(stream)?;
+        if !self.headless {
+            ui::start(stream)?;
+            return Ok(());
+        }
+
+        while !stream.is_loaded() || stream.is_playing() {
+            std::thread::sleep(core::time::Duration::from_secs(1));
+        }
 
         Ok(())
     }

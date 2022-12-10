@@ -40,7 +40,7 @@ impl<'a> Iterator for Iter<'a> {
             let (id, group) = self.iter.next()?;
 
             // if the group is empty, no need to return it
-            if group.sinks.is_empty() {
+            if group.sinks.is_empty() && group.midi.is_empty() {
                 continue;
             }
 

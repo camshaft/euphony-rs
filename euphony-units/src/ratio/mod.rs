@@ -1,7 +1,7 @@
 use core::{cmp::Ordering, fmt, ops::Neg};
 use num_integer::Integer;
 use num_rational::Ratio as Inner;
-use num_traits::{One, Zero};
+use num_traits::{CheckedAdd, CheckedDiv, CheckedMul, CheckedSub, One, Zero};
 
 #[macro_use]
 pub mod macros;
@@ -51,6 +51,13 @@ impl<T: Copy + Integer> Eq for Ratio<T> {}
 impl<T: Copy + Integer> Ord for Ratio<T> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.as_ratio().cmp(&other.as_ratio())
+    }
+}
+
+impl<T: Copy + Integer + core::hash::Hash> core::hash::Hash for Ratio<T> {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        self.0.hash(state);
+        self.1.hash(state);
     }
 }
 
@@ -109,6 +116,31 @@ impl<T: Copy + Integer> Ratio<T> {
 
     fn as_ratio(self) -> Inner<T> {
         Inner::new_raw(self.0, self.1)
+    }
+}
+
+macro_rules! checked {
+    ($name:ident, $($constraint:ident),*) => {
+        impl<T: Copy + Integer $(+ $constraint)*> Ratio<T> {
+            pub fn $name(self, other: Self) -> Option<Self> {
+                Some(self.as_ratio().$name(&other.as_ratio())?.into())
+            }
+        }
+    };
+}
+
+checked!(checked_add, CheckedAdd, CheckedMul);
+checked!(checked_sub, CheckedSub, CheckedMul);
+checked!(checked_mul, CheckedMul);
+checked!(checked_div, CheckedDiv, CheckedMul);
+
+impl<T: Copy + Integer + CheckedDiv + CheckedMul> Ratio<T> {
+    pub fn checked_rem(self, other: Self) -> Option<Self> {
+        if other.0.is_zero() {
+            return None;
+        }
+
+        Some((self.as_ratio() % other.as_ratio()).into())
     }
 }
 
