@@ -1,7 +1,7 @@
 use darling::FromDeriveInput;
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
-use syn::{parse, Attribute, DeriveInput, Ident, Token};
+use syn::{parse, parse_quote, Attribute, DeriveInput, Expr, Ident, Token};
 
 #[derive(Debug, FromDeriveInput)]
 #[darling(attributes(node), forward_attrs(input, buffer, doc))]
@@ -99,7 +99,7 @@ impl ToTokens for Node {
             input.test(id, &mut test_inputs);
             input_len += 1;
 
-            let default = input.default.unwrap_or(0.0);
+            let default = &input.default;
             quote!(#default,).to_tokens(&mut defaults);
 
             // triggers are not passed on each process call
@@ -225,13 +225,13 @@ struct Input {
     name: Ident,
     id: Option<u64>,
     trigger: Option<Ident>,
-    default: Option<f64>,
+    default: Expr,
 }
 
 impl Input {
     fn test(&self, id: u64, tokens: &mut TokenStream) {
         let name = self.name.to_string();
-        let default = self.default.unwrap_or(0.0);
+        let default = &self.default;
         let trigger = self.trigger.is_some();
         quote!(
             ::euphony_node::reflect::Input {
@@ -253,7 +253,7 @@ impl parse::Parse for Input {
             name,
             id: None,
             trigger: None,
-            default: None,
+            default: parse_quote!(0.0),
         };
 
         while !parser.is_empty() {
@@ -273,9 +273,7 @@ impl parse::Parse for Input {
             } else if l.peek(kw::default) {
                 let _: kw::default = parser.parse()?;
                 let _: Token![=] = parser.parse()?;
-                let id: syn::LitFloat = parser.parse()?;
-                let id = id.base10_parse()?;
-                input.default = Some(id);
+                input.default = parser.parse()?;
             } else {
                 return Err(l.error());
             }

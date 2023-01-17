@@ -26,6 +26,7 @@ pub mod sample;
 
 mod binary;
 mod buffer;
+mod delay;
 mod env;
 mod filter;
 mod osc;

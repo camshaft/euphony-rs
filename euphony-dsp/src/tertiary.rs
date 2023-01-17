@@ -102,13 +102,16 @@ tertiary!(
     |input, mul, add| input.mul_add(mul, add)
 );
 tertiary!(
-    /// If `cond` is positive, then `positive` is returned. Otherwise `negative`
+    /// If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`
     /// is returned.
     78,
     Select,
-    |cond, positive, negative| if cond.is_sign_positive() {
-        positive
-    } else {
-        negative
+    |cond, a, b| {
+        use core::num::FpCategory;
+        if matches!(cond.classify(), FpCategory::Normal | FpCategory::Subnormal) {
+            a
+        } else {
+            b
+        }
     }
 );

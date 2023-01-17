@@ -120,6 +120,14 @@ pub mod ext {
             crate::processors::binary::div_euclid().with_rhs(self).with_lhs(lhs)
         }
         #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs == lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn eq<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Eq
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::eq().with_rhs(self).with_lhs(lhs)
+        }
+        #[inline]
         #[doc = " Returns `e^(self)`, (the exponential function).\n"]
         fn exp(&self) -> crate::processors::unary::Exp {
             crate::processors::unary::exp().with_input(self)
@@ -143,6 +151,22 @@ pub mod ext {
         #[doc = " Returns the fractional part of a number.\n"]
         fn fract(&self) -> crate::processors::unary::Fract {
             crate::processors::unary::fract().with_input(self)
+        }
+        #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs > lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn gt<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Gt
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::gt().with_rhs(self).with_lhs(lhs)
+        }
+        #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs >= lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn gte<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Gte
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::gte().with_rhs(self).with_lhs(lhs)
         }
         #[inline]
         #[doc = " Calculates the length of the hypotenuse of a right-angle triangle given legs of length `x` and `y`.\n"]
@@ -181,6 +205,22 @@ pub mod ext {
             crate::processors::unary::log2().with_input(self)
         }
         #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs < lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn lt<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Lt
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::lt().with_rhs(self).with_lhs(lhs)
+        }
+        #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs <= lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn lte<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Lte
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::lte().with_rhs(self).with_lhs(lhs)
+        }
+        #[inline]
         #[doc = " Returns the maximum of the two numbers.\n\n Follows the IEEE-754 2008 semantics for maxNum, except for handling of signaling `NAN`s. This\n matches the behavior of libm’s fmax.\n"]
         fn max<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Max
         where
@@ -212,6 +252,14 @@ pub mod ext {
             Add: Into<Parameter>,
         {
             crate::processors::tertiary::mul_add().with_input(self).with_mul(mul).with_add(add)
+        }
+        #[inline]
+        #[doc = " Compares `rhs` to `lhs`. If `rhs != lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+        fn ne<Lhs>(&self, lhs: Lhs) -> crate::processors::binary::Ne
+        where
+            Lhs: Into<Parameter>,
+        {
+            crate::processors::binary::ne().with_rhs(self).with_lhs(lhs)
         }
         #[inline]
         #[doc = " The unary negation operator `-`.\n"]
@@ -271,13 +319,13 @@ pub mod ext {
             crate::processors::unary::round().with_input(self)
         }
         #[inline]
-        #[doc = " If `cond` is positive, then `positive` is returned. Otherwise `negative`\n is returned.\n"]
-        fn select<Positive, Negative>(&self, positive: Positive, negative: Negative) -> crate::processors::tertiary::Select
+        #[doc = " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n"]
+        fn select<A, B>(&self, a: A, b: B) -> crate::processors::tertiary::Select
         where
-            Positive: Into<Parameter>,
-            Negative: Into<Parameter>,
+            A: Into<Parameter>,
+            B: Into<Parameter>,
         {
-            crate::processors::tertiary::select().with_cond(self).with_positive(positive).with_negative(negative)
+            crate::processors::tertiary::select().with_cond(self).with_a(a).with_b(b)
         }
         #[inline]
         #[doc = " Returns a number that represents the sign of `self`.\n\n * `1.0` if the number is positive, `+0.0` or `INFINITY`\n * `-1.0` if the number is negative, `-0.0` or `NEG_INFINITY`\n * `NAN` if the number is `NAN`\n"]
@@ -522,10 +570,6 @@ pub mod input {
         fn with_mul(self, value: Value) -> Self;
         fn set_mul(&self, value: Value) -> &Self;
     }
-    pub trait NegativeInput<Value> {
-        fn with_negative(self, value: Value) -> Self;
-        fn set_negative(&self, value: Value) -> &Self;
-    }
     pub trait PhaseInput<Value> {
         fn with_phase(self, value: Value) -> Self;
         fn set_phase(&self, value: Value) -> &Self;
@@ -533,10 +577,6 @@ pub mod input {
     pub trait PositionInput<Value> {
         fn with_position(self, value: Value) -> Self;
         fn set_position(&self, value: Value) -> &Self;
-    }
-    pub trait PositiveInput<Value> {
-        fn with_positive(self, value: Value) -> Self;
-        fn set_positive(&self, value: Value) -> &Self;
     }
     pub trait QInput<Value> {
         fn with_q(self, value: Value) -> Self;
@@ -819,6 +859,102 @@ mod api {
                 lhs: Parameter<1>,
             }
         );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs > lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 65]
+            #[lower = gt]
+            struct Gt {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs >= lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 66]
+            #[lower = gte]
+            struct Gte {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs < lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 67]
+            #[lower = lt]
+            struct Lt {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs <= lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 68]
+            #[lower = lte]
+            struct Lte {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs == lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 69]
+            #[lower = eq]
+            struct Eq {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[doc = " Compares `rhs` to `lhs`. If `rhs != lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"]
+            #[id = 70]
+            #[lower = ne]
+            struct Ne {
+                #[trait = RhsInput]
+                #[with = with_rhs]
+                #[set = set_rhs]
+                rhs: Parameter<0>,
+                #[trait = LhsInput]
+                #[with = with_lhs]
+                #[set = set_lhs]
+                lhs: Parameter<1>,
+            }
+        );
     }
     pub mod buffer {
         define_processor!(
@@ -842,6 +978,41 @@ mod api {
             }
         );
     }
+    pub mod delay {
+        define_processor!(
+            #[id = 250]
+            #[lower = delay]
+            struct Delay {
+                #[trait = SignalInput]
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[trait = DelayInput]
+                #[with = with_delay]
+                #[set = set_delay]
+                delay: Parameter<1>,
+            }
+        );
+
+        define_processor!(
+            #[id = 251]
+            #[lower = feedback]
+            struct Feedback {
+                #[trait = SignalInput]
+                #[with = with_signal]
+                #[set = set_signal]
+                signal: Parameter<0>,
+                #[trait = DelayInput]
+                #[with = with_delay]
+                #[set = set_delay]
+                delay: Parameter<1>,
+                #[trait = DecayInput]
+                #[with = with_decay]
+                #[set = set_decay]
+                decay: Parameter<2>,
+            }
+        );
+    }
     pub mod env {
         define_processor!(
             #[id = 200]
@@ -850,11 +1021,11 @@ mod api {
                 #[trait = TargetInput]
                 #[with = with_target]
                 #[set = set_target]
-                target: Trigger<0>,
+                target: Parameter<0>,
                 #[trait = DurationInput]
                 #[with = with_duration]
                 #[set = set_duration]
-                duration: Trigger<1>,
+                duration: Parameter<1>,
                 #[trait = ValueInput]
                 #[with = with_value]
                 #[set = set_value]
@@ -1379,6 +1550,22 @@ mod api {
             }
         );
 
+        define_processor!(
+            #[doc = " Single sample impulse generator\n"]
+            #[id = 116]
+            #[lower = impulse]
+            struct Impulse {
+                #[trait = FrequencyInput]
+                #[with = with_frequency]
+                #[set = set_frequency]
+                frequency: Parameter<0>,
+                #[trait = PhaseInput]
+                #[with = with_phase]
+                #[set = set_phase]
+                phase: Trigger<1>,
+            }
+        );
+
         pub mod nes {
             define_processor!(
                 #[id = 108]
@@ -1534,7 +1721,7 @@ mod api {
         );
 
         define_processor!(
-            #[doc = " If `cond` is positive, then `positive` is returned. Otherwise `negative`\n is returned.\n"]
+            #[doc = " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n"]
             #[id = 78]
             #[lower = select]
             struct Select {
@@ -1542,14 +1729,14 @@ mod api {
                 #[with = with_cond]
                 #[set = set_cond]
                 cond: Parameter<0>,
-                #[trait = PositiveInput]
-                #[with = with_positive]
-                #[set = set_positive]
-                positive: Parameter<1>,
-                #[trait = NegativeInput]
-                #[with = with_negative]
-                #[set = set_negative]
-                negative: Parameter<2>,
+                #[trait = AInput]
+                #[with = with_a]
+                #[set = set_a]
+                a: Parameter<1>,
+                #[trait = BInput]
+                #[with = with_b]
+                #[set = set_b]
+                b: Parameter<2>,
             }
         );
     }

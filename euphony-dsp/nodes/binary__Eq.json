@@ -1,0 +1,24 @@
+{
+  "name": "Eq",
+  "module": [
+    "binary"
+  ],
+  "impl_path": "euphony_dsp::binary",
+  "id": 69,
+  "inputs": [
+    {
+      "name": "rhs",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "lhs",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "buffers": [],
+  "docs": " Compares `rhs` to `lhs`. If `rhs == lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n"
+}

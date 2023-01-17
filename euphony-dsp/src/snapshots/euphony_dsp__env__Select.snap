@@ -1,17 +1,17 @@
 ---
-source: euphony-dsp/src/tertiary.rs
+source: euphony-dsp/src/env.rs
 expression: node
 ---
 Node {
     name: "Select",
     module: [
-        "tertiary",
+        "env",
     ],
-    impl_path: "euphony_dsp::tertiary",
-    id: 78,
+    impl_path: "euphony_dsp::env",
+    id: 201,
     inputs: [
         Input {
-            name: "cond",
+            name: "signal",
             id: 0,
             trigger: false,
             default: 0.0,
@@ -30,5 +30,5 @@ Node {
         },
     ],
     buffers: [],
-    docs: " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n",
+    docs: "",
 }

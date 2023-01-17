@@ -1,30 +1,30 @@
 {
-  "name": "Select",
+  "name": "Feedback",
   "module": [
-    "tertiary"
+    "delay"
   ],
-  "impl_path": "euphony_dsp::tertiary",
-  "id": 78,
+  "impl_path": "euphony_dsp::delay",
+  "id": 251,
   "inputs": [
     {
-      "name": "cond",
+      "name": "signal",
       "id": 0,
       "trigger": false,
       "default": 0.0
     },
     {
-      "name": "a",
+      "name": "delay",
       "id": 1,
       "trigger": false,
       "default": 0.0
     },
     {
-      "name": "b",
+      "name": "decay",
       "id": 2,
       "trigger": false,
       "default": 0.0
     }
   ],
   "buffers": [],
-  "docs": " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n"
+  "docs": ""
 }

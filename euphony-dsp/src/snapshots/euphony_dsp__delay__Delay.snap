@@ -1,31 +1,25 @@
 ---
-source: euphony-dsp/src/env.rs
+source: euphony-dsp/src/delay.rs
 expression: node
 ---
 Node {
-    name: "Linear",
+    name: "Delay",
     module: [
-        "env",
+        "delay",
     ],
-    impl_path: "euphony_dsp::env",
-    id: 200,
+    impl_path: "euphony_dsp::delay",
+    id: 250,
     inputs: [
         Input {
-            name: "target",
+            name: "signal",
             id: 0,
             trigger: false,
             default: 0.0,
         },
         Input {
-            name: "duration",
+            name: "delay",
             id: 1,
             trigger: false,
-            default: 0.01,
-        },
-        Input {
-            name: "value",
-            id: 2,
-            trigger: true,
             default: 0.0,
         },
     ],

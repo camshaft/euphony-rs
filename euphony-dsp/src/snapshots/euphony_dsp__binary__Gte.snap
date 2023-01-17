@@ -1,0 +1,28 @@
+---
+source: euphony-dsp/src/binary.rs
+expression: node
+---
+Node {
+    name: "Gte",
+    module: [
+        "binary",
+    ],
+    impl_path: "euphony_dsp::binary",
+    id: 66,
+    inputs: [
+        Input {
+            name: "rhs",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "lhs",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    buffers: [],
+    docs: " Compares `rhs` to `lhs`. If `rhs >= lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n",
+}

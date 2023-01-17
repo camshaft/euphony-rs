@@ -9,13 +9,13 @@
     {
       "name": "target",
       "id": 0,
-      "trigger": true,
+      "trigger": false,
       "default": 0.0
     },
     {
       "name": "duration",
       "id": 1,
-      "trigger": true,
+      "trigger": false,
       "default": 0.01
     },
     {

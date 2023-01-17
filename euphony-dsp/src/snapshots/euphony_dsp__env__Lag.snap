@@ -3,15 +3,15 @@ source: euphony-dsp/src/env.rs
 expression: node
 ---
 Node {
-    name: "Linear",
+    name: "Lag",
     module: [
         "env",
     ],
     impl_path: "euphony_dsp::env",
-    id: 200,
+    id: 202,
     inputs: [
         Input {
-            name: "target",
+            name: "signal",
             id: 0,
             trigger: false,
             default: 0.0,
@@ -19,14 +19,8 @@ Node {
         Input {
             name: "duration",
             id: 1,
-            trigger: false,
-            default: 0.01,
-        },
-        Input {
-            name: "value",
-            id: 2,
             trigger: true,
-            default: 0.0,
+            default: 0.01,
         },
     ],
     buffers: [],

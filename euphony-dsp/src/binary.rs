@@ -165,3 +165,45 @@ binary!(
     Sub,
     |a, b| a - b
 );
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs > lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    65,
+    Gt,
+    |a, b| if a > b { 1.0 } else { 0.0 }
+);
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs >= lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    66,
+    Gte,
+    |a, b| if a >= b { 1.0 } else { 0.0 }
+);
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs < lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    67,
+    Lt,
+    |a, b| if a < b { 1.0 } else { 0.0 }
+);
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs <= lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    68,
+    Lte,
+    |a, b| if a <= b { 1.0 } else { 0.0 }
+);
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs == lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    69,
+    Eq,
+    |a, b| if a == b { 1.0 } else { 0.0 }
+);
+binary!(
+    /// Compares `rhs` to `lhs`. If `rhs != lhs`, the output is `1.0`. Otherwise the
+    /// output is `0.0`.
+    70,
+    Ne,
+    |a, b| if a != b { 1.0 } else { 0.0 }
+);

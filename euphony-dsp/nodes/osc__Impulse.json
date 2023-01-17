@@ -1,0 +1,24 @@
+{
+  "name": "Impulse",
+  "module": [
+    "osc"
+  ],
+  "impl_path": "euphony_dsp::osc",
+  "id": 116,
+  "inputs": [
+    {
+      "name": "frequency",
+      "id": 0,
+      "trigger": false,
+      "default": 440.0
+    },
+    {
+      "name": "phase",
+      "id": 1,
+      "trigger": true,
+      "default": 0.0
+    }
+  ],
+  "buffers": [],
+  "docs": " Single sample impulse generator\n"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Delay",
+  "module": [
+    "delay"
+  ],
+  "impl_path": "euphony_dsp::delay",
+  "id": 250,
+  "inputs": [
+    {
+      "name": "signal",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "delay",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "buffers": [],
+  "docs": ""
+}

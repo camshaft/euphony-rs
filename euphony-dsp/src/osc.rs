@@ -144,6 +144,83 @@ impl Silence {
     }
 }
 
+#[derive(Debug, Node)]
+#[node(id = 116, module = "osc")]
+#[input(frequency, default = 440.0)]
+#[input(phase, default = 0.0, trigger = set_phase)]
+/// Single sample impulse generator
+pub struct Impulse {
+    phase: Sample,
+    value: Sample,
+    trigger: bool,
+}
+
+impl Default for Impulse {
+    fn default() -> Self {
+        Self {
+            phase: 0.0,
+            value: 1.0,
+            trigger: true, // pulse on the first sample
+        }
+    }
+}
+
+impl Impulse {
+    #[inline]
+    pub fn set_phase(&mut self, phase: f64) {
+        let phase = phase.fract().abs();
+
+        if phase < self.phase {
+            self.trigger = true;
+        }
+
+        self.phase = phase;
+    }
+
+    #[inline(always)]
+    fn next(&mut self, freq: f64) -> f64 {
+        let phase = self.phase;
+        unsafe {
+            unsafe_assert!(!phase.is_nan(), "value: {:?}", phase);
+            unsafe_assert!(phase.is_finite(), "value: {:?}", phase);
+            unsafe_assert!((0.0..=1.0).contains(&phase), "value: {:?}", phase);
+        }
+
+        let value = if core::mem::replace(&mut self.trigger, false) {
+            let value = self.value;
+            self.value *= -1.0;
+            value
+        } else {
+            0.0
+        };
+
+        let mut next = Rate::PERIOD.mul_add(freq, phase).abs();
+        if next >= 1.0 {
+            self.trigger = true;
+            next = next.fract();
+        }
+        self.phase = next;
+
+        value
+    }
+
+    #[inline]
+    pub fn render(&mut self, frequency: Input, output: &mut [f64]) {
+        match frequency {
+            Input::Constant(freq) => {
+                for frame in output.iter_mut() {
+                    *frame = self.next(freq);
+                }
+            }
+            Input::Buffer(freq) => {
+                for (freq, frame) in (freq, output.iter_mut()).zip() {
+                    *frame = self.next(*freq);
+                }
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -154,6 +231,13 @@ mod tests {
         let mut out = [0.0; 500];
         osc.render(480.0.into(), &mut out);
         eprintln!("{:?}", out);
-        //panic!();
+    }
+
+    #[test]
+    fn impulse_test() {
+        let mut osc = Impulse::new();
+        let mut out = [0.0; 512];
+        osc.render(440.0.into(), &mut out);
+        eprintln!("{:?}", out);
     }
 }
