@@ -138,3 +138,75 @@ fn delay_test() {
         }
     })
 }
+
+#[test]
+fn simple_noise_test() {
+    use western::*;
+
+    async fn synth(interval: Interval, sustain: Beat, decay: Beat) {
+        let freq = interval * MAJOR * ET12;
+
+        let attack = Beat(1, 16);
+
+        let mut oscs = vec![];
+
+        for i in 0..4 {
+            let x_osc = osc::sine().with_frequency(freq.0 + i as f64) * 0.2 + 10.0;
+            let y_osc = osc::sine()
+                .with_frequency(freq.0 * 1.5 + i as f64)
+                .with_phase(0.5)
+                * 0.2
+                + 10.0;
+            let z_osc = osc::sine().with_frequency(100.0).with_phase(0.5) * 1.0 + 15.0;
+            let z_env = env::linear()
+                .with_duration(attack * 2)
+                .with_value(1.0)
+                .with_target(0.0);
+            let z_osc = z_osc * z_env;
+
+            let osc = noise::simplex()
+                .with_seed(46 + i)
+                .with_x(x_osc)
+                .with_y(y_osc)
+                .with_z(z_osc);
+
+            oscs.push(osc);
+        }
+
+        let oscs = oscs.mix();
+
+        let oscs = oscs.moog().with_cutoff(freq.0 * 3.0);
+
+        let env = env::linear().with_duration(attack).with_target(0.7);
+
+        let signal = oscs * &env;
+
+        let sink = signal.sink();
+
+        delay!(attack + sustain);
+
+        env.set_duration(decay);
+
+        env.set_target(0.0);
+
+        delay!(decay);
+
+        sink.fin();
+    }
+
+    start("simple_noise", async {
+        async {
+            let beats = rand::rhythm(Beat(8, 1), [Beat(3, 1), Beat(1, 1), Beat(2, 1)]);
+            let interval = beats.each(|_| *[0, 1, 2, 3, 4, 7].pick());
+            let sustain = beats.each(|_| *[Beat(1, 1), Beat(2, 1), Beat(1, 1)].pick());
+            for _ in 0..2 {
+                let mut iter = (&beats).delays().with((&interval, &sustain).zip());
+                while let Some((interval, sustain)) = iter.next().await {
+                    synth(Interval(*interval, 7) - 1, *sustain, Beat(1, 2)).spawn_primary();
+                }
+            }
+        }
+        .seed(42)
+        .await;
+    })
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Simplex",
+  "module": [
+    "noise"
+  ],
+  "impl_path": "euphony_dsp::noise",
+  "id": 150,
+  "inputs": [
+    {
+      "name": "x",
+      "id": 0,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "y",
+      "id": 1,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "z",
+      "id": 2,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "w",
+      "id": 3,
+      "trigger": false,
+      "default": 0.0
+    },
+    {
+      "name": "seed",
+      "id": 4,
+      "trigger": false,
+      "default": 0.0
+    }
+  ],
+  "buffers": [],
+  "docs": "",
+  "fork": null
+}
