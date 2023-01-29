@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Adds two signals together\n"
+  "docs": " Adds two signals together\n",
+  "fork": null
 }

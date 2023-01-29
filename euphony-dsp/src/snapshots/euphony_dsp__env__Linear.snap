@@ -31,4 +31,5 @@ Node {
     ],
     buffers: [],
     docs: "",
+    fork: None,
 }

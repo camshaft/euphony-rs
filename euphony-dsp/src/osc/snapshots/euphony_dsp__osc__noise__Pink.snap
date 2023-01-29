@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/osc/noise.rs
-assertion_line: 67
 expression: node
 ---
 Node {
@@ -21,4 +20,5 @@ Node {
     ],
     buffers: [],
     docs: " Pink noise generator.\n",
+    fork: None,
 }

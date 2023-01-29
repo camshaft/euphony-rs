@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/binary.rs
-assertion_line: 128
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Raises a number to a floating point power.\n",
+    fork: None,
 }

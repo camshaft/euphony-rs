@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Less accurate, but fast sine oscillator\n\n # frequency\n\n # phase (trigger)\n"
+  "docs": " Less accurate, but fast sine oscillator\n\n # frequency\n\n # phase (trigger)\n",
+  "fork": null
 }

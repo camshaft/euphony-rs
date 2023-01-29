@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/filter.rs
-assertion_line: 442
 expression: node
 ---
 Node {
@@ -38,4 +37,5 @@ Node {
     ],
     buffers: [],
     docs: " Lowshelf filter.\n",
+    fork: None,
 }

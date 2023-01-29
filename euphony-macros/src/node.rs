@@ -8,6 +8,7 @@ use syn::{parse, parse_quote, Attribute, DeriveInput, Expr, Ident, Token};
 pub struct Node {
     ident: Ident,
     id: syn::LitInt,
+    fork: Option<Ident>,
     module: Option<syn::Path>,
     attrs: Vec<syn::Attribute>,
 }
@@ -81,10 +82,19 @@ impl ToTokens for Node {
             quote!(Default::default())
         };
 
-        let test_name = Ident::new(
-            &format!("euphony_node_test_{}", name_str),
-            self.ident.span(),
-        );
+        let fork = if let Some(fork) = self.fork.as_ref() {
+            let fork = fork.to_string();
+            quote!(Some(#fork.to_string()))
+        } else {
+            quote!(None)
+        };
+        let fork_node = if self.fork.is_some() {
+            quote!(self.fork_node())
+        } else {
+            quote!(None)
+        };
+
+        let test_name = Ident::new(&format!("euphony_node_test_{name_str}"), self.ident.span());
 
         let mut test_inputs = quote!();
         let mut process_inputs = quote!();
@@ -140,6 +150,7 @@ impl ToTokens for Node {
                     inputs: vec![#test_inputs],
                     buffers: vec![#test_buffers],
                     docs: #docs.to_string(),
+                    fork: #fork,
                 };
 
                 node.test(env!("CARGO_MANIFEST_DIR"));
@@ -172,6 +183,11 @@ impl ToTokens for Node {
 
             impl ::euphony_node::Node<#input_len, #buffer_len> for #name {
                 const DEFAULTS: [f64; #input_len] = [#defaults];
+
+                #[inline]
+                fn fork(&self) -> Option<::euphony_node::BoxProcessor> {
+                    #fork_node
+                }
 
                 #[inline]
                 fn trigger(&mut self, param: u64, value: f64) -> bool {

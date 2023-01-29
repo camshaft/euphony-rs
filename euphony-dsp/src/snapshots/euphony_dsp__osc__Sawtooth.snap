@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/osc.rs
-assertion_line: 125
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " A sawtooth oscillator\n\n # frequency\n\n # phase (trigger)\n",
+    fork: None,
 }

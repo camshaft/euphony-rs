@@ -25,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Compares `rhs` to `lhs`. If `rhs > lhs`, the output is `1.0`. Otherwise the\n output is `0.0`.\n",
+    fork: None,
 }

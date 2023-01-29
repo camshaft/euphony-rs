@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " A triangle oscillator\n\n # frequency\n\n # phase (trigger)\n"
+  "docs": " A triangle oscillator\n\n # frequency\n\n # phase (trigger)\n",
+  "fork": null
 }

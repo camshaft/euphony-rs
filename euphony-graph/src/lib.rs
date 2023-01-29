@@ -43,6 +43,8 @@ pub trait Processor<C: Config>: 'static + Send {
     fn output_mut(&mut self) -> &mut C::Output;
 
     fn process(&mut self, inputs: Inputs<C>, context: &C::Context);
+
+    fn fork(&self) -> Option<Box<dyn Processor<C>>>;
 }
 
 #[derive(Debug)]
@@ -223,6 +225,14 @@ impl<C: Config> Graph<C> {
         self.ensure_consistency();
 
         Ok(node.processor.into_inner())
+    }
+
+    #[inline]
+    pub fn get_node(&self, id: u64) -> Result<&dyn Processor<C>, Error<C::Parameter>> {
+        let key = self.ids.get(&id).ok_or(Error::MissingNode(id))?;
+        let node = unsafe { self.nodes.get_unchecked(*key) };
+        let out = unsafe { (*node.processor.get()).as_ref() };
+        Ok(out)
     }
 
     #[inline]

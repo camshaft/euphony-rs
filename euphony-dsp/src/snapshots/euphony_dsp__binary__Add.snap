@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/binary.rs
-assertion_line: 47
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Adds two signals together\n",
+    fork: None,
 }

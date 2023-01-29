@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Raises a number to a floating point power.\n"
+  "docs": " Raises a number to a floating point power.\n",
+  "fork": null
 }

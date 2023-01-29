@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the smallest integer greater than or equal to a number.\n"
+  "docs": " Returns the smallest integer greater than or equal to a number.\n",
+  "fork": null
 }

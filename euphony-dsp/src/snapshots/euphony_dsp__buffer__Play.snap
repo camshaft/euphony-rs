@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/buffer.rs
-assertion_line: 4
 expression: node
 ---
 Node {
@@ -31,4 +30,5 @@ Node {
         },
     ],
     docs: " Plays a buffer\n",
+    fork: None,
 }

@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Multiplies two signals together\n"
+  "docs": " Multiplies two signals together\n",
+  "fork": null
 }

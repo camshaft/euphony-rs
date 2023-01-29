@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Calculates Euclidean division, the matching method for `rem_euclid`.\n\n This computes the integer `n` such that `lhs = n * rhs + self.rem_euclid(rhs)`.\n In other words, the result is `lhs / rhs` rounded to the integer n such that `lhs >= n * rhs`.\n"
+  "docs": " Calculates Euclidean division, the matching method for `rem_euclid`.\n\n This computes the integer `n` such that `lhs = n * rhs + self.rem_euclid(rhs)`.\n In other words, the result is `lhs / rhs` rounded to the integer n such that `lhs >= n * rhs`.\n",
+  "fork": null
 }

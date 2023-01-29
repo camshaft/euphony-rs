@@ -1,24 +1,24 @@
 use anyhow::Result;
 use structopt::StructOpt;
 
-mod build;
-mod compiler;
-mod disasm;
-mod export;
-mod gc;
-mod logger;
-mod manifest;
+pub mod build;
+pub mod compiler;
+pub mod disasm;
+pub mod export;
+pub mod gc;
+pub mod logger;
+pub mod manifest;
 #[cfg(feature = "play")]
-mod play;
-mod render;
-mod watcher;
-mod workspace;
+pub mod play;
+pub mod render;
+pub mod watcher;
+pub mod workspace;
 
 #[cfg(feature = "remote")]
-mod serve;
+pub mod serve;
 
 #[derive(Debug, StructOpt)]
-enum Arguments {
+pub enum Arguments {
     Build(build::Build),
     #[cfg(feature = "play")]
     #[structopt(alias = "p")]
@@ -33,46 +33,51 @@ enum Arguments {
     Workspace(workspace::Workspace),
 }
 
+impl Arguments {
+    pub fn from_args() -> Self {
+        StructOpt::from_args()
+    }
+
+    pub fn from_vec<I, S>(iter: I) -> Self
+    where
+        I: Iterator<Item = S>,
+        S: Clone + Into<std::ffi::OsString>,
+    {
+        StructOpt::from_iter(iter)
+    }
+
+    pub fn init_logger(&self) {
+        #[cfg(feature = "play")]
+        {
+            if let Arguments::Play(args) = self {
+                if !args.headless {
+                    logger::init_tui();
+                    return;
+                }
+            }
+        }
+
+        logger::init();
+    }
+
+    pub fn run(self) -> Result<()> {
+        match self {
+            Arguments::Build(args) => args.run(),
+            #[cfg(feature = "play")]
+            Arguments::Play(args) => args.run(),
+            Arguments::Disasm(args) => args.run(),
+            #[cfg(feature = "remote")]
+            Arguments::Serve(args) => args.run(),
+            Arguments::Export(args) => args.run(),
+            Arguments::Render(args) => args.run(),
+            Arguments::Gc(args) => args.run(),
+            Arguments::Workspace(args) => args.run(),
+        }
+    }
+}
+
 static mut IS_ALT_SCREEN: bool = false;
 
 pub fn is_alt_screen() -> bool {
     unsafe { IS_ALT_SCREEN }
-}
-
-fn init_logger(args: &Arguments) {
-    #[cfg(feature = "play")]
-    {
-        if let Arguments::Play(args) = args {
-            if !args.headless {
-                logger::init_tui();
-                return;
-            }
-        }
-    }
-
-    logger::init();
-    let _ = args;
-}
-
-pub fn main() {
-    let args = Arguments::from_args();
-
-    init_logger(&args);
-
-    let res = match args {
-        Arguments::Build(args) => args.run(),
-        #[cfg(feature = "play")]
-        Arguments::Play(args) => args.run(),
-        Arguments::Disasm(args) => args.run(),
-        #[cfg(feature = "remote")]
-        Arguments::Serve(args) => args.run(),
-        Arguments::Export(args) => args.run(),
-        Arguments::Render(args) => args.run(),
-        Arguments::Gc(args) => args.run(),
-        Arguments::Workspace(args) => args.run(),
-    };
-
-    if let Err(err) = res {
-        logger::error!("{}", err);
-    }
 }

@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns ln(1+n) (natural logarithm) more accurately than if the operations\n were performed separately.\n"
+  "docs": " Returns ln(1+n) (natural logarithm) more accurately than if the operations\n were performed separately.\n",
+  "fork": null
 }

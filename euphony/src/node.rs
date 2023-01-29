@@ -73,6 +73,25 @@ impl Node {
         Node(Arc::new(node))
     }
 
+    pub(crate) fn fork(&self) -> Self {
+        let id = NODE_ID.with(|v| v.next());
+
+        emit(ForkNode {
+            source: self.id(),
+            target: id,
+        });
+
+        let parameters = self.0.parameters.lock().unwrap().len();
+
+        let node = OwnedNode {
+            id,
+            parameters: Mutex::new(vec![Parameter(ParameterValue::Unset); parameters]),
+            buffers: self.0.buffers,
+        };
+
+        Node(Arc::new(node))
+    }
+
     pub(crate) fn set<V: Into<Parameter>>(&self, index: u64, value: V) {
         let value = value.into();
         value.set(self.id(), index);

@@ -270,6 +270,7 @@ pub struct Node {
     pub inputs: Vec<Input>,
     pub buffers: Vec<Buffer>,
     pub docs: String,
+    pub fork: Option<String>,
 }
 
 impl Node {
@@ -363,6 +364,9 @@ impl Module {
 
             w!("#[id = {}]", node.id);
             w!("#[lower = {}]", node.name.to_snake_case());
+            if let Some(fork) = node.fork.as_ref() {
+                w!("#[fork = {}]", fork);
+            }
             w!("struct {} {{", node.name);
             level += 1;
 

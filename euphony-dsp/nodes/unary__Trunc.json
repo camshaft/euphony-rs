@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the integer part of a number.\n"
+  "docs": " Returns the integer part of a number.\n",
+  "fork": null
 }

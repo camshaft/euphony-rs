@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 135
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Returns ln(1+n) (natural logarithm) more accurately than if the operations\n were performed separately.\n",
+    fork: None,
 }

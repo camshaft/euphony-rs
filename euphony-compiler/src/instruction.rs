@@ -54,6 +54,10 @@ pub enum Instruction {
         id: u64,
         processor: u64,
     },
+    ForkNode {
+        source: u64,
+        target: u64,
+    },
     SpawnSink {
         id: u64,
         hash: Hash,
@@ -71,12 +75,13 @@ pub enum Instruction {
 impl fmt::Display for Instruction {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Instruction::AdvanceSamples { count } => write!(f, "ADV {}", count),
-            Instruction::SpawnNode { id, processor } => write!(f, "  SPN {},{}", id, processor),
+            Instruction::AdvanceSamples { count } => write!(f, "ADV {count}"),
+            Instruction::SpawnNode { id, processor } => write!(f, "  SPN {id},{processor}"),
+            Instruction::ForkNode { source, target } => write!(f, "  FRK {source},{target}"),
             Instruction::SpawnSink { id, hash } => {
-                write!(f, "  SNK {},0x", id)?;
+                write!(f, "  SNK {id},0x")?;
                 for byte in hash {
-                    write!(f, "{:x}", byte)?;
+                    write!(f, "{byte:x}")?;
                 }
                 Ok(())
             }
@@ -86,20 +91,19 @@ impl fmt::Display for Instruction {
                 value,
             } => match value {
                 Value::Node(n) => {
-                    write!(f, "  PIP {},{},{}", target_node, target_parameter, n)
+                    write!(f, "  PIP {target_node},{target_parameter},{n}")
                 }
                 Value::Constant(value) => {
-                    write!(f, "  SET {},{},{}", target_node, target_parameter, value)
+                    write!(f, "  SET {target_node},{target_parameter},{value}")
                 }
                 Value::Buffer((buffer, channel)) => {
                     write!(
                         f,
-                        "  BUF {},{},{},{}",
-                        target_node, target_parameter, buffer, channel
+                        "  BUF {target_node},{target_parameter},{buffer},{channel}"
                     )
                 }
             },
-            Instruction::FinishNode { node } => write!(f, "  FIN {}", node),
+            Instruction::FinishNode { node } => write!(f, "  FIN {node}"),
         }
     }
 }
@@ -109,6 +113,7 @@ impl From<InternalInstruction> for Instruction {
         use InternalInstruction::*;
         match inst {
             SpawnNode { id, processor } => Self::SpawnNode { id, processor },
+            ForkNode { source, target } => Self::ForkNode { source, target },
             SpawnSink { id, hash } => Self::SpawnSink { id, hash },
             SetParameter {
                 target_node,
@@ -148,6 +153,10 @@ pub enum InternalInstruction {
     SpawnNode {
         id: u64,
         processor: u64,
+    },
+    ForkNode {
+        source: u64,
+        target: u64,
     },
     SpawnSink {
         id: u64,

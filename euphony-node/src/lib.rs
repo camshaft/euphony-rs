@@ -34,7 +34,7 @@ impl BufferMap for () {
 }
 
 pub type Sample = f64;
-pub const LEN: usize = 4000 / (core::mem::size_of::<Sample>() / 8);
+pub const LEN: usize = 256; // 0.005s * 48,000hz
 pub type Output = [Sample; LEN];
 
 type BufferKey = (u64, u64);
@@ -97,7 +97,7 @@ impl<'a, const I: usize> Inputs<'a, I> {
 #[derive(Clone, Copy, Debug)]
 pub enum Input<'a> {
     Constant(f64),
-    Buffer(&'a Output),
+    Buffer(&'a [f64]),
 }
 
 impl<'a> Input<'a> {
@@ -290,10 +290,18 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
                 .process_full(inputs, buffers, &mut self.output);
         }
     }
+
+    fn fork(&self) -> Option<BoxProcessor> {
+        self.processor.fork()
+    }
 }
 
 pub trait Node<const INPUTS: usize, const BUFFERS: usize>: 'static + Send {
     const DEFAULTS: [f64; INPUTS] = [0.0; INPUTS];
+
+    fn fork(&self) -> Option<BoxProcessor> {
+        None
+    }
 
     #[inline]
     fn trigger(&mut self, param: Parameter, value: f64) -> bool {

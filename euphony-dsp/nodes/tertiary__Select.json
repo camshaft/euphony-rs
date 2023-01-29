@@ -26,5 +26,6 @@
     }
   ],
   "buffers": [],
-  "docs": " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n"
+  "docs": " If `cond` is not `0.0 | NaN | Infinity`, then `a` is returned. Otherwise `b`\n is returned.\n",
+  "fork": null
 }

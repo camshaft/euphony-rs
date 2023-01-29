@@ -21,5 +21,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Maximum Length Sequence noise generator from an `n`-bit sequence.\n"
+  "docs": " Maximum Length Sequence noise generator from an `n`-bit sequence.\n",
+  "fork": null
 }

@@ -24,6 +24,7 @@ impl Renderer {
         match instr {
             Instruction::AdvanceSamples { count } => self.advance(count),
             Instruction::SpawnNode { id, processor } => self.spawn(id, processor),
+            Instruction::ForkNode { source, target } => self.fork(source, target),
             Instruction::SpawnSink { id, hash } => self.sink(id, &hash, writer),
             Instruction::SetParameter {
                 target_node,
@@ -75,6 +76,14 @@ impl Renderer {
         };
 
         self.graph.insert(id, node);
+        Ok(())
+    }
+
+    #[inline]
+    fn fork(&mut self, source: u64, target: u64) -> Result {
+        let source = self.graph.get_node(source)?;
+        let node = source.fork().expect("cannot fork source node");
+        self.graph.insert(target, node);
         Ok(())
     }
 

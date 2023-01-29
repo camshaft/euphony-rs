@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the square root of a number.\n\n Returns `NaN` if `self` is a negative number other than `-0.0`.\n"
+  "docs": " Returns the square root of a number.\n\n Returns `NaN` if `self` is a negative number other than `-0.0`.\n",
+  "fork": null
 }

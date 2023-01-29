@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " A pulse (square) oscillator\n\n # frequency\n\n # phase (trigger)\n"
+  "docs": " A pulse (square) oscillator\n\n # frequency\n\n # phase (trigger)\n",
+  "fork": null
 }

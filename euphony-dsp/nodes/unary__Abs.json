@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Computes the absolute value of `input`. Returns `NAN` if the number is `NAN`.\n"
+  "docs": " Computes the absolute value of `input`. Returns `NAN` if the number is `NAN`.\n",
+  "fork": null
 }

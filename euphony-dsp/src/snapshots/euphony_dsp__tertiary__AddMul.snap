@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/tertiary.rs
-assertion_line: 73
 expression: node
 ---
 Node {
@@ -32,4 +31,5 @@ Node {
     ],
     buffers: [],
     docs: " Fused multiply-add. Computes `(input + add) * mul` with only one rounding\n error, yielding a more accurate result than an unfused add-multiply.\n",
+    fork: None,
 }

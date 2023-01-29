@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns `e^(self)`, (the exponential function).\n"
+  "docs": " Returns `e^(self)`, (the exponential function).\n",
+  "fork": null
 }

@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/binary.rs
-assertion_line: 113
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Returns the minimum of the two numbers.\n\n Follows the IEEE-754 2008 semantics for minNum, except for handling of signaling `NAN`s. This\n matches the behavior of libm’s fmax.\n",
+    fork: None,
 }

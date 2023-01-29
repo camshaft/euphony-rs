@@ -26,5 +26,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Fused multiply-add. Computes `(input * mul) + add` with only one rounding\n error, yielding a more accurate result than an unfused multiply-add.\n"
+  "docs": " Fused multiply-add. Computes `(input * mul) + add` with only one rounding\n error, yielding a more accurate result than an unfused multiply-add.\n",
+  "fork": null
 }
