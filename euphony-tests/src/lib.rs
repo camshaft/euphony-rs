@@ -34,7 +34,7 @@ where
 
     std::fs::create_dir_all("target/euphony/tmp").unwrap();
     let target = Path::new("target/euphony").join(name);
-    std::fs::remove_dir_all(&target).unwrap();
+    let _ = std::fs::remove_dir_all(&target);
 
     let contents = target.join("contents");
     std::fs::create_dir_all(&contents).unwrap();

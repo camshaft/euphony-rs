@@ -1,6 +1,6 @@
 use base64::URL_SAFE_NO_PAD;
 use std::{
-    io::{self, Read, Seek, SeekFrom, Write},
+    io::{self, Read, Seek, Write},
     path::{Path, PathBuf},
 };
 use tempfile::NamedTempFile;
@@ -37,7 +37,7 @@ pub fn create<W: FnOnce(&mut io::BufWriter<NamedTempFile>) -> io::Result<()>>(
     ext: &str,
     write: W,
 ) -> io::Result<PathBuf> {
-    let tmp = tempfile::NamedTempFile::new()?;
+    let tmp = tempfile::NamedTempFile::new_in("target/euphony/tmp")?;
 
     let mut buf = io::BufWriter::new(tmp);
     write(&mut buf)?;
@@ -45,7 +45,7 @@ pub fn create<W: FnOnce(&mut io::BufWriter<NamedTempFile>) -> io::Result<()>>(
 
     let mut tmp = buf.into_inner()?;
 
-    tmp.seek(SeekFrom::Start(0)).unwrap();
+    tmp.rewind()?;
 
     let hash = reader(&mut tmp);
     let path = join_path(root, &hash, ext);
