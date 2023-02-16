@@ -26,5 +26,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Constant-gain bandpass resonator.\n"
+  "docs": " Constant-gain bandpass resonator.\n",
+  "fork": null
 }

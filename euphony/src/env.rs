@@ -51,9 +51,9 @@ macro_rules! envgen {
 #[test]
 fn macro_test() {
     crate::runtime::Runtime::new(0).block_on(async {
-        let _ = envgen!([0, 1, 0], [1, 2]);
-        let _ = envgen!([0, 1, 0], [1 / 2, 1 / 4]);
-        let _ = envgen!([0, 1, 0], [Beat(1, 2), Beat(3, 4)]);
+        drop(envgen!([0, 1, 0], [1, 2]));
+        drop(envgen!([0, 1, 0], [1 / 2, 1 / 4]));
+        drop(envgen!([0, 1, 0], [Beat(1, 2), Beat(3, 4)]));
     });
 }
 

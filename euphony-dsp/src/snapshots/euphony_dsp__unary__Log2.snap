@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 148
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Returns the base 2 logarithm of the number.\n",
+    fork: None,
 }

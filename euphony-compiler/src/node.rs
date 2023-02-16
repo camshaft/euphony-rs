@@ -17,6 +17,7 @@ pub struct Node {
     pub processor: u64,
     pub start: Offset,
     pub end: Option<RelOffset>,
+    pub fork_source: Option<u64>,
     pub hash: Hash,
 }
 
@@ -108,6 +109,8 @@ impl Node {
         if processor == 0 {
             let hash = sinks[&id].hash;
             instructions.push((offset, InternalInstruction::SpawnSink { id, hash }));
+        } else if let Some(source) = self.fork_source {
+            instructions.push((offset, InternalInstruction::ForkNode { source, target: id }));
         } else {
             instructions.push((offset, InternalInstruction::SpawnNode { id, processor }));
         }

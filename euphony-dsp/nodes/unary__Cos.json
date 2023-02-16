@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Computes the cosine of a number (in radians).\n"
+  "docs": " Computes the cosine of a number (in radians).\n",
+  "fork": null
 }

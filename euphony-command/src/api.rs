@@ -21,7 +21,7 @@ pub fn emit<M: Codec + fmt::Display>(message: M) {
         if let Some(output) = output.as_mut() {
             message.encode(output).unwrap();
         } else {
-            println!("{}", message);
+            println!("{message}");
         }
     });
 }

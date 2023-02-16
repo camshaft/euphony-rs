@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/tertiary.rs
-assertion_line: 80
 expression: node
 ---
 Node {
@@ -32,4 +31,5 @@ Node {
     ],
     buffers: [],
     docs: " Restrict a value to a certain interval unless it is NaN.\n\n Returns `max` if `input` is greater than `max`, and `min` if `input` is\n less than `min`. Otherwise this returns `input`.\n\n Note that this function returns NaN if the initial value was NaN as\n well or `min > max`\n",
+    fork: None,
 }

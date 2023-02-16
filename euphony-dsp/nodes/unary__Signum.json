@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns a number that represents the sign of `self`.\n\n * `1.0` if the number is positive, `+0.0` or `INFINITY`\n * `-1.0` if the number is negative, `-0.0` or `NEG_INFINITY`\n * `NAN` if the number is `NAN`\n"
+  "docs": " Returns a number that represents the sign of `self`.\n\n * `1.0` if the number is positive, `+0.0` or `INFINITY`\n * `-1.0` if the number is negative, `-0.0` or `NEG_INFINITY`\n * `NAN` if the number is `NAN`\n",
+  "fork": null
 }

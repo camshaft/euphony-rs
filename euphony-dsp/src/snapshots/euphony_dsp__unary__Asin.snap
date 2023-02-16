@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 51
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Computes the arcsine of a number. Return value is in radians in the range [-pi/2, pi/2] or NaN if the number is outside the range [-1, 1].\n",
+    fork: None,
 }

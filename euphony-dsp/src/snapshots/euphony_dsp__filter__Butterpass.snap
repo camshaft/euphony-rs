@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/filter.rs
-assertion_line: 7
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Butterworth lowpass filter (2nd order).\n",
+    fork: None,
 }

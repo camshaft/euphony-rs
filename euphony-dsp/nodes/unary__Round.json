@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the nearest integer to a number. Round half-way cases away from `0.0`.\n"
+  "docs": " Returns the nearest integer to a number. Round half-way cases away from `0.0`.\n",
+  "fork": null
 }

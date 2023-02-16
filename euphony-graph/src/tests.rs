@@ -126,6 +126,10 @@ impl super::Processor<Config> for Processor {
 
         self.output = Some(self.id);
     }
+
+    fn fork(&self) -> Option<Box<dyn super::Processor<Config>>> {
+        todo!()
+    }
 }
 
 fn model(ops: &[Op]) -> Result<(), Error<u8>> {

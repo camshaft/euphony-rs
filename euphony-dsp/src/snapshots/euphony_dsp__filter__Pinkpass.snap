@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/filter.rs
-assertion_line: 211
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Pinking filter.\n",
+    fork: None,
 }

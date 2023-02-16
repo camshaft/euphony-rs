@@ -307,12 +307,54 @@ impl Handler for Compiler {
                 inputs: Default::default(),
                 start: self.samples,
                 end: None,
+                fork_source: None,
                 hash: [0; 32],
             },
         );
 
         if prev.is_some() {
             return Err(error!("node id {} was reused", msg.id));
+        }
+
+        Ok(())
+    }
+
+    #[inline]
+    fn fork_node(&mut self, msg: message::ForkNode) -> Result {
+        let source = msg.source;
+        let target = msg.target;
+        let source_n = self
+            .nodes
+            .get(&source)
+            .ok_or_else(|| error!("node id {source} was not found"))?;
+
+        if source_n.processor == 0 {
+            return Err(error!("sink nodes cannot be forked"));
+        }
+
+        if source_n.start != self.samples {
+            return Err(error!(
+                "only freshly spawned nodes can be forked at this time"
+            ));
+        }
+
+        let index = self.connections.add_node(target);
+
+        let prev = self.nodes.insert(
+            target,
+            Node {
+                index,
+                processor: source_n.processor,
+                inputs: source_n.inputs.clone(),
+                start: self.samples,
+                end: None,
+                fork_source: Some(source),
+                hash: [0; 32],
+            },
+        );
+
+        if prev.is_some() {
+            return Err(error!("node id {target} was reused"));
         }
 
         Ok(())

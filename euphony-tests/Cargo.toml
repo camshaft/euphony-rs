@@ -1,0 +1,10 @@
+[package]
+name = "euphony-tests"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+euphony = { path = "../euphony" }
+euphony-cli = { path = "../euphony-cli" }
+euphony-command = { path = "../euphony-command" }

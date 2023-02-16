@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the natural logarithm of the number.\n"
+  "docs": " Returns the natural logarithm of the number.\n",
+  "fork": null
 }

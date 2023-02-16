@@ -1,0 +1,15 @@
+---
+source: euphony-dsp/src/delay.rs
+expression: node
+---
+Node {
+    name: "Read",
+    module: [
+        "delay",
+    ],
+    impl_path: "euphony_dsp::delay",
+    id: 251,
+    inputs: [],
+    buffers: [],
+    docs: "",
+}

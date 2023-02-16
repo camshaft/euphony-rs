@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/osc/wave.rs
-assertion_line: 36
 expression: node
 ---
 Node {
@@ -41,4 +40,5 @@ Node {
         },
     ],
     docs: "",
+    fork: None,
 }

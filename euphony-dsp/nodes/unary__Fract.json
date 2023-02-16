@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the fractional part of a number.\n"
+  "docs": " Returns the fractional part of a number.\n",
+  "fork": null
 }

@@ -1,4 +1,4 @@
-use crate::{build::Build, Result};
+use crate::{build::Build, compiler::Compiler, Result};
 use euphony_compiler::{midi, sample, Hash};
 use euphony_mix::{
     frame::{self, Frame as _},
@@ -18,9 +18,23 @@ pub struct Render {
     channels: u16,
 }
 
+impl Default for Render {
+    fn default() -> Self {
+        Self {
+            build: Default::default(),
+            channels: 2,
+        }
+    }
+}
+
 impl Render {
     pub fn run(&self) -> Result<()> {
         let comps = self.build.build()?;
+
+        self.run_compilers(comps)
+    }
+
+    pub fn run_compilers(&self, comps: Vec<Compiler>) -> Result<()> {
         for comp in comps {
             let store = comp.store();
 

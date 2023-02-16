@@ -11,6 +11,7 @@ pub trait Handler {
     fn set_timing(&mut self, msg: SetTiming) -> io::Result<()>;
     fn create_group(&mut self, msg: CreateGroup) -> io::Result<()>;
     fn spawn_node(&mut self, msg: SpawnNode) -> io::Result<()>;
+    fn fork_node(&mut self, msg: ForkNode) -> io::Result<()>;
     fn emit_midi(&mut self, msg: EmitMidi) -> io::Result<()>;
     fn set_parameter(&mut self, msg: SetParameter) -> io::Result<()>;
     fn pipe_parameter(&mut self, msg: PipeParameter) -> io::Result<()>;
@@ -22,7 +23,7 @@ pub trait Handler {
 
 fn push_msg<T: fmt::Display>(output: &mut String, v: T) -> io::Result<()> {
     use std::fmt::Write;
-    let _ = writeln!(output, "{}", v);
+    let _ = writeln!(output, "{v}");
     Ok(())
 }
 
@@ -40,6 +41,10 @@ impl Handler for String {
     }
 
     fn spawn_node(&mut self, msg: SpawnNode) -> io::Result<()> {
+        push_msg(self, msg)
+    }
+
+    fn fork_node(&mut self, msg: ForkNode) -> io::Result<()> {
         push_msg(self, msg)
     }
 
@@ -107,6 +112,10 @@ pub fn decode_one<R: io::Read, H: Handler>(
             let msg = SpawnNode::decode(tag, input)?;
             handler.spawn_node(msg)?;
         }
+        ForkNode::TAG => {
+            let msg = ForkNode::decode(tag, input)?;
+            handler.fork_node(msg)?;
+        }
         EmitMidi::TAG_NO_GROUP | EmitMidi::TAG_WITH_GROUP => {
             let msg = EmitMidi::decode(tag, input)?;
             handler.emit_midi(msg)?;
@@ -138,7 +147,7 @@ pub fn decode_one<R: io::Read, H: Handler>(
         _ => {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidData,
-                format!("invalid tag: 0x{:x}", tag),
+                format!("invalid tag: 0x{tag:x}"),
             ))
         }
     }
@@ -412,6 +421,45 @@ impl Codec for SpawnNode {
             processor: generator,
             group,
         })
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(test, derive(TypeGenerator))]
+pub struct ForkNode {
+    pub source: u64,
+    pub target: u64,
+}
+
+impl ForkNode {
+    const TAG: u8 = b'k';
+}
+
+impl fmt::Display for ForkNode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "  FORK source = {}, target = {}",
+            self.source, self.target
+        )?;
+        Ok(())
+    }
+}
+
+impl Codec for ForkNode {
+    #[inline]
+    fn encode<W: io::Write>(&self, output: &mut W) -> io::Result<()> {
+        output.write_u8(Self::TAG)?;
+        output.write_u64(self.source)?;
+        output.write_u64(self.target)?;
+        Ok(())
+    }
+
+    #[inline]
+    fn decode<R: io::Read>(_tag: u8, input: &mut R) -> io::Result<Self> {
+        let source = input.read_u64()?;
+        let target = input.read_u64()?;
+        Ok(Self { source, target })
     }
 }
 

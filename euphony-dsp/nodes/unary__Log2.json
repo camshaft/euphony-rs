@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the base 2 logarithm of the number.\n"
+  "docs": " Returns the base 2 logarithm of the number.\n",
+  "fork": null
 }

@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Normalizes a number.\n\n * `-0.0` will be converted into `0.0`\n * `NAN` will be converted into `0.0`\n * `INFINITY` will be converted into `MAX`\n * `NEG_INFINITY` will be converted into `MIN`\n"
+  "docs": " Normalizes a number.\n\n * `-0.0` will be converted into `0.0`\n * `NAN` will be converted into `0.0`\n * `INFINITY` will be converted into `MAX`\n * `NEG_INFINITY` will be converted into `MIN`\n",
+  "fork": null
 }

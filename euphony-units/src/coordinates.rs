@@ -17,6 +17,13 @@ impl Cartesian<f64> {
     pub fn dot(&self, other: &Self) -> f64 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
+
+    #[inline]
+    pub fn stereo_weights(&self) -> (f64, f64) {
+        let x = self.x;
+        let angle = (x.clamp(-1.0, 1.0) + 1.0) * (core::f64::consts::PI * 0.25);
+        (angle.cos(), angle.sin())
+    }
 }
 
 #[cfg(any(test, feature = "std"))]
@@ -37,8 +44,8 @@ impl From<Polar<f64>> for Cartesian<f64> {
 
         // here, we invert all of the trig functions to create 0 as center, forward
 
-        let azimuth = azimuth * core::f64::consts::PI;
-        let inclination = inclination * core::f64::consts::PI;
+        let azimuth = azimuth * core::f64::consts::PI / 2.0;
+        let inclination = inclination * core::f64::consts::PI / 2.0;
 
         let sin_inc = inclination.cos();
 
@@ -54,19 +61,59 @@ impl From<Polar<f64>> for Cartesian<f64> {
 mod tests {
     use super::*;
 
+    fn round(v: f64) -> f64 {
+        (v * 100.0).round() / 100.0
+    }
+
+    fn round_coord(coord: Cartesian<f64>) -> Cartesian<f64> {
+        Cartesian {
+            x: round(coord.x),
+            y: round(coord.y),
+            z: round(coord.z),
+        }
+    }
+
+    fn nums() -> impl Iterator<Item = f64> {
+        let nums = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+        nums.into_iter().rev().map(|v| -1.0 * v).chain(nums)
+    }
+
     #[test]
     fn conv() {
-        for azimuth in [0.0f64, 0.25, 0.5, 0.6, 0.75, 0.9, 1.0] {
-            for m in [-1.0, 1.0] {
-                let azimuth = azimuth * m;
-                let coord: Cartesian<f64> = Polar {
-                    azimuth,
-                    inclination: 0.0,
-                    radius: 1.0,
-                }
-                .into();
-                eprintln!("{azimuth} {:?}", coord);
-            }
+        let mut results = vec![];
+
+        for azimuth in nums() {
+            let polar = Polar {
+                azimuth,
+                inclination: 0.0,
+                radius: 1.0,
+            };
+            let coord = round_coord(polar.into());
+            results.push((polar, coord));
         }
+        for inclination in nums() {
+            let polar = Polar {
+                azimuth: 0.0,
+                inclination,
+                radius: 1.0,
+            };
+            let coord = round_coord(polar.into());
+            results.push((polar, coord));
+        }
+
+        insta::assert_debug_snapshot!(results);
+    }
+
+    #[test]
+    fn stereo() {
+        fn gen(x: f64) -> (f64, f64) {
+            let coord = Cartesian { x, y: 0.0, z: 0.0 };
+            let (l, r) = coord.stereo_weights();
+            (round(l), round(r))
+        }
+
+        let results = nums().map(|x| (x, gen(x))).collect::<Vec<_>>();
+
+        insta::assert_debug_snapshot!(results);
     }
 }

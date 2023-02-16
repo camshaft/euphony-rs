@@ -116,6 +116,7 @@ macro_rules! define_processor {
         $(#[doc = $doc:literal])?
         #[id = $id:literal]
         #[lower = $lower:ident]
+        $(#[fork = $fork:ident])?
         struct $name:ident {
             $(
                 #[buffer]
@@ -142,6 +143,15 @@ macro_rules! define_processor {
         pub fn $lower() -> $name {
             $name::default()
         }
+
+        $(
+            #[inline]
+            pub fn $fork() -> ($name, crate::node::Node) {
+                let a = $lower();
+                let b = a.fork();
+                (a, b)
+            }
+        )*
 
         mod $lower {
             use super::*;

@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/binary.rs
-assertion_line: 142
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Returns the remainder of the left hand signal by the right\n",
+    fork: None,
 }

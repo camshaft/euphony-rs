@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns `2^(self)`\n"
+  "docs": " Returns `2^(self)`\n",
+  "fork": null
 }

@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 202
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Hyperbolic sine function.\n",
+    fork: None,
 }

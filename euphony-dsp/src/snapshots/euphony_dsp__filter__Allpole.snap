@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/filter.rs
-assertion_line: 61
 expression: node
 ---
 Node {
@@ -26,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Allpass filter with adjustable delay (delay > 0) in samples at DC.\n",
+    fork: None,
 }

@@ -71,8 +71,7 @@ where
         let index = (fraction * (self.0.len() + 1)).whole();
         assert!(
             (1..=self.0.len() as i64).contains(&index),
-            "interval is out of range for scale: {:?}",
-            interval,
+            "interval is out of range for scale: {interval:?}",
         );
         let mul = self.0[index as usize - 1];
         mul * base

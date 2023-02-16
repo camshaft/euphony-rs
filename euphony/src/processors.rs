@@ -981,8 +981,9 @@ mod api {
     pub mod delay {
         define_processor!(
             #[id = 250]
-            #[lower = delay]
-            struct Delay {
+            #[lower = bus]
+            #[fork = feedback]
+            struct Bus {
                 #[trait = SignalInput]
                 #[with = with_signal]
                 #[set = set_signal]
@@ -991,25 +992,6 @@ mod api {
                 #[with = with_delay]
                 #[set = set_delay]
                 delay: Parameter<1>,
-            }
-        );
-
-        define_processor!(
-            #[id = 251]
-            #[lower = feedback]
-            struct Feedback {
-                #[trait = SignalInput]
-                #[with = with_signal]
-                #[set = set_signal]
-                signal: Parameter<0>,
-                #[trait = DelayInput]
-                #[with = with_delay]
-                #[set = set_delay]
-                delay: Parameter<1>,
-                #[trait = DecayInput]
-                #[with = with_decay]
-                #[set = set_decay]
-                decay: Parameter<2>,
             }
         );
     }

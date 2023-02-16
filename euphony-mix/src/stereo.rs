@@ -50,10 +50,9 @@ where
     fn mix(&mut self, samples: &[crate::SpatialSample]) -> Result<(), Self::Error> {
         let mut frame = [0.0f64, 0.0f64];
         for s in samples.iter() {
-            // TODO use the bformat
-            let x = 0.5;
-            frame[0] += s.value * x;
-            frame[1] += s.value * x;
+            let (left, right) = s.coordinate.stereo_weights();
+            frame[0] += s.value * left;
+            frame[1] += s.value * right;
         }
 
         let frame = W::Frame::from_fn(|idx| unsafe { frame.get_unchecked(idx).to_sample() });

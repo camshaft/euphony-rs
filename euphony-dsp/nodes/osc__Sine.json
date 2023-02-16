@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Accurate (slow) sine oscillator\n\n # frequency\n\n # phase (trigger)\n"
+  "docs": " Accurate (slow) sine oscillator\n\n # frequency\n\n # phase (trigger)\n",
+  "fork": null
 }

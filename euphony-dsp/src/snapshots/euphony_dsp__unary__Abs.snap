@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 32
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Computes the absolute value of `input`. Returns `NAN` if the number is `NAN`.\n",
+    fork: None,
 }

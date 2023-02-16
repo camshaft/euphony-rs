@@ -32,5 +32,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Morphing filter that morphs between lowpass, peak and highpass modes.\n"
+  "docs": " Morphing filter that morphs between lowpass, peak and highpass modes.\n",
+  "fork": null
 }

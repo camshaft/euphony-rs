@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the remainder of the left hand signal by the right\n"
+  "docs": " Returns the remainder of the left hand signal by the right\n",
+  "fork": null
 }

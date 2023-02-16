@@ -22,22 +22,17 @@ impl fmt::Display for ModeIntervals {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub enum RoundingStrategy {
     Down,
     Up,
+    #[default]
     NearestDown,
     NearestUp,
     TowardsZero,
     AwayFromZero,
     Reject,
     Pass,
-}
-
-impl Default for RoundingStrategy {
-    fn default() -> Self {
-        RoundingStrategy::NearestDown
-    }
 }
 
 impl ModeIntervals {

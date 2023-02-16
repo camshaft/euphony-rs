@@ -2,7 +2,7 @@ use crate::{compiler::Compiler, manifest::Manifest, Result};
 use std::{fs, io, path::PathBuf};
 use structopt::StructOpt;
 
-#[derive(Debug, StructOpt)]
+#[derive(Debug, Default, StructOpt)]
 pub struct Build {
     input: Option<PathBuf>,
 }
@@ -39,7 +39,7 @@ impl Build {
                     Ok(manifest.finish())
                 }
                 Some(name) => {
-                    let timeline = out_dir.join(format!("{}.json", name));
+                    let timeline = out_dir.join(name).with_extension("json");
                     let mut comp = Compiler::new(contents, timeline);
                     let input = fs::File::open(input)?;
                     let mut input = io::BufReader::new(input);

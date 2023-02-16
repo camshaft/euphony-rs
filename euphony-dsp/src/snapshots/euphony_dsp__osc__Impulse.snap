@@ -25,4 +25,5 @@ Node {
     ],
     buffers: [],
     docs: " Single sample impulse generator\n",
+    fork: None,
 }

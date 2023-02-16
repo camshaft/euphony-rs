@@ -1,5 +1,5 @@
 {
-  "name": "Delay",
+  "name": "Bus",
   "module": [
     "delay"
   ],
@@ -20,5 +20,6 @@
     }
   ],
   "buffers": [],
-  "docs": ""
+  "docs": "",
+  "fork": "feedback"
 }

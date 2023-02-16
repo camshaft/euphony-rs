@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/filter.rs
-assertion_line: 377
 expression: node
 ---
 Node {
@@ -32,4 +31,5 @@ Node {
     ],
     buffers: [],
     docs: " Allpass filter.\n",
+    fork: None,
 }

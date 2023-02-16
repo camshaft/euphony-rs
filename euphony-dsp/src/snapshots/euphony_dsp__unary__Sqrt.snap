@@ -1,6 +1,5 @@
 ---
 source: euphony-dsp/src/unary.rs
-assertion_line: 208
 expression: node
 ---
 Node {
@@ -20,4 +19,5 @@ Node {
     ],
     buffers: [],
     docs: " Returns the square root of a number.\n\n Returns `NaN` if `self` is a negative number other than `-0.0`.\n",
+    fork: None,
 }

@@ -1,0 +1,534 @@
+---
+source: euphony-units/src/coordinates.rs
+expression: results
+---
+[
+    (
+        Polar {
+            azimuth: -1.0,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -1.0,
+            y: 0.0,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.9,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.99,
+            y: 0.16,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.8,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.95,
+            y: 0.31,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.7,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.89,
+            y: 0.45,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.6,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.81,
+            y: 0.59,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.5,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.71,
+            y: 0.71,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.4,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.59,
+            y: 0.81,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.3,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.45,
+            y: 0.89,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.2,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.31,
+            y: 0.95,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.1,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.16,
+            y: 0.99,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: -0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: -0.0,
+            y: 1.0,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 1.0,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.1,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.16,
+            y: 0.99,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.2,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.31,
+            y: 0.95,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.3,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.45,
+            y: 0.89,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.4,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.59,
+            y: 0.81,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.5,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.71,
+            y: 0.71,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.6,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.81,
+            y: 0.59,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.7,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.89,
+            y: 0.45,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.8,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.95,
+            y: 0.31,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.9,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.99,
+            y: 0.16,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 1.0,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 1.0,
+            y: 0.0,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -1.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.0,
+            z: -1.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.9,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.16,
+            z: -0.99,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.8,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.31,
+            z: -0.95,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.7,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.45,
+            z: -0.89,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.6,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.59,
+            z: -0.81,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.5,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.71,
+            z: -0.71,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.4,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.81,
+            z: -0.59,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.3,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.89,
+            z: -0.45,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.2,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.95,
+            z: -0.31,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.1,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.99,
+            z: -0.16,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: -0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 1.0,
+            z: -0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 1.0,
+            z: 0.0,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.1,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.99,
+            z: 0.16,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.2,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.95,
+            z: 0.31,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.3,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.89,
+            z: 0.45,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.4,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.81,
+            z: 0.59,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.5,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.71,
+            z: 0.71,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.6,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.59,
+            z: 0.81,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.7,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.45,
+            z: 0.89,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.8,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.31,
+            z: 0.95,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 0.9,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.16,
+            z: 0.99,
+        },
+    ),
+    (
+        Polar {
+            azimuth: 0.0,
+            inclination: 1.0,
+            radius: 1.0,
+        },
+        Cartesian {
+            x: 0.0,
+            y: 0.0,
+            z: 1.0,
+        },
+    ),
+]

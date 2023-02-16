@@ -14,5 +14,6 @@
     }
   ],
   "buffers": [],
-  "docs": " Returns the cube root of a number.\n"
+  "docs": " Returns the cube root of a number.\n",
+  "fork": null
 }
