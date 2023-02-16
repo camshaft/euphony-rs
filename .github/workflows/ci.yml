@@ -15,7 +15,7 @@ env:
   RUST_BACKTRACE: 1
   # Pin the nightly toolchain to prevent breakage.
   # This should be occasionally updated.
-  RUST_NIGHTLY_TOOLCHAIN: nightly-2022-10-05
+  RUST_NIGHTLY_TOOLCHAIN: nightly-2023-02-14
 
 jobs:
   env:
@@ -30,7 +30,7 @@ jobs:
         run: |
           export MSRV=$(cat rust-toolchain | awk '{$1=$1};1')
           echo "::set-output name=msrv::$MSRV"
-          export RAW_VERSIONS="stable beta $RUST_NIGHTLY_TOOLCHAIN $MSRV"
+          export RAW_VERSIONS="stable $MSRV"
           export VERSIONS=$(echo $RAW_VERSIONS | jq -scR 'rtrimstr("\n")|split(" ")|.')
           echo "::set-output name=versions::$VERSIONS"
 
@@ -55,10 +55,6 @@ jobs:
 
   clippy:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        toolchain: [stable, beta]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -72,7 +68,7 @@ jobs:
       - uses: actions-rs/toolchain@v1.0.7
         id: toolchain
         with:
-          toolchain: ${{ matrix.toolchain }}
+          toolchain: stable
           profile: minimal
           override: true
           components: clippy
