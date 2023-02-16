@@ -614,6 +614,22 @@ pub mod input {
         fn with_value(self, value: Value) -> Self;
         fn set_value(&self, value: Value) -> &Self;
     }
+    pub trait WInput<Value> {
+        fn with_w(self, value: Value) -> Self;
+        fn set_w(&self, value: Value) -> &Self;
+    }
+    pub trait XInput<Value> {
+        fn with_x(self, value: Value) -> Self;
+        fn set_x(&self, value: Value) -> &Self;
+    }
+    pub trait YInput<Value> {
+        fn with_y(self, value: Value) -> Self;
+        fn set_y(&self, value: Value) -> &Self;
+    }
+    pub trait ZInput<Value> {
+        fn with_z(self, value: Value) -> Self;
+        fn set_z(&self, value: Value) -> &Self;
+    }
 }
 
 #[rustfmt::skip]
@@ -1361,6 +1377,88 @@ mod api {
                 #[with = with_signal]
                 #[set = set_signal]
                 signal: Parameter<0>,
+            }
+        );
+    }
+    pub mod noise {
+        define_processor!(
+            #[id = 150]
+            #[lower = simplex]
+            struct Simplex {
+                #[trait = XInput]
+                #[with = with_x]
+                #[set = set_x]
+                x: Parameter<0>,
+                #[trait = YInput]
+                #[with = with_y]
+                #[set = set_y]
+                y: Parameter<1>,
+                #[trait = ZInput]
+                #[with = with_z]
+                #[set = set_z]
+                z: Parameter<2>,
+                #[trait = WInput]
+                #[with = with_w]
+                #[set = set_w]
+                w: Parameter<3>,
+                #[trait = SeedInput]
+                #[with = with_seed]
+                #[set = set_seed]
+                seed: Parameter<4>,
+            }
+        );
+
+        define_processor!(
+            #[id = 151]
+            #[lower = perlin]
+            struct Perlin {
+                #[trait = XInput]
+                #[with = with_x]
+                #[set = set_x]
+                x: Parameter<0>,
+                #[trait = YInput]
+                #[with = with_y]
+                #[set = set_y]
+                y: Parameter<1>,
+                #[trait = ZInput]
+                #[with = with_z]
+                #[set = set_z]
+                z: Parameter<2>,
+                #[trait = WInput]
+                #[with = with_w]
+                #[set = set_w]
+                w: Parameter<3>,
+                #[trait = SeedInput]
+                #[with = with_seed]
+                #[set = set_seed]
+                seed: Parameter<4>,
+            }
+        );
+
+        define_processor!(
+            #[id = 152]
+            #[lower = open_simplex]
+            struct OpenSimplex {
+                #[trait = XInput]
+                #[with = with_x]
+                #[set = set_x]
+                x: Parameter<0>,
+                #[trait = YInput]
+                #[with = with_y]
+                #[set = set_y]
+                y: Parameter<1>,
+                #[trait = ZInput]
+                #[with = with_z]
+                #[set = set_z]
+                z: Parameter<2>,
+                #[trait = WInput]
+                #[with = with_w]
+                #[set = set_w]
+                w: Parameter<3>,
+                #[trait = SeedInput]
+                #[with = with_seed]
+                #[set = set_seed]
+                seed: Parameter<4>,
             }
         );
     }

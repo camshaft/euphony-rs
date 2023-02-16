@@ -1,0 +1,47 @@
+---
+source: euphony-dsp/src/noise.rs
+expression: node
+---
+Node {
+    name: "Perlin",
+    module: [
+        "noise",
+    ],
+    impl_path: "euphony_dsp::noise",
+    id: 151,
+    inputs: [
+        Input {
+            name: "x",
+            id: 0,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "y",
+            id: 1,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "z",
+            id: 2,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "w",
+            id: 3,
+            trigger: false,
+            default: 0.0,
+        },
+        Input {
+            name: "seed",
+            id: 4,
+            trigger: false,
+            default: 0.0,
+        },
+    ],
+    buffers: [],
+    docs: "",
+    fork: None,
+}

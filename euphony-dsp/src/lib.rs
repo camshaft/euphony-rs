@@ -29,6 +29,7 @@ mod buffer;
 mod delay;
 mod env;
 mod filter;
+mod noise;
 mod osc;
 mod tertiary;
 mod unary;
