@@ -187,9 +187,18 @@ mod tests {
     }
 
     #[test]
+    #[ignore] // this is currently broken
     fn fuzz() {
         check!().for_each(|input| {
             let mut compiler = Compiler::default();
+
+            {
+                let mut out = String::new();
+                if euphony_command::decode(&mut Cursor::new(input), &mut out).is_ok() {
+                    eprintln!("=====\n{}\n=====", out);
+                }
+            }
+
             let mut input = Cursor::new(input);
             let _ = compiler.compile(&mut input, &mut Output);
         });

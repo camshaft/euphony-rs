@@ -3,7 +3,7 @@ use crate::{
     ext::*,
     storage::{self, Output as _, Storage},
 };
-use base64::URL_SAFE_NO_PAD;
+use base64::prelude::*;
 use blake3::Hasher;
 use euphony_compiler::{midi, Entry, Hash, Writer};
 use euphony_node::{BoxProcessor, Sink};
@@ -32,7 +32,7 @@ struct State {
 impl State {
     fn hash_path(&self, hash: &Hash) -> PathBuf {
         let mut out = [b'A'; 64];
-        let len = base64::encode_config_slice(hash, URL_SAFE_NO_PAD, &mut out);
+        let len = BASE64_URL_SAFE_NO_PAD.encode_slice(hash, &mut out).unwrap();
         let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
         let out = &out[..len];
         self.path.join(out)
@@ -169,7 +169,7 @@ impl Directory {
 
     fn hash_path(&self, hash: &Hash) -> PathBuf {
         let mut out = [b'A'; 64];
-        let len = base64::encode_config_slice(hash, URL_SAFE_NO_PAD, &mut out);
+        let len = BASE64_URL_SAFE_NO_PAD.encode_slice(hash, &mut out).unwrap();
         let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
         let out = &out[..len];
         self.state.path.join(out)

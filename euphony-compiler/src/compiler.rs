@@ -264,7 +264,12 @@ impl Handler for Compiler {
             return Err(error!("nanos per tick must be non-zero"));
         }
 
+        if msg.ticks_per_beat == 0 {
+            return Err(error!("ticks per beat must be non-zero"));
+        }
+
         self.samples_per_tick = samples_per_tick(msg.nanos_per_tick);
+
         self.ticks_per_beat = msg.ticks_per_beat;
         Ok(())
     }

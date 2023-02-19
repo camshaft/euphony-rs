@@ -14,7 +14,7 @@ http = ["log", "reqwest"]
 resample = ["rubato"]
 
 [dependencies]
-base64 = "0.13"
+base64 = "0.21"
 blake3 = "1"
 euphony-command = { version = "0.1", path = "../euphony-command" }
 log = { version = "0.4", optional = true }

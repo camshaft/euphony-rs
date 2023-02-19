@@ -56,7 +56,7 @@ impl ops::Deref for HashDisplay {
 }
 
 mod base64 {
-    use base64::URL_SAFE_NO_PAD;
+    use ::base64::prelude::*;
     use euphony_compiler::Hash;
     use serde::{self, Deserialize, Deserializer, Serializer};
 
@@ -66,7 +66,9 @@ mod base64 {
     {
         if serializer.is_human_readable() {
             let mut out = [b'A'; 64];
-            let len = base64::encode_config_slice(bytes, URL_SAFE_NO_PAD, &mut out);
+            let len = BASE64_URL_SAFE_NO_PAD
+                .encode_slice(bytes, &mut out)
+                .unwrap();
             let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
             let out = &out[..len];
             serializer.serialize_str(out)
@@ -82,7 +84,8 @@ mod base64 {
         if deserializer.is_human_readable() {
             let s = <&str>::deserialize(deserializer)?;
             let mut out = Hash::default();
-            let len = base64::decode_config_slice(s, URL_SAFE_NO_PAD, &mut out)
+            let len = BASE64_URL_SAFE_NO_PAD
+                .decode_slice(s, &mut out)
                 .map_err(serde::de::Error::custom)?;
 
             if len != out.len() {

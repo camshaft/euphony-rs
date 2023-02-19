@@ -19,8 +19,8 @@ remote = ["tokio", "warp"]
 anyhow = "1"
 arc-swap = "1"
 cargo_metadata = "0.15"
-crossterm = "0.25"
-cpal = { version = "0.14", optional = true }
+crossterm = "0.26"
+cpal = { version = "0.15", optional = true }
 env_logger = "0.10"
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-compiler = { version = "0.1", path = "../euphony-compiler", features = ["parallel"] }
@@ -29,14 +29,14 @@ euphony-store = { version = "0.1", path = "../euphony-store" }
 futures = "0.3"
 hound = "3"
 log = "0.4"
-midir = "0.8"
+midir = "0.9"
 mimalloc = { version = "0.1", default-features = false }
 notify = "4"
 rayon = "1"
 serde_json = "1"
 spin_sleep = "1"
 structopt = "0.3"
-toml_edit = "0.15"
+toml_edit = "0.19"
 tokio = { version = "1", optional = true, features = ["full"] }
 tokio-stream = { version = "0.1", features = ["sync"] }
 tui = "0.19"

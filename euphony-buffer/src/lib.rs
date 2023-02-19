@@ -1,4 +1,4 @@
-use base64::URL_SAFE_NO_PAD;
+use base64::prelude::*;
 use once_cell::sync::{Lazy, OnceCell};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -87,7 +87,9 @@ impl Buffer<String> {
             .meta_path
             .get_or_init(|| PathBuf::from(msg.meta));
 
-        let buffer_dir = meta.parent().expect("missing parent path");
+        let buffer_dir = meta.parent().ok_or_else(|| {
+            std::io::Error::new(std::io::ErrorKind::InvalidInput, "missing parent path")
+        })?;
 
         buffer.values.load_meta(buffer_dir, &buffer.source)?;
 
@@ -365,7 +367,9 @@ fn modified(path: &impl AsRef<OsStr>) -> SystemTime {
 
 fn hash_path(root: &Path, hash: &blake3::Hash) -> PathBuf {
     let mut out = [b'A'; 64];
-    let len = base64::encode_config_slice(hash.as_bytes(), URL_SAFE_NO_PAD, &mut out);
+    let len = BASE64_URL_SAFE_NO_PAD
+        .encode_slice(hash.as_bytes(), &mut out)
+        .unwrap();
     let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
     root.join(&out[..len])
 }

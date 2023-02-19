@@ -9,7 +9,7 @@ license = "MIT"
 default = []
 
 [dependencies]
-base64 = "0.13"
+base64 = "0.21"
 blake3 = "1"
 euphony-compiler = { version = "0.1", path = "../euphony-compiler" }
 euphony-mix = { version = "0.1", path = "../euphony-mix" }

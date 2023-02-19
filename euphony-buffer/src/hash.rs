@@ -1,4 +1,4 @@
-use base64::URL_SAFE_NO_PAD;
+use base64::prelude::*;
 use std::{
     io::{self, Read, Seek, Write},
     path::{Path, PathBuf},
@@ -9,7 +9,7 @@ pub type Hash = [u8; 32];
 
 pub fn join_path(root: &Path, hash: &Hash, ext: &str) -> PathBuf {
     let mut out = [b'A'; 64];
-    let len = base64::encode_config_slice(hash, URL_SAFE_NO_PAD, &mut out);
+    let len = BASE64_URL_SAFE_NO_PAD.encode_slice(hash, &mut out).unwrap();
     let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
     let mut path = root.join(&out[..len]);
     if !ext.is_empty() {

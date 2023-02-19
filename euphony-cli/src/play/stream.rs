@@ -342,10 +342,12 @@ impl Stream {
                                 },
                                 |err| {
                                     log::error!("could not open output: {}", err);
-                                }
+                                },
+                                None
                             )?
                         }
                     )*
+                    format => unimplemented!("{:?}", format),
                 }
             }
         }
