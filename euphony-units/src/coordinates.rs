@@ -26,7 +26,6 @@ impl Cartesian<f64> {
     }
 }
 
-#[cfg(any(test, feature = "std"))]
 impl From<Polar<f64>> for Cartesian<f64> {
     #[inline]
     fn from(coor: Polar<f64>) -> Self {

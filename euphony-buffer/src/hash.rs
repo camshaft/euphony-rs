@@ -37,6 +37,8 @@ pub fn create<W: FnOnce(&mut io::BufWriter<NamedTempFile>) -> io::Result<()>>(
     ext: &str,
     write: W,
 ) -> io::Result<PathBuf> {
+    std::fs::create_dir_all("target/euphony/tmp/")?;
+
     let tmp = tempfile::NamedTempFile::new_in("target/euphony/tmp")?;
 
     let mut buf = io::BufWriter::new(tmp);

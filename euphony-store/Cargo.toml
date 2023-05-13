@@ -14,7 +14,7 @@ blake3 = "1"
 euphony-compiler = { version = "0.1", path = "../euphony-compiler" }
 euphony-mix = { version = "0.1", path = "../euphony-mix" }
 euphony-node = { version = "0.1", path = "../euphony-node" }
-euphony-units = { version = "0.1", path = "../euphony-units", features = ["std"] }
+euphony-units = { version = "0.1", path = "../euphony-units" }
 log = "0.4"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
