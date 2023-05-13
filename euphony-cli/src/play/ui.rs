@@ -123,9 +123,8 @@ impl App {
         self.tracks.render(f, chunks[2], stream);
 
         {
-            let mut logger = TuiLoggerWidget::default();
-            logger.state(&self.logger);
-            let logger = logger
+            let logger = TuiLoggerWidget::default()
+                .state(&self.logger)
                 .output_file(false)
                 .output_level(None)
                 .output_line(false)

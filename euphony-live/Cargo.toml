@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1"
-async-broadcast = "0.4"
+async-broadcast = "0.5"
 euphony = { version = "0.1", path = "../euphony" }
 futures = { version = "0.3" }
-midir = "0.8"
+midir = "0.9"
 midly = { version = "0.5", default-features = false, features = ["std"] }
 slotmap = "1"
 tokio = { version = "1", features = ["full"] }
