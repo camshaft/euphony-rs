@@ -1,3 +1,5 @@
+/*
+
 use std::collections::HashMap;
 
 use euphony::prelude::*;
@@ -164,3 +166,6 @@ async fn main() {
         state.apply_inputs().await;
     }
 }
+*/
+
+fn main() {}

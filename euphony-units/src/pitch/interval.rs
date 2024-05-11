@@ -20,6 +20,24 @@ impl core::ops::Neg for Interval {
     }
 }
 
+impl Interval {
+    #[inline]
+    pub fn from_midi(key: u8) -> Self {
+        let n = Self(key as _, 1);
+        (n - 69) / 12
+    }
+
+    #[inline]
+    pub fn into_midi(self) -> Option<u8> {
+        let v = (self * 12i64 + 69i64).whole();
+        if (0i64..128).contains(&v) {
+            Some(v as _)
+        } else {
+            None
+        }
+    }
+}
+
 // new_ratio_struct!(AbsoluteInterval, i64);
 
 // impl core::ops::Add<Interval> for AbsoluteInterval {

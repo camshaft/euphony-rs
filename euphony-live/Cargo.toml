@@ -7,6 +7,7 @@ edition = "2021"
 anyhow = "1"
 async-broadcast = "0.5"
 euphony = { version = "0.1", path = "../euphony" }
+euphony-midi = { version = "0.1", path = "../euphony-midi" }
 futures = { version = "0.3" }
 midir = "0.9"
 midly = { version = "0.5", default-features = false, features = ["std"] }
