@@ -42,7 +42,7 @@ impl<T: Copy + Integer> PartialEq for Ratio<T> {
 
 impl<T: Copy + Integer> PartialOrd for Ratio<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.as_ratio().partial_cmp(&other.as_ratio())
+        Some(self.cmp(other))
     }
 }
 

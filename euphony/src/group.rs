@@ -34,7 +34,7 @@ impl Group {
 
             let id = groups.len() as u64;
 
-            crate::output::create_group(id, name.to_string());
+            crate::output::create_group(id, name);
 
             groups.insert(name.to_owned(), id);
 
