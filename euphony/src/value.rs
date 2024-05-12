@@ -1,4 +1,4 @@
-use crate::{node::Node, output::*};
+use crate::{node::Node, output};
 use euphony_units::{pitch::frequency::Frequency, ratio::Ratio};
 
 #[derive(Clone, Debug)]
@@ -7,21 +7,13 @@ pub struct Parameter(pub(crate) ParameterValue);
 impl Parameter {
     pub(crate) fn set(&self, target_node: u64, target_parameter: u64) {
         match &self.0 {
-            ParameterValue::Unset => emit(SetParameter {
-                target_node,
-                target_parameter,
-                value: 0.0f64.to_bits(),
-            }),
-            ParameterValue::Constant(value) => emit(SetParameter {
-                target_node,
-                target_parameter,
-                value: value.to_bits(),
-            }),
-            ParameterValue::Node(ref source) => emit(PipeParameter {
-                target_node,
-                target_parameter,
-                source_node: source.id(),
-            }),
+            ParameterValue::Unset => output::set_parameter(target_node, target_parameter, 0.0),
+            ParameterValue::Constant(value) => {
+                output::set_parameter(target_node, target_parameter, *value)
+            }
+            ParameterValue::Node(ref source) => {
+                output::pipe_parameter(target_node, target_parameter, source.id())
+            }
         }
     }
 }

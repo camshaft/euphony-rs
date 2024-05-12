@@ -1,5 +1,5 @@
 use crate::{
-    output::*,
+    output,
     processor::Definition,
     sink::Sink,
     value::{Parameter, ParameterValue},
@@ -39,7 +39,7 @@ struct OwnedNode {
 
 impl Drop for OwnedNode {
     fn drop(&mut self) {
-        emit(FinishNode { node: self.id })
+        output::finish_node(self.id);
     }
 }
 
@@ -55,11 +55,7 @@ impl Node {
     pub(crate) fn new(definition: &Definition, group: Option<u64>) -> Self {
         let id = NODE_ID.with(|v| v.next());
 
-        emit(SpawnNode {
-            id,
-            processor: definition.id,
-            group,
-        });
+        output::spawn_node(id, definition.id, group);
 
         let node = OwnedNode {
             id,
@@ -76,10 +72,7 @@ impl Node {
     pub(crate) fn fork(&self) -> Self {
         let id = NODE_ID.with(|v| v.next());
 
-        emit(ForkNode {
-            source: self.id(),
-            target: id,
-        });
+        output::fork_node(self.id(), id);
 
         let parameters = self.0.parameters.lock().unwrap().len();
 
@@ -102,22 +95,13 @@ impl Node {
         let buffer = channel.buffer(|path, ext| {
             let id = BUFFER_ID.with(|v| v.next());
             // load the buffer if needed
-            emit(LoadBuffer {
-                id,
-                path: path.display().to_string(),
-                ext: ext.to_owned(),
-            });
+            output::load_buffer(id, path, ext);
             id
         });
         let buffer_channel = channel.channel();
 
         // update the buffer for the node
-        emit(SetBuffer {
-            target_node: self.id(),
-            target_parameter: index,
-            buffer,
-            buffer_channel,
-        });
+        output::set_buffer(self.id(), index, buffer, buffer_channel);
 
         assert!(self.0.buffers > index);
     }

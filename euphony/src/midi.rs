@@ -209,10 +209,9 @@ impl From<MidiMessage> for Message {
 
 impl Message {
     pub fn emit(&self) {
-        use crate::output::EmitMidi;
         let data = self.as_bytes();
         let group = crate::group::scope::try_borrow_with(|g| g.map(|g| g.as_u64()));
-        crate::output::emit(EmitMidi { data, group })
+        crate::output::emit_midi(data, group)
     }
 
     /// Write the data part of this message, including the channel

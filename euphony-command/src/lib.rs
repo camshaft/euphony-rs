@@ -19,6 +19,9 @@ pub trait Handler {
     fn init_buffer(&mut self, msg: InitBuffer) -> io::Result<()>;
     fn load_buffer(&mut self, msg: LoadBuffer) -> io::Result<()>;
     fn set_buffer(&mut self, msg: SetBuffer) -> io::Result<()>;
+    fn finish(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 fn push_msg<T: fmt::Display>(output: &mut String, v: T) -> io::Result<()> {
@@ -162,6 +165,7 @@ pub trait Codec: Sized {
 
 trait WriteExt {
     fn write_u8(&mut self, value: u8) -> io::Result<()>;
+    #[allow(dead_code)]
     fn write_u16(&mut self, value: u16) -> io::Result<()>;
     fn write_u32(&mut self, value: u32) -> io::Result<()>;
     fn write_u64(&mut self, value: u64) -> io::Result<()>;
@@ -195,6 +199,7 @@ impl<W: io::Write> WriteExt for W {
 
 trait ReadExt {
     fn read_u8(&mut self) -> io::Result<u8>;
+    #[allow(dead_code)]
     fn read_u16(&mut self) -> io::Result<u16>;
     fn read_u32(&mut self) -> io::Result<u32>;
     fn read_u64(&mut self) -> io::Result<u64>;

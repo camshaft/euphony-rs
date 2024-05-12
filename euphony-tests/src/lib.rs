@@ -26,7 +26,7 @@ where
     F: 'static + Future<Output = ()> + Send,
 {
     let list = List::default();
-    euphony_command::api::scope::set(Some(Box::new(list.clone())));
+    euphony_command::api::set_writer(list.clone());
 
     euphony::runtime::Runtime::new(0).block_on(f);
 

@@ -24,7 +24,7 @@ where
     F: 'static + Future<Output = ()> + Send,
 {
     let list = List::default();
-    output::scope::set(Some(Box::new(list.clone())));
+    output::set_writer(list.clone());
 
     euphony::runtime::Runtime::new(0).block_on(f);
 
@@ -32,9 +32,9 @@ where
     result.set_position(0);
 
     let mut dump = String::new();
-    output::decode(&mut result, &mut dump).unwrap();
+    euphony_command::decode(&mut result, &mut dump).unwrap();
 
-    insta::assert_display_snapshot!(name, dump);
+    insta::assert_snapshot!(name, dump);
 }
 
 use euphony::prelude::*;
