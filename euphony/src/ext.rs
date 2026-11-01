@@ -82,7 +82,7 @@ where
     T::Item: DelayExt,
 {
     pub fn with<V: IntoIterator>(self, values: V) -> DelayStreamWith<Self, V::IntoIter, V::Item> {
-        self.zip(stream::iter(values.into_iter())).map(|(_, v)| v)
+        self.zip(stream::iter(values)).map(|(_, v)| v)
     }
 }
 
