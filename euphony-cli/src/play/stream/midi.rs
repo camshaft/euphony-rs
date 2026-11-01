@@ -31,7 +31,7 @@ impl Group {
 
         if let Some(g) = prev
             .iter()
-            .find(|g| g.as_ref().map_or(false, |g| g.hash == hash))
+            .find(|g| g.as_ref().is_some_and(|g| g.hash == hash))
         {
             return g.clone();
         }
@@ -193,6 +193,8 @@ struct TrackEvents {
     events: Vec<[u8; 3]>,
 }
 
+// `LoopHelper` is deprecated in favor of the `spin_sleep_util` crate.
+#[allow(deprecated)]
 fn worker(state: Arc<ArcSwap<State>>, handle: Handle, controls: Arc<Controls>) {
     let mut looper = spin_sleep::LoopHelper::builder().build_with_target_rate(FPS as f64);
 
@@ -235,7 +237,7 @@ fn worker(state: Arc<ArcSwap<State>>, handle: Handle, controls: Arc<Controls>) {
                     // check if we can play
                     if !track_controls
                         .get(track_events.track)
-                        .map_or(false, |track| track.can_play(is_soloed))
+                        .is_some_and(|track| track.can_play(is_soloed))
                     {
                         continue;
                     }
