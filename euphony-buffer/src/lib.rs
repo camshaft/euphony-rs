@@ -67,7 +67,7 @@ impl<S: AsRef<str>> Buffer<S> {
         self.meta().channels
     }
 
-    pub fn channel(&self, index: u64) -> Channel<Self> {
+    pub fn channel(&self, index: u64) -> Channel<'_, Self> {
         assert!(self.channels() as u64 > index);
         Channel(self, index)
     }
@@ -234,7 +234,7 @@ impl Values {
 
             let contents = std::fs::File::open(contents_path)?;
             let format = decode::reader(contents, ext.unwrap_or(""))
-                .map_err(|err| std::io::Error::new(std::io::ErrorKind::Other, err))?;
+                .map_err(std::io::Error::other)?;
 
             let mut meta = Meta {
                 contents: contents_path.to_owned(),
