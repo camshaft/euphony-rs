@@ -1,7 +1,8 @@
 use euphony_daw_identity::Digest;
 use euphony_daw_project::{Command, ProjectState, RegionId, TrackId};
-use euphony_daw_render::{builtin_registry, compile, mix_processor, render, OutputFormat};
-use euphony_daw_render::RenderDescriptor;
+use euphony_daw_render::{
+    builtin_registry, compile, mix_processor, render, OutputFormat, RenderDescriptor,
+};
 use euphony_daw_sample::{ChannelLayout, WorkingAudio};
 use euphony_daw_store::{ObjectKind, Store};
 use std::collections::BTreeMap;
@@ -22,9 +23,10 @@ pub fn fixture(store: &dyn Store) -> Vec<RenderDescriptor> {
         let frames = 16 * SEGMENT as usize;
         let step = 1.0 / (track + 2) as f32;
         let samples = (0..frames * 2).map(|i| step * (i % 97) as f32).collect();
-        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, samples).unwrap();
-        let bytes = audio.to_canonical_bytes();
-        assets.push(store.publish(ObjectKind::WorkingAudio, &bytes).unwrap());
+        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, samples);
+        let bytes = audio.unwrap().to_canonical_bytes();
+        let asset = store.publish(ObjectKind::WorkingAudio, &bytes);
+        assets.push(asset.unwrap());
     }
     let mut state = ProjectState::default();
     for track in 0..4u64 {
@@ -44,7 +46,8 @@ pub fn fixture(store: &dyn Store) -> Vec<RenderDescriptor> {
         state.apply(&command).unwrap();
     }
     let processor = mix_processor().identity();
-    compile(&state, store, FORMAT, processor, SEGMENT).unwrap()
+    let descriptors = compile(&state, store, FORMAT, processor, SEGMENT);
+    descriptors.unwrap()
 }
 
 /// The digest of each descriptor's result, rendered here as the reference.
@@ -53,11 +56,10 @@ pub fn references(
     store: &dyn Store,
 ) -> BTreeMap<Digest, Digest> {
     let registry = builtin_registry();
-    descriptors
-        .iter()
-        .map(|descriptor| {
-            let audio = render(descriptor, &registry, store).unwrap();
-            (descriptor.id(), audio.digest())
-        })
-        .collect()
+    let mut references = BTreeMap::new();
+    for descriptor in descriptors {
+        let audio = render(descriptor, &registry, store).unwrap();
+        references.insert(descriptor.id(), audio.digest());
+    }
+    references
 }

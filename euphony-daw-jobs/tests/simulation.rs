@@ -130,13 +130,22 @@ async fn worker(run: Run, mut inbox: UnboundedReceiver<ToWorker>, capacity: usiz
     }
 }
 
-async fn controller(
-    mut scheduler: Scheduler,
-    mut events: UnboundedReceiver<Event>,
+struct Controller {
+    scheduler: Scheduler,
     store: Rc<MemStore>,
+    jobs: Vec<Digest>,
     workers: usize,
     report: Rc<RefCell<Option<Report>>>,
-) {
+}
+
+async fn controller(context: Controller, mut events: UnboundedReceiver<Event>) {
+    let Controller {
+        mut scheduler,
+        store,
+        jobs,
+        workers,
+        report,
+    } = context;
     let mut senders = BTreeMap::new();
     let mut handled = 0u64;
     while !scheduler.is_complete() {
@@ -182,33 +191,19 @@ async fn controller(
             }
         }
     }
-    let results = store_results(&scheduler, &store);
+    let results = jobs.iter().map(|job| (*job, scheduler.result(job)));
     *report.borrow_mut() = Some(Report {
         workers,
         elapsed: Instant::now().elapsed_since_start(),
         events: handled,
         stats: *scheduler.stats(),
-        results,
+        results: results.collect(),
     });
 }
 
-fn store_results(scheduler: &Scheduler, store: &MemStore) -> BTreeMap<Digest, Option<Digest>> {
-    let _ = store;
-    scheduler_results(scheduler)
-}
+type Outcome = (Report, Rc<MemStore>, BTreeMap<Digest, Digest>);
 
-thread_local! {
-    static JOBS: RefCell<Vec<Digest>> = const { RefCell::new(Vec::new()) };
-}
-
-fn scheduler_results(scheduler: &Scheduler) -> BTreeMap<Digest, Option<Digest>> {
-    JOBS.with(|jobs| {
-        let jobs = jobs.borrow();
-        jobs.iter().map(|job| (*job, scheduler.result(job))).collect()
-    })
-}
-
-fn simulate(workers: usize, faults: bool) -> (Report, Rc<MemStore>, BTreeMap<Digest, Digest>) {
+fn simulate(workers: usize, faults: bool) -> Outcome {
     let store = Rc::new(MemStore::new());
     let descriptors = common::fixture(&*store);
     let references = common::references(&descriptors, &*store);
@@ -218,16 +213,22 @@ fn simulate(workers: usize, faults: bool) -> (Report, Rc<MemStore>, BTreeMap<Dig
     for descriptor in descriptors {
         jobs.push(scheduler.submit(descriptor).unwrap());
     }
-    JOBS.with(|cell| *cell.borrow_mut() = jobs);
 
     let report = Rc::new(RefCell::new(None));
     let registry = Rc::new(builtin_registry());
+    let context = Controller {
+        scheduler,
+        store: store.clone(),
+        jobs,
+        workers,
+        report: report.clone(),
+    };
     bach::sim(|| {
         let (events, inbox) = unbounded_channel();
         for index in 0..workers {
             let id = WorkerId(index as u64);
             let (sender, receiver) = unbounded_channel();
-            events.send(Event::Joined(id, sender)).ok().unwrap();
+            assert!(events.send(Event::Joined(id, sender)).is_ok());
             let fault = match (faults, index % 8) {
                 (false, _) => Fault::None,
                 (true, 0) => Fault::Leaves,
@@ -248,11 +249,7 @@ fn simulate(workers: usize, faults: bool) -> (Report, Rc<MemStore>, BTreeMap<Dig
             worker(run, receiver, 1 + index % 3).spawn();
         }
         drop(events);
-        let store = store.clone();
-        let report = report.clone();
-        controller(scheduler, inbox, store, workers, report)
-            .primary()
-            .spawn();
+        controller(context, inbox).primary().spawn();
     });
     let report = report.borrow_mut().take().expect("the controller finished");
     (report, store, references)
