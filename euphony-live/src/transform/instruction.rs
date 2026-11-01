@@ -85,7 +85,7 @@ impl Transform {
     ) {
         use Transform as T;
         match self {
-            T::Noop {} => {}
+            T::Noop => {}
             T::Constant { value, destination } => locals[destination.id] = value.clone(),
             T::Logic { logic, destination } => locals[destination.id] = logic.apply(locals),
             T::Math { math, destination } => locals[destination.id] = math.apply(locals),
