@@ -3,9 +3,7 @@ use crate::{
     RevisionId, SignedBranch, SignedRevision,
 };
 use core::fmt;
-use euphony_daw_identity::{
-    AuthorKey, DecodeError, Decoder, Digest, Encoder, SignatureError,
-};
+use euphony_daw_identity::{AuthorKey, DecodeError, Decoder, Digest, Encoder, SignatureError};
 use euphony_daw_store::{Journal, JournalError};
 use std::{
     collections::{BTreeMap, HashMap},
@@ -15,12 +13,13 @@ use std::{
 const OPENED: u8 = 0;
 const COMMIT: u8 = 1;
 const PIN: u8 = 2;
+const BATCH_DOMAIN: &str = "euphony batch v1";
 
 /// A committed batch.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Committed {
     pub revision: RevisionId,
-    /// Whether the batch was committed by an earlier submission of its key.
+    /// Whether an earlier submission of the batch's key committed it.
     pub replayed: bool,
 }
 
@@ -111,8 +110,8 @@ pub struct BranchAuthority {
 }
 
 impl BranchAuthority {
-    /// Opens the branch's journal at `path`, replays and verifies every record,
-    /// and starts a new authority epoch.
+    /// Opens the branch's journal at `path`, replays and verifies every
+    /// record, and starts a new authority epoch.
     pub fn open(
         path: &Path,
         key: AuthorKey,
@@ -150,16 +149,18 @@ impl BranchAuthority {
                 let batch = CommandBatch::decode(batch_bytes)?;
                 let signed = SignedRevision::decode(decoder.bytes()?)?;
                 let id = signed.verify().map_err(AuthorityError::Signature)?;
+                let diverged = AuthorityError::Diverged { record: index };
                 let mut state = self.state.clone();
                 for command in &batch.commands {
-                    let applied = state.apply(command);
-                    applied.map_err(|_| AuthorityError::Diverged { record: index })?;
+                    if state.apply(command).is_err() {
+                        return Err(diverged);
+                    }
                 }
                 let parents: Vec<_> = self.head.into_iter().collect();
                 if signed.revision.parents != parents || signed.revision.root != state.root() {
-                    return Err(AuthorityError::Diverged { record: index });
+                    return Err(diverged);
                 }
-                let batch_digest = Digest::of("euphony batch v1", batch_bytes);
+                let batch_digest = Digest::of(BATCH_DOMAIN, batch_bytes);
                 self.accept(state, id, signed, batch.key, batch_digest);
             }
             PIN => {
@@ -198,7 +199,7 @@ impl BranchAuthority {
             return Err(SubmitError::WrongProject);
         }
         let batch_bytes = batch.canonical_bytes();
-        let batch_digest = Digest::of("euphony batch v1", &batch_bytes);
+        let batch_digest = Digest::of(BATCH_DOMAIN, &batch_bytes);
         if let Some((digest, revision)) = self.keys.get(&batch.key) {
             if *digest != batch_digest {
                 return Err(SubmitError::KeyReused {
@@ -215,9 +216,9 @@ impl BranchAuthority {
         }
         let mut state = self.state.clone();
         for (index, command) in batch.commands.iter().enumerate() {
-            state
-                .apply(command)
-                .map_err(|error| SubmitError::Invalid { index, error })?;
+            if let Err(error) = state.apply(command) {
+                return Err(SubmitError::Invalid { index, error });
+            }
         }
         let revision = Revision {
             parents: self.head.into_iter().collect(),
@@ -227,15 +228,13 @@ impl BranchAuthority {
             message: batch.message.clone(),
         };
         let id = revision.id();
-        let signed = revision.sign(&self.key).expect("the authority signs its own revisions");
+        let signed = revision.sign(&self.key);
+        let signed = signed.expect("the authority signs its own revisions");
         let mut record = Encoder::new();
-        record
-            .u8(COMMIT)
-            .bytes(&batch_bytes)
-            .bytes(&signed.canonical_bytes());
-        self.journal
-            .append(&record.finish())
-            .map_err(SubmitError::Unavailable)?;
+        record.u8(COMMIT).bytes(&batch_bytes);
+        record.bytes(&signed.canonical_bytes());
+        let appended = self.journal.append(&record.finish());
+        appended.map_err(SubmitError::Unavailable)?;
         self.accept(state, id, signed, batch.key, batch_digest);
         Ok(Committed {
             revision: id,
@@ -289,9 +288,8 @@ impl BranchAuthority {
             head: self.head,
             sequence: self.sequence,
         };
-        reference
-            .sign(&self.key)
-            .expect("the authority signs its own branch")
+        let signed = reference.sign(&self.key);
+        signed.expect("the authority signs its own branch")
     }
 }
 
@@ -307,6 +305,10 @@ mod tests {
 
     fn project() -> ProjectId {
         ProjectId(Digest::of("euphony test", b"project"))
+    }
+
+    fn open(path: &Path) -> BranchAuthority {
+        BranchAuthority::open(path, key(), project(), "main").unwrap()
     }
 
     fn batch(
@@ -338,7 +340,7 @@ mod tests {
         let path = dir.path().join("branch");
         let actor = key().author();
         let (head, root, manifest) = {
-            let mut authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
+            let mut authority = open(&path);
             assert_eq!(authority.epoch(), 1);
             let first = authority.submit(&batch(None, 1, actor, vec![add_track(1)]));
             let first = first.unwrap();
@@ -348,14 +350,14 @@ mod tests {
                 asset: Digest::of("euphony test", b"asset"),
                 start: 0,
             };
-            let second = authority.submit(&batch(Some(first.revision), 2, actor, vec![region]));
-            let second = second.unwrap();
+            let second = batch(Some(first.revision), 2, actor, vec![region]);
+            let second = authority.submit(&second).unwrap();
             let manifest = Digest::of("euphony test", b"manifest");
             authority.pin(second.revision, manifest).unwrap();
             (second.revision, authority.state().root(), manifest)
         };
 
-        let authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
+        let authority = open(&path);
         assert_eq!(authority.epoch(), 2);
         assert_eq!(authority.head(), Some(head));
         assert_eq!(authority.state().root(), root);
@@ -371,7 +373,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("branch");
         let actor = key().author();
-        let mut authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
+        let mut authority = open(&path);
         let submitted = batch(None, 1, actor, vec![add_track(1)]);
         let first = authority.submit(&submitted).unwrap();
         let again = authority.submit(&submitted).unwrap();
@@ -380,10 +382,8 @@ mod tests {
         assert_eq!(first.revision, again.revision);
 
         let reused = batch(Some(first.revision), 1, actor, vec![add_track(2)]);
-        assert!(matches!(
-            authority.submit(&reused),
-            Err(SubmitError::KeyReused { .. })
-        ));
+        let reused = authority.submit(&reused);
+        assert!(matches!(reused, Err(SubmitError::KeyReused { .. })));
     }
 
     #[test]
@@ -391,14 +391,14 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("branch");
         let actor = key().author();
-        let mut authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
+        let mut authority = open(&path);
         let first = authority.submit(&batch(None, 1, actor, vec![add_track(1)]));
         let first = first.unwrap();
         let stale = authority.submit(&batch(None, 2, actor, vec![add_track(2)]));
-        assert!(matches!(
-            stale,
-            Err(SubmitError::Conflict { current: Some(current) }) if current == first.revision
-        ));
+        match stale {
+            Err(SubmitError::Conflict { current }) => assert_eq!(current, Some(first.revision)),
+            other => panic!("expected a conflict, found {other:?}"),
+        }
     }
 
     #[test]
@@ -406,35 +406,36 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("branch");
         let actor = key().author();
-        let mut authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
+        let mut authority = open(&path);
         let commands = vec![add_track(1), add_track(1)];
         let result = authority.submit(&batch(None, 1, actor, commands));
-        assert!(matches!(
-            result,
-            Err(SubmitError::Invalid {
-                index: 1,
-                error: CommandError::TrackExists(_)
-            })
-        ));
+        match result {
+            Err(SubmitError::Invalid { index, error }) => {
+                assert_eq!(index, 1);
+                assert_eq!(error, CommandError::TrackExists(TrackId(1)));
+            }
+            other => panic!("expected an invalid command, found {other:?}"),
+        }
         assert_eq!(authority.head(), None);
         assert!(authority.state().tracks.is_empty());
     }
 
     #[test]
-    fn reopening_with_another_key_refuses_nothing_it_signed() {
+    fn a_damaged_record_refuses_the_open() {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("branch");
         let actor = key().author();
         {
-            let mut authority = BranchAuthority::open(&path, key(), project(), "main").unwrap();
-            authority
-                .submit(&batch(None, 1, actor, vec![add_track(1)]))
-                .unwrap();
+            let mut authority = open(&path);
+            let first = batch(None, 1, actor, vec![add_track(1)]);
+            authority.submit(&first).unwrap();
         }
+        // The first record is the open marker: its one payload byte follows
+        // its eight length bytes.
         let mut bytes = std::fs::read(&path).unwrap();
-        let at = bytes.len() / 2;
-        bytes[at] ^= 1;
+        bytes[8] ^= 1;
         std::fs::write(&path, bytes).unwrap();
-        assert!(BranchAuthority::open(&path, key(), project(), "main").is_err());
+        let reopened = BranchAuthority::open(&path, key(), project(), "main");
+        assert!(reopened.is_err());
     }
 }
