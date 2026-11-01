@@ -1,5 +1,5 @@
 use core::fmt;
-use euphony_daw_identity::Digest;
+use euphony_daw_identity::{Decoder, Digest, Encoder};
 use std::{
     fs::{File, OpenOptions},
     io::{self, Read, Write},
@@ -67,7 +67,7 @@ impl Journal {
             };
             match record {
                 Ok((payload, len)) => {
-                    records.push(payload.to_vec());
+                    records.push(payload);
                     offset += len;
                 }
                 Err(len) if offset + len == bytes.len() => break,
@@ -88,10 +88,10 @@ impl Journal {
     /// Appends one record and syncs it.
     pub fn append(&mut self, payload: &[u8]) -> Result<(), JournalError> {
         let len = LEN_BYTES + payload.len() + CHECK_BYTES;
-        let mut record = Vec::with_capacity(len);
-        record.extend_from_slice(&(payload.len() as u64).to_le_bytes());
-        record.extend_from_slice(payload);
-        record.extend_from_slice(Digest::of(DOMAIN, payload).as_bytes());
+        let mut record = Encoder::with_writer(Vec::with_capacity(len));
+        record.bytes(payload).digest(&Digest::of(DOMAIN, payload));
+        let record = record.into_writer();
+        let record = record.expect("a vector holds the record");
         self.file.write_all(&record)?;
         self.file.sync_data()?;
         Ok(())
@@ -100,25 +100,22 @@ impl Journal {
     /// Writes part of a record without syncing it, as an append interrupted
     /// by a crash leaves it.
     pub fn append_torn(&mut self, payload: &[u8]) -> Result<(), JournalError> {
-        let mut record = Vec::new();
-        record.extend_from_slice(&(payload.len() as u64).to_le_bytes());
-        record.extend_from_slice(&payload[..payload.len() / 2]);
-        self.file.write_all(&record)?;
+        let mut record = Encoder::new();
+        record.u64(payload.len() as u64);
+        record.raw(&payload[..payload.len() / 2]);
+        self.file.write_all(&record.finish())?;
         Ok(())
     }
 }
 
 /// Reads one record from the start of `bytes`: `None` where the bytes end
 /// inside it, `Err` with its length where its checksum doesn't match.
-fn read_record(bytes: &[u8]) -> Option<Result<(&[u8], usize), usize>> {
-    let mut len = [0; LEN_BYTES];
-    len.copy_from_slice(bytes.get(..LEN_BYTES)?);
-    let len = usize::try_from(u64::from_le_bytes(len)).ok()?;
-    let end = LEN_BYTES.checked_add(len)?;
-    let total = end.checked_add(CHECK_BYTES)?;
-    let payload = bytes.get(LEN_BYTES..end)?;
-    let check = bytes.get(end..total)?;
-    if check == Digest::of(DOMAIN, payload).as_bytes() {
+fn read_record(bytes: &[u8]) -> Option<Result<(Vec<u8>, usize), usize>> {
+    let mut decoder = Decoder::new(bytes);
+    let payload = decoder.bytes().ok()?;
+    let check = decoder.digest().ok()?;
+    let total = bytes.len() - decoder.remaining();
+    if check == Digest::of(DOMAIN, &payload) {
         Some(Ok((payload, total)))
     } else {
         Some(Err(total))
@@ -141,6 +138,22 @@ mod tests {
         }
         let (_, records) = Journal::open(&path).unwrap();
         assert_eq!(records, vec![b"one".to_vec(), b"two".to_vec()]);
+    }
+
+    #[test]
+    fn a_record_keeps_its_byte_layout() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("journal");
+        {
+            let (mut journal, _) = Journal::open(&path).unwrap();
+            journal.append(b"one").unwrap();
+        }
+        let mut expected = Vec::new();
+        expected.extend_from_slice(&3u64.to_le_bytes());
+        expected.extend_from_slice(b"one");
+        expected.extend_from_slice(Digest::of(DOMAIN, b"one").as_bytes());
+        assert_eq!(expected.len(), LEN_BYTES + 3 + CHECK_BYTES);
+        assert_eq!(std::fs::read(&path).unwrap(), expected);
     }
 
     #[test]

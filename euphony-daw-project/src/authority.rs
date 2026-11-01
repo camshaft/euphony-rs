@@ -146,8 +146,8 @@ impl BranchAuthority {
             OPENED => self.epoch += 1,
             COMMIT => {
                 let batch_bytes = decoder.bytes()?;
-                let batch = CommandBatch::decode(batch_bytes)?;
-                let signed = SignedRevision::decode(decoder.bytes()?)?;
+                let batch = CommandBatch::decode(&batch_bytes)?;
+                let signed = SignedRevision::decode(&decoder.bytes()?)?;
                 let id = signed.verify().map_err(AuthorityError::Signature)?;
                 let diverged = AuthorityError::Diverged { record: index };
                 let mut state = self.state.clone();
@@ -160,7 +160,7 @@ impl BranchAuthority {
                 if signed.revision.parents != parents || signed.revision.root != state.root() {
                     return Err(diverged);
                 }
-                let batch_digest = Digest::of(BATCH_DOMAIN, batch_bytes);
+                let batch_digest = Digest::of(BATCH_DOMAIN, &batch_bytes);
                 self.accept(state, id, signed, batch.key, batch_digest);
             }
             PIN => {

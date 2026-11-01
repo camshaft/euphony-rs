@@ -50,7 +50,7 @@ impl ToWorker {
             0 => {
                 let attempt = AttemptId(decoder.u64()?);
                 let epoch = decoder.u64()?;
-                let descriptor = RenderDescriptor::decode(decoder.bytes()?)?;
+                let descriptor = RenderDescriptor::decode(&decoder.bytes()?)?;
                 Self::Assign(Assignment {
                     attempt,
                     epoch,
@@ -116,7 +116,7 @@ impl FromWorker {
         let message = match tag {
             0 => Self::Chunk {
                 attempt,
-                bytes: decoder.bytes()?.to_vec(),
+                bytes: decoder.bytes()?,
             },
             1 => Self::Finished {
                 attempt,
@@ -126,7 +126,7 @@ impl FromWorker {
             },
             2 => Self::Failed {
                 attempt,
-                reason: decoder.str()?.to_string(),
+                reason: decoder.str()?,
             },
             3 => Self::Busy { attempt },
             _ => return Err(DecodeError::Invalid("message from a worker")),

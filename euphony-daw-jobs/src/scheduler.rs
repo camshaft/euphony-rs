@@ -167,7 +167,7 @@ impl Scheduler {
             match decoder.u8()? {
                 OPENED => scheduler.epoch += 1,
                 SUBMITTED => {
-                    let descriptor = RenderDescriptor::decode(decoder.bytes()?)?;
+                    let descriptor = RenderDescriptor::decode(&decoder.bytes()?)?;
                     let id = descriptor.id();
                     order.push(id);
                     scheduler.jobs.insert(id, Job::new(descriptor));

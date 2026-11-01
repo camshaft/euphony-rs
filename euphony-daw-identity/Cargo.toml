@@ -9,3 +9,4 @@ publish = false
 [dependencies]
 blake3 = "1"
 ed25519-dalek = "2"
+etude-buffer = { git = "https://github.com/camshaft/etude", rev = "0c33c6218e800276398be890b9ff93130628b5f8" }

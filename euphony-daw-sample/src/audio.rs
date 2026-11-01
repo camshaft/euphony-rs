@@ -1,5 +1,5 @@
 use core::fmt;
-use euphony_daw_identity::Digest;
+use euphony_daw_identity::{DecodeError, Decoder, Digest, Encoder};
 
 /// The order of the channels in interleaved frames.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -77,13 +77,18 @@ impl Header {
 
     pub fn encode(&self) -> [u8; Self::LEN] {
         let mut out = [0; Self::LEN];
-        out[0..4].copy_from_slice(&Self::MAGIC);
-        out[4..6].copy_from_slice(&Self::VERSION.to_le_bytes());
-        out[6] = Self::BINARY32;
-        out[7] = self.layout.tag();
-        out[8..10].copy_from_slice(&self.channels().to_le_bytes());
-        out[10..14].copy_from_slice(&self.sample_rate.to_le_bytes());
-        out[14..22].copy_from_slice(&self.frames.to_le_bytes());
+        let mut encoder = Encoder::with_writer(&mut out[..]);
+        encoder
+            .raw(&Self::MAGIC)
+            .u16(Self::VERSION)
+            .u8(Self::BINARY32)
+            .u8(self.layout.tag())
+            .u16(self.channels())
+            .u32(self.sample_rate)
+            .u64(self.frames);
+        let rest = encoder.into_writer();
+        let rest = rest.expect("the header's fields fit its length");
+        debug_assert!(rest.is_empty());
         out
     }
 
@@ -92,30 +97,35 @@ impl Header {
         let Some(head) = bytes.get(..Self::LEN) else {
             return Err(FormatError::Truncated);
         };
-        if head[0..4] != Self::MAGIC {
+        let mut decoder = Decoder::new(head);
+        let magic: [u8; 4] = decoder.array().map_err(truncated)?;
+        if magic != Self::MAGIC {
             return Err(FormatError::Magic);
         }
-        let version = u16::from_le_bytes([head[4], head[5]]);
+        let version = decoder.u16().map_err(truncated)?;
         if version != Self::VERSION {
             return Err(FormatError::Version(version));
         }
-        if head[6] != Self::BINARY32 {
-            return Err(FormatError::SampleFormat(head[6]));
+        let format = decoder.u8().map_err(truncated)?;
+        if format != Self::BINARY32 {
+            return Err(FormatError::SampleFormat(format));
         }
-        let channels = u16::from_le_bytes([head[8], head[9]]);
-        let layout = ChannelLayout::from_tag(head[7], channels)?;
-        let sample_rate = u32::from_le_bytes([head[10], head[11], head[12], head[13]]);
+        let tag = decoder.u8().map_err(truncated)?;
+        let channels = decoder.u16().map_err(truncated)?;
+        let layout = ChannelLayout::from_tag(tag, channels)?;
+        let sample_rate = decoder.u32().map_err(truncated)?;
         if sample_rate == 0 {
             return Err(FormatError::SampleRate);
         }
-        let mut frames = [0; 8];
-        frames.copy_from_slice(&head[14..22]);
+        let frames = decoder.u64().map_err(truncated)?;
+        decoder.finish().map_err(truncated)?;
         Ok(Self {
             sample_rate,
             layout,
-            frames: u64::from_le_bytes(frames),
+            frames,
         })
     }
+}
 }
 
 /// Why bytes or samples aren't valid working audio.
@@ -252,12 +262,14 @@ impl WorkingAudio {
     /// The canonical bytes: the header, then each sample's bits in
     /// little-endian order.
     pub fn to_canonical_bytes(&self) -> Vec<u8> {
-        let mut out = Vec::with_capacity(Header::LEN + self.samples.len() * 4);
-        out.extend_from_slice(&self.header.encode());
+        let out = Vec::with_capacity(Header::LEN + self.samples.len() * 4);
+        let mut encoder = Encoder::with_writer(out);
+        encoder.raw(&self.header.encode());
         for sample in &self.samples {
-            out.extend_from_slice(&sample.to_bits().to_le_bytes());
+            encoder.u32(sample.to_bits());
         }
-        out
+        let out = encoder.into_writer();
+        out.expect("a vector holds every sample")
     }
 
     /// Reads canonical bytes, keeping every sample's bits as they are.
@@ -268,7 +280,8 @@ impl WorkingAudio {
     pub fn from_canonical_bytes(bytes: &[u8]) -> Result<Self, FormatError> {
         let header = Header::decode(bytes)?;
         let body = &bytes[Header::LEN..];
-        let expected = header.samples()?.checked_mul(4);
+        let count = header.samples()?;
+        let expected = count.checked_mul(4);
         let expected = expected.ok_or(FormatError::TooLarge)?;
         if body.len() != expected {
             return Err(FormatError::Length {
@@ -276,8 +289,13 @@ impl WorkingAudio {
                 actual: body.len() as u64,
             });
         }
-        let (words, _) = body.as_chunks::<4>();
-        let samples = words.iter().map(sample_from_le).collect();
+        let mut decoder = Decoder::new(body);
+        let mut samples = Vec::with_capacity(count);
+        for _ in 0..count {
+            let bits = decoder.u32().map_err(truncated)?;
+            samples.push(f32::from_bits(bits));
+        }
+        decoder.finish().map_err(truncated)?;
         Ok(Self { header, samples })
     }
 
@@ -297,13 +315,35 @@ impl WorkingAudio {
     }
 }
 
-fn sample_from_le(bits: &[u8; 4]) -> f32 {
-    f32::from_bits(u32::from_le_bytes(*bits))
+/// A canonical read that stops early reads as a truncated header or body.
+fn truncated(_: DecodeError) -> FormatError {
+    FormatError::Truncated
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_header_keeps_its_byte_layout() {
+        let header = Header {
+            sample_rate: 48_000,
+            layout: ChannelLayout::Stereo,
+            frames: 3,
+        };
+        let mut expected = Vec::new();
+        expected.extend_from_slice(b"EUWA");
+        expected.extend_from_slice(&1u16.to_le_bytes());
+        expected.push(Header::BINARY32);
+        expected.push(1);
+        expected.extend_from_slice(&2u16.to_le_bytes());
+        expected.extend_from_slice(&48_000u32.to_le_bytes());
+        expected.extend_from_slice(&3u64.to_le_bytes());
+        assert_eq!(header.encode().to_vec(), expected);
+        assert_eq!(Header::decode(&expected), Ok(header));
+        let cut = Header::decode(&expected[..Header::LEN - 1]);
+        assert_eq!(cut, Err(FormatError::Truncated));
+    }
 
     fn make(layout: ChannelLayout, samples: Vec<f32>) -> WorkingAudio {
         let audio = WorkingAudio::new(48_000, layout, samples);

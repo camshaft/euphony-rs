@@ -9,6 +9,6 @@ mod canonical;
 mod digest;
 mod sign;
 
-pub use canonical::{DecodeError, Decoder, Encoder};
+pub use canonical::{DecodeError, Decoder, EncodeError, Encoder};
 pub use digest::Digest;
 pub use sign::{AuthorId, AuthorKey, Signature, SignatureError};

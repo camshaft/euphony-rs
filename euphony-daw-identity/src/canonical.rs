@@ -1,23 +1,50 @@
 use crate::Digest;
-use core::fmt;
+use core::{convert::Infallible, fmt, marker::PhantomData};
+use etude_buffer::{
+    reader::{self, Infallible as _},
+    writer,
+};
 
-/// Writes the canonical encoding of a record.
+/// Writes the canonical encoding of a record into an etude writer.
 ///
 /// Integers are little-endian at a fixed width, and every variable-length
 /// field carries its length first, so one encoding never reads as another.
+/// A write past the writer's capacity is refused: the encoder stops writing,
+/// and [`Encoder::into_writer`] answers [`EncodeError::Capacity`].
 #[derive(Clone, Debug, Default)]
-pub struct Encoder {
-    bytes: Vec<u8>,
+pub struct Encoder<W = Vec<u8>> {
+    out: W,
+    overflowed: bool,
 }
 
 impl Encoder {
+    /// An encoder that writes into a growing vector.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// The digest of the bytes written so far, in the domain `domain`.
+    pub fn digest_in(&self, domain: &str) -> Digest {
+        Digest::of(domain, &self.out)
+    }
+
+    pub fn finish(self) -> Vec<u8> {
+        debug_assert!(!self.overflowed, "a vector holds every write");
+        self.out
+    }
+}
+
+impl<W: writer::Buffer> Encoder<W> {
+    /// An encoder that writes into `out`.
+    pub fn with_writer(out: W) -> Self {
+        Self {
+            out,
+            overflowed: false,
+        }
+    }
+
     pub fn u8(&mut self, value: u8) -> &mut Self {
-        self.bytes.push(value);
-        self
+        self.raw(&[value])
     }
 
     pub fn u16(&mut self, value: u16) -> &mut Self {
@@ -52,19 +79,40 @@ impl Encoder {
 
     /// Writes `value` as it is, without its length, for fields of a fixed size.
     pub fn raw(&mut self, value: &[u8]) -> &mut Self {
-        self.bytes.extend_from_slice(value);
+        if self.overflowed || value.len() > self.out.remaining_capacity() {
+            self.overflowed = true;
+        } else {
+            self.out.put_slice(value);
+        }
         self
     }
 
-    /// The digest of the bytes written so far, in the domain `domain`.
-    pub fn digest_in(&self, domain: &str) -> Digest {
-        Digest::of(domain, &self.bytes)
-    }
-
-    pub fn finish(self) -> Vec<u8> {
-        self.bytes
+    /// Ends the write, answering the writer, or the refusal of a write that
+    /// didn't fit it.
+    pub fn into_writer(self) -> Result<W, EncodeError> {
+        match self.overflowed {
+            true => Err(EncodeError::Capacity),
+            false => Ok(self.out),
+        }
     }
 }
+
+/// Why a canonical encoding wasn't written.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EncodeError {
+    /// The writer didn't have room for the whole record.
+    Capacity,
+}
+
+impl fmt::Display for EncodeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Capacity => f.write_str("the writer didn't have room for the encoding"),
+        }
+    }
+}
+
+impl std::error::Error for EncodeError {}
 
 /// Why a canonical encoding didn't decode.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -89,35 +137,63 @@ impl fmt::Display for DecodeError {
 
 impl std::error::Error for DecodeError {}
 
-/// Reads a canonical encoding.
+/// Reads a canonical encoding from an etude reader.
 ///
-/// Each length read from the bytes is checked against the bytes that remain
-/// before anything is allocated, so a claimed size can't force an allocation.
+/// Each length read from the bytes is checked against the bytes the reader
+/// holds before anything is allocated, so a claimed size can't force an
+/// allocation.
 #[derive(Clone, Debug)]
-pub struct Decoder<'a> {
-    bytes: &'a [u8],
+pub struct Decoder<'a, R = &'a [u8]> {
+    reader: R,
+    bytes: PhantomData<&'a [u8]>,
 }
 
 impl<'a> Decoder<'a> {
+    /// A decoder that reads `bytes`.
     pub fn new(bytes: &'a [u8]) -> Self {
-        Self { bytes }
+        Self::with_reader(bytes)
+    }
+}
+
+impl<R> Decoder<'_, R>
+where
+    R: reader::Buffer<Error = Infallible>,
+{
+    /// A decoder that reads the bytes `reader` holds.
+    pub fn with_reader(reader: R) -> Self {
+        Self {
+            reader,
+            bytes: PhantomData,
+        }
     }
 
-    /// Reads the next `len` bytes as they are.
-    pub fn take(&mut self, len: usize) -> Result<&'a [u8], DecodeError> {
-        let bytes = self.bytes;
-        if bytes.len() < len {
+    /// Moves the next `len` bytes into `dest`.
+    pub fn take_into<W>(&mut self, len: usize, dest: &mut W) -> Result<(), DecodeError>
+    where
+        W: writer::Buffer + ?Sized,
+    {
+        if self.reader.buffered_len() < len {
             return Err(DecodeError::Truncated);
         }
-        let (head, tail) = bytes.split_at(len);
-        self.bytes = tail;
-        Ok(head)
+        if dest.remaining_capacity() < len {
+            return Err(DecodeError::Invalid("length"));
+        }
+        let mut left = len;
+        while left > 0 {
+            let chunk = self.reader.infallible_read_chunk(left);
+            if chunk.is_empty() {
+                return Err(DecodeError::Truncated);
+            }
+            left -= chunk.len();
+            dest.put_chunk(chunk);
+        }
+        Ok(())
     }
 
     /// Reads a field of a fixed size.
     pub fn array<const N: usize>(&mut self) -> Result<[u8; N], DecodeError> {
         let mut out = [0; N];
-        out.copy_from_slice(self.take(N)?);
+        self.take_into(N, &mut &mut out[..])?;
         Ok(out)
     }
 
@@ -146,18 +222,20 @@ impl<'a> Decoder<'a> {
     }
 
     /// Reads a field written with its length.
-    pub fn bytes(&mut self) -> Result<&'a [u8], DecodeError> {
+    pub fn bytes(&mut self) -> Result<Vec<u8>, DecodeError> {
         let len = self.u64()?;
         let len = usize::try_from(len).map_err(|_| DecodeError::Truncated)?;
-        self.take(len)
+        if len > self.remaining() {
+            return Err(DecodeError::Truncated);
+        }
+        let mut out = Vec::with_capacity(len);
+        self.take_into(len, &mut out)?;
+        Ok(out)
     }
 
-    pub fn str(&mut self) -> Result<&'a str, DecodeError> {
+    pub fn str(&mut self) -> Result<String, DecodeError> {
         let bytes = self.bytes()?;
-        match core::str::from_utf8(bytes) {
-            Ok(text) => Ok(text),
-            Err(_) => Err(DecodeError::Invalid("text")),
-        }
+        String::from_utf8(bytes).map_err(|_| DecodeError::Invalid("text"))
     }
 
     pub fn digest(&mut self) -> Result<Digest, DecodeError> {
@@ -170,18 +248,18 @@ impl<'a> Decoder<'a> {
         let count = self.u64()?;
         let count = usize::try_from(count).map_err(|_| DecodeError::Truncated)?;
         match count.checked_mul(min_item_len.max(1)) {
-            Some(len) if len <= self.bytes.len() => Ok(count),
+            Some(len) if len <= self.remaining() => Ok(count),
             _ => Err(DecodeError::Truncated),
         }
     }
 
     pub fn remaining(&self) -> usize {
-        self.bytes.len()
+        self.reader.buffered_len()
     }
 
     /// Ends the read, refusing bytes after the record.
     pub fn finish(self) -> Result<(), DecodeError> {
-        match self.bytes.is_empty() {
+        match self.reader.buffer_is_empty() {
             true => Ok(()),
             false => Err(DecodeError::Trailing),
         }
@@ -191,9 +269,9 @@ impl<'a> Decoder<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use etude_buffer::reader::Buffer as _;
 
-    #[test]
-    fn round_trip() {
+    fn sample() -> Vec<u8> {
         let digest = Digest::of("euphony test", b"x");
         let mut encoder = Encoder::new();
         encoder
@@ -204,17 +282,60 @@ mod tests {
             .bool(true)
             .str("track")
             .digest(&digest);
-        let bytes = encoder.finish();
+        encoder.finish()
+    }
 
-        let mut decoder = Decoder::new(&bytes);
+    fn check<R>(mut decoder: Decoder<'_, R>)
+    where
+        R: reader::Buffer<Error = Infallible>,
+    {
+        let digest = Digest::of("euphony test", b"x");
         assert_eq!(decoder.u8(), Ok(7));
         assert_eq!(decoder.u16(), Ok(0x1234));
         assert_eq!(decoder.u32(), Ok(0xdead_beef));
         assert_eq!(decoder.u64(), Ok(u64::MAX));
         assert_eq!(decoder.bool(), Ok(true));
-        assert_eq!(decoder.str(), Ok("track"));
+        assert_eq!(decoder.str(), Ok("track".to_string()));
         assert_eq!(decoder.digest(), Ok(digest));
         assert_eq!(decoder.finish(), Ok(()));
+    }
+
+    #[test]
+    fn round_trip() {
+        let bytes = sample();
+        check(Decoder::new(&bytes));
+    }
+
+    #[test]
+    fn round_trip_across_reader_chunks() {
+        // Each split puts a field's bytes in two chunks of a chained reader.
+        let bytes = sample();
+        for split in 0..=bytes.len() {
+            let (head, tail) = bytes.split_at(split);
+            check(Decoder::with_reader(head.chain(tail)));
+        }
+    }
+
+    #[test]
+    fn writes_into_a_bounded_writer() {
+        let bytes = sample();
+        let mut out = vec![0; bytes.len()];
+        let mut encoder = Encoder::with_writer(&mut out[..]);
+        let digest = Digest::of("euphony test", b"x");
+        encoder.u8(7).u16(0x1234).u32(0xdead_beef).u64(u64::MAX);
+        encoder.bool(true).str("track").digest(&digest);
+        let rest = encoder.into_writer().unwrap();
+        assert!(rest.is_empty());
+        assert_eq!(out, bytes);
+    }
+
+    #[test]
+    fn refuses_a_write_past_the_writer() {
+        let mut out = [0; 3];
+        let mut encoder = Encoder::with_writer(&mut out[..]);
+        encoder.u32(1).u8(2);
+        assert_eq!(encoder.into_writer().err(), Some(EncodeError::Capacity));
+        assert_eq!(out, [0; 3]);
     }
 
     #[test]
@@ -226,7 +347,8 @@ mod tests {
         assert_eq!(truncated, Err(DecodeError::Truncated));
 
         let mut decoder = Decoder::new(&bytes);
-        decoder.u8().unwrap();
+        assert_eq!(decoder.u8(), Ok(1));
+        assert_eq!(decoder.remaining(), 3);
         assert_eq!(decoder.finish(), Err(DecodeError::Trailing));
     }
 
@@ -240,8 +362,14 @@ mod tests {
     }
 
     #[test]
-    fn refuses_invalid_bool() {
+    fn refuses_invalid_bool_and_text() {
         let invalid = Decoder::new(&[2]).bool();
         assert_eq!(invalid, Err(DecodeError::Invalid("bool")));
+
+        let mut encoder = Encoder::new();
+        encoder.bytes(&[0xff]);
+        let bytes = encoder.finish();
+        let invalid = Decoder::new(&bytes).str();
+        assert_eq!(invalid, Err(DecodeError::Invalid("text")));
     }
 }
