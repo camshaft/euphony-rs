@@ -22,6 +22,7 @@ rtrb = "0.4"
 cpal = { version = "0.18", optional = true, features = ["realtime-dbus"] }
 
 [dev-dependencies]
+cpal = { version = "0.18", features = ["custom"] }
 euphony-daw-jobs = { path = "../euphony-daw-jobs" }
 euphony-daw-project = { path = "../euphony-daw-project" }
 tempfile = "3"
