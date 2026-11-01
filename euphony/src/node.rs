@@ -11,8 +11,8 @@ use std::{
 };
 
 thread_local! {
-    static NODE_ID: Counter = Counter::new();
-    static BUFFER_ID: Counter = Counter::new();
+    static NODE_ID: Counter = const { Counter::new() };
+    static BUFFER_ID: Counter = const { Counter::new() };
 }
 
 struct Counter(RefCell<u64>);
