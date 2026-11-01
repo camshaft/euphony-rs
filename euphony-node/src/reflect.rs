@@ -93,7 +93,9 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     for (name, docs, inputs) in ext {
         let lower = name.to_snake_case();
         w!("#[inline]");
-        w!("#[doc = {:?}]", docs);
+        if !docs.is_empty() {
+            w!("#[doc = {:?}]", docs);
+        }
         match inputs.len() {
             1 => w!("fn {lower}(&self) -> crate::processors::unary::{name} {{"),
             2 => {
@@ -143,7 +145,9 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     for (name, docs) in filters {
         let lower = name.to_snake_case();
         w!("#[inline]");
-        w!("#[doc = {:?}]", docs);
+        if !docs.is_empty() {
+            w!("#[doc = {:?}]", docs);
+        }
         w!("fn {lower}(&self) -> crate::processors::filter::{name} {{");
         w!("    crate::processors::filter::{lower}().with_signal(self)");
         w!("}}");
