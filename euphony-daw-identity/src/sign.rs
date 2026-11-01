@@ -55,7 +55,8 @@ impl AuthorId {
         message: &[u8],
         signature: &Signature,
     ) -> Result<(), SignatureError> {
-        let key = VerifyingKey::from_bytes(&self.0).map_err(|_| SignatureError::InvalidKey)?;
+        let key = VerifyingKey::from_bytes(&self.0);
+        let key = key.map_err(|_| SignatureError::InvalidKey)?;
         let signature = ed25519_dalek::Signature::from_bytes(&signature.0);
         let digest = Digest::of(domain, message);
         key.verify(digest.as_bytes(), &signature)

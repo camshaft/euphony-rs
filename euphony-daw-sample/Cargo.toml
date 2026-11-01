@@ -1,0 +1,10 @@
+[package]
+name = "euphony-daw-sample"
+version = "0.1.0"
+description = "The binary32 working-audio and numerical-profile contract of the euphony workstation"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+euphony-daw-identity = { path = "../euphony-daw-identity" }
