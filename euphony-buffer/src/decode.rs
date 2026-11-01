@@ -69,7 +69,7 @@ where
 
                     // make sure we got all of the frames we needed
                     if let Some(n_frames) = n_frames {
-                        if channels.get(0).map(|c| c.len() as u64).unwrap_or(0) != n_frames {
+                        if channels.first().map(|c| c.len() as u64).unwrap_or(0) != n_frames {
                             return Err(err.into());
                         }
                     }
