@@ -25,10 +25,10 @@ impl MemStore {
     /// Each object held, with its kind and digest.
     pub fn objects(&self) -> Vec<(ObjectKind, Digest, Vec<u8>)> {
         let objects = self.objects.lock().unwrap();
-        let mut out: Vec<_> = objects
-            .iter()
-            .map(|((kind, digest), bytes)| (*kind, *digest, bytes.clone()))
-            .collect();
+        let mut out = Vec::with_capacity(objects.len());
+        for ((kind, digest), bytes) in objects.iter() {
+            out.push((*kind, *digest, bytes.clone()));
+        }
         out.sort_by_key(|(kind, digest, _)| (*kind, *digest));
         out
     }
@@ -48,7 +48,8 @@ impl Store for MemStore {
     fn publish(&self, kind: ObjectKind, bytes: &[u8]) -> Result<Digest, StoreError> {
         let digest = kind.digest(bytes);
         let mut objects = self.objects.lock().unwrap();
-        objects.entry((kind, digest)).or_insert_with(|| bytes.to_vec());
+        let entry = objects.entry((kind, digest));
+        entry.or_insert_with(|| bytes.to_vec());
         Ok(digest)
     }
 
@@ -63,7 +64,8 @@ impl Store for MemStore {
     }
 
     fn contains(&self, kind: ObjectKind, digest: &Digest) -> bool {
-        self.objects.lock().unwrap().contains_key(&(kind, *digest))
+        let objects = self.objects.lock().unwrap();
+        objects.contains_key(&(kind, *digest))
     }
 }
 
@@ -75,16 +77,13 @@ mod tests {
     fn publishes_and_verifies() {
         let store = MemStore::new();
         let digest = store.publish(ObjectKind::Manifest, b"manifest").unwrap();
-        assert_eq!(store.get(ObjectKind::Manifest, &digest).unwrap(), b"manifest");
-        assert!(matches!(
-            store.get(ObjectKind::WorkingAudio, &digest),
-            Err(StoreError::Absent(_))
-        ));
+        let bytes = store.get(ObjectKind::Manifest, &digest).unwrap();
+        assert_eq!(bytes, b"manifest");
+        let absent = store.get(ObjectKind::WorkingAudio, &digest);
+        assert!(matches!(absent, Err(StoreError::Absent(_))));
         store.damage(ObjectKind::Manifest, &digest);
-        assert!(matches!(
-            store.get(ObjectKind::Manifest, &digest),
-            Err(StoreError::Corrupt(_))
-        ));
+        let corrupt = store.get(ObjectKind::Manifest, &digest);
+        assert!(matches!(corrupt, Err(StoreError::Corrupt(_))));
     }
 
     #[test]

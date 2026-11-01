@@ -27,15 +27,13 @@ impl DirStore {
     pub fn open(root: impl Into<PathBuf>) -> Result<Self, StoreError> {
         let store = Self::open_to_read(root)?;
         let staging = store.root.join("staging");
-        fs::create_dir_all(&staging)?;
         for entry in fs::read_dir(&staging)? {
             fs::remove_file(entry?.path())?;
         }
         Ok(store)
     }
 
-    /// Opens the store at `root` to read and publish, leaving staging files
-    /// as they are.
+    /// Opens the store at `root` without removing staging files.
     pub fn open_to_read(root: impl Into<PathBuf>) -> Result<Self, StoreError> {
         let root = root.into();
         for kind in ObjectKind::ALL {
@@ -53,7 +51,8 @@ impl DirStore {
     }
 
     fn path(&self, kind: ObjectKind, digest: &Digest) -> PathBuf {
-        self.root.join(kind.dir()).join(digest.to_string())
+        let dir = self.root.join(kind.dir());
+        dir.join(digest.to_string())
     }
 
     /// Writes `bytes` to a staging file and syncs it without publishing it.
@@ -72,7 +71,8 @@ impl DirStore {
 
     /// The number of staging files present.
     pub fn staged_files(&self) -> Result<usize, StoreError> {
-        Ok(fs::read_dir(self.root.join("staging"))?.count())
+        let staging = fs::read_dir(self.root.join("staging"))?;
+        Ok(staging.count())
     }
 }
 
@@ -119,7 +119,8 @@ mod tests {
             store.publish(ObjectKind::WorkingAudio, b"audio").unwrap()
         };
         let store = DirStore::open(dir.path()).unwrap();
-        assert_eq!(store.get(ObjectKind::WorkingAudio, &digest).unwrap(), b"audio");
+        let bytes = store.get(ObjectKind::WorkingAudio, &digest).unwrap();
+        assert_eq!(bytes, b"audio");
         assert!(store.contains(ObjectKind::WorkingAudio, &digest));
         assert!(!store.contains(ObjectKind::Manifest, &digest));
     }
@@ -131,10 +132,8 @@ mod tests {
         let digest = ObjectKind::WorkingAudio.digest(b"partial");
         store.stage(b"partial").unwrap();
         assert_eq!(store.staged_files().unwrap(), 1);
-        assert!(matches!(
-            store.get(ObjectKind::WorkingAudio, &digest),
-            Err(StoreError::Absent(_))
-        ));
+        let absent = store.get(ObjectKind::WorkingAudio, &digest);
+        assert!(matches!(absent, Err(StoreError::Absent(_))));
         drop(store);
 
         let store = DirStore::open(dir.path()).unwrap();
@@ -147,10 +146,9 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let store = DirStore::open(dir.path()).unwrap();
         let digest = store.publish(ObjectKind::Manifest, b"manifest").unwrap();
-        fs::write(store.path(ObjectKind::Manifest, &digest), b"manifesT").unwrap();
-        assert!(matches!(
-            store.get(ObjectKind::Manifest, &digest),
-            Err(StoreError::Corrupt(_))
-        ));
+        let path = store.path(ObjectKind::Manifest, &digest);
+        fs::write(path, b"manifesT").unwrap();
+        let corrupt = store.get(ObjectKind::Manifest, &digest);
+        assert!(matches!(corrupt, Err(StoreError::Corrupt(_))));
     }
 }

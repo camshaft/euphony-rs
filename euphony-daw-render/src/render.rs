@@ -11,9 +11,10 @@ const IMPLEMENTATION_DOMAIN: &str = "euphony processor implementation v1";
 
 /// The definition of the built-in mix processor.
 pub fn mix_processor() -> ProcessorDefinition {
+    let source = include_bytes!("mix.rs");
     ProcessorDefinition {
         name: "mix".to_string(),
-        implementation: Digest::of(IMPLEMENTATION_DOMAIN, include_bytes!("mix.rs")),
+        implementation: Digest::of(IMPLEMENTATION_DOMAIN, source),
         parameter_version: 1,
         schema_version: 1,
         profile: NumericalProfile {
@@ -86,13 +87,15 @@ pub fn render(
         let asset = input.asset;
         let bytes = store.get(ObjectKind::WorkingAudio, &asset);
         let bytes = bytes.map_err(|error| RenderError::Input { asset, error })?;
-        let audio = WorkingAudio::from_canonical_bytes(&bytes).map_err(RenderError::Format)?;
+        let audio = WorkingAudio::from_canonical_bytes(&bytes);
+        let audio = audio.map_err(RenderError::Format)?;
         let header = audio.header();
         if header.sample_rate != descriptor.sample_rate || header.layout != descriptor.layout {
             return Err(RenderError::Incompatible { asset });
         }
-        let start = descriptor.start;
-        mix::mix(&mut out, channels, start, audio.samples(), input.position, input.gain);
+        let (start, position) = (descriptor.start, input.position);
+        let source = audio.samples();
+        mix::mix(&mut out, channels, start, source, position, input.gain);
     }
     let audio = WorkingAudio::new(descriptor.sample_rate, descriptor.layout, out);
     let audio = audio.map_err(RenderError::Format)?;

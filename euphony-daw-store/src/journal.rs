@@ -87,7 +87,8 @@ impl Journal {
 
     /// Appends one record and syncs it.
     pub fn append(&mut self, payload: &[u8]) -> Result<(), JournalError> {
-        let mut record = Vec::with_capacity(LEN_BYTES + payload.len() + CHECK_BYTES);
+        let len = LEN_BYTES + payload.len() + CHECK_BYTES;
+        let mut record = Vec::with_capacity(len);
         record.extend_from_slice(&(payload.len() as u64).to_le_bytes());
         record.extend_from_slice(payload);
         record.extend_from_slice(Digest::of(DOMAIN, payload).as_bytes());
@@ -171,9 +172,7 @@ mod tests {
         let mut bytes = std::fs::read(&path).unwrap();
         bytes[LEN_BYTES] ^= 1;
         std::fs::write(&path, bytes).unwrap();
-        assert!(matches!(
-            Journal::open(&path),
-            Err(JournalError::Damaged { record: 0 })
-        ));
+        let refused = Journal::open(&path);
+        assert!(matches!(refused, Err(JournalError::Damaged { record: 0 })));
     }
 }

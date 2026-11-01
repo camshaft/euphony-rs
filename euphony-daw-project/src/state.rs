@@ -59,7 +59,8 @@ impl ProjectState {
                     return Err(CommandError::NonFiniteGain(*track));
                 }
                 let entry = self.tracks.get_mut(track);
-                entry.ok_or(CommandError::UnknownTrack(*track))?.gain = *gain;
+                let entry = entry.ok_or(CommandError::UnknownTrack(*track))?;
+                entry.gain = *gain;
             }
             Command::AddRegion {
                 region,
@@ -90,10 +91,12 @@ impl ProjectState {
     }
 
     fn track_of(&self, region: RegionId) -> Option<TrackId> {
-        self.tracks
-            .iter()
-            .find(|(_, track)| track.regions.contains_key(&region))
-            .map(|(id, _)| *id)
+        for (id, track) in &self.tracks {
+            if track.regions.contains_key(&region) {
+                return Some(*id);
+            }
+        }
+        None
     }
 
     pub fn canonical_bytes(&self) -> Vec<u8> {
@@ -106,7 +109,8 @@ impl ProjectState {
                 .u32(track.gain.to_bits())
                 .u64(track.regions.len() as u64);
             for (region, placed) in &track.regions {
-                encoder.u64(region.0).digest(&placed.asset).u64(placed.start);
+                encoder.u64(region.0).digest(&placed.asset);
+                encoder.u64(placed.start);
             }
         }
         encoder.finish()

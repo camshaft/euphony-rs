@@ -1,6 +1,6 @@
 use crate::{ProjectId, RegionId, RevisionId, TrackId};
 use core::fmt;
-use euphony_daw_identity::{AuthorId, DecodeError, Decoder, Encoder};
+use euphony_daw_identity::{AuthorId, DecodeError, Decoder, Digest, Encoder};
 
 /// One typed change to a project.
 #[derive(Clone, Debug, PartialEq)]
@@ -16,7 +16,7 @@ pub enum Command {
     AddRegion {
         region: RegionId,
         track: TrackId,
-        asset: euphony_daw_identity::Digest,
+        asset: Digest,
         start: u64,
     },
     RemoveRegion {
@@ -39,7 +39,8 @@ impl Command {
                 asset,
                 start,
             } => {
-                encoder.u8(2).u64(region.0).u64(track.0).digest(asset).u64(*start);
+                encoder.u8(2).u64(region.0).u64(track.0);
+                encoder.digest(asset).u64(*start);
             }
             Self::RemoveRegion { region } => {
                 encoder.u8(3).u64(region.0);
