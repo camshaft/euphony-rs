@@ -38,7 +38,7 @@ pub fn cmd_stderr(stderr: Option<ChildStderr>) {
     if let Some(stderr) = stderr {
         let stderr = BufReader::new(stderr);
         std::thread::spawn(move || {
-            for line in stderr.lines().filter_map(Result::ok) {
+            for line in stderr.lines().map_while(Result::ok) {
                 if !line.is_empty() {
                     log::info!("{}", line);
                 }
@@ -67,7 +67,7 @@ pub fn init() {
         .init();
 }
 
-fn colored_level(style: &mut Style, level: Level) -> StyledValue<&'static str> {
+fn colored_level(style: &mut Style, level: Level) -> StyledValue<'_, &'static str> {
     match level {
         Level::Trace => style.set_color(Color::Magenta).value("TRACE"),
         Level::Debug => style.set_color(Color::Blue).value("DEBUG"),

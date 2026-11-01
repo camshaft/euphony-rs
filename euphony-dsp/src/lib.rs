@@ -1,4 +1,7 @@
 // #![cfg_attr(not(any(feature = "std", test)), no_std)]
+// Each node lists its inputs as repeated `#[input(name, default = ...)]` attributes, which clippy
+// reads as duplicates of each other.
+#![allow(clippy::duplicated_attributes)]
 
 /// Asserts that a boolean expression is true at runtime, only if debug_assertions are enabled.
 ///

@@ -9,7 +9,7 @@ use std::{
 pub fn generate_files(manifest_dir: &str) {
     let manifest_dir = Path::new(manifest_dir);
     if let Ok(mut nodes) = load(manifest_dir) {
-        nodes.sort_by(|a, b| a.id.cmp(&b.id));
+        nodes.sort_by_key(|a| a.id);
 
         let mut o = io::Cursor::new(vec![]);
         nodes_file(&mut o, &nodes).unwrap();
@@ -93,7 +93,9 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     for (name, docs, inputs) in ext {
         let lower = name.to_snake_case();
         w!("#[inline]");
-        w!("#[doc = {:?}]", docs);
+        if !docs.is_empty() {
+            w!("#[doc = {:?}]", docs);
+        }
         match inputs.len() {
             1 => w!("fn {lower}(&self) -> crate::processors::unary::{name} {{"),
             2 => {
@@ -143,7 +145,9 @@ fn generate_api_impl<O: io::Write>(o: &mut O, mut nodes: Vec<Node>) -> io::Resul
     for (name, docs) in filters {
         let lower = name.to_snake_case();
         w!("#[inline]");
-        w!("#[doc = {:?}]", docs);
+        if !docs.is_empty() {
+            w!("#[doc = {:?}]", docs);
+        }
         w!("fn {lower}(&self) -> crate::processors::filter::{name} {{");
         w!("    crate::processors::filter::{lower}().with_signal(self)");
         w!("}}");
@@ -313,7 +317,7 @@ pub struct Buffer {
 fn sync_file<C: AsRef<[u8]>>(path: &Path, contents: C) {
     let should_write = fs::read(path)
         .ok()
-        .map_or(true, |prev| prev != contents.as_ref());
+        .is_none_or(|prev| prev != contents.as_ref());
 
     if should_write {
         fs::write(path, contents).unwrap();
@@ -348,7 +352,7 @@ impl Module {
             }
         }
 
-        self.nodes.sort_by(|a, b| a.id.cmp(&b.id));
+        self.nodes.sort_by_key(|a| a.id);
 
         for (idx, node) in self.nodes.iter().enumerate() {
             if idx > 0 {

@@ -1,14 +1,10 @@
 use std::collections::HashMap;
 
 use euphony::prelude::*;
-use euphony_live::{
-    transform::{builder, Config},
-    *,
-};
+use euphony_live::{transform::Config, *};
 
 fn prog() -> Config {
-    use builder::*;
-    use transform::*;
+    use transform::{builder::*, *};
     build(|| {
         let event = argument(0);
 

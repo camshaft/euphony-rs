@@ -90,7 +90,7 @@ impl Play {
     }
 
     fn watch(&self, device: &Device, config: &SupportedStreamConfig) -> Result<stream::Stream> {
-        if self.input.as_ref().map_or(false, |v| v.starts_with("http")) {
+        if self.input.as_ref().is_some_and(|v| v.starts_with("http")) {
             // TODO do the http thing
             todo!();
         }
@@ -136,7 +136,7 @@ impl Play {
         // if it's not ideal, then search for a better one
         if config
             .as_ref()
-            .map_or(true, |c| !is_preferred(c, self.channels))
+            .is_none_or(|c| !is_preferred(c, self.channels))
         {
             let channels = self
                 .channels

@@ -197,6 +197,8 @@ impl Stream {
         self.controls.clip_end.store(usize::MAX, Ordering::Relaxed);
     }
 
+    // `fetch_update` is deprecated in favor of `try_update`, which older toolchains don't have.
+    #[allow(deprecated)]
     pub fn seek_back(&self, duration: Duration) {
         let samples = (self.controls.sample_rate as f64 * duration.as_secs_f64()) as usize;
         let end = self.controls.total_samples.load(Ordering::Relaxed);
@@ -208,6 +210,7 @@ impl Stream {
             });
     }
 
+    #[allow(deprecated)]
     pub fn seek_forward(&self, duration: Duration) {
         let samples = (self.controls.sample_rate as f64 * duration.as_secs_f64()) as usize;
         let end = self.controls.total_samples.load(Ordering::Relaxed);

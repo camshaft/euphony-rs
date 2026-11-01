@@ -87,7 +87,7 @@ impl Event {
     pub fn as_u4(&self) -> Option<u4> {
         if let Self::Internal(Internal::Number(v)) = self {
             let v: u8 = (*v).whole().try_into().ok()?;
-            v.try_into().ok()
+            Some(v.into())
         } else {
             None
         }
@@ -96,7 +96,7 @@ impl Event {
     pub fn as_u7(&self) -> Option<u7> {
         if let Self::Internal(Internal::Number(v)) = self {
             let v: u8 = (*v).whole().try_into().ok()?;
-            v.try_into().ok()
+            Some(v.into())
         } else {
             None
         }
@@ -105,7 +105,7 @@ impl Event {
     pub fn as_u14(&self) -> Option<u14> {
         if let Self::Internal(Internal::Number(v)) = self {
             let v: u16 = (*v).whole().try_into().ok()?;
-            v.try_into().ok()
+            Some(v.into())
         } else {
             None
         }

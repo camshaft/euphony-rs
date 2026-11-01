@@ -21,11 +21,11 @@ pub fn spawn<const I: usize, const B: usize, N: Node<I, B>>(node: N) -> BoxProce
 pub type Hash = [u8; 32];
 
 pub trait BufferMap: 'static + core::fmt::Debug + Send + Sync {
-    fn get(&self, id: u64, channel: u64) -> Buffer;
+    fn get(&self, id: u64, channel: u64) -> Buffer<'_>;
 }
 
 impl BufferMap for () {
-    fn get(&self, _id: u64, _channel: u64) -> Buffer {
+    fn get(&self, _id: u64, _channel: u64) -> Buffer<'_> {
         Buffer {
             samples: &[][..],
             hash: &[0; 32],
@@ -85,7 +85,7 @@ pub struct Inputs<'a, const I: usize> {
 
 impl<'a, const I: usize> Inputs<'a, I> {
     #[inline]
-    pub fn get(&self, index: usize) -> Input {
+    pub fn get(&self, index: usize) -> Input<'_> {
         debug_assert!(index < I);
         match unsafe { *self.keys.get_unchecked(index) } {
             graph::Input::Value(v) => Input::Constant(v),
@@ -102,7 +102,7 @@ pub enum Input<'a> {
 
 impl<'a> Input<'a> {
     #[inline]
-    pub fn iter(&self) -> InputIter {
+    pub fn iter(&self) -> InputIter<'_> {
         self.into_iter()
     }
 }
@@ -155,7 +155,7 @@ pub struct Buffers<'a, const B: usize> {
 
 impl<'a, const B: usize> Buffers<'a, B> {
     #[inline]
-    pub fn get(&self, index: usize) -> Buffer {
+    pub fn get(&self, index: usize) -> Buffer<'_> {
         debug_assert!(index < B);
         let (buffer, channel) = unsafe { *self.keys.get_unchecked(index) };
 

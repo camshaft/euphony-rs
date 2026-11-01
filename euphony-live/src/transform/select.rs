@@ -19,19 +19,27 @@ impl Select {
         use Select as S;
         Some(match (self, event) {
             (S::Channel, Event::Midi { channel, .. }) => Event::from(*channel),
-            (S::Key, Event::Midi { message, .. }) => match message {
-                MidiMessage::NoteOff { key, .. }
-                | MidiMessage::NoteOn { key, .. }
-                | MidiMessage::Aftertouch { key, .. } => Event::from(*key),
-                _ => return None,
-            },
-            (S::Velocity, Event::Midi { message, .. }) => match message {
-                MidiMessage::NoteOff { vel, .. }
-                | MidiMessage::NoteOn { vel, .. }
-                | MidiMessage::Aftertouch { vel, .. }
-                | MidiMessage::ChannelAftertouch { vel } => Event::from(*vel),
-                _ => return None,
-            },
+            (
+                S::Key,
+                Event::Midi {
+                    message:
+                        MidiMessage::NoteOff { key, .. }
+                        | MidiMessage::NoteOn { key, .. }
+                        | MidiMessage::Aftertouch { key, .. },
+                    ..
+                },
+            ) => Event::from(*key),
+            (
+                S::Velocity,
+                Event::Midi {
+                    message:
+                        MidiMessage::NoteOff { vel, .. }
+                        | MidiMessage::NoteOn { vel, .. }
+                        | MidiMessage::Aftertouch { vel, .. }
+                        | MidiMessage::ChannelAftertouch { vel },
+                    ..
+                },
+            ) => Event::from(*vel),
             (
                 S::Controller,
                 Event::Midi {

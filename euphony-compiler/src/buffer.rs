@@ -18,7 +18,7 @@ impl Map {
 }
 
 impl BufferMap for Map {
-    fn get(&self, id: u64, channel: u64) -> euphony_node::Buffer {
+    fn get(&self, id: u64, channel: u64) -> euphony_node::Buffer<'_> {
         let buffer = self
             .buffers
             .get(&(id, channel))
@@ -58,7 +58,7 @@ impl Buffer {
 
                 samples
                     .resample(DefaultRate::COUNT as _)
-                    .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+                    .map_err(std::io::Error::other)?;
 
                 Ok(samples.channels)
             },
