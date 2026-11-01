@@ -233,8 +233,8 @@ impl Values {
             let contents_path = self.contents_path(buffer_dir, source);
 
             let contents = std::fs::File::open(contents_path)?;
-            let format = decode::reader(contents, ext.unwrap_or(""))
-                .map_err(std::io::Error::other)?;
+            let format =
+                decode::reader(contents, ext.unwrap_or("")).map_err(std::io::Error::other)?;
 
             let mut meta = Meta {
                 contents: contents_path.to_owned(),
