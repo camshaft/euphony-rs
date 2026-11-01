@@ -466,7 +466,6 @@ pub mod ext {
             crate::processors::filter::resonator().with_signal(self)
         }
         #[inline]
-        #[doc = ""]
         fn shaper(&self) -> crate::processors::filter::Shaper {
             crate::processors::filter::shaper().with_signal(self)
         }
