@@ -203,14 +203,14 @@ impl Compiler {
     }
 
     #[inline]
-    pub fn instructions(&self) -> Instructions {
+    pub fn instructions(&self) -> Instructions<'_> {
         Instructions {
             samples: Default::default(),
             iter: self.instructions.iter().peekable(),
         }
     }
 
-    pub fn groups(&self) -> group::Iter {
+    pub fn groups(&self) -> group::Iter<'_> {
         group::Iter {
             iter: self.groups.iter(),
             sinks: &self.sinks,
@@ -242,7 +242,7 @@ impl Handler for Compiler {
 
         // limit the number of samples in testing so we don't churn indefinitely
         // TODO this should probably error out if the requested time exceeds an hour or something
-        #[cfg(any(test, all(test, fuzz)))]
+        #[cfg(test)]
         let samples = {
             use euphony_dsp::sample::{DefaultRate, Rate};
             samples.min(DefaultRate::COUNT)
