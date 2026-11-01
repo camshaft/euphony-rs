@@ -16,7 +16,7 @@ impl<'a> File<'a> {
     }
 
     #[track_caller]
-    pub fn events(&self) -> Events {
+    pub fn events(&self) -> Events<'_> {
         Events {
             ticks_per_beat: match self.smf.header.timing {
                 Timing::Metrical(t) => t.as_int() as _,
@@ -27,7 +27,7 @@ impl<'a> File<'a> {
         }
     }
 
-    fn aggregate_iter(&self) -> AggregateIter {
+    fn aggregate_iter(&self) -> AggregateIter<'_> {
         let tracks = self.smf.tracks.iter().map(|t| TrackIter::new(t)).collect();
         let parallel = self.smf.header.format == Format::Parallel;
         AggregateIter {
