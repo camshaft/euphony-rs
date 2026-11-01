@@ -1,0 +1,11 @@
+[package]
+name = "euphony-daw-identity"
+version = "0.1.0"
+description = "Content digests, canonical encoding and signed identities for the euphony workstation"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+blake3 = "1"
+ed25519-dalek = "2"
