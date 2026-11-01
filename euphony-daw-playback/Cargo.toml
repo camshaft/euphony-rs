@@ -19,7 +19,7 @@ euphony-daw-store = { path = "../euphony-daw-store" }
 rtrb = "0.4"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-cpal = { version = "0.18", optional = true, features = ["realtime-dbus"] }
+cpal = { version = "0.18", optional = true, features = ["pipewire", "realtime-dbus"] }
 
 [dev-dependencies]
 euphony-daw-jobs = { path = "../euphony-daw-jobs" }
