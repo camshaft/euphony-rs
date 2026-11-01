@@ -17,8 +17,8 @@ impl Default for Linear {
     fn default() -> Self {
         Self {
             value: 0.0,
-            target: core::f64::NAN,
-            duration: core::f64::NAN,
+            target: f64::NAN,
+            duration: f64::NAN,
             step: 0.0,
             samples: 0,
         }
