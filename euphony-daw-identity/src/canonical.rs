@@ -153,7 +153,11 @@ impl<'a> Decoder<'a> {
     }
 
     pub fn str(&mut self) -> Result<&'a str, DecodeError> {
-        core::str::from_utf8(self.bytes()?).map_err(|_| DecodeError::Invalid("text"))
+        let bytes = self.bytes()?;
+        match core::str::from_utf8(bytes) {
+            Ok(text) => Ok(text),
+            Err(_) => Err(DecodeError::Invalid("text")),
+        }
     }
 
     pub fn digest(&mut self) -> Result<Digest, DecodeError> {
@@ -218,7 +222,8 @@ mod tests {
         let mut encoder = Encoder::new();
         encoder.u32(1);
         let bytes = encoder.finish();
-        assert_eq!(Decoder::new(&bytes[..3]).u32(), Err(DecodeError::Truncated));
+        let truncated = Decoder::new(&bytes[..3]).u32();
+        assert_eq!(truncated, Err(DecodeError::Truncated));
 
         let mut decoder = Decoder::new(&bytes);
         decoder.u8().unwrap();
@@ -236,6 +241,7 @@ mod tests {
 
     #[test]
     fn refuses_invalid_bool() {
-        assert_eq!(Decoder::new(&[2]).bool(), Err(DecodeError::Invalid("bool")));
+        let invalid = Decoder::new(&[2]).bool();
+        assert_eq!(invalid, Err(DecodeError::Invalid("bool")));
     }
 }

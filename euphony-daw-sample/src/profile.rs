@@ -285,11 +285,15 @@ mod tests {
             };
             assert_ne!(changed.identity(), definition().identity());
         }
-        let lanes = NumericalProfile {
+        let four = NumericalProfile {
             simd: Simd::Lanes(4),
             ..base
         };
-        assert_ne!(lanes.identity(), NumericalProfile { simd: Simd::Lanes(8), ..base }.identity());
+        let eight = NumericalProfile {
+            simd: Simd::Lanes(8),
+            ..base
+        };
+        assert_ne!(four.identity(), eight.identity());
     }
 
     #[test]
@@ -322,17 +326,14 @@ mod tests {
 
         let mut forged = Registration::of(definition());
         forged.definition.profile.rounding = Rounding::TowardZero;
-        assert!(matches!(
-            registry.register(forged),
-            Err(RegistrationError::ProfileMismatch { .. })
-        ));
+        let refused = registry.register(forged);
+        assert!(matches!(refused, Err(RegistrationError::ProfileMismatch { .. })));
 
         let mut forged = Registration::of(definition());
-        forged.definition.implementation = Digest::of("euphony test implementation", b"other");
-        assert!(matches!(
-            registry.register(forged),
-            Err(RegistrationError::ProcessorMismatch { .. })
-        ));
+        let other = Digest::of("euphony test implementation", b"other");
+        forged.definition.implementation = other;
+        let refused = registry.register(forged);
+        assert!(matches!(refused, Err(RegistrationError::ProcessorMismatch { .. })));
 
         let id = registry.register(Registration::of(definition())).unwrap();
         assert_eq!(id, definition().identity());

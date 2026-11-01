@@ -69,7 +69,10 @@ impl PreparedAudio {
 ///
 /// A result that is missing, malformed or of another format refuses the
 /// preparation: playback never presents silence as a segment's audio.
-pub fn prepare(manifest: &RenderManifest, store: &dyn Store) -> Result<PreparedAudio, PlaybackError> {
+pub fn prepare(
+    manifest: &RenderManifest,
+    store: &dyn Store,
+) -> Result<PreparedAudio, PlaybackError> {
     let mut samples = Vec::new();
     let mut next = 0;
     for segment in &manifest.segments {

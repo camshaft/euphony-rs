@@ -69,10 +69,10 @@ impl Header {
     /// The number of interleaved samples the header declares, where it fits
     /// in memory.
     pub fn samples(&self) -> Result<usize, FormatError> {
-        let frames = usize::try_from(self.frames).map_err(|_| FormatError::TooLarge)?;
-        frames
-            .checked_mul(usize::from(self.channels()))
-            .ok_or(FormatError::TooLarge)
+        let frames = usize::try_from(self.frames).ok();
+        let channels = usize::from(self.channels());
+        let samples = frames.and_then(|frames| frames.checked_mul(channels));
+        samples.ok_or(FormatError::TooLarge)
     }
 
     pub fn encode(&self) -> [u8; Self::LEN] {
@@ -306,6 +306,15 @@ fn sample_from_le(bits: &[u8]) -> f32 {
 mod tests {
     use super::*;
 
+    fn make(layout: ChannelLayout, samples: Vec<f32>) -> WorkingAudio {
+        let audio = WorkingAudio::new(48_000, layout, samples);
+        audio.unwrap()
+    }
+
+    fn decode(bytes: &[u8]) -> Result<WorkingAudio, FormatError> {
+        WorkingAudio::from_canonical_bytes(bytes)
+    }
+
     fn edge_samples() -> Vec<f32> {
         vec![
             0.0,
@@ -325,9 +334,9 @@ mod tests {
 
     #[test]
     fn round_trip_preserves_every_admitted_bit() {
-        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, edge_samples()).unwrap();
+        let audio = make(ChannelLayout::Stereo, edge_samples());
         let bytes = audio.to_canonical_bytes();
-        let decoded = WorkingAudio::from_canonical_bytes(&bytes).unwrap();
+        let decoded = decode(&bytes).unwrap();
         assert_eq!(decoded.header(), audio.header());
         for (a, b) in audio.samples().iter().zip(decoded.samples()) {
             assert_eq!(a.to_bits(), b.to_bits());
@@ -338,27 +347,27 @@ mod tests {
 
     #[test]
     fn samples_are_little_endian_after_the_header() {
-        let audio = WorkingAudio::new(44_100, ChannelLayout::Mono, vec![1.0]).unwrap();
-        let bytes = audio.to_canonical_bytes();
+        let bytes = make(ChannelLayout::Mono, vec![1.0]).to_canonical_bytes();
         assert_eq!(&bytes[..4], b"EUWA");
         assert_eq!(&bytes[Header::LEN..], &[0x00, 0x00, 0x80, 0x3f]);
     }
 
     #[test]
     fn a_changed_bit_changes_the_digest() {
-        let positive = WorkingAudio::new(48_000, ChannelLayout::Mono, vec![0.0]).unwrap();
-        let negative = WorkingAudio::new(48_000, ChannelLayout::Mono, vec![-0.0]).unwrap();
+        let positive = make(ChannelLayout::Mono, vec![0.0]);
+        let negative = make(ChannelLayout::Mono, vec![-0.0]);
         assert_ne!(positive.digest(), negative.digest());
         assert!(!positive.bits_eq(&negative));
     }
 
     #[test]
     fn header_round_trips_each_layout() {
-        for layout in [
+        let layouts = [
             ChannelLayout::Mono,
             ChannelLayout::Stereo,
             ChannelLayout::Discrete(6),
-        ] {
+        ];
+        for layout in layouts {
             let header = Header {
                 sample_rate: 96_000,
                 layout,
@@ -402,37 +411,32 @@ mod tests {
 
     #[test]
     fn body_length_must_match_the_header() {
-        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, vec![0.5; 4]).unwrap();
+        let audio = make(ChannelLayout::Stereo, vec![0.5; 4]);
         let bytes = audio.to_canonical_bytes();
-        assert_eq!(
-            WorkingAudio::from_canonical_bytes(&bytes[..bytes.len() - 1]).unwrap_err(),
-            FormatError::Length {
-                expected: 16,
-                actual: 15
-            }
-        );
+        let cut = decode(&bytes[..bytes.len() - 1]).unwrap_err();
+        let expected = FormatError::Length {
+            expected: 16,
+            actual: 15,
+        };
+        assert_eq!(cut, expected);
 
         let header = Header {
             sample_rate: 48_000,
             layout: ChannelLayout::Stereo,
             frames: u64::MAX,
         };
-        let claim = WorkingAudio::from_canonical_bytes(&header.encode()).unwrap_err();
-        assert!(matches!(
-            claim,
-            FormatError::TooLarge | FormatError::Length { .. }
-        ));
+        let claim = decode(&header.encode()).unwrap_err();
+        let refused = matches!(claim, FormatError::TooLarge | FormatError::Length { .. });
+        assert!(refused);
     }
 
     #[test]
     fn publication_refuses_non_finite_samples() {
-        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, edge_samples()).unwrap();
-        assert_eq!(
-            audio.check_publishable(),
-            Err(FormatError::NonFinite { index: 10 })
-        );
-        let finite: Vec<f32> = edge_samples().into_iter().take(10).collect();
-        let audio = WorkingAudio::new(48_000, ChannelLayout::Stereo, finite).unwrap();
+        let audio = make(ChannelLayout::Stereo, edge_samples());
+        let refused = FormatError::NonFinite { index: 10 };
+        assert_eq!(audio.check_publishable(), Err(refused));
+        let finite = edge_samples()[..10].to_vec();
+        let audio = make(ChannelLayout::Stereo, finite);
         assert_eq!(audio.check_publishable(), Ok(()));
     }
 
@@ -444,26 +448,27 @@ mod tests {
 
     #[test]
     fn integer_extrema_convert_exactly() {
+        let mono = ChannelLayout::Mono;
         for bits in [16u8, 24] {
             let limit = 1i32 << (bits - 1);
             let input = [-limit, -1, 0, 1, limit - 1];
-            let audio =
-                WorkingAudio::from_integer(48_000, ChannelLayout::Mono, bits, &input).unwrap();
+            let audio = WorkingAudio::from_integer(48_000, mono, bits, &input).unwrap();
             assert_eq!(audio.samples()[0], -1.0);
             for (sample, expected) in audio.samples().iter().zip(input) {
                 assert_eq!((*sample * limit as f32) as i32, expected);
             }
         }
-        let refused = WorkingAudio::from_integer(48_000, ChannelLayout::Mono, 25, &[0]);
+        let refused = WorkingAudio::from_integer(48_000, mono, 25, &[0]);
         assert_eq!(refused.unwrap_err(), FormatError::IntegerBits(25));
-        let refused = WorkingAudio::from_integer(48_000, ChannelLayout::Mono, 16, &[1 << 15]);
-        assert_eq!(refused.unwrap_err(), FormatError::IntegerRange { index: 0 });
+        let refused = WorkingAudio::from_integer(48_000, mono, 16, &[1 << 15]);
+        let expected = FormatError::IntegerRange { index: 0 };
+        assert_eq!(refused.unwrap_err(), expected);
     }
 
     #[test]
     fn over_level_samples_survive_until_attenuated() {
-        let loud = WorkingAudio::new(48_000, ChannelLayout::Mono, vec![8.0, -6.5]).unwrap();
-        let decoded = WorkingAudio::from_canonical_bytes(&loud.to_canonical_bytes()).unwrap();
+        let loud = make(ChannelLayout::Mono, vec![8.0, -6.5]);
+        let decoded = decode(&loud.to_canonical_bytes()).unwrap();
         let attenuated: Vec<f32> = decoded.samples().iter().map(|s| s * 0.125).collect();
         assert_eq!(attenuated, vec![1.0, -0.8125]);
     }

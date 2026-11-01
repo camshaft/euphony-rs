@@ -46,7 +46,7 @@ impl Device for NativeDevice {
         let data = move |out: &mut [f32], _: &cpal::OutputCallbackInfo| {
             stream.fill(out);
         };
-        let error = |error| eprintln!("the output stream failed: {error}");
+        let error = |error: cpal::StreamError| eprintln!("the output stream failed: {error}");
         let built = self.device.build_output_stream(&config, data, error, None);
         let built = built.map_err(unavailable)?;
         built.play().map_err(unavailable)?;

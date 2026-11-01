@@ -59,8 +59,8 @@ impl AuthorId {
         let key = key.map_err(|_| SignatureError::InvalidKey)?;
         let signature = ed25519_dalek::Signature::from_bytes(&signature.0);
         let digest = Digest::of(domain, message);
-        key.verify(digest.as_bytes(), &signature)
-            .map_err(|_| SignatureError::Mismatch)
+        let verified = key.verify(digest.as_bytes(), &signature);
+        verified.map_err(|_| SignatureError::Mismatch)
     }
 }
 
@@ -114,7 +114,8 @@ mod tests {
     fn verifies_its_own_signature() {
         let key = AuthorKey::from_seed([1; 32]);
         let signature = key.sign(DOMAIN, b"revision");
-        assert_eq!(key.author().verify(DOMAIN, b"revision", &signature), Ok(()));
+        let verified = key.author().verify(DOMAIN, b"revision", &signature);
+        assert_eq!(verified, Ok(()));
     }
 
     #[test]
@@ -123,17 +124,12 @@ mod tests {
         let other = AuthorKey::from_seed([2; 32]);
         let signature = key.sign(DOMAIN, b"revision");
         let author = key.author();
-        assert_eq!(
-            author.verify(DOMAIN, b"revisioN", &signature),
-            Err(SignatureError::Mismatch)
-        );
-        assert_eq!(
-            author.verify("euphony other domain", b"revision", &signature),
-            Err(SignatureError::Mismatch)
-        );
-        assert_eq!(
-            other.author().verify(DOMAIN, b"revision", &signature),
-            Err(SignatureError::Mismatch)
-        );
+        let mismatch = Err(SignatureError::Mismatch);
+        let message = author.verify(DOMAIN, b"revisioN", &signature);
+        assert_eq!(message, mismatch);
+        let domain = author.verify("euphony other domain", b"revision", &signature);
+        assert_eq!(domain, mismatch);
+        let author = other.author().verify(DOMAIN, b"revision", &signature);
+        assert_eq!(author, mismatch);
     }
 }
