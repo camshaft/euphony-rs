@@ -5,15 +5,23 @@ use euphony_daw_identity::{AuthorId, DecodeError, Decoder, Digest, Encoder};
 /// One typed change to a project.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Command {
-    AddTrack { track: TrackId, name: String },
-    SetTrackGain { track: TrackId, gain: f32 },
+    AddTrack {
+        track: TrackId,
+        name: String,
+    },
+    SetTrackGain {
+        track: TrackId,
+        gain: f32,
+    },
     AddRegion {
         region: RegionId,
         track: TrackId,
         asset: Digest,
         start: u64,
     },
-    RemoveRegion { region: RegionId },
+    RemoveRegion {
+        region: RegionId,
+    },
 }
 
 impl Command {
