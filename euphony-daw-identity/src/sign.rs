@@ -1,6 +1,6 @@
 use crate::Digest;
 use core::fmt;
-use ed25519_dalek::{Signer, SigningKey, Verifier, VerifyingKey};
+use ed25519_dalek::{Signer, SigningKey, VerifyingKey};
 
 /// A key that signs revisions and branch references for one author.
 pub struct AuthorKey {
@@ -48,7 +48,8 @@ impl AuthorId {
     }
 
     /// Checks that `signature` signs `message` in the domain `domain` with
-    /// this author's key.
+    /// this author's key. The check is strict: it refuses weak keys and
+    /// small-order commitments, which a plain check accepts.
     pub fn verify(
         &self,
         domain: &str,
@@ -59,7 +60,7 @@ impl AuthorId {
         let key = key.map_err(|_| SignatureError::InvalidKey)?;
         let signature = ed25519_dalek::Signature::from_bytes(&signature.0);
         let digest = Digest::of(domain, message);
-        let verified = key.verify(digest.as_bytes(), &signature);
+        let verified = key.verify_strict(digest.as_bytes(), &signature);
         verified.map_err(|_| SignatureError::Mismatch)
     }
 }
@@ -131,5 +132,19 @@ mod tests {
         assert_eq!(domain, mismatch);
         let author = other.author().verify(DOMAIN, b"revision", &signature);
         assert_eq!(author, mismatch);
+    }
+
+    #[test]
+    fn refuses_a_signature_that_only_a_weak_key_satisfies() {
+        // The identity point as the key and as the commitment, with a zero
+        // scalar, satisfies the plain verification equation for every
+        // message.
+        let mut identity = [0; 32];
+        identity[0] = 1;
+        let mut forged = [0; 64];
+        forged[..32].copy_from_slice(&identity);
+        let weak = AuthorId::from_bytes(identity);
+        let refused = weak.verify(DOMAIN, b"revision", &Signature::from_bytes(forged));
+        assert!(refused.is_err());
     }
 }
