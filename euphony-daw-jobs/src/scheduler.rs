@@ -464,7 +464,8 @@ fn validate(
     if ObjectKind::WorkingAudio.digest(bytes) != *result {
         return Err(Rejection::DigestMismatch);
     }
-    let audio = WorkingAudio::from_canonical_bytes(bytes).map_err(Rejection::Malformed)?;
+    let audio = WorkingAudio::from_canonical_bytes(bytes);
+    let audio = audio.map_err(Rejection::Malformed)?;
     let header = audio.header();
     if header.sample_rate != descriptor.sample_rate
         || header.layout != descriptor.layout
@@ -618,10 +619,7 @@ mod tests {
         let last = corrupt.bytes.len() - 1;
         corrupt.bytes[last] ^= 1;
         let refused = deliver(&mut scheduler, worker, &assignment, &corrupt, &store);
-        assert!(matches!(
-            refused,
-            Completion::Rejected(Rejection::DigestMismatch)
-        ));
+        assert!(matches!(refused, Completion::Rejected(Rejection::DigestMismatch)));
 
         let assignment = scheduler.assign(worker).unwrap();
         let mut short = assignment.clone();

@@ -46,6 +46,12 @@ struct Placed {
     gain: f32,
 }
 
+impl Placed {
+    fn overlaps(&self, start: u64, end: u64) -> bool {
+        self.position < end && self.end > start
+    }
+}
+
 /// Compiles a project state into one render descriptor for each segment of
 /// `segment_frames` frames, the last one shorter where the project ends
 /// inside it.
@@ -89,15 +95,16 @@ pub fn compile(
     let mut start = 0;
     while start < end {
         let frames = segment_frames.min(end - start);
-        let inputs = placed
-            .iter()
-            .filter(|placed| placed.position < start + frames && placed.end > start)
-            .map(|placed| Input {
-                asset: placed.asset,
-                position: placed.position,
-                gain: placed.gain,
-            })
-            .collect();
+        let mut inputs = Vec::new();
+        for placed in &placed {
+            if placed.overlaps(start, start + frames) {
+                inputs.push(Input {
+                    asset: placed.asset,
+                    position: placed.position,
+                    gain: placed.gain,
+                });
+            }
+        }
         descriptors.push(RenderDescriptor {
             sample_rate: format.sample_rate,
             layout: format.layout,
@@ -111,7 +118,11 @@ pub fn compile(
     Ok(descriptors)
 }
 
-fn asset_frames(store: &dyn Store, asset: Digest, format: OutputFormat) -> Result<u64, CompileError> {
+fn asset_frames(
+    store: &dyn Store,
+    asset: Digest,
+    format: OutputFormat,
+) -> Result<u64, CompileError> {
     let bytes = store.get(ObjectKind::WorkingAudio, &asset);
     let bytes = bytes.map_err(|error| CompileError::Asset { asset, error })?;
     let header = Header::decode(&bytes);

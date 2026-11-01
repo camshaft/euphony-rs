@@ -86,7 +86,15 @@ fn worker_processes_survive_duplicates_loss_and_a_controller_restart() {
     }
 
     let (events, inbox) = mpsc::channel();
-    let faults = ["none", "none", "none", "duplicate", "corrupt", "exit-mid", "stall"];
+    let faults = [
+        "none",
+        "none",
+        "none",
+        "duplicate",
+        "corrupt",
+        "exit-mid",
+        "stall",
+    ];
     let mut processes = BTreeMap::new();
     for (index, fault) in faults.into_iter().enumerate() {
         let id = WorkerId(index as u64);
@@ -154,7 +162,7 @@ fn worker_processes_survive_duplicates_loss_and_a_controller_restart() {
         let _ = process.child.wait();
     }
 
-    eprintln!("processes: {seen:?}");
+    eprintln!("processes: {seen:?}, stale answers: {}", seen.stale);
     for job in &jobs {
         assert_eq!(scheduler.result(job).as_ref(), references.get(job));
     }
