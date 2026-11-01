@@ -12,9 +12,15 @@ use std::sync::{
 #[derive(Debug)]
 pub enum PlaybackError {
     /// A segment's result couldn't be read.
-    Missing { descriptor: Digest, error: StoreError },
+    Missing {
+        descriptor: Digest,
+        error: StoreError,
+    },
     /// A segment's result isn't working audio.
-    Malformed { descriptor: Digest, error: FormatError },
+    Malformed {
+        descriptor: Digest,
+        error: FormatError,
+    },
     /// A segment's result differs from its segment or the manifest's format.
     Mismatch { descriptor: Digest },
     /// The segments leave a gap or overlap at a timeline frame.

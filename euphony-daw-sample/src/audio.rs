@@ -276,7 +276,8 @@ impl WorkingAudio {
                 actual: body.len() as u64,
             });
         }
-        let samples = body.chunks_exact(4).map(sample_from_le).collect();
+        let (words, _) = body.as_chunks::<4>();
+        let samples = words.iter().map(sample_from_le).collect();
         Ok(Self { header, samples })
     }
 
@@ -296,10 +297,8 @@ impl WorkingAudio {
     }
 }
 
-fn sample_from_le(bits: &[u8]) -> f32 {
-    let mut word = [0; 4];
-    word.copy_from_slice(bits);
-    f32::from_bits(u32::from_le_bytes(word))
+fn sample_from_le(bits: &[u8; 4]) -> f32 {
+    f32::from_bits(u32::from_le_bytes(*bits))
 }
 
 #[cfg(test)]

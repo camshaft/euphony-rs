@@ -327,13 +327,19 @@ mod tests {
         let mut forged = Registration::of(definition());
         forged.definition.profile.rounding = Rounding::TowardZero;
         let refused = registry.register(forged);
-        assert!(matches!(refused, Err(RegistrationError::ProfileMismatch { .. })));
+        assert!(matches!(
+            refused,
+            Err(RegistrationError::ProfileMismatch { .. })
+        ));
 
         let mut forged = Registration::of(definition());
         let other = Digest::of("euphony test implementation", b"other");
         forged.definition.implementation = other;
         let refused = registry.register(forged);
-        assert!(matches!(refused, Err(RegistrationError::ProcessorMismatch { .. })));
+        assert!(matches!(
+            refused,
+            Err(RegistrationError::ProcessorMismatch { .. })
+        ));
 
         let id = registry.register(Registration::of(definition())).unwrap();
         assert_eq!(id, definition().identity());

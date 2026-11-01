@@ -45,7 +45,11 @@ fn spawn(store: &Path, fault: &'static str, id: WorkerId, events: Events) -> Pro
         }
     });
     let stdin = child.stdin.take();
-    Process { child, stdin, fault }
+    Process {
+        child,
+        stdin,
+        fault,
+    }
 }
 
 fn dispatch(scheduler: &mut Scheduler, processes: &mut BTreeMap<WorkerId, Process>) {
@@ -169,6 +173,9 @@ fn worker_processes_survive_duplicates_loss_and_a_controller_restart() {
     assert!(restarted);
     assert!(seen.duplicates > 0, "no answer was duplicated");
     assert!(seen.rejected > 0, "no corrupt answer was refused");
-    assert!(seen.closed >= 2, "the exiting and the killed workers weren't lost");
+    assert!(
+        seen.closed >= 2,
+        "the exiting and the killed workers weren't lost"
+    );
     assert_eq!(store.staged_files().unwrap(), 0);
 }

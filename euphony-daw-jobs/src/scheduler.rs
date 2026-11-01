@@ -619,7 +619,10 @@ mod tests {
         let last = corrupt.bytes.len() - 1;
         corrupt.bytes[last] ^= 1;
         let refused = deliver(&mut scheduler, worker, &assignment, &corrupt, &store);
-        assert!(matches!(refused, Completion::Rejected(Rejection::DigestMismatch)));
+        assert!(matches!(
+            refused,
+            Completion::Rejected(Rejection::DigestMismatch)
+        ));
 
         let assignment = scheduler.assign(worker).unwrap();
         let mut short = assignment.clone();
@@ -627,7 +630,10 @@ mod tests {
         let mut wrong = answer(&short, &store);
         wrong.descriptor = assignment.descriptor.id();
         let refused = deliver(&mut scheduler, worker, &assignment, &wrong, &store);
-        assert!(matches!(refused, Completion::Rejected(Rejection::WrongFormat)));
+        assert!(matches!(
+            refused,
+            Completion::Rejected(Rejection::WrongFormat)
+        ));
         assert!(store.is_empty());
         assert_eq!(scheduler.stats().rejected, 2);
         assert!(scheduler.assign(worker).is_some());

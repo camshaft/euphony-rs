@@ -178,7 +178,9 @@ fn a_changed_profile_or_implementation_prevents_old_cache_reuse() {
         }
 
         let mut registry = Registry::new();
-        registry.register(Registration::of(variant.clone())).unwrap();
+        registry
+            .register(Registration::of(variant.clone()))
+            .unwrap();
         let result = render(&descriptors[0], &registry, &store);
         if variant.implementation != mix_processor().implementation {
             assert!(matches!(result, Err(RenderError::UnsupportedProcessor)));

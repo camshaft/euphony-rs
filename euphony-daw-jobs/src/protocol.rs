@@ -33,7 +33,8 @@ impl ToWorker {
         match self {
             Self::Assign(assignment) => {
                 let descriptor = assignment.descriptor.canonical_bytes();
-                encoder.u8(0).u64(assignment.attempt.0).u64(assignment.epoch);
+                encoder.u8(0).u64(assignment.attempt.0);
+                encoder.u64(assignment.epoch);
                 encoder.bytes(&descriptor);
             }
             Self::Shutdown => {
