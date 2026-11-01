@@ -149,13 +149,13 @@ impl Sample {
         let mut samples = decode::Samples::<f32>::from_reader(&mut *reader)?;
 
         if samples.channels.is_empty() {
-            return Err(io::Error::new(io::ErrorKind::Other, "empty file").into());
+            return Err(io::Error::other("empty file").into());
         }
 
         if resample {
             samples
                 .resample(SAMPLE_RATE)
-                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+                .map_err(std::io::Error::other)?;
         }
 
         if samples.channels.len() == 2 {
