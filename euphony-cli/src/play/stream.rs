@@ -294,7 +294,7 @@ impl Stream {
                 match config.sample_format() {
                     $(
                         cpal::SampleFormat::$format => {
-                            let sample_rate = config.sample_rate().0;
+                            let sample_rate = config.sample_rate();
 
                             if sample_rate != 48_000 {
                                 return Err(anyhow!("unsupported sample rate: {}", sample_rate));
@@ -336,7 +336,7 @@ impl Stream {
                             }
 
                             device.build_output_stream(
-                                &config.config(),
+                                config.config(),
                                 move |buffer: &mut [$sample], _info| {
                                     tracks.fill(buffer)
                                 },

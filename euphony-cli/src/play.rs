@@ -77,7 +77,7 @@ impl Play {
     fn device(&self, host: &Host) -> Result<Device> {
         if let Some(name) = self.device.as_ref() {
             for device in host.devices()? {
-                if &device.name()? == name {
+                if device.description()?.name() == name.as_str() {
                     return Ok(device);
                 }
             }
@@ -121,7 +121,7 @@ impl Play {
     fn device_config(&self, device: &Device) -> Result<SupportedStreamConfig> {
         let mut config = device.default_output_config().ok();
 
-        const SAMPLE_RATE: SampleRate = SampleRate(48_000);
+        const SAMPLE_RATE: SampleRate = 48_000;
 
         fn is_preferred(config: &SupportedStreamConfig, channels: Option<u16>) -> bool {
             if let Some(channels) = channels {

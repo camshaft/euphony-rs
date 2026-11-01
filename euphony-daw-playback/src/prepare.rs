@@ -50,6 +50,16 @@ pub struct PreparedAudio {
 }
 
 impl PreparedAudio {
+    /// Audio of `samples`, for the crate's tests of rings and devices.
+    #[cfg(test)]
+    pub(crate) fn new(sample_rate: u32, layout: ChannelLayout, samples: Vec<f32>) -> Self {
+        Self {
+            sample_rate,
+            layout,
+            samples: samples.into(),
+        }
+    }
+
     pub fn sample_rate(&self) -> u32 {
         self.sample_rate
     }
