@@ -15,7 +15,7 @@ env:
   RUST_BACKTRACE: 1
   # Pin the nightly toolchain to prevent breakage.
   # This should be occasionally updated.
-  RUST_NIGHTLY_TOOLCHAIN: nightly-2024-05-10
+  RUST_NIGHTLY_TOOLCHAIN: nightly-2026-10-15
 
 jobs:
   env:
@@ -24,39 +24,33 @@ jobs:
       rust-versions: ${{ steps.definitions.outputs.versions }}
       msrv: ${{ steps.definitions.outputs.msrv }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Evaluate definitions
         id: definitions
         run: |
           export MSRV=$(cat rust-toolchain | awk '{$1=$1};1')
-          echo "::set-output name=msrv::$MSRV"
+          echo "msrv=$MSRV" >> "$GITHUB_OUTPUT"
           export RAW_VERSIONS="stable $MSRV"
           export VERSIONS=$(echo $RAW_VERSIONS | jq -scR 'rtrimstr("\n")|split(" ")|.')
-          echo "::set-output name=versions::$VERSIONS"
+          echo "versions=$VERSIONS" >> "$GITHUB_OUTPUT"
 
   rustfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions-rs/toolchain@v1
-        id: toolchain
+      - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.RUST_NIGHTLY_TOOLCHAIN }}
-          profile: minimal
-          override: true
           components: rustfmt
 
       - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+        run: cargo +${{ env.RUST_NIGHTLY_TOOLCHAIN }} fmt --all -- --check
 
   clippy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -65,27 +59,20 @@ jobs:
           sudo apt-get -o Acquire::Retries=3 update
           sudo apt-get -o Acquire::Retries=3 install -y libasound2-dev
 
-      - uses: actions-rs/toolchain@v1.0.7
-        id: toolchain
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          profile: minimal
-          override: true
           components: clippy
 
-      - uses: camshaft/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
 
       # TODO translate json reports to in-action warnings
       - name: Run cargo clippy
-        uses: actions-rs/cargo@v1.0.3
-        with:
-          command: clippy
-          args: --all-features --all-targets -- -D warnings
+        run: cargo +stable clippy --all-features --all-targets -- -D warnings
 
   udeps:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -94,21 +81,18 @@ jobs:
           sudo apt-get -o Acquire::Retries=3 update
           sudo apt-get -o Acquire::Retries=3 install -y libasound2-dev
 
-      - uses: actions-rs/toolchain@v1.0.7
-        id: toolchain
+      - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.RUST_NIGHTLY_TOOLCHAIN }}
-          profile: minimal
-          override: true
 
-      - uses: camshaft/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
 
-      - uses: camshaft/install@v1
+      - uses: taiki-e/install-action@v2
         with:
-          crate: cargo-udeps
+          tool: cargo-udeps
 
       - name: Run cargo udeps
-        run: cargo udeps --workspace --all-targets
+        run: cargo +${{ env.RUST_NIGHTLY_TOOLCHAIN }} udeps --workspace --all-targets
         env:
           RUSTC_WRAPPER: ""
 
@@ -120,7 +104,7 @@ jobs:
         rust: ${{ fromJson(needs.env.outputs.rust-versions) }}
         os: [ubuntu-latest, macOS-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           lfs: true
 
@@ -130,17 +114,13 @@ jobs:
           sudo apt-get -o Acquire::Retries=3 update
           sudo apt-get -o Acquire::Retries=3 install -y libasound2-dev
 
-      - uses: actions-rs/toolchain@v1
-        id: toolchain
+      - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-          override: true
 
-      - uses: camshaft/rust-cache@v1
+      - uses: Swatinem/rust-cache@v2
         with:
-          key: ${{ matrix.target }}
+          key: ${{ matrix.rust }}
 
       - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
+        run: cargo +${{ matrix.rust }} test
