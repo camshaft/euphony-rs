@@ -1,6 +1,6 @@
 use crate::{
     codec,
-    record::{self, BufferList, Digest, GroupEntry, GroupIndex, Stream, StreamKind},
+    record::{self, BufferList, ChunkReader, Digest, GroupEntry, GroupIndex, Stream, StreamKind},
     storage::{self, Output as _, Storage},
 };
 use base64::prelude::*;
@@ -19,26 +19,39 @@ use tempfile::NamedTempFile;
 
 /// The directory under a store's path that holds the files of the typed record format. The files
 /// an earlier format wrote stay beside it, so a project's earlier output is rendered again once.
-pub const FORMAT_DIR: &str = "records-1";
+/// `records-1` held each stream as one record; `records-2` holds it as a sequence of chunk records.
+pub const FORMAT_DIR: &str = "records-2";
 
 #[derive(Clone, Debug)]
 pub struct Directory {
     path: Arc<PathBuf>,
 }
 
-/// A stream that its sink writes as it renders. Its record is written once it finishes, under the
-/// content hash of the record's bytes.
+/// A stream that its sink writes as it renders. Its values go to a temporary file as a sequence of
+/// chunk records, each written once it fills, so the stream holds at most one chunk in memory. Once
+/// it finishes, the file is moved under the content hash of its bytes.
 pub struct Output {
     kind: StreamKind,
-    body: Vec<u8>,
+    chunk: Vec<u8>,
+    file: Option<NamedTempFile>,
+    hasher: Hasher,
     directory: Directory,
     hash: Option<Hash>,
 }
 
 impl storage::Output for Output {
     #[inline]
-    fn write(&mut self, bytes: &[u8]) {
-        self.body.extend_from_slice(bytes);
+    fn write(&mut self, mut bytes: &[u8]) {
+        while !bytes.is_empty() {
+            let room = record::CHUNK - self.chunk.len();
+            let (now, rest) = bytes.split_at(room.min(bytes.len()));
+            self.chunk.extend_from_slice(now);
+            bytes = rest;
+
+            if self.chunk.len() == record::CHUNK {
+                self.write_chunk().expect("could not write a stream's chunk");
+            }
+        }
     }
 
     #[inline]
@@ -47,16 +60,42 @@ impl storage::Output for Output {
             return hash;
         }
 
-        let body = core::mem::take(&mut self.body);
-        let bytes = record::encode(&Stream::new(self.kind, body)).expect("a stream encodes");
-        let hash = record::content_hash(&bytes);
+        self.write_chunk().expect("could not write a stream's chunk");
+
+        let file = match self.file.take() {
+            Some(file) => file,
+            // a stream without values is a file without chunks
+            None => NamedTempFile::new_in(self.directory.path()).expect("could not finish file"),
+        };
+        let hash = *self.hasher.finalize().as_bytes();
 
         self.directory
-            .write_new(&hash, &bytes)
+            .persist_new(&hash, file)
             .expect("could not finish file");
 
         self.hash = Some(hash);
         hash
+    }
+}
+
+impl Output {
+    /// Writes the values held so far to the stream's file as one chunk record.
+    fn write_chunk(&mut self) -> io::Result<()> {
+        if self.chunk.is_empty() {
+            return Ok(());
+        }
+
+        let body = core::mem::take(&mut self.chunk);
+        let frame = record::chunk_frame(&Stream::new(self.kind, body))?;
+
+        if self.file.is_none() {
+            self.file = Some(NamedTempFile::new_in(self.directory.path())?);
+        }
+        let file = self.file.as_mut().unwrap();
+        file.write_all(&frame)?;
+        self.hasher.update(&frame);
+
+        Ok(())
     }
 }
 
@@ -88,12 +127,22 @@ impl Directory {
     /// Writes `bytes` under `hash` where no file holds that name yet. The bytes go to a temporary
     /// file in the same directory first, so a reader never reads part of a record.
     fn write_new(&self, hash: &Hash, bytes: &[u8]) -> io::Result<()> {
+        if self.hash_path(hash).exists() {
+            return Ok(());
+        }
+
+        self.persist_new(hash, self.temporary(bytes)?)
+    }
+
+    /// Moves `file`, a temporary file of this directory, under `hash` where no file holds that
+    /// name yet; where one does, the temporary file is removed.
+    fn persist_new(&self, hash: &Hash, file: NamedTempFile) -> io::Result<()> {
         let path = self.hash_path(hash);
         if path.exists() {
             return Ok(());
         }
 
-        match self.temporary(bytes)?.persist_noclobber(path) {
+        match file.persist_noclobber(path) {
             Ok(_) => Ok(()),
             Err(err) if err.error.kind() == io::ErrorKind::AlreadyExists => Ok(()),
             Err(err) => Err(err.error),
@@ -154,10 +203,12 @@ impl Directory {
         let mut buffers = vec![];
 
         for Digest(hash) in list.channels {
-            let body = self
-                .read_record::<Stream>(&hash)?
-                .into_body(StreamKind::Samples)?;
-            let samples = record::samples_from_body(&body).collect();
+            let mut chunks = ChunkReader::new(self.open_raw(&hash)?, StreamKind::Samples);
+            let mut samples = vec![];
+            while let Some(body) = chunks.next_chunk()? {
+                samples.extend(record::samples_from_body(&body));
+            }
+            let samples = Arc::from(samples);
             buffers.push(CachedBuffer { samples, hash });
         }
 
@@ -169,12 +220,14 @@ impl Storage for Directory {
     type Output = Output;
     type Reader = io::BufReader<fs::File>;
     type Group = GroupReader;
-    type Sink = codec::Reader;
+    type Sink = codec::Reader<io::BufReader<fs::File>>;
 
     fn create(&self, kind: StreamKind) -> Self::Output {
         Output {
             kind,
-            body: vec![],
+            chunk: vec![],
+            file: None,
+            hasher: Hasher::new(),
             directory: self.clone(),
             hash: None,
         }
@@ -264,7 +317,9 @@ impl Writer for Directory {
 
         for samples in res {
             let mut out = self.create(StreamKind::Samples);
-            out.write(&record::samples_body(&samples));
+            for part in samples.chunks(record::CHUNK / record::SAMPLE) {
+                out.write(&record::samples_body(part));
+            }
             let hash = out.finish();
             channels.push(Digest(hash));
 
@@ -304,7 +359,7 @@ impl Iterator for GroupReader {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{dc::LeakDc, record::SinkIndex};
+    use crate::{dc::LeakDc, record::SinkIndex, storage::Output as _};
     use euphony_compiler::ConvertedBuffer;
     use euphony_units::coordinates::Cartesian;
     use std::{
@@ -317,6 +372,28 @@ mod tests {
         let directory = Directory::new(dir.path().to_owned());
         fs::create_dir_all(directory.path()).unwrap();
         (dir, directory)
+    }
+
+    /// The bodies of the chunk records of the stream named `hash`, in order.
+    fn chunks(directory: &Directory, hash: &Hash, kind: StreamKind) -> Vec<Vec<u8>> {
+        let mut reader = ChunkReader::new(directory.open_raw(hash).unwrap(), kind);
+        let mut chunks = vec![];
+        while let Some(chunk) = reader.next_chunk().unwrap() {
+            chunks.push(chunk);
+        }
+        chunks
+    }
+
+    fn assert_coordinate(read: Cartesian<f64>, written: Polar<f64>) {
+        let written: Cartesian<f64> = written.into();
+        assert_eq!(
+            (read.x, read.y, read.z),
+            (
+                written.x as f32 as f64,
+                written.y as f32 as f64,
+                written.z as f32 as f64
+            )
+        );
     }
 
     #[test]
@@ -366,44 +443,158 @@ mod tests {
 
         for ((sample, value), (_, coord)) in read.iter().zip(&expected).zip(input) {
             assert_eq!(sample.value, *value);
-            let coord: Cartesian<f64> = coord.into();
-            assert_eq!(
-                (
-                    sample.coordinate.x,
-                    sample.coordinate.y,
-                    sample.coordinate.z
-                ),
-                (
-                    coord.x as f32 as f64,
-                    coord.y as f32 as f64,
-                    coord.z as f32 as f64
-                )
-            );
+            assert_coordinate(sample.coordinate, coord);
         }
 
-        // the index and its streams are typed records, the streams' bodies in little-endian order
+        // the index is a typed record, and each stream a chunk record whose body holds its values
+        // in little-endian order
         let index: SinkIndex = directory.read_record(&hash).unwrap();
-        let samples = directory
-            .read_record::<Stream>(&index.samples)
-            .unwrap()
-            .into_body(StreamKind::Samples)
-            .unwrap();
-        assert_eq!(samples, record::samples_body(&expected));
+        let samples = chunks(&directory, &index.samples, StreamKind::Samples);
+        assert_eq!(samples, vec![record::samples_body(&expected)]);
 
-        let runs = directory
-            .read_record::<Stream>(&index.coordinates)
-            .unwrap()
-            .into_body(StreamKind::Coordinates)
-            .unwrap();
+        let runs = chunks(&directory, &index.coordinates, StreamKind::Coordinates);
         // near twice, far twice, then near once
-        assert_eq!(runs.len(), 3 * record::COORDINATE_RUN);
-        assert_eq!(record::read_coordinate_run(&runs[..record::COORDINATE_RUN]).0, 1);
+        assert_eq!(runs.len(), 1);
+        assert_eq!(runs[0].len(), 3 * record::COORDINATE_RUN);
+        assert_eq!(record::read_coordinate_run(&runs[0][..record::COORDINATE_RUN]).0, 1);
 
-        // a stream's name is the content hash of its record's canonical bytes
+        // a stream's name is the content hash of its file's bytes, the frames of its chunk records
         let bytes = fs::read(directory.hash_path(&index.samples)).unwrap();
         assert_eq!(record::content_hash(&bytes), *index.samples);
-        let decoded: Stream = record::decode(&bytes).unwrap();
-        assert_eq!(record::encode(&decoded).unwrap(), bytes);
+        assert_eq!(
+            bytes,
+            record::chunk_frame(&Stream::new(StreamKind::Samples, samples[0].clone())).unwrap()
+        );
+    }
+
+    #[test]
+    fn a_sink_longer_than_a_chunk_reads_back_across_its_chunks() {
+        let (_dir, directory) = directory();
+        let hash = [8; 32];
+        let near = Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        };
+        let far = Polar {
+            azimuth: 0.25,
+            inclination: 0.0,
+            radius: 2.0,
+        };
+
+        // two whole chunks of samples and three more; the coordinate changes at each sample, so
+        // each sample is a coordinate run of its own and the runs span more chunks
+        let len = 2 * (record::CHUNK / record::SAMPLE) + 3;
+        let input: Vec<(f64, Polar<f64>)> = (0..len)
+            .map(|i| {
+                let value = i as f64 / len as f64 - 0.5;
+                (value, if i % 2 == 0 { near } else { far })
+            })
+            .collect();
+
+        {
+            let mut writer = codec::Writer::new(directory.clone(), hash);
+            Sink::write(&mut writer, input.iter().copied());
+        }
+
+        let mut leak_dc = LeakDc::default();
+        let expected: Vec<f64> = input.iter().map(|(value, _)| leak_dc.apply(*value)).collect();
+
+        let index: SinkIndex = directory.read_record(&hash).unwrap();
+        let samples = chunks(&directory, &index.samples, StreamKind::Samples);
+        assert_eq!(
+            samples.iter().map(Vec::len).collect::<Vec<_>>(),
+            vec![record::CHUNK, record::CHUNK, 3 * record::SAMPLE]
+        );
+
+        let runs = chunks(&directory, &index.coordinates, StreamKind::Coordinates);
+        let runs_per_chunk = record::CHUNK / record::COORDINATE_RUN;
+        assert_eq!(runs.len(), (len + runs_per_chunk - 1) / runs_per_chunk);
+        assert!(runs.iter().all(|chunk| chunk.len() <= record::CHUNK));
+        assert_eq!(
+            runs.iter().map(Vec::len).sum::<usize>(),
+            len * record::COORDINATE_RUN
+        );
+
+        let read: Vec<_> = directory
+            .open_sink(&hash)
+            .unwrap()
+            .map(Result::unwrap)
+            .collect();
+        assert_eq!(read.len(), len);
+
+        for ((sample, value), (_, coord)) in read.iter().zip(&expected).zip(input.iter().copied())
+        {
+            assert_eq!(sample.value, *value);
+            assert_coordinate(sample.coordinate, coord);
+        }
+    }
+
+    #[test]
+    fn a_stream_holds_at_most_one_chunk_while_it_is_written() {
+        let (_dir, directory) = directory();
+        let mut out = directory.create(StreamKind::Samples);
+        let samples: Vec<f64> = (0..3 * (record::CHUNK / record::SAMPLE) + 1)
+            .map(|i| i as f64)
+            .collect();
+
+        out.write(&record::samples_body(&samples));
+
+        // three chunks went to the stream's file as they filled; the last sample waits for more
+        assert_eq!(out.chunk.len(), record::SAMPLE);
+        assert!(out.file.is_some());
+
+        let hash = out.finish();
+        assert!(out.chunk.is_empty());
+        assert_eq!(out.finish(), hash);
+
+        let read = chunks(&directory, &hash, StreamKind::Samples);
+        assert_eq!(read.len(), 4);
+        let read: Vec<f64> = read
+            .iter()
+            .flat_map(|chunk| record::samples_from_body(chunk).collect::<Vec<_>>())
+            .collect();
+        assert_eq!(read, samples);
+    }
+
+    #[test]
+    fn an_empty_sink_reads_back_no_samples() {
+        let (_dir, directory) = directory();
+        let hash = [6; 32];
+
+        drop(codec::Writer::new(directory.clone(), hash));
+
+        let index: SinkIndex = directory.read_record(&hash).unwrap();
+        assert!(chunks(&directory, &index.samples, StreamKind::Samples).is_empty());
+        assert!(fs::read(directory.hash_path(&index.samples)).unwrap().is_empty());
+        assert_eq!(directory.open_sink(&hash).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn a_sink_whose_stream_file_is_cut_is_an_error() {
+        let (_dir, directory) = directory();
+        let hash = [2; 32];
+        let near = Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        };
+
+        {
+            let mut writer = codec::Writer::new(directory.clone(), hash);
+            Sink::write(&mut writer, [(0.5, near), (0.25, near)].into_iter());
+        }
+
+        let index: SinkIndex = directory.read_record(&hash).unwrap();
+        let path = directory.hash_path(&index.samples);
+        let bytes = fs::read(&path).unwrap();
+        fs::write(&path, &bytes[..bytes.len() - 1]).unwrap();
+
+        let mut sink = directory.open_sink(&hash).unwrap();
+        assert_eq!(
+            sink.next().unwrap().err().unwrap().kind(),
+            io::ErrorKind::InvalidData
+        );
     }
 
     #[test]
@@ -506,9 +697,15 @@ mod tests {
         fs::write(&source, b"source").unwrap();
         let source = source.to_str().unwrap();
 
+        // the first channel spans two chunks
+        let long: Vec<f64> = (0..record::CHUNK / record::SAMPLE + 1)
+            .map(|i| i as f64)
+            .collect();
+        let long_len = long.len();
+
         let converted = directory
             .buffer(source, 48_000, |_| {
-                Ok::<_, io::Error>(vec![vec![0.5, -0.25], vec![1.0]])
+                Ok::<_, io::Error>(vec![long, vec![1.0]])
             })
             .unwrap();
         let cached = directory
@@ -527,7 +724,12 @@ mod tests {
             assert_eq!(converted.hash, cached.hash);
             assert_eq!(converted.samples, cached.samples);
         }
-        assert_eq!(&*cached[0].samples, &[0.5, -0.25]);
+        assert_eq!(cached[0].samples.len(), long_len);
+        assert_eq!(
+            chunks(&directory, &cached[0].hash, StreamKind::Samples).len(),
+            2
+        );
+        assert_eq!(&*cached[1].samples, &[1.0]);
     }
 
     /// The path of the buffer list that `buffer` keeps for `source` at `sample_rate`.
