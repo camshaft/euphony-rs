@@ -355,6 +355,78 @@ mod tests {
         assert_eq!(decode::<Digest>(&encoded).unwrap(), Digest([0xcd; 32]));
     }
 
+    /// A record's bytes as the codec writes them: the container header, then `rest`.
+    fn record_bytes(rest: &[u8]) -> Vec<u8> {
+        let mut bytes = b"cdzast\x00\x01".to_vec();
+        bytes.extend_from_slice(rest);
+        bytes
+    }
+
+    #[test]
+    fn a_stream_records_bytes_and_content_hash_are_pinned() {
+        // the content hash of a record is the blake3 digest of its bytes
+        assert_eq!(
+            content_hash(b""),
+            [
+                0xaf, 0x13, 0x49, 0xb9, 0xf5, 0xf9, 0xa1, 0xa6, 0xa0, 0x40, 0x4d, 0xea, 0x36, 0xdc,
+                0xc9, 0x49, 0x9b, 0xcb, 0x25, 0xc9, 0xad, 0xc1, 0x12, 0xb7, 0xcc, 0x9a, 0x93, 0xca,
+                0xe4, 0x1f, 0x32, 0x62,
+            ]
+        );
+
+        // a sample stream of one sample, 1.5
+        let samples = encode(&Stream::new(StreamKind::Samples, samples_body(&[1.5]))).unwrap();
+        #[rustfmt::skip]
+        let expected = record_bytes(&[
+            // five leaves
+            0x05,
+            // the variant's name, `Samples`
+            0x0a, 0x07, b'S', b'a', b'm', b'p', b'l', b'e', b's',
+            // the record head and the field-pair head
+            0x16, 0x19,
+            // the field's name, `samples`
+            0x07, 0x07, b's', b'a', b'm', b'p', b'l', b'e', b's',
+            // the body, one byte string of 1.5 in little-endian order
+            0x0b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x3f,
+            // eight nodes: an atom of each leaf, the field pair, the record and the variant
+            0x08,
+            0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x03, 0x00, 0x04,
+            0x01, 0x03, 0x02, 0x03, 0x04,
+            0x01, 0x02, 0x01, 0x05,
+            0x01, 0x02, 0x00, 0x06,
+            // the root, the variant
+            0x07,
+        ]);
+        assert_eq!(samples, expected);
+        assert_eq!(content_hash(&samples), *blake3::hash(&expected).as_bytes());
+
+        // an empty coordinate stream
+        let coordinates = encode(&Stream::new(StreamKind::Coordinates, vec![])).unwrap();
+        #[rustfmt::skip]
+        let expected = record_bytes(&[
+            // five leaves
+            0x05,
+            // the variant's name, `Coordinates`
+            0x0a, 0x0b, b'C', b'o', b'o', b'r', b'd', b'i', b'n', b'a', b't', b'e', b's',
+            // the record head and the field-pair head
+            0x16, 0x19,
+            // the field's name, `runs`
+            0x07, 0x04, b'r', b'u', b'n', b's',
+            // the body, an empty byte string
+            0x0b, 0x00,
+            // eight nodes: an atom of each leaf, the field pair, the record and the variant
+            0x08,
+            0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x03, 0x00, 0x04,
+            0x01, 0x03, 0x02, 0x03, 0x04,
+            0x01, 0x02, 0x01, 0x05,
+            0x01, 0x02, 0x00, 0x06,
+            // the root, the variant
+            0x07,
+        ]);
+        assert_eq!(coordinates, expected);
+        assert_eq!(content_hash(&coordinates), *blake3::hash(&expected).as_bytes());
+    }
+
     #[test]
     fn stream_bodies_hold_little_endian_values() {
         let body = samples_body(&[1.5, -0.25]);
