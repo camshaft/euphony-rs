@@ -11,11 +11,12 @@ default = []
 [dependencies]
 base64 = "0.21"
 blake3 = "1"
+cadenza-ast-serde = { git = "https://github.com/camshaft/cadenza", rev = "7cb437f597bf97903dac4ed244fb9720f6974831" }
 euphony-compiler = { version = "0.1", path = "../euphony-compiler" }
 euphony-mix = { version = "0.1", path = "../euphony-mix" }
 euphony-node = { version = "0.1", path = "../euphony-node" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
 log = "0.4"
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde_bytes = "0.11"
 tempfile = "3"
