@@ -746,6 +746,121 @@ mod tests {
         assert!(files(&directory).is_empty());
     }
 
+    /// A writer that stores each sink in the store's directory, and keeps the hash of each sink
+    /// the render spawns.
+    struct Recording {
+        directory: Directory,
+        sinks: Vec<Hash>,
+    }
+
+    impl Writer for Recording {
+        fn is_cached(&self, hash: &Hash) -> bool {
+            self.directory.is_cached(hash)
+        }
+
+        fn sink(&mut self, hash: &Hash) -> BoxProcessor {
+            self.sinks.push(*hash);
+            self.directory.sink(hash)
+        }
+
+        fn group<I: Iterator<Item = Entry>>(
+            &mut self,
+            name: &str,
+            hash: &Hash,
+            entries: I,
+            midi: &midi::Writer,
+        ) {
+            self.directory.group(name, hash, entries, midi)
+        }
+
+        fn buffer<
+            F: FnOnce(
+                Box<dyn euphony_compiler::BufferReader>,
+            ) -> euphony_compiler::Result<Vec<ConvertedBuffer>, E>,
+            E,
+        >(
+            &self,
+            path: &str,
+            sample_rate: u64,
+            init: F,
+        ) -> euphony_compiler::Result<Vec<CachedBuffer>, E> {
+            self.directory.buffer(path, sample_rate, init)
+        }
+    }
+
+    #[test]
+    fn a_sink_a_failed_compile_leaves_unfinished_isnt_cached() {
+        use euphony_command::{
+            AdvanceTime, Codec, FinishNode, PipeParameter, SetTiming, SpawnNode,
+        };
+
+        fn encode<C: Codec>(input: &mut Vec<u8>, command: C) {
+            command.encode(input).unwrap();
+        }
+
+        let (_dir, directory) = directory();
+
+        // a tick lasts a second, so each tick renders more than a chunk of samples
+        let mut input = vec![];
+        encode(
+            &mut input,
+            SetTiming {
+                nanos_per_tick: 1_000_000_000,
+                ticks_per_beat: 1,
+            },
+        );
+        // the sink, and a node that renders silence
+        encode(
+            &mut input,
+            SpawnNode {
+                id: 1,
+                processor: 0,
+                group: None,
+            },
+        );
+        encode(
+            &mut input,
+            SpawnNode {
+                id: 2,
+                processor: 106,
+                group: None,
+            },
+        );
+        encode(&mut input, AdvanceTime { ticks: 1 });
+        // the node finishes, and a tick later the sink reads from it: the compiler takes the
+        // connection, and the render fails on it, since the node has left the graph by then
+        encode(&mut input, FinishNode { node: 2 });
+        encode(&mut input, AdvanceTime { ticks: 1 });
+        encode(
+            &mut input,
+            PipeParameter {
+                target_node: 1,
+                target_parameter: 0,
+                source_node: 2,
+            },
+        );
+        encode(&mut input, AdvanceTime { ticks: 1 });
+
+        let mut output = Recording {
+            directory: directory.clone(),
+            sinks: vec![],
+        };
+        let mut compiler = euphony_compiler::Compiler::default();
+        assert!(compiler
+            .compile(&mut io::Cursor::new(input), &mut output)
+            .is_err());
+
+        // the render spawned the sink, and failed before the sink's `FinishNode`
+        assert_eq!(output.sinks.len(), 1);
+        let hash = output.sinks[0];
+
+        // a sink the compiler still holds would store its index as it drops
+        drop(compiler);
+
+        assert!(!directory.is_cached(&hash));
+        assert!(files(&directory).is_empty());
+    }
+
     #[test]
     fn an_empty_sink_reads_back_no_samples() {
         let (_dir, directory) = directory();

@@ -19,3 +19,6 @@ euphony-units = { version = "0.1", path = "../euphony-units" }
 log = "0.4"
 serde = { version = "1", features = ["derive"] }
 tempfile = "3"
+
+[dev-dependencies]
+euphony-command = { version = "0.1", path = "../euphony-command" }
