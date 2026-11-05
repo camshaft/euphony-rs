@@ -18,5 +18,4 @@ euphony-node = { version = "0.1", path = "../euphony-node" }
 euphony-units = { version = "0.1", path = "../euphony-units" }
 log = "0.4"
 serde = { version = "1", features = ["derive"] }
-serde_bytes = "0.11"
 tempfile = "3"
