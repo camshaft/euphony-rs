@@ -12,7 +12,6 @@ use core::{fmt, ops};
 use euphony_compiler::Hash;
 use euphony_units::coordinates::Cartesian;
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
-use serde_bytes::ByteBuf;
 use std::io;
 
 /// Encodes `value` as its canonical bytes.
@@ -81,6 +80,47 @@ impl<'de> Deserialize<'de> for Digest {
     }
 }
 
+/// A stream's body, written as one byte string rather than as a sequence of numbers.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct Body(pub Vec<u8>);
+
+impl From<Vec<u8>> for Body {
+    #[inline]
+    fn from(bytes: Vec<u8>) -> Self {
+        Self(bytes)
+    }
+}
+
+impl Serialize for Body {
+    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_bytes(&self.0)
+    }
+}
+
+impl<'de> Deserialize<'de> for Body {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct Visitor;
+
+        impl<'de> de::Visitor<'de> for Visitor {
+            type Value = Body;
+
+            fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.write_str("a byte string")
+            }
+
+            fn visit_bytes<E: de::Error>(self, bytes: &[u8]) -> Result<Body, E> {
+                Ok(Body(bytes.to_vec()))
+            }
+
+            fn visit_byte_buf<E: de::Error>(self, bytes: Vec<u8>) -> Result<Body, E> {
+                Ok(Body(bytes))
+            }
+        }
+
+        deserializer.deserialize_bytes(Visitor)
+    }
+}
+
 /// The entries of a group, in the order they start.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GroupIndex {
@@ -136,14 +176,14 @@ pub const COORDINATE_RUN: usize = 16;
 /// A stream of samples or of coordinate runs.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Stream {
-    Samples { samples: ByteBuf },
-    Coordinates { runs: ByteBuf },
+    Samples { samples: Body },
+    Coordinates { runs: Body },
 }
 
 impl Stream {
     #[inline]
     pub fn new(kind: StreamKind, body: Vec<u8>) -> Self {
-        let body = ByteBuf::from(body);
+        let body = Body(body);
         match kind {
             StreamKind::Samples => Self::Samples { samples: body },
             StreamKind::Coordinates => Self::Coordinates { runs: body },
@@ -165,7 +205,7 @@ impl Stream {
             Self::Samples { samples } => samples,
             Self::Coordinates { runs } => runs,
         }
-        .into_vec();
+        .0;
 
         if found != kind {
             return Err(invalid(format!("expected a {kind:?} stream, found a {found:?} stream")));
@@ -295,8 +335,24 @@ mod tests {
         let hash = [0xab; 32];
         assert_eq!(
             encode(&Digest(hash)).unwrap(),
-            encode(serde_bytes::Bytes::new(&hash)).unwrap()
+            encode(&Body(hash.to_vec())).unwrap()
         );
+    }
+
+    #[test]
+    fn a_stream_body_is_a_byte_string_and_reads_back() {
+        for bytes in [vec![], vec![0x01], samples_body(&[1.5, -0.25])] {
+            let encoded = encode(&Body(bytes.clone())).unwrap();
+            if !bytes.is_empty() {
+                // a byte string, not a sequence of numbers
+                assert_ne!(encoded, encode(&bytes).unwrap());
+            }
+            assert_eq!(decode::<Body>(&encoded).unwrap(), Body(bytes));
+        }
+
+        // a 32-byte body is read by the same byte-string visitor as a digest
+        let encoded = encode(&Body(vec![0xcd; 32])).unwrap();
+        assert_eq!(decode::<Digest>(&encoded).unwrap(), Digest([0xcd; 32]));
     }
 
     #[test]
@@ -363,7 +419,7 @@ mod tests {
 
     #[test]
     fn a_digest_of_another_length_is_refused() {
-        let bytes = encode(serde_bytes::Bytes::new(&[1; 31])).unwrap();
+        let bytes = encode(&Body(vec![1; 31])).unwrap();
         let err = decode::<Digest>(&bytes).unwrap_err();
         decoder_error(&err);
     }
