@@ -9,6 +9,11 @@ pub trait Sink: 'static + Send + Sized {
     }
 
     fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: S);
+
+    /// Called just before the sink drops where its render didn't finish, so the samples it holds
+    /// are only part of the sink and aren't to be kept. The default does nothing.
+    #[inline]
+    fn discard(&mut self) {}
 }
 
 #[repr(u8)]
@@ -40,6 +45,11 @@ impl<Inner: Sink> Wrapper<Inner> {
 
 impl<Inner: Sink> Node<4, 0> for Wrapper<Inner> {
     const DEFAULTS: [f64; 4] = [0.0, 0.0, 0.0, 0.0];
+
+    #[inline]
+    fn discard(&mut self) {
+        self.inner.discard()
+    }
 
     #[inline]
     fn process(&mut self, inputs: Inputs<4>, _buffer: Buffers<0>, samples: &mut [f64]) {
