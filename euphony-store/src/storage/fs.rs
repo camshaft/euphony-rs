@@ -706,6 +706,47 @@ mod tests {
     }
 
     #[test]
+    fn a_sink_whose_render_doesnt_finish_isnt_cached() {
+        let (_dir, directory) = directory();
+        let hash = [10; 32];
+        let near = Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        };
+
+        {
+            let mut writer = codec::Writer::new(directory.clone(), hash);
+
+            // the sample stream's first chunk is in its temporary file when the render fails
+            let len = record::CHUNK / record::SAMPLE + 1;
+            Sink::write(&mut writer, (0..len).map(|_| (0.5, near)));
+            assert!(!files(&directory).is_empty());
+
+            Sink::discard(&mut writer);
+        }
+
+        // the renderer discarded the writer, so it didn't store a stream or the index
+        assert!(!directory.is_cached(&hash));
+        assert!(files(&directory).is_empty());
+    }
+
+    #[test]
+    fn a_sink_the_renderer_discards_isnt_cached() {
+        let (_dir, mut directory) = directory();
+        let hash = [11; 32];
+
+        // the processor the store spawns for the sink passes the discard on to its writer: an
+        // empty sink would otherwise be stored as cached as it drops
+        let mut sink = directory.sink(&hash);
+        sink.discard();
+        drop(sink);
+
+        assert!(!directory.is_cached(&hash));
+        assert!(files(&directory).is_empty());
+    }
+
+    #[test]
     fn an_empty_sink_reads_back_no_samples() {
         let (_dir, directory) = directory();
         let hash = [6; 32];
