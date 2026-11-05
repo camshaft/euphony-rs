@@ -679,6 +679,33 @@ mod tests {
     }
 
     #[test]
+    fn a_sink_whose_rendering_panics_isnt_cached() {
+        let (_dir, directory) = directory();
+        let hash = [9; 32];
+        let near = Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        };
+
+        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let mut writer = codec::Writer::new(directory.clone(), hash);
+
+            // the sample stream's first chunk is in its temporary file when the panic starts
+            let len = record::CHUNK / record::SAMPLE + 1;
+            Sink::write(&mut writer, (0..len).map(|_| (0.5, near)));
+            assert!(!files(&directory).is_empty());
+
+            panic!("a node panics while the sink renders");
+        }));
+        assert!(result.is_err());
+
+        // the writer dropped while the panic unwound, so it didn't store a stream or the index
+        assert!(!directory.is_cached(&hash));
+        assert!(files(&directory).is_empty());
+    }
+
+    #[test]
     fn an_empty_sink_reads_back_no_samples() {
         let (_dir, directory) = directory();
         let hash = [6; 32];
