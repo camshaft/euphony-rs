@@ -319,6 +319,27 @@ mod tests {
     }
 
     #[test]
+    fn a_renderer_dropped_while_a_panic_unwinds_doesnt_discard_its_sinks() {
+        let mut renderer = Renderer::default();
+        let mut output = Output::default();
+
+        renderer.start();
+        let probe = spawn_sink(&mut renderer, &mut output, 1);
+        assert!(!probe.dropped());
+
+        // the renderer drops as the panic unwinds out of the closure that holds it
+        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(move || {
+            let _renderer = renderer;
+            panic!("the render panics");
+        }));
+        assert!(result.is_err());
+
+        // the sink dropped with the renderer, and is left to its own panicking check
+        assert!(probe.dropped());
+        assert!(!probe.discarded());
+    }
+
+    #[test]
     fn a_reset_after_a_complete_render_keeps_its_sinks() {
         let mut renderer = Renderer::default();
         let mut output = Output::default();
