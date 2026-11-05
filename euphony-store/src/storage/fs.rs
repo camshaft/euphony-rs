@@ -1,11 +1,11 @@
 use crate::{
     codec,
-    ext::*,
+    record::{self, BufferList, Digest, GroupEntry, GroupIndex, Stream, StreamKind},
     storage::{self, Output as _, Storage},
 };
 use base64::prelude::*;
 use blake3::Hasher;
-use euphony_compiler::{midi, Entry, Hash, Writer};
+use euphony_compiler::{midi, CachedBuffer, Entry, Hash, Writer};
 use euphony_node::{BoxProcessor, Sink};
 use euphony_units::coordinates::Polar;
 use std::{
@@ -13,137 +13,50 @@ use std::{
     io::{self, Write},
     path::{Path, PathBuf},
     sync::Arc,
+    vec,
 };
-use tempfile::{NamedTempFile, TempPath};
+use tempfile::NamedTempFile;
 
-pub type File = io::BufWriter<fs::File>;
+/// The directory under a store's path that holds the files of the typed record format. The files
+/// an earlier format wrote stay beside it, so a project's earlier output is rendered again once.
+pub const FORMAT_DIR: &str = "records-1";
 
 #[derive(Clone, Debug)]
 pub struct Directory {
-    state: State,
-}
-
-#[derive(Clone, Debug)]
-struct State {
     path: Arc<PathBuf>,
-    hasher: Hasher,
 }
 
-impl State {
-    fn hash_path(&self, hash: &Hash) -> PathBuf {
-        let mut out = [b'A'; 64];
-        let len = BASE64_URL_SAFE_NO_PAD.encode_slice(hash, &mut out).unwrap();
-        let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
-        let out = &out[..len];
-        self.path.join(out)
-    }
-}
-
-pub struct Output(OState);
-
-#[allow(clippy::large_enum_variant)]
-enum OState {
-    PreHashed {
-        file: File,
-        hash: Hash,
-    },
-    Incremental {
-        file: fs::File,
-        buffer: Vec<u8>,
-        path: Option<TempPath>,
-        state: State,
-    },
-}
-
-#[inline]
-fn write_buffered(
-    file: &mut fs::File,
-    buffer: &mut Vec<u8>,
-    state: &mut State,
-    bytes: &[u8],
-) -> io::Result<()> {
-    if bytes.len() > 1024 {
-        flush_buffered(file, buffer, state)?;
-
-        state.hasher.update(bytes);
-        file.write_all(bytes)?;
-        return Ok(());
-    }
-
-    if buffer.capacity() == 0 {
-        buffer.reserve(8 * 1024);
-    }
-    buffer.extend_from_slice(bytes);
-
-    if buffer.len() > 8 * 1024 {
-        flush_buffered(file, buffer, state)?;
-    }
-
-    Ok(())
-}
-
-#[inline]
-fn flush_buffered(file: &mut fs::File, buffer: &mut Vec<u8>, state: &mut State) -> io::Result<()> {
-    if buffer.is_empty() {
-        return Ok(());
-    }
-
-    state.hasher.update(buffer);
-    file.write_all(buffer)?;
-    buffer.clear();
-
-    Ok(())
+/// A stream that its sink writes as it renders. Its record is written once it finishes, under the
+/// content hash of the record's bytes.
+pub struct Output {
+    kind: StreamKind,
+    body: Vec<u8>,
+    directory: Directory,
+    hash: Option<Hash>,
 }
 
 impl storage::Output for Output {
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
-        if bytes.is_empty() {
-            return;
-        }
-
-        let result = match &mut self.0 {
-            OState::PreHashed { file, .. } => file.write_all(bytes),
-            OState::Incremental {
-                file,
-                buffer,
-                state,
-                ..
-            } => write_buffered(file, buffer, state, bytes),
-        };
-
-        if let Err(err) = result {
-            log::error!("could write samples to output: {}", err);
-        }
+        self.body.extend_from_slice(bytes);
     }
 
     #[inline]
     fn finish(&mut self) -> Hash {
-        let result = match &mut self.0 {
-            OState::PreHashed { file, hash } => file.flush().map(|_| *hash),
-            OState::Incremental {
-                file,
-                buffer,
-                state,
-                path,
-            } => {
-                let tmp_path = path.take().expect("cannot finalize twice");
+        if let Some(hash) = self.hash {
+            return hash;
+        }
 
-                let result = flush_buffered(file, buffer, state);
+        let body = core::mem::take(&mut self.body);
+        let bytes = record::encode(&Stream::new(self.kind, body)).expect("a stream encodes");
+        let hash = record::content_hash(&bytes);
 
-                result.and_then(|_| file.flush()).and_then(|_| {
-                    let hash = *state.hasher.finalize().as_bytes();
-                    let new_path = state.hash_path(&hash);
+        self.directory
+            .write_new(&hash, &bytes)
+            .expect("could not finish file");
 
-                    tmp_path
-                        .persist(new_path)
-                        .map(|_| hash)
-                        .map_err(|e| e.error)
-                })
-            }
-        };
-
-        result.expect("could not finish file")
+        self.hash = Some(hash);
+        hash
     }
 }
 
@@ -156,15 +69,12 @@ impl Default for Directory {
 impl Directory {
     pub fn new(path: PathBuf) -> Self {
         Self {
-            state: State {
-                path: Arc::new(path),
-                hasher: Hasher::new(),
-            },
+            path: Arc::new(path.join(FORMAT_DIR)),
         }
     }
 
     pub fn path(&self) -> &Path {
-        &self.state.path
+        &self.path
     }
 
     fn hash_path(&self, hash: &Hash) -> PathBuf {
@@ -172,34 +82,50 @@ impl Directory {
         let len = BASE64_URL_SAFE_NO_PAD.encode_slice(hash, &mut out).unwrap();
         let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
         let out = &out[..len];
-        self.state.path.join(out)
+        self.path.join(out)
     }
 
-    fn open(&self, hash: &Hash) -> io::Result<Option<File>> {
+    /// Writes `bytes` under `hash` where no file holds that name yet. The bytes go to a temporary
+    /// file in the same directory first, so a reader never reads part of a record.
+    fn write_new(&self, hash: &Hash, bytes: &[u8]) -> io::Result<()> {
         let path = self.hash_path(hash);
-        fs::OpenOptions::new()
-            .create_new(true)
-            .write(true)
-            .open(path)
-            .map(io::BufWriter::new)
-            .map(Some)
-            .or_else(|err| {
-                if err.kind() == io::ErrorKind::AlreadyExists {
-                    Ok(None)
-                } else {
-                    Err(err)
-                }
-            })
+        if path.exists() {
+            return Ok(());
+        }
+
+        match self.temporary(bytes)?.persist_noclobber(path) {
+            Ok(_) => Ok(()),
+            Err(err) if err.error.kind() == io::ErrorKind::AlreadyExists => Ok(()),
+            Err(err) => Err(err.error),
+        }
     }
 
-    fn write_group<I: Iterator<Item = Entry>>(file: Option<File>, entries: I) -> io::Result<()> {
-        if let Some(mut file) = file {
-            for entry in entries {
-                file.write_all(&entry.sample_offset.to_le_bytes())?;
-                file.write_all(&entry.hash)?;
-            }
-        }
-        Ok(())
+    /// Writes `bytes` under `hash` in place of any file that holds that name.
+    fn write_replace(&self, hash: &Hash, bytes: &[u8]) -> io::Result<()> {
+        self.temporary(bytes)?
+            .persist(self.hash_path(hash))
+            .map(|_| ())
+            .map_err(|err| err.error)
+    }
+
+    fn temporary(&self, bytes: &[u8]) -> io::Result<NamedTempFile> {
+        let mut file = NamedTempFile::new_in(&*self.path)?;
+        file.write_all(bytes)?;
+        file.flush()?;
+        Ok(file)
+    }
+
+    fn write_group<I: Iterator<Item = Entry>>(&self, hash: &Hash, entries: I) -> io::Result<()> {
+        let index = GroupIndex {
+            entries: entries
+                .map(|entry| GroupEntry {
+                    sample_offset: entry.sample_offset,
+                    sink: Digest(entry.hash),
+                })
+                .collect(),
+        };
+
+        self.write_new(hash, &record::encode(&index)?)
     }
 
     fn write_midi(&self, midi: &midi::Writer) -> io::Result<()> {
@@ -207,13 +133,35 @@ impl Directory {
             return Ok(());
         }
 
-        if let Some(file) = self.open(midi.hash())? {
-            // no need to buffer the contents
-            let mut file = file.into_inner()?;
-            file.write_all(midi)?;
+        self.write_new(midi.hash(), &midi[..])
+    }
+
+    /// The buffers the list named `list` holds, where the list is newer than the source's contents.
+    fn cached_buffers(
+        &self,
+        list: &Hash,
+        contents: &fs::File,
+    ) -> io::Result<Option<Vec<CachedBuffer>>> {
+        let Ok(list_metadata) = fs::metadata(self.hash_path(list)) else {
+            return Ok(None);
+        };
+
+        if list_metadata.modified()? < contents.metadata()?.modified()? {
+            return Ok(None);
         }
 
-        Ok(())
+        let list: BufferList = self.read_record(list)?;
+        let mut buffers = vec![];
+
+        for Digest(hash) in list.channels {
+            let body = self
+                .read_record::<Stream>(&hash)?
+                .into_body(StreamKind::Samples)?;
+            let samples = record::samples_from_body(&body).collect();
+            buffers.push(CachedBuffer { samples, hash });
+        }
+
+        Ok(Some(buffers))
     }
 }
 
@@ -221,17 +169,19 @@ impl Storage for Directory {
     type Output = Output;
     type Reader = io::BufReader<fs::File>;
     type Group = GroupReader;
-    type Sink = codec::Reader<Self::Reader>;
+    type Sink = codec::Reader;
 
-    fn create(&self) -> Self::Output {
-        let (file, path) = NamedTempFile::new().unwrap().into_parts();
-        let state = self.state.clone();
-        Output(OState::Incremental {
-            file,
-            buffer: vec![],
-            state,
-            path: Some(path),
-        })
+    fn create(&self, kind: StreamKind) -> Self::Output {
+        Output {
+            kind,
+            body: vec![],
+            directory: self.clone(),
+            hash: None,
+        }
+    }
+
+    fn write_record(&self, hash: &Hash, bytes: &[u8]) -> io::Result<()> {
+        self.write_new(hash, bytes)
     }
 
     fn open_raw(&self, hash: &Hash) -> io::Result<Self::Reader> {
@@ -242,8 +192,8 @@ impl Storage for Directory {
     }
 
     fn open_group(&self, hash: &Hash) -> io::Result<Self::Group> {
-        let group = self.open_raw(hash)?;
-        Ok(GroupReader(group))
+        let index: GroupIndex = self.read_record(hash)?;
+        Ok(GroupReader(index.entries.into_iter()))
     }
 
     fn open_sink(&self, hash: &Hash) -> io::Result<Self::Sink> {
@@ -257,11 +207,10 @@ impl Writer for Directory {
     }
 
     fn sink(&mut self, hash: &Hash) -> BoxProcessor {
-        if let Some(file) = self.open(hash).unwrap() {
-            let output = Output(OState::PreHashed { file, hash: *hash });
-            codec::Writer::new(self, output).spawn()
-        } else {
+        if self.is_cached(hash) {
             NoopSink.spawn()
+        } else {
+            codec::Writer::new(self.clone(), *hash).spawn()
         }
     }
 
@@ -273,8 +222,7 @@ impl Writer for Directory {
         midi: &midi::Writer,
     ) {
         match self
-            .open(hash)
-            .and_then(|file| Self::write_group(file, entries))
+            .write_group(hash, entries)
             .and_then(|_| self.write_midi(midi))
         {
             Ok(()) => {}
@@ -294,63 +242,40 @@ impl Writer for Directory {
         path: &str,
         sample_rate: u64,
         init: F,
-    ) -> euphony_compiler::Result<Vec<euphony_compiler::CachedBuffer>, E> {
+    ) -> euphony_compiler::Result<Vec<CachedBuffer>, E> {
         let mut hasher = Hasher::new();
         hasher.update(&sample_rate.to_le_bytes());
         hasher.update(path.as_bytes());
         let path_hash = *hasher.finalize().as_bytes();
         let contents = std::fs::File::open(path).unwrap();
 
-        let mut buffers = vec![];
-
-        if let Ok(mut reader) = self.open_raw(&path_hash) {
-            let contents_modified = contents.metadata().unwrap().modified().unwrap();
-            let hashes_modified = reader.get_ref().metadata().unwrap().modified().unwrap();
-
-            // only return if the hashes are newer than the original contents
-            if hashes_modified >= contents_modified {
-                while let Some(hash) = read_result(reader.read_hash()).unwrap() {
-                    let mut input = self.open_raw(&hash).unwrap();
-                    let mut samples = vec![];
-                    while let Some(sample) = read_result(input.read_f64()).unwrap() {
-                        samples.push(sample);
-                    }
-                    let samples = Arc::from(samples);
-                    buffers.push(euphony_compiler::CachedBuffer { samples, hash });
-                }
-
-                return Ok(buffers);
+        match self.cached_buffers(&path_hash, &contents) {
+            Ok(Some(buffers)) => return Ok(buffers),
+            Ok(None) => {}
+            Err(err) => {
+                log::warn!("converting the buffer {:?} again: {}", path, err);
             }
         }
 
         let res = init(Box::new(contents))?;
 
-        let mut hashes = self.open(&path_hash).unwrap();
-        for samples in res {
-            let mut out = self.create();
-            let ptr = samples.as_ptr();
-            let len = samples.len() * 8;
-            let bytes = unsafe { core::slice::from_raw_parts(ptr as _, len) };
-            out.write(bytes);
+        let mut buffers = vec![];
+        let mut channels = vec![];
 
+        for samples in res {
+            let mut out = self.create(StreamKind::Samples);
+            out.write(&record::samples_body(&samples));
             let hash = out.finish();
-            if let Some(hashes) = hashes.as_mut() {
-                hashes.write_all(&hash).unwrap();
-            }
+            channels.push(Digest(hash));
 
             let samples = Arc::from(samples);
-            buffers.push(euphony_compiler::CachedBuffer { samples, hash });
+            buffers.push(CachedBuffer { samples, hash });
         }
 
-        Ok(buffers)
-    }
-}
+        let list = record::encode(&BufferList { channels }).unwrap();
+        self.write_replace(&path_hash, &list).unwrap();
 
-fn read_result<T>(result: io::Result<T>) -> io::Result<Option<T>> {
-    match result {
-        Ok(value) => Ok(Some(value)),
-        Err(err) if err.kind() == io::ErrorKind::UnexpectedEof => Ok(None),
-        Err(err) => Err(err),
+        Ok(buffers)
     }
 }
 
@@ -361,20 +286,243 @@ impl Sink for NoopSink {
     fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, _samples: S) {}
 }
 
-pub struct GroupReader(io::BufReader<fs::File>);
+pub struct GroupReader(vec::IntoIter<GroupEntry>);
 
 impl Iterator for GroupReader {
     type Item = io::Result<Entry>;
 
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
-        match self.0.read_u64() {
-            Ok(sample_offset) => Some(self.0.read_hash().map(|hash| Entry {
-                sample_offset,
-                hash,
-            })),
-            Err(err) if err.kind() == io::ErrorKind::UnexpectedEof => None,
-            Err(err) => Some(Err(err)),
+        let entry = self.0.next()?;
+        Some(Ok(Entry {
+            sample_offset: entry.sample_offset,
+            hash: entry.sink.0,
+        }))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{dc::LeakDc, record::SinkIndex};
+    use euphony_compiler::ConvertedBuffer;
+    use euphony_units::coordinates::Cartesian;
+
+    fn directory() -> (tempfile::TempDir, Directory) {
+        let dir = tempfile::tempdir().unwrap();
+        let directory = Directory::new(dir.path().to_owned());
+        fs::create_dir_all(directory.path()).unwrap();
+        (dir, directory)
+    }
+
+    #[test]
+    fn the_records_go_in_a_directory_of_their_format() {
+        let directory = Directory::new(PathBuf::from("contents"));
+        assert_eq!(directory.path(), Path::new("contents").join(FORMAT_DIR));
+    }
+
+    #[test]
+    fn a_sink_reads_back_its_samples_and_coordinates() {
+        let (_dir, directory) = directory();
+        let hash = [7; 32];
+        let near = Polar {
+            azimuth: 0.0,
+            inclination: 0.0,
+            radius: 1.0,
+        };
+        let far = Polar {
+            azimuth: 0.25,
+            inclination: 0.0,
+            radius: 2.0,
+        };
+        let input = [
+            (0.5, near),
+            (-0.5, near),
+            (0.25, far),
+            (0.125, far),
+            (1.0, near),
+        ];
+
+        assert!(!directory.is_cached(&hash));
+        {
+            let mut writer = codec::Writer::new(directory.clone(), hash);
+            Sink::write(&mut writer, input.iter().copied());
         }
+        assert!(directory.is_cached(&hash));
+
+        let mut leak_dc = LeakDc::default();
+        let expected: Vec<f64> = input.iter().map(|(value, _)| leak_dc.apply(*value)).collect();
+
+        let read: Vec<_> = directory
+            .open_sink(&hash)
+            .unwrap()
+            .map(Result::unwrap)
+            .collect();
+        assert_eq!(read.len(), input.len());
+
+        for ((sample, value), (_, coord)) in read.iter().zip(&expected).zip(input) {
+            assert_eq!(sample.value, *value);
+            let coord: Cartesian<f64> = coord.into();
+            assert_eq!(
+                (
+                    sample.coordinate.x,
+                    sample.coordinate.y,
+                    sample.coordinate.z
+                ),
+                (
+                    coord.x as f32 as f64,
+                    coord.y as f32 as f64,
+                    coord.z as f32 as f64
+                )
+            );
+        }
+
+        // the index and its streams are typed records, the streams' bodies in little-endian order
+        let index: SinkIndex = directory.read_record(&hash).unwrap();
+        let samples = directory
+            .read_record::<Stream>(&index.samples)
+            .unwrap()
+            .into_body(StreamKind::Samples)
+            .unwrap();
+        assert_eq!(samples, record::samples_body(&expected));
+
+        let runs = directory
+            .read_record::<Stream>(&index.coordinates)
+            .unwrap()
+            .into_body(StreamKind::Coordinates)
+            .unwrap();
+        // near twice, far twice, then near once
+        assert_eq!(runs.len(), 3 * record::COORDINATE_RUN);
+        assert_eq!(record::read_coordinate_run(&runs[..record::COORDINATE_RUN]).0, 1);
+
+        // a stream's name is the content hash of its record's canonical bytes
+        let bytes = fs::read(directory.hash_path(&index.samples)).unwrap();
+        assert_eq!(record::content_hash(&bytes), *index.samples);
+        let decoded: Stream = record::decode(&bytes).unwrap();
+        assert_eq!(record::encode(&decoded).unwrap(), bytes);
+    }
+
+    #[test]
+    fn a_group_index_reads_back_its_entries() {
+        let (_dir, mut directory) = directory();
+        let hash = [3; 32];
+        let entries = [
+            Entry {
+                sample_offset: 0,
+                hash: [1; 32],
+            },
+            Entry {
+                sample_offset: 96_000,
+                hash: [2; 32],
+            },
+        ];
+
+        directory.group("group", &hash, entries.iter().copied(), &midi::Writer::default());
+
+        let read: Vec<_> = directory
+            .open_group(&hash)
+            .unwrap()
+            .map(|entry| {
+                let entry = entry.unwrap();
+                (entry.sample_offset, entry.hash)
+            })
+            .collect();
+        assert_eq!(read, vec![(0, [1; 32]), (96_000, [2; 32])]);
+
+        let index: GroupIndex = directory.read_record(&hash).unwrap();
+        assert_eq!(
+            index.entries,
+            vec![
+                GroupEntry {
+                    sample_offset: 0,
+                    sink: Digest([1; 32]),
+                },
+                GroupEntry {
+                    sample_offset: 96_000,
+                    sink: Digest([2; 32]),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn a_damaged_or_missing_file_is_an_error() {
+        let (_dir, directory) = directory();
+        let hash = [9; 32];
+
+        assert_eq!(
+            directory.open_group(&hash).err().unwrap().kind(),
+            io::ErrorKind::NotFound
+        );
+
+        fs::write(directory.hash_path(&hash), b"not a record").unwrap();
+        assert_eq!(
+            directory.open_group(&hash).err().unwrap().kind(),
+            io::ErrorKind::InvalidData
+        );
+        assert_eq!(
+            directory.open_sink(&hash).err().unwrap().kind(),
+            io::ErrorKind::InvalidData
+        );
+    }
+
+    #[test]
+    fn a_sink_whose_coordinates_end_early_is_an_error() {
+        let (_dir, directory) = directory();
+        let hash = [4; 32];
+
+        let mut samples = directory.create(StreamKind::Samples);
+        samples.write(&record::samples_body(&[0.5, 0.25]));
+        let samples = samples.finish();
+
+        let mut coordinates = directory.create(StreamKind::Coordinates);
+        coordinates.write(&record::coordinate_run(0, Cartesian::default()));
+        let coordinates = coordinates.finish();
+
+        let index = record::SinkIndex {
+            samples: Digest(samples),
+            coordinates: Digest(coordinates),
+        };
+        directory
+            .write_record(&hash, &record::encode(&index).unwrap())
+            .unwrap();
+
+        let mut sink = directory.open_sink(&hash).unwrap();
+        assert!(sink.next().unwrap().is_ok());
+        assert_eq!(
+            sink.next().unwrap().err().unwrap().kind(),
+            io::ErrorKind::InvalidData
+        );
+    }
+
+    #[test]
+    fn a_buffer_is_cached_as_a_list_of_sample_streams() {
+        let (dir, directory) = directory();
+        let source = dir.path().join("source.wav");
+        fs::write(&source, b"source").unwrap();
+        let source = source.to_str().unwrap();
+
+        let converted = directory
+            .buffer(source, 48_000, |_| {
+                Ok::<_, io::Error>(vec![vec![0.5, -0.25], vec![1.0]])
+            })
+            .unwrap();
+        let cached = directory
+            .buffer(
+                source,
+                48_000,
+                |_| -> euphony_compiler::Result<Vec<ConvertedBuffer>, io::Error> {
+                    panic!("the cached list is read in place of the source")
+                },
+            )
+            .unwrap();
+
+        assert_eq!(converted.len(), 2);
+        assert_eq!(cached.len(), 2);
+        for (converted, cached) in converted.iter().zip(&cached) {
+            assert_eq!(converted.hash, cached.hash);
+            assert_eq!(converted.samples, cached.samples);
+        }
+        assert_eq!(&*cached[0].samples, &[0.5, -0.25]);
     }
 }
