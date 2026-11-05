@@ -1,12 +1,14 @@
+use crate::record::{self, Digest};
 use euphony_compiler::{
     midi,
     sample::{DefaultRate, Rate as _},
     Hash, Writer,
 };
 use serde::{Deserialize, Serialize};
-use std::{io, ops};
+use std::io;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+/// A project's timeline: its sample rate and each group, written as a canonical typed record.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Timeline {
     pub sample_rate: u32,
     pub groups: Vec<Group>,
@@ -23,10 +25,22 @@ impl Default for Timeline {
 }
 
 impl Timeline {
+    /// The timeline's canonical bytes.
     #[inline]
-    pub fn to_json<W: io::Write>(&self, w: W) -> io::Result<()> {
-        serde_json::to_writer(w, self)?;
-        Ok(())
+    pub fn to_bytes(&self) -> io::Result<Vec<u8>> {
+        record::encode(self)
+    }
+
+    /// Reads a timeline from its bytes.
+    #[inline]
+    pub fn from_bytes(bytes: &[u8]) -> io::Result<Self> {
+        record::decode(bytes)
+    }
+
+    /// Writes the timeline's canonical bytes to `w`.
+    #[inline]
+    pub fn write_to<W: io::Write>(&self, mut w: W) -> io::Result<()> {
+        w.write_all(&self.to_bytes()?)
     }
 
     #[inline]
@@ -36,67 +50,11 @@ impl Timeline {
     }
 }
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Group {
     pub name: String,
-    pub entries: HashDisplay,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub midi: Option<HashDisplay>,
-}
-
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-pub struct HashDisplay(#[serde(with = "base64")] Hash);
-
-impl ops::Deref for HashDisplay {
-    type Target = Hash;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-mod base64 {
-    use ::base64::prelude::*;
-    use euphony_compiler::Hash;
-    use serde::{self, Deserialize, Deserializer, Serializer};
-
-    pub fn serialize<S>(bytes: &[u8], serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        if serializer.is_human_readable() {
-            let mut out = [b'A'; 64];
-            let len = BASE64_URL_SAFE_NO_PAD
-                .encode_slice(bytes, &mut out)
-                .unwrap();
-            let out = unsafe { core::str::from_utf8_unchecked_mut(&mut out) };
-            let out = &out[..len];
-            serializer.serialize_str(out)
-        } else {
-            serializer.serialize_bytes(bytes)
-        }
-    }
-
-    pub fn deserialize<'de, D>(deserializer: D) -> Result<Hash, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        if deserializer.is_human_readable() {
-            let s = <&str>::deserialize(deserializer)?;
-            let mut out = Hash::default();
-            let len = BASE64_URL_SAFE_NO_PAD
-                .decode_slice(s, &mut out)
-                .map_err(serde::de::Error::custom)?;
-
-            if len != out.len() {
-                return Err(serde::de::Error::custom("invalid hash length"));
-            }
-
-            Ok(out)
-        } else {
-            Hash::deserialize(deserializer)
-        }
-    }
+    pub entries: Digest,
+    pub midi: Option<Digest>,
 }
 
 impl Writer for Timeline {
@@ -120,11 +78,11 @@ impl Writer for Timeline {
     ) {
         self.groups.push(Group {
             name: name.to_string(),
-            entries: HashDisplay(*hash),
+            entries: Digest(*hash),
             midi: if midi.is_empty() {
                 None
             } else {
-                Some(HashDisplay(*midi.hash()))
+                Some(Digest(*midi.hash()))
             },
         });
     }
@@ -141,5 +99,33 @@ impl Writer for Timeline {
         _init: F,
     ) -> euphony_compiler::Result<Vec<euphony_compiler::CachedBuffer>, E> {
         unimplemented!()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_timeline_written_reads_back() {
+        let timeline = Timeline {
+            sample_rate: 44_100,
+            groups: vec![Group {
+                name: "drums".into(),
+                entries: Digest([1; 32]),
+                midi: None,
+            }],
+        };
+
+        let mut bytes = vec![];
+        timeline.write_to(&mut bytes).unwrap();
+        assert_eq!(bytes, timeline.to_bytes().unwrap());
+        assert_eq!(Timeline::from_bytes(&bytes).unwrap(), timeline);
+        assert_eq!(
+            Timeline::from_bytes(b"{\"sample_rate\":48000,\"groups\":[]}")
+                .unwrap_err()
+                .kind(),
+            io::ErrorKind::InvalidData
+        );
     }
 }
