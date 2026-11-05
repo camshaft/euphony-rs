@@ -307,6 +307,10 @@ mod tests {
     use crate::{dc::LeakDc, record::SinkIndex};
     use euphony_compiler::ConvertedBuffer;
     use euphony_units::coordinates::Cartesian;
+    use std::{
+        cell::Cell,
+        time::{Duration, SystemTime},
+    };
 
     fn directory() -> (tempfile::TempDir, Directory) {
         let dir = tempfile::tempdir().unwrap();
@@ -524,5 +528,104 @@ mod tests {
             assert_eq!(converted.samples, cached.samples);
         }
         assert_eq!(&*cached[0].samples, &[0.5, -0.25]);
+    }
+
+    /// The path of the buffer list that `buffer` keeps for `source` at `sample_rate`.
+    fn list_path(directory: &Directory, source: &str, sample_rate: u64) -> PathBuf {
+        let mut hasher = Hasher::new();
+        hasher.update(&sample_rate.to_le_bytes());
+        hasher.update(source.as_bytes());
+        directory.hash_path(hasher.finalize().as_bytes())
+    }
+
+    fn set_modified(path: &Path, time: SystemTime) {
+        fs::OpenOptions::new()
+            .write(true)
+            .open(path)
+            .unwrap()
+            .set_modified(time)
+            .unwrap();
+    }
+
+    fn read_from_the_cache(
+        _: Box<dyn euphony_compiler::BufferReader>,
+    ) -> euphony_compiler::Result<Vec<ConvertedBuffer>, io::Error> {
+        panic!("the cached list is read in place of the source")
+    }
+
+    #[test]
+    fn a_buffer_whose_source_is_newer_than_its_list_is_converted_again() {
+        let (dir, directory) = directory();
+        let source_path = dir.path().join("source.wav");
+        fs::write(&source_path, b"source").unwrap();
+        let source = source_path.to_str().unwrap();
+
+        directory
+            .buffer(source, 48_000, |_| {
+                Ok::<_, io::Error>(vec![vec![0.5, -0.25]])
+            })
+            .unwrap();
+
+        // the source changes after its list was written
+        let now = SystemTime::now();
+        let hour = Duration::from_secs(3600);
+        set_modified(&list_path(&directory, source, 48_000), now - hour);
+        set_modified(&source_path, now - hour / 2);
+
+        let converted = Cell::new(false);
+        let again = directory
+            .buffer(source, 48_000, |_| {
+                converted.set(true);
+                Ok::<_, io::Error>(vec![vec![0.75, 0.125]])
+            })
+            .unwrap();
+        assert!(converted.get(), "a list older than its source is converted again");
+        assert_eq!(again.len(), 1);
+        assert_eq!(&*again[0].samples, &[0.75, 0.125]);
+
+        // the list written again is newer than the source, so the new samples come from the cache
+        let cached = directory
+            .buffer(source, 48_000, read_from_the_cache)
+            .unwrap();
+        assert_eq!(cached.len(), 1);
+        assert_eq!(cached[0].hash, again[0].hash);
+        assert_eq!(&*cached[0].samples, &[0.75, 0.125]);
+    }
+
+    #[test]
+    fn a_damaged_buffer_list_is_converted_again() {
+        let (dir, directory) = directory();
+        let source_path = dir.path().join("source.wav");
+        fs::write(&source_path, b"source").unwrap();
+        let source = source_path.to_str().unwrap();
+
+        directory
+            .buffer(source, 48_000, |_| {
+                Ok::<_, io::Error>(vec![vec![0.5, -0.25]])
+            })
+            .unwrap();
+
+        // the list is damaged, and stays newer than the source, so `buffer` reads it
+        let list = list_path(&directory, source, 48_000);
+        fs::write(&list, b"not a record").unwrap();
+        set_modified(&source_path, SystemTime::now() - Duration::from_secs(3600));
+
+        let converted = Cell::new(false);
+        let again = directory
+            .buffer(source, 48_000, |_| {
+                converted.set(true);
+                Ok::<_, io::Error>(vec![vec![0.75, 0.125]])
+            })
+            .unwrap();
+        assert!(converted.get(), "a damaged list is converted again");
+        assert_eq!(again.len(), 1);
+        assert_eq!(&*again[0].samples, &[0.75, 0.125]);
+
+        // the damaged list was written again as a record
+        let cached = directory
+            .buffer(source, 48_000, read_from_the_cache)
+            .unwrap();
+        assert_eq!(cached.len(), 1);
+        assert_eq!(&*cached[0].samples, &[0.75, 0.125]);
     }
 }
