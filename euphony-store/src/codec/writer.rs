@@ -9,8 +9,8 @@ use euphony_node::Sink;
 use euphony_units::coordinates::{Cartesian, Polar};
 
 /// Writes a sink's samples and coordinates as two streams and, as it drops, the sink's index record
-/// under the hash the compiler gave the sink. Where either stream fails, the index isn't written,
-/// so the sink isn't cached and is rendered again.
+/// under the hash the compiler gave the sink. Where either stream fails, or the writer drops while a
+/// panic unwinds, the index isn't written, so the sink isn't cached and is rendered again.
 pub struct Writer<S: Storage> {
     leak_dc: LeakDc,
     samples: S::Output,
@@ -78,6 +78,14 @@ impl<S: Storage + Send + 'static> Sink for Writer<S> {
 impl<S: Storage> Drop for Writer<S> {
     #[inline]
     fn drop(&mut self) {
+        // a panic that unwinds through the writer, such as one in a node while the sink renders,
+        // leaves the streams holding only the samples rendered so far: neither stream is finished,
+        // so each drops without being stored, and the sink is rendered again
+        if std::thread::panicking() {
+            log::error!("a sink's rendering panicked, so its index isn't written");
+            return;
+        }
+
         let samples = self.samples.finish();
 
         if let Some((coord, count)) = self.coord_buffer.take() {
