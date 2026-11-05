@@ -425,6 +425,42 @@ mod tests {
     }
 
     #[test]
+    fn a_body_written_as_a_sequence_is_refused() {
+        // the same bytes written as a sequence of numbers, not as a byte string
+        let sequence = encode(&vec![1u8, 2]).unwrap();
+
+        let err = decode::<Body>(&sequence).unwrap_err();
+        assert!(
+            matches!(
+                decoder_error(&err),
+                cadenza_ast_serde::Error::UnexpectedShape { .. }
+            ),
+            "{err}"
+        );
+
+        let err = decode::<Stream>(&sequence).unwrap_err();
+        decoder_error(&err);
+
+        // a sample stream record whose body field holds a sequence of numbers
+        #[derive(Serialize)]
+        enum SequenceStream {
+            Samples { samples: Vec<u8> },
+        }
+        let record = encode(&SequenceStream::Samples {
+            samples: vec![1, 2],
+        })
+        .unwrap();
+        let err = decode::<Stream>(&record).unwrap_err();
+        assert!(
+            matches!(
+                decoder_error(&err),
+                cadenza_ast_serde::Error::UnexpectedShape { .. }
+            ),
+            "{err}"
+        );
+    }
+
+    #[test]
     fn a_stream_is_read_only_as_its_own_kind_and_whole_values() {
         let samples = Stream::new(StreamKind::Samples, samples_body(&[1.0]));
         assert_eq!(
