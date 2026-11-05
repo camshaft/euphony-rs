@@ -8,8 +8,9 @@ use euphony_compiler::Hash;
 use euphony_node::Sink;
 use euphony_units::coordinates::{Cartesian, Polar};
 
-/// Writes a sink's samples and coordinates as two stream records and, as it drops, the sink's
-/// index record under the hash the compiler gave the sink.
+/// Writes a sink's samples and coordinates as two streams and, as it drops, the sink's index record
+/// under the hash the compiler gave the sink. Where either stream fails, the index isn't written,
+/// so the sink isn't cached and is rendered again.
 pub struct Writer<S: Storage> {
     leak_dc: LeakDc,
     samples: S::Output,
@@ -84,6 +85,14 @@ impl<S: Storage> Drop for Writer<S> {
         }
 
         let coordinates = self.coordinates.finish();
+
+        let (samples, coordinates) = match (samples, coordinates) {
+            (Ok(samples), Ok(coordinates)) => (samples, coordinates),
+            (Err(err), _) | (_, Err(err)) => {
+                log::error!("could not write a sink's streams, so its index isn't written: {}", err);
+                return;
+            }
+        };
 
         let index = SinkIndex {
             samples: Digest(samples),
