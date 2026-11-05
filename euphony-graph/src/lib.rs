@@ -45,6 +45,11 @@ pub trait Processor<C: Config>: 'static + Send {
     fn process(&mut self, inputs: Inputs<C>, context: &C::Context);
 
     fn fork(&self) -> Option<Box<dyn Processor<C>>>;
+
+    /// Called just before the processor drops where its output won't be used, such as a sink of a
+    /// render that didn't finish. The default does nothing.
+    #[inline]
+    fn discard(&mut self) {}
 }
 
 #[derive(Debug)]

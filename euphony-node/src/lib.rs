@@ -294,6 +294,11 @@ impl<const I: usize, const B: usize, P: Node<I, B>> graph::Processor<Config>
     fn fork(&self) -> Option<BoxProcessor> {
         self.processor.fork()
     }
+
+    #[inline]
+    fn discard(&mut self) {
+        self.processor.discard()
+    }
 }
 
 pub trait Node<const INPUTS: usize, const BUFFERS: usize>: 'static + Send {
@@ -302,6 +307,11 @@ pub trait Node<const INPUTS: usize, const BUFFERS: usize>: 'static + Send {
     fn fork(&self) -> Option<BoxProcessor> {
         None
     }
+
+    /// Called just before the node drops where its output won't be used, such as a sink of a render
+    /// that didn't finish. The default does nothing.
+    #[inline]
+    fn discard(&mut self) {}
 
     #[inline]
     fn trigger(&mut self, param: Parameter, value: f64) -> bool {

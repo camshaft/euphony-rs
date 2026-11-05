@@ -9,8 +9,9 @@ use euphony_node::Sink;
 use euphony_units::coordinates::{Cartesian, Polar};
 
 /// Writes a sink's samples and coordinates as two streams and, as it drops, the sink's index record
-/// under the hash the compiler gave the sink. Where either stream fails, or the writer drops while a
-/// panic unwinds, the index isn't written, so the sink isn't cached and is rendered again.
+/// under the hash the compiler gave the sink. Where either stream fails, the renderer discards the
+/// writer, or the writer drops while a panic unwinds, the index isn't written, so the sink isn't
+/// cached and is rendered again.
 pub struct Writer<S: Storage> {
     leak_dc: LeakDc,
     samples: S::Output,
@@ -18,6 +19,7 @@ pub struct Writer<S: Storage> {
     coord_buffer: Option<(Cartesian<f64>, u32)>,
     storage: S,
     hash: Hash,
+    discarded: bool,
 }
 
 impl<S: Storage> fmt::Debug for Writer<S> {
@@ -35,6 +37,7 @@ impl<S: Storage> Writer<S> {
             coord_buffer: None,
             storage,
             hash,
+            discarded: false,
         }
     }
 
@@ -73,6 +76,11 @@ impl<S: Storage + Send + 'static> Sink for Writer<S> {
             self.write_coord(coord.into());
         }
     }
+
+    #[inline]
+    fn discard(&mut self) {
+        self.discarded = true;
+    }
 }
 
 impl<S: Storage> Drop for Writer<S> {
@@ -83,6 +91,13 @@ impl<S: Storage> Drop for Writer<S> {
         // so each drops without being stored, and the sink is rendered again
         if std::thread::panicking() {
             log::error!("a sink's rendering panicked, so its index isn't written");
+            return;
+        }
+
+        // a render that failed or was interrupted leaves the sink unfinished: as above, neither
+        // stream is finished, and the sink is rendered again
+        if self.discarded {
+            log::warn!("a sink's rendering didn't finish, so its index isn't written");
             return;
         }
 

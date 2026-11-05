@@ -79,12 +79,18 @@ impl Compiler {
         euphony_command::decode(input, &mut self.compiler)?;
         let buffers = self.compiler.finalize(output)?;
         self.render.set_buffers(buffers);
+        self.render.start();
 
         for instruction in self.compiler.instructions() {
-            self.render
-                .push(instruction, output)
-                .map_err(|err| error!("invalid instruction {:?}", err))?;
+            if let Err(err) = self.render.push(instruction, output) {
+                // the sinks the render leaves unfinished hold only part of their samples, so
+                // they aren't kept
+                self.render.discard_unfinished();
+                return Err(error!("invalid instruction {:?}", err));
+            }
         }
+
+        self.render.complete();
 
         for (_id, group, entries) in self.compiler.groups() {
             output.group(&group.name, &group.hash, entries, &group.midi);
