@@ -1,44 +1,53 @@
-use crate::{ext::*, storage::Storage};
+use crate::{
+    record::{self, SinkIndex, Stream, StreamKind},
+    storage::Storage,
+};
 use euphony_compiler::Hash;
 use euphony_mix::SpatialSample;
 use euphony_units::coordinates::Cartesian;
 use std::io;
 
-pub struct Reader<R: io::Read> {
-    sample: R,
-    coordinate: R,
+/// Reads a sink's samples, each with its coordinate, from the sink's index record and its two
+/// stream records.
+pub struct Reader {
+    samples: Vec<u8>,
+    sample: usize,
+    runs: Vec<u8>,
+    run: usize,
     coord_buffer: Option<(Cartesian<f64>, u32)>,
 }
 
-impl<R: io::Read> Reader<R> {
+impl Reader {
     #[inline]
-    pub fn new<S: Storage<Reader = R>>(storage: &S, hash: &Hash) -> io::Result<Self> {
-        let mut group = storage.open_raw(hash)?;
-
-        macro_rules! open {
-            () => {{
-                let mut hash = Hash::default();
-                group.read_exact(&mut hash)?;
-                storage.open_raw(&hash)?
-            }};
-        }
-
-        let sample = open!();
-        let coordinate = open!();
+    pub fn new<S: Storage>(storage: &S, hash: &Hash) -> io::Result<Self> {
+        let index: SinkIndex = storage.read_record(hash)?;
+        let samples = storage
+            .read_record::<Stream>(&index.samples)?
+            .into_body(StreamKind::Samples)?;
+        let runs = storage
+            .read_record::<Stream>(&index.coordinates)?
+            .into_body(StreamKind::Coordinates)?;
 
         Ok(Self {
-            sample,
-            coordinate,
+            samples,
+            sample: 0,
+            runs,
+            run: 0,
             coord_buffer: None,
         })
     }
 
     #[inline]
-    fn read_sample(&mut self) -> io::Result<SpatialSample> {
-        let value = self.sample.read_f64()?;
+    fn read_sample(&mut self) -> io::Result<Option<SpatialSample>> {
+        let Some(bytes) = self.samples.get(self.sample..self.sample + record::SAMPLE) else {
+            return Ok(None);
+        };
+        let value = f64::from_le_bytes(bytes.try_into().unwrap());
+        self.sample += record::SAMPLE;
+
         let coordinate = self.read_coordinate()?;
 
-        Ok(SpatialSample { value, coordinate })
+        Ok(Some(SpatialSample { value, coordinate }))
     }
 
     #[inline]
@@ -55,8 +64,14 @@ impl<R: io::Read> Reader<R> {
             return Ok(res);
         }
 
-        let count = self.coordinate.read_u32()?;
-        let coord = self.coordinate.read_coordinate()?;
+        let Some(run) = self.runs.get(self.run..self.run + record::COORDINATE_RUN) else {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                "the coordinate stream ends before the sample stream",
+            ));
+        };
+        let (count, coord) = record::read_coordinate_run(run);
+        self.run += record::COORDINATE_RUN;
 
         if let Some(count) = count.checked_sub(1) {
             self.coord_buffer = Some((coord, count));
@@ -66,15 +81,11 @@ impl<R: io::Read> Reader<R> {
     }
 }
 
-impl<R: io::Read> Iterator for Reader<R> {
+impl Iterator for Reader {
     type Item = io::Result<SpatialSample>;
 
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
-        match self.read_sample() {
-            Ok(sample) => Some(Ok(sample)),
-            Err(err) if err.kind() == io::ErrorKind::UnexpectedEof => None,
-            Err(err) => Some(Err(err)),
-        }
+        self.read_sample().transpose()
     }
 }

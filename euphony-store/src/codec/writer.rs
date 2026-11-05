@@ -1,33 +1,39 @@
 use crate::{
     dc::LeakDc,
-    storage::{self, Storage},
+    record::{self, Digest, SinkIndex, StreamKind},
+    storage::{Output as _, Storage},
 };
 use core::fmt;
+use euphony_compiler::Hash;
 use euphony_node::Sink;
 use euphony_units::coordinates::{Cartesian, Polar};
 
-pub struct Writer<O: storage::Output> {
+/// Writes a sink's samples and coordinates as two stream records and, as it drops, the sink's
+/// index record under the hash the compiler gave the sink.
+pub struct Writer<S: Storage> {
     leak_dc: LeakDc,
-    samples: O,
-    coordinates: O,
+    samples: S::Output,
+    coordinates: S::Output,
     coord_buffer: Option<(Cartesian<f64>, u32)>,
-    sink: O,
+    storage: S,
+    hash: Hash,
 }
 
-impl<W: storage::Output> fmt::Debug for Writer<W> {
+impl<S: Storage> fmt::Debug for Writer<S> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("RawWriter").finish()
     }
 }
 
-impl<O: storage::Output> Writer<O> {
-    pub fn new<S: Storage<Output = O>>(storage: &mut S, sink: O) -> Self {
+impl<S: Storage> Writer<S> {
+    pub fn new(storage: S, hash: Hash) -> Self {
         Self {
             leak_dc: Default::default(),
-            samples: storage.create(),
-            coordinates: storage.create(),
+            samples: storage.create(StreamKind::Samples),
+            coordinates: storage.create(StreamKind::Coordinates),
             coord_buffer: None,
-            sink,
+            storage,
+            hash,
         }
     }
 
@@ -44,47 +50,51 @@ impl<O: storage::Output> Writer<O> {
             let prev = *prev;
             let count = *count;
             self.flush_coord(prev, count);
-        } else {
-            self.coord_buffer = Some((coord, 0));
         }
+
+        self.coord_buffer = Some((coord, 0));
     }
 
     #[inline]
     fn flush_coord(&mut self, coord: Cartesian<f64>, count: u32) {
-        let mut bytes = [0u8; 4 * 4];
-        bytes[..4].copy_from_slice(&count.to_le_bytes());
-        bytes[4..8].copy_from_slice(&(coord.x as f32).to_ne_bytes());
-        bytes[8..12].copy_from_slice(&(coord.y as f32).to_ne_bytes());
-        bytes[12..].copy_from_slice(&(coord.z as f32).to_ne_bytes());
-
-        self.coordinates.write(&bytes);
+        self.coordinates
+            .write(&record::coordinate_run(count, coord));
     }
 }
 
-impl<W: storage::Output> Sink for Writer<W> {
+impl<S: Storage + Send + 'static> Sink for Writer<S> {
     #[inline]
-    fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: S) {
+    fn write<I: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: I) {
         for (sample, coord) in samples {
             let sample = self.leak_dc.apply(sample);
-            let sample = sample.to_ne_bytes();
-            self.samples.write(&sample);
+            self.samples.write(&sample.to_le_bytes());
 
             self.write_coord(coord.into());
         }
     }
 }
 
-impl<W: storage::Output> Drop for Writer<W> {
+impl<S: Storage> Drop for Writer<S> {
     #[inline]
     fn drop(&mut self) {
-        let a = self.samples.finish();
-        self.sink.write(&a);
+        let samples = self.samples.finish();
 
         if let Some((coord, count)) = self.coord_buffer.take() {
             self.flush_coord(coord, count);
         }
 
-        let b = self.coordinates.finish();
-        self.sink.write(&b);
+        let coordinates = self.coordinates.finish();
+
+        let index = SinkIndex {
+            samples: Digest(samples),
+            coordinates: Digest(coordinates),
+        };
+
+        let result = record::encode(&index)
+            .and_then(|bytes| self.storage.write_record(&self.hash, &bytes));
+
+        if let Err(err) = result {
+            log::error!("could not write a sink's index: {}", err);
+        }
     }
 }

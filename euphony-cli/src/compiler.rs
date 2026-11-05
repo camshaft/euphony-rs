@@ -30,7 +30,7 @@ impl Compiler {
 
         let timeline = fs::File::create(&self.timeline_path)?;
         let mut timeline = io::BufWriter::new(timeline);
-        self.store.timeline.to_json(&mut timeline)?;
+        self.store.timeline.write_to(&mut timeline)?;
         io::Write::flush(&mut timeline)?;
 
         Ok(())

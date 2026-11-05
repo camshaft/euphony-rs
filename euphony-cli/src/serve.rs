@@ -1,4 +1,5 @@
 use crate::{manifest::Manifest, watcher::Subscriptions, Result};
+use euphony_store::timeline::Timeline;
 use futures::StreamExt as _;
 use std::{
     collections::HashSet,
@@ -79,19 +80,32 @@ impl<Context> Subscriptions<Context> for SseSubs {
         let mut msg = String::new();
         for path in updates.drain() {
             // notify subscriptions of project updates
-            if let Ok(contents) = std::fs::read_to_string(&path) {
-                if msg.is_empty() {
-                    msg.push('{');
-                } else {
-                    msg.push(',');
+            let Ok(contents) = std::fs::read(&path) else {
+                continue;
+            };
+
+            // the timeline is a typed record on disk; the update sends it as JSON
+            let contents = match Timeline::from_bytes(&contents)
+                .and_then(|timeline| serde_json::to_string(&timeline).map_err(Into::into))
+            {
+                Ok(contents) => contents,
+                Err(err) => {
+                    log::error!("could not read the timeline {}: {}", path.display(), err);
+                    continue;
                 }
+            };
 
-                let path = path.strip_prefix(&self.project_filter).unwrap().display();
-
-                write!(msg, "{:?}", path).unwrap();
-                msg.push(':');
-                msg.push_str(&contents);
+            if msg.is_empty() {
+                msg.push('{');
+            } else {
+                msg.push(',');
             }
+
+            let path = path.strip_prefix(&self.project_filter).unwrap().display();
+
+            write!(msg, "{:?}", path).unwrap();
+            msg.push(':');
+            msg.push_str(&contents);
         }
 
         if !msg.is_empty() {

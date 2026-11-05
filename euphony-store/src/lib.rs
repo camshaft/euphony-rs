@@ -4,8 +4,8 @@ use std::{io, path::PathBuf};
 
 mod codec;
 mod dc;
-mod ext;
 mod mix;
+pub mod record;
 pub mod storage;
 pub mod timeline;
 
