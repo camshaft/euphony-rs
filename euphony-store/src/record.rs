@@ -1,18 +1,23 @@
 //! The typed records the store keeps on disk.
 //!
 //! Each file under the store's directory holds one record, written as Cadenza's canonical binary
-//! tree with `cadenza_ast_serde::to_bytes` and read with `cadenza_ast_serde::from_bytes`. A stream
-//! of samples or coordinates is a record whose body is a byte string of its values in little-endian
-//! order, since a tree value for each sample would multiply its size.
+//! tree with `cadenza_ast_serde::to_bytes` and read with `cadenza_ast_serde::from_bytes`, except a
+//! stream's file. A stream of samples or coordinates is a sequence of chunk records, each a record
+//! whose body is a byte string of its values in little-endian order, since a tree value for each
+//! sample would multiply its size. A stream's file holds its chunk records in order, each after the
+//! length of its bytes (`chunk_frame`), so that a stream is written and read a chunk at a time.
 //!
-//! A stream's file is named by the content hash of its record's bytes. A group index, a sink index
+//! A stream's file is named by the content hash of the file's bytes. A group index, a sink index
 //! and a buffer list are named by the hash of what produced them, which the compiler gives.
 
 use core::{fmt, ops};
 use euphony_compiler::Hash;
 use euphony_units::coordinates::Cartesian;
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
-use std::io;
+use std::{
+    io::{self, Read as _},
+    sync::OnceLock,
+};
 
 /// Encodes `value` as its canonical bytes.
 pub fn encode<T: ?Sized + Serialize>(value: &T) -> io::Result<Vec<u8>> {
@@ -27,7 +32,7 @@ pub fn decode<T: de::DeserializeOwned>(bytes: &[u8]) -> io::Result<T> {
         .map_err(|err| io::Error::new(io::ErrorKind::InvalidData, err))
 }
 
-/// The content hash of a record's canonical bytes.
+/// The content hash of a record's canonical bytes, or of a stream file's bytes.
 pub fn content_hash(bytes: &[u8]) -> Hash {
     *blake3::hash(bytes).as_bytes()
 }
@@ -134,7 +139,7 @@ pub struct GroupEntry {
     pub sink: Digest,
 }
 
-/// A sink's two streams, by the content hashes of their records.
+/// A sink's two streams, by the content hashes of their files.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SinkIndex {
     pub samples: Digest,
@@ -142,7 +147,7 @@ pub struct SinkIndex {
 }
 
 /// The sample streams a buffer's source converted to, one for each channel, by the content hashes
-/// of their records.
+/// of their files.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BufferList {
     pub channels: Vec<Digest>,
@@ -173,7 +178,13 @@ pub const SAMPLE: usize = 8;
 /// after the first that share the coordinate, as a `u32`, then x, y and z, each as an `f32`.
 pub const COORDINATE_RUN: usize = 16;
 
-/// A stream of samples or of coordinate runs.
+/// The bytes of values one chunk record of a stream holds, the last chunk of a stream fewer. A
+/// stream's writer writes each chunk as it fills, and its reader reads one chunk at a time, so
+/// neither holds more than one chunk of a stream. It is the size of one write: it doesn't limit how
+/// long a stream is. It is a whole number of values of each kind.
+pub const CHUNK: usize = 128 * 1024;
+
+/// One chunk of a stream of samples or of coordinate runs.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Stream {
     Samples { samples: Body },
@@ -198,7 +209,7 @@ impl Stream {
         }
     }
 
-    /// The stream's body, where the stream is of `kind` and its body holds whole values.
+    /// The chunk's body, where the chunk is of `kind` and its body holds whole values.
     pub fn into_body(self, kind: StreamKind) -> io::Result<Vec<u8>> {
         let found = self.kind();
         let body = match self {
@@ -224,6 +235,101 @@ impl Stream {
 
 fn invalid(message: String) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidData, message)
+}
+
+/// One frame of a stream's file: the length of the chunk record's canonical bytes, as a `u64` in
+/// little-endian order, then those bytes. The length frames the file; it isn't part of a record.
+pub fn chunk_frame(chunk: &Stream) -> io::Result<Vec<u8>> {
+    let bytes = encode(chunk)?;
+    let mut frame = Vec::with_capacity(8 + bytes.len());
+    frame.extend_from_slice(&(bytes.len() as u64).to_le_bytes());
+    frame.extend_from_slice(&bytes);
+    Ok(frame)
+}
+
+/// The most bytes a chunk record of `kind` encodes to: those of a chunk whose body is `CHUNK`
+/// bytes, the longest a writer writes. It checks the format of a stream's file; it isn't a bound on
+/// how long a stream is.
+fn chunk_record_len(kind: StreamKind) -> u64 {
+    static SAMPLES: OnceLock<u64> = OnceLock::new();
+    static COORDINATES: OnceLock<u64> = OnceLock::new();
+
+    let len = match kind {
+        StreamKind::Samples => &SAMPLES,
+        StreamKind::Coordinates => &COORDINATES,
+    };
+
+    *len.get_or_init(|| {
+        encode(&Stream::new(kind, vec![0; CHUNK])).map_or(u64::MAX, |bytes| bytes.len() as u64)
+    })
+}
+
+/// Reads a stream's file one chunk record at a time.
+pub struct ChunkReader<R> {
+    reader: R,
+    kind: StreamKind,
+}
+
+impl<R: io::Read> ChunkReader<R> {
+    #[inline]
+    pub fn new(reader: R, kind: StreamKind) -> Self {
+        Self { reader, kind }
+    }
+
+    #[inline]
+    pub fn kind(&self) -> StreamKind {
+        self.kind
+    }
+
+    /// The body of the next chunk record, whole values of the reader's kind, or `None` where the
+    /// file ends after a frame. A file that ends inside a frame, or a chunk that isn't a stream of
+    /// the reader's kind, is an `InvalidData` error.
+    pub fn next_chunk(&mut self) -> io::Result<Option<Vec<u8>>> {
+        let mut len = [0u8; 8];
+        let mut filled = 0;
+        while filled < len.len() {
+            match self.reader.read(&mut len[filled..]) {
+                Ok(0) => break,
+                Ok(read) => filled += read,
+                Err(err) if err.kind() == io::ErrorKind::Interrupted => {}
+                Err(err) => return Err(err),
+            }
+        }
+
+        if filled == 0 {
+            return Ok(None);
+        }
+
+        if filled < len.len() {
+            return Err(invalid(format!(
+                "a stream's file ends inside a chunk's length, after {filled} of its 8 bytes"
+            )));
+        }
+
+        let len = u64::from_le_bytes(len);
+
+        // a frame holds at most one chunk, so a reader holds at most one chunk too
+        let most = chunk_record_len(self.kind);
+        if len > most {
+            return Err(invalid(format!(
+                "a stream's chunk of {len} bytes is longer than a {:?} chunk record of {most} bytes",
+                self.kind
+            )));
+        }
+
+        // the buffer grows only as the bytes arrive, so a damaged length doesn't allocate it
+        let mut bytes = vec![];
+        (&mut self.reader).take(len).read_to_end(&mut bytes)?;
+
+        if bytes.len() as u64 != len {
+            return Err(invalid(format!(
+                "a stream's file ends inside a chunk of {len} bytes, after {} of them",
+                bytes.len()
+            )));
+        }
+
+        decode::<Stream>(&bytes)?.into_body(self.kind).map(Some)
+    }
 }
 
 /// The body of a sample stream that holds `samples`.
@@ -556,5 +662,157 @@ mod tests {
                 .kind(),
             io::ErrorKind::InvalidData
         );
+    }
+
+    #[test]
+    fn a_chunk_is_a_whole_number_of_values_of_each_kind() {
+        assert_eq!(CHUNK % SAMPLE, 0);
+        assert_eq!(CHUNK % COORDINATE_RUN, 0);
+    }
+
+    #[test]
+    fn a_stream_file_reads_back_its_chunks_in_order() {
+        let first = Stream::new(StreamKind::Samples, samples_body(&[0.5, -0.5]));
+        let second = Stream::new(StreamKind::Samples, samples_body(&[0.25]));
+
+        // a frame is the record's length in little-endian order, then the record's bytes
+        let bytes = encode(&first).unwrap();
+        let frame = chunk_frame(&first).unwrap();
+        assert_eq!(&frame[..8], &(bytes.len() as u64).to_le_bytes());
+        assert_eq!(&frame[8..], &bytes[..]);
+
+        let mut file = frame;
+        file.extend(chunk_frame(&second).unwrap());
+
+        let mut reader = ChunkReader::new(&file[..], StreamKind::Samples);
+        assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.5, -0.5])));
+        assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.25])));
+        assert_eq!(reader.next_chunk().unwrap(), None);
+
+        let mut empty = ChunkReader::new(&[0u8; 0][..], StreamKind::Samples);
+        assert_eq!(empty.next_chunk().unwrap(), None);
+    }
+
+    #[test]
+    fn a_stream_file_cut_inside_a_frame_is_refused() {
+        let frame = chunk_frame(&Stream::new(StreamKind::Samples, samples_body(&[1.0]))).unwrap();
+
+        for cut in [1, 7, 8, frame.len() - 1] {
+            let err = ChunkReader::new(&frame[..cut], StreamKind::Samples)
+                .next_chunk()
+                .unwrap_err();
+            assert_eq!(err.kind(), io::ErrorKind::InvalidData, "cut at {cut}");
+        }
+
+        // a length past the file's end, and one longer than a chunk record, is refused before
+        // anything is read for it
+        let mut file = u64::MAX.to_le_bytes().to_vec();
+        file.extend_from_slice(&[0; 4]);
+        let err = ChunkReader::new(&file[..], StreamKind::Samples)
+            .next_chunk()
+            .unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+
+        // a chunk of the other kind
+        let err = ChunkReader::new(&frame[..], StreamKind::Coordinates)
+            .next_chunk()
+            .unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+
+        // a chunk record whose body is longer than a chunk
+        let long = chunk_frame(&Stream::new(StreamKind::Samples, vec![0; CHUNK + SAMPLE])).unwrap();
+        let err = ChunkReader::new(&long[..], StreamKind::Samples)
+            .next_chunk()
+            .unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+
+        // a chunk of a whole chunk's values is read
+        let full = chunk_frame(&Stream::new(StreamKind::Samples, vec![0; CHUNK])).unwrap();
+        let read = ChunkReader::new(&full[..], StreamKind::Samples)
+            .next_chunk()
+            .unwrap();
+        assert_eq!(read.map(|body| body.len()), Some(CHUNK));
+
+        // a chunk whose body ends inside a value
+        let partial = chunk_frame(&Stream::new(
+            StreamKind::Coordinates,
+            vec![0; COORDINATE_RUN + 1],
+        ))
+        .unwrap();
+        let err = ChunkReader::new(&partial[..], StreamKind::Coordinates)
+            .next_chunk()
+            .unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+    }
+
+    /// Reads one byte at a time, answers every other read `Interrupted`, and fails once its bytes
+    /// end where `fail` is set, as a disk that fails would.
+    struct Faults<'a> {
+        bytes: &'a [u8],
+        interrupted: bool,
+        fail: bool,
+    }
+
+    impl io::Read for Faults<'_> {
+        fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+            self.interrupted = !self.interrupted;
+            if self.interrupted {
+                return Err(io::ErrorKind::Interrupted.into());
+            }
+
+            let Some((first, rest)) = self.bytes.split_first() else {
+                return if self.fail {
+                    Err(io::Error::new(io::ErrorKind::Other, "the disk failed"))
+                } else {
+                    Ok(0)
+                };
+            };
+
+            if buf.is_empty() {
+                return Ok(0);
+            }
+
+            buf[0] = *first;
+            self.bytes = rest;
+            Ok(1)
+        }
+    }
+
+    #[test]
+    fn a_stream_file_is_read_through_short_and_interrupted_reads() {
+        let frame = chunk_frame(&Stream::new(StreamKind::Samples, samples_body(&[0.5]))).unwrap();
+
+        let mut reader = ChunkReader::new(
+            Faults {
+                bytes: &frame,
+                interrupted: false,
+                fail: false,
+            },
+            StreamKind::Samples,
+        );
+        assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.5])));
+        assert_eq!(reader.next_chunk().unwrap(), None);
+    }
+
+    #[test]
+    fn a_failed_read_of_a_stream_file_is_its_error() {
+        let frame = chunk_frame(&Stream::new(StreamKind::Samples, samples_body(&[0.5]))).unwrap();
+
+        // the read fails after a whole frame, inside a length and inside a record
+        for cut in [frame.len(), 4, 10] {
+            let mut reader = ChunkReader::new(
+                Faults {
+                    bytes: &frame[..cut],
+                    interrupted: false,
+                    fail: true,
+                },
+                StreamKind::Samples,
+            );
+            if cut == frame.len() {
+                assert!(reader.next_chunk().unwrap().is_some());
+            }
+            let err = reader.next_chunk().unwrap_err();
+            assert_eq!(err.kind(), io::ErrorKind::Other, "cut at {cut}");
+        }
     }
 }
