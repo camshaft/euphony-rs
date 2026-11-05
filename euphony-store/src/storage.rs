@@ -12,7 +12,7 @@ pub trait Storage {
     type Group: Iterator<Item = io::Result<Entry>>;
     type Sink: Iterator<Item = io::Result<SpatialSample>>;
 
-    /// Starts a stream of `kind`, whose record is named by its content hash once it finishes.
+    /// Starts a stream of `kind`, whose file is named by its content hash once it finishes.
     fn create(&self, kind: StreamKind) -> Self::Output;
 
     /// Writes a record's canonical bytes under `hash`, where no file holds that name yet.
@@ -33,6 +33,10 @@ pub trait Storage {
 }
 
 pub trait Output: 'static + Send + Sync {
+    /// Adds `bytes`, whole values of the stream's kind, to the stream. A write that fails ends the
+    /// stream, and `finish` answers the failure.
     fn write(&mut self, bytes: &[u8]);
-    fn finish(&mut self) -> Hash;
+
+    /// Stores the stream and answers its name, or the failure that kept it from being stored.
+    fn finish(&mut self) -> io::Result<Hash>;
 }
