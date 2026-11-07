@@ -49,7 +49,8 @@ impl RenderManifest {
         let channels = decoder.u16()?;
         let layout = ChannelLayout::from_tag(tag, channels);
         let layout = layout.map_err(|_| DecodeError::Invalid("channel layout"))?;
-        let count = decoder.count(80)?;
+        // A segment is two digests, its start and its frame count.
+        let count = decoder.count(2 * Digest::ENCODED_LEN + 16)?;
         let mut segments = Vec::with_capacity(count);
         for _ in 0..count {
             segments.push(Segment {

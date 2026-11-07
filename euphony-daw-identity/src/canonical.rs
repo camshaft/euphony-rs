@@ -1,4 +1,4 @@
-use crate::Digest;
+use crate::{Algorithm, Digest};
 use core::{convert::Infallible, fmt, marker::PhantomData};
 use etude_buffer::{
     reader::{self, Infallible as _},
@@ -73,8 +73,10 @@ impl<W: writer::Buffer> Encoder<W> {
         self.bytes(value.as_bytes())
     }
 
+    /// Writes the digest's algorithm byte, then its bytes.
     pub fn digest(&mut self, value: &Digest) -> &mut Self {
-        self.raw(value.as_bytes())
+        let encoded = value.encoded();
+        self.raw(&encoded)
     }
 
     /// Writes `value` as it is, without its length, for fields of a fixed size.
@@ -238,8 +240,13 @@ where
         String::from_utf8(bytes).map_err(|_| DecodeError::Invalid("text"))
     }
 
+    /// Reads a digest's algorithm byte, then its bytes, and refuses an
+    /// algorithm this build doesn't know.
     pub fn digest(&mut self) -> Result<Digest, DecodeError> {
-        Ok(Digest::from_bytes(self.array()?))
+        let code = self.u8()?;
+        let algorithm = Algorithm::from_code(code);
+        let algorithm = algorithm.ok_or(DecodeError::Invalid("digest algorithm"))?;
+        Ok(Digest::new(algorithm, self.array()?))
     }
 
     /// Reads a count of items, refusing a count that the remaining bytes can't
@@ -371,5 +378,44 @@ mod tests {
         let bytes = encoder.finish();
         let invalid = Decoder::new(&bytes).str();
         assert_eq!(invalid, Err(DecodeError::Invalid("text")));
+    }
+
+    #[test]
+    fn a_digest_encodes_its_algorithm_byte_first() {
+        let digest = Digest::of("euphony test", b"x");
+        let mut encoder = Encoder::new();
+        encoder.digest(&digest);
+        let bytes = encoder.finish();
+        assert_eq!(bytes.len(), Digest::ENCODED_LEN);
+        assert_eq!(bytes[0], 1);
+        assert_eq!(&bytes[1..], digest.as_bytes());
+        let mut decoder = Decoder::new(&bytes);
+        assert_eq!(decoder.digest(), Ok(digest));
+        assert_eq!(decoder.finish(), Ok(()));
+    }
+
+    #[test]
+    fn a_digest_with_an_unknown_algorithm_byte_doesnt_decode() {
+        let digest = Digest::of("euphony test", b"x");
+        let unknown = Err(DecodeError::Invalid("digest algorithm"));
+        for code in [0u8, 2, 0x7f, u8::MAX] {
+            let mut bytes = digest.encoded();
+            bytes[0] = code;
+            assert_eq!(Decoder::new(&bytes).digest(), unknown, "code {code}");
+        }
+    }
+
+    #[test]
+    fn a_digest_cut_after_its_algorithm_byte_is_truncated() {
+        let bytes = Digest::of("euphony test", b"x").encoded();
+        for len in [0, 1, Digest::ENCODED_LEN - 1] {
+            let truncated = Decoder::new(&bytes[..len]).digest();
+            assert_eq!(truncated, Err(DecodeError::Truncated), "length {len}");
+        }
+        let mut trailing = bytes.to_vec();
+        trailing.push(0);
+        let mut decoder = Decoder::new(&trailing);
+        assert!(decoder.digest().is_ok());
+        assert_eq!(decoder.finish(), Err(DecodeError::Trailing));
     }
 }

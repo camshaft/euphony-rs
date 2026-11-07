@@ -63,7 +63,8 @@ impl RenderDescriptor {
         let start = decoder.u64()?;
         let frames = decoder.u64()?;
         let processor = ProcessorId(decoder.digest()?);
-        let count = decoder.count(44)?;
+        // An input is its asset's digest, its position and its gain.
+        let count = decoder.count(Digest::ENCODED_LEN + 12)?;
         let mut inputs = Vec::with_capacity(count);
         for _ in 0..count {
             inputs.push(Input {

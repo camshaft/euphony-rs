@@ -1,6 +1,6 @@
 use crate::{
-    BranchRef, CommandBatch, CommandError, IdempotencyKey, ProjectId, ProjectState, Revision,
-    RevisionId, SignedBranch, SignedRevision,
+    BranchHeadId, BranchRef, CommandBatch, CommandError, IdempotencyKey, ProjectId, ProjectState,
+    Revision, RevisionId, SignedBranch, SignedRevision,
 };
 use core::fmt;
 use euphony_daw_identity::{AuthorKey, DecodeError, Decoder, Digest, Encoder, SignatureError};
@@ -104,6 +104,8 @@ pub struct BranchAuthority {
     state: ProjectState,
     head: Option<RevisionId>,
     sequence: u64,
+    /// The identity of the branch record the current one replaces.
+    previous: Option<BranchHeadId>,
     revisions: BTreeMap<RevisionId, SignedRevision>,
     keys: HashMap<IdempotencyKey, (Digest, RevisionId)>,
     pins: BTreeMap<RevisionId, Digest>,
@@ -128,6 +130,7 @@ impl BranchAuthority {
             state: ProjectState::default(),
             head: None,
             sequence: 0,
+            previous: None,
             revisions: BTreeMap::new(),
             keys: HashMap::new(),
             pins: BTreeMap::new(),
@@ -185,6 +188,7 @@ impl BranchAuthority {
         key: IdempotencyKey,
         batch: Digest,
     ) {
+        self.previous = Some(self.reference().id());
         self.state = state;
         self.head = Some(id);
         self.sequence += 1;
@@ -280,15 +284,20 @@ impl BranchAuthority {
         self.project
     }
 
-    /// The branch reference to the head, signed by the branch's owner.
-    pub fn branch(&self) -> SignedBranch {
-        let reference = BranchRef {
+    /// The branch record of the head, which names the record it replaces.
+    fn reference(&self) -> BranchRef {
+        BranchRef {
             owner: self.key.author(),
             name: self.name.clone(),
             head: self.head,
             sequence: self.sequence,
-        };
-        let signed = reference.sign(&self.key);
+            previous: self.previous,
+        }
+    }
+
+    /// The branch record of the head, signed by the branch's owner.
+    pub fn branch(&self) -> SignedBranch {
+        let signed = self.reference().sign(&self.key);
         signed.expect("the authority signs its own branch")
     }
 }
@@ -296,7 +305,7 @@ impl BranchAuthority {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Command, RegionId, TrackId};
+    use crate::{BranchError, BranchHeads, Command, RegionId, TrackId};
     use euphony_daw_identity::AuthorId;
 
     fn key() -> AuthorKey {
@@ -418,6 +427,36 @@ mod tests {
         }
         assert_eq!(authority.head(), None);
         assert!(authority.state().tracks.is_empty());
+    }
+
+    #[test]
+    fn each_branch_record_names_the_one_it_replaces() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("branch");
+        let actor = key().author();
+        let records = {
+            let mut authority = open(&path);
+            let mut records = vec![authority.branch()];
+            let first = authority.submit(&batch(None, 1, actor, vec![add_track(1)]));
+            let first = first.unwrap();
+            records.push(authority.branch());
+            let second = batch(Some(first.revision), 2, actor, vec![add_track(2)]);
+            authority.submit(&second).unwrap();
+            records.push(authority.branch());
+            records
+        };
+        assert_eq!(records[0].branch.previous, None);
+        let mut heads = BranchHeads::new(records[0].clone()).unwrap();
+        for record in &records[1..] {
+            assert_eq!(heads.offer(record.clone()), Ok(()));
+        }
+
+        // Reopening replays the journal to the same record, which the reader
+        // holds already.
+        let reopened = open(&path).branch();
+        assert_eq!(reopened, records[2]);
+        let refused = heads.offer(reopened);
+        assert!(matches!(refused, Err(BranchError::Replayed { .. })));
     }
 
     #[test]

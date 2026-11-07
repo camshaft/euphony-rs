@@ -67,7 +67,11 @@ impl AuthorId {
 
 impl fmt::Debug for AuthorId {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "AuthorId({})", Digest::from_bytes(self.0))
+        f.write_str("AuthorId(")?;
+        for byte in &self.0 {
+            write!(f, "{byte:02x}")?;
+        }
+        f.write_str(")")
     }
 }
 

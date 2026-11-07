@@ -11,5 +11,8 @@ mod state;
 
 pub use authority::{AuthorityError, BranchAuthority, Committed, SubmitError};
 pub use command::{Command, CommandBatch, CommandError, IdempotencyKey};
-pub use revision::{BranchRef, Revision, RevisionId, SignedBranch, SignedRevision};
+pub use revision::{
+    BranchConflict, BranchError, BranchHeadId, BranchHeads, BranchRef, Revision, RevisionId,
+    SignedBranch, SignedRevision,
+};
 pub use state::{ProjectId, ProjectState, Region, RegionId, Track, TrackId};
