@@ -1,5 +1,5 @@
-//! Playback through the platform's default output device, on cpal's default
-//! host.
+//! Playback through an output device, by default the platform's default
+//! output device on cpal's default host.
 //!
 //! The device is asked for the audio's sample rate and binary32 samples, and
 //! one that can't play them is refused with a typed error: nothing
@@ -14,7 +14,7 @@ use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use rtrb::RingBuffer;
 use std::{sync::Arc, thread::JoinHandle, time::Duration};
 
-/// The platform's default output device.
+/// An output device of any cpal host.
 pub struct NativeDevice {
     device: cpal::Device,
     default: DeviceFormat,
@@ -28,6 +28,7 @@ struct Playback {
     reader: Option<JoinHandle<()>>,
     events: Events,
     buffer_frames: usize,
+    ring_frames: usize,
 }
 
 impl Drop for Playback {
@@ -52,6 +53,11 @@ impl NativeDevice {
         let host = cpal::default_host();
         let device = host.default_output_device();
         let device = device.ok_or_else(|| unavailable("there is no output device"))?;
+        Self::open(device)
+    }
+
+    /// Opens `device`, of any host.
+    pub fn open(device: cpal::Device) -> Result<Self, DeviceError> {
         let config = device.default_output_config().map_err(unavailable)?;
         let default = DeviceFormat {
             sample_rate: config.sample_rate(),
@@ -74,6 +80,11 @@ impl NativeDevice {
     /// The frames of each callback, as the playing stream measured them.
     pub fn buffer_frames(&self) -> Option<usize> {
         Some(self.playback.as_ref()?.buffer_frames)
+    }
+
+    /// The frames the playing stream's ring holds.
+    pub fn ring_frames(&self) -> Option<usize> {
+        Some(self.playback.as_ref()?.ring_frames)
     }
 
     /// The latest latency from a callback to the playback of its first
@@ -226,6 +237,7 @@ impl Device for NativeDevice {
             reader: Some(thread),
             events,
             buffer_frames,
+            ring_frames: capacity,
         };
         let handed = handoff_in.push(callback);
         handed.map_err(|_| unavailable("the stream's callback didn't take its ring"))?;
@@ -240,6 +252,18 @@ impl Device for NativeDevice {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use cpal::{
+        platform::CustomDevice, Data, DeviceDescription, DeviceDescriptionBuilder, DeviceId,
+        ErrorKind, FrameCount, InputCallbackInfo, OutputCallbackInfo, OutputStreamTimestamp,
+        SampleFormat, StreamConfig, StreamInstant, SupportedBufferSize, SupportedStreamConfig,
+        SupportedStreamConfigRange,
+    };
+    use euphony_daw_sample::ChannelLayout;
+    use std::{
+        fmt,
+        hash::{Hash, Hasher},
+        sync::{Mutex, MutexGuard},
+    };
 
     fn check(kind: cpal::ErrorKind, event: PlaybackEvent) {
         assert_eq!(event_for(&cpal::Error::new(kind)), event, "{kind:?}");
@@ -262,5 +286,394 @@ mod tests {
         check(K::BackendError, Transport(T::Backend));
         check(K::UnsupportedConfig, Transport(T::Other));
         check(K::Other, Transport(T::Other));
+    }
+
+    type DataCallback = Box<dyn FnMut(&mut Data, &OutputCallbackInfo) + Send>;
+    type ErrorCallback = Box<dyn FnMut(cpal::Error) + Send>;
+
+    /// What a scripted device answers, and what the stream it built holds.
+    #[derive(Default)]
+    struct Script {
+        /// The configurations the device answers it plays.
+        ranges: Vec<SupportedStreamConfigRange>,
+        /// The buffer size the built stream measures, or none where it can't
+        /// tell.
+        measured: Option<FrameCount>,
+        /// The frames of a period the device plays while it builds the
+        /// stream, before anyone starts it.
+        period_at_build: Option<usize>,
+        /// What that period played.
+        played_at_build: Option<Vec<f32>>,
+        /// The configuration and sample format the stream was built with.
+        built: Option<(StreamConfig, SampleFormat)>,
+        data: Option<DataCallback>,
+        errors: Option<ErrorCallback>,
+        playing: bool,
+    }
+
+    /// An output device of cpal's custom host whose answers a test chooses,
+    /// and whose stream's callbacks the test calls itself, one period at a
+    /// time, as the platform's audio thread would.
+    #[derive(Clone)]
+    struct ScriptedDevice(Arc<Mutex<Script>>);
+
+    impl ScriptedDevice {
+        fn new(script: Script) -> Self {
+            Self(Arc::new(Mutex::new(script)))
+        }
+
+        fn script(&self) -> MutexGuard<'_, Script> {
+            self.0.lock().unwrap()
+        }
+
+        /// A native device that plays through this one.
+        fn open(&self) -> NativeDevice {
+            let device = cpal::Device::from(CustomDevice::from_device(self.clone()));
+            NativeDevice::open(device).unwrap()
+        }
+
+        /// Plays one period of `frames` frames at the given timestamps.
+        fn period(
+            &self,
+            frames: usize,
+            callback: StreamInstant,
+            playback: StreamInstant,
+        ) -> Vec<f32> {
+            play_period(&mut self.script(), frames, callback, playback)
+        }
+
+        /// Reports an error of `kind` on the stream's error callback.
+        fn fail(&self, kind: ErrorKind) {
+            let mut script = self.script();
+            let errors = script.errors.as_mut().expect("a stream was built");
+            errors(cpal::Error::new(kind));
+        }
+    }
+
+    fn play_period(
+        script: &mut Script,
+        frames: usize,
+        callback: StreamInstant,
+        playback: StreamInstant,
+    ) -> Vec<f32> {
+        let (config, _) = script.built.as_ref().expect("a stream was built");
+        let mut buffer = vec![0.0f32; frames * usize::from(config.channels)];
+        let data = script.data.as_mut().expect("the stream is live");
+        {
+            let len = buffer.len();
+            let samples = buffer.as_mut_ptr().cast();
+            // SAFETY: `buffer` holds `len` binary32 samples and outlives
+            // `raw`.
+            let mut raw = unsafe { Data::from_parts(samples, len, SampleFormat::F32) };
+            let timestamp = OutputStreamTimestamp { callback, playback };
+            data(&mut raw, &OutputCallbackInfo::new(timestamp));
+        }
+        buffer
+    }
+
+    impl fmt::Debug for ScriptedDevice {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("ScriptedDevice")
+        }
+    }
+
+    impl fmt::Display for ScriptedDevice {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("scripted")
+        }
+    }
+
+    impl PartialEq for ScriptedDevice {
+        fn eq(&self, other: &Self) -> bool {
+            Arc::ptr_eq(&self.0, &other.0)
+        }
+    }
+
+    impl Eq for ScriptedDevice {}
+
+    impl Hash for ScriptedDevice {
+        fn hash<H: Hasher>(&self, state: &mut H) {
+            Arc::as_ptr(&self.0).hash(state);
+        }
+    }
+
+    impl DeviceTrait for ScriptedDevice {
+        type SupportedInputConfigs = std::vec::IntoIter<SupportedStreamConfigRange>;
+        type SupportedOutputConfigs = std::vec::IntoIter<SupportedStreamConfigRange>;
+        type Stream = ScriptedStream;
+
+        fn description(&self) -> Result<DeviceDescription, cpal::Error> {
+            Ok(DeviceDescriptionBuilder::new("scripted").build())
+        }
+
+        fn id(&self) -> Result<DeviceId, cpal::Error> {
+            Err(cpal::Error::new(ErrorKind::UnsupportedOperation))
+        }
+
+        fn supported_input_configs(&self) -> Result<Self::SupportedInputConfigs, cpal::Error> {
+            Ok(Vec::new().into_iter())
+        }
+
+        fn supported_output_configs(&self) -> Result<Self::SupportedOutputConfigs, cpal::Error> {
+            Ok(self.script().ranges.clone().into_iter())
+        }
+
+        fn default_input_config(&self) -> Result<SupportedStreamConfig, cpal::Error> {
+            Err(cpal::Error::new(ErrorKind::UnsupportedConfig))
+        }
+
+        fn default_output_config(&self) -> Result<SupportedStreamConfig, cpal::Error> {
+            let script = self.script();
+            let range = script.ranges.first();
+            let range = range.ok_or_else(|| cpal::Error::new(ErrorKind::UnsupportedConfig))?;
+            Ok(SupportedStreamConfig::new(
+                range.channels(),
+                range.max_sample_rate(),
+                range.buffer_size().clone(),
+                range.sample_format(),
+            ))
+        }
+
+        fn build_input_stream_raw<D, E>(
+            &self,
+            _: StreamConfig,
+            _: SampleFormat,
+            _: D,
+            _: E,
+            _: Option<Duration>,
+        ) -> Result<Self::Stream, cpal::Error>
+        where
+            D: FnMut(&Data, &InputCallbackInfo) + Send + 'static,
+            E: FnMut(cpal::Error) + Send + 'static,
+        {
+            Err(cpal::Error::new(ErrorKind::UnsupportedOperation))
+        }
+
+        fn build_output_stream_raw<D, E>(
+            &self,
+            config: StreamConfig,
+            sample_format: SampleFormat,
+            data: D,
+            errors: E,
+            _: Option<Duration>,
+        ) -> Result<Self::Stream, cpal::Error>
+        where
+            D: FnMut(&mut Data, &OutputCallbackInfo) + Send + 'static,
+            E: FnMut(cpal::Error) + Send + 'static,
+        {
+            let mut script = self.script();
+            script.built = Some((config, sample_format));
+            script.data = Some(Box::new(data));
+            script.errors = Some(Box::new(errors));
+            script.playing = false;
+            if let Some(frames) = script.period_at_build {
+                let at = StreamInstant::new(0, 0);
+                let played = play_period(&mut script, frames, at, at);
+                script.played_at_build = Some(played);
+            }
+            Ok(ScriptedStream(self.0.clone()))
+        }
+    }
+
+    /// The stream a scripted device built.
+    struct ScriptedStream(Arc<Mutex<Script>>);
+
+    impl StreamTrait for ScriptedStream {
+        fn play(&self) -> Result<(), cpal::Error> {
+            self.0.lock().unwrap().playing = true;
+            Ok(())
+        }
+
+        fn pause(&self) -> Result<(), cpal::Error> {
+            self.0.lock().unwrap().playing = false;
+            Ok(())
+        }
+
+        fn now(&self) -> StreamInstant {
+            StreamInstant::new(0, 0)
+        }
+
+        fn buffer_size(&self) -> Result<FrameCount, cpal::Error> {
+            let measured = self.0.lock().unwrap().measured;
+            measured.ok_or_else(|| cpal::Error::new(ErrorKind::UnsupportedOperation))
+        }
+    }
+
+    impl Drop for ScriptedStream {
+        fn drop(&mut self) {
+            // A dropped stream stops and lets its callbacks go, as a
+            // platform's stream does.
+            if let Ok(mut script) = self.0.lock() {
+                script.data = None;
+                script.errors = None;
+                script.playing = false;
+            }
+        }
+    }
+
+    const BUFFERS: SupportedBufferSize = SupportedBufferSize::Range { min: 64, max: 1024 };
+
+    fn range(
+        sample_rate: u32,
+        format: SampleFormat,
+        buffers: SupportedBufferSize,
+    ) -> SupportedStreamConfigRange {
+        SupportedStreamConfigRange::new(2, sample_rate, sample_rate, buffers, format)
+    }
+
+    fn device(
+        ranges: Vec<SupportedStreamConfigRange>,
+        measured: Option<FrameCount>,
+    ) -> ScriptedDevice {
+        ScriptedDevice::new(Script {
+            ranges,
+            measured,
+            ..Script::default()
+        })
+    }
+
+    fn stereo(sample_rate: u32) -> DeviceFormat {
+        DeviceFormat {
+            sample_rate,
+            channels: 2,
+        }
+    }
+
+    /// Stereo audio at 48 kHz whose samples count up from 1, so that no
+    /// sample of it is silence.
+    fn audio(frames: usize) -> PreparedAudio {
+        let samples = (0..frames * 2).map(|i| (i + 1) as f32).collect();
+        PreparedAudio::new(48_000, ChannelLayout::Stereo, samples)
+    }
+
+    fn at(secs: u64, nanos: u32) -> StreamInstant {
+        StreamInstant::new(secs, nanos)
+    }
+
+    #[test]
+    fn a_device_without_the_audios_rate_is_refused_as_unsupported() {
+        let mono = SupportedStreamConfigRange::new(1, 48_000, 48_000, BUFFERS, SampleFormat::F32);
+        let scripted = device(vec![range(44_100, SampleFormat::F32, BUFFERS), mono], Some(256));
+        let mut native = scripted.open();
+        let expected = DeviceError::Unsupported {
+            device: stereo(44_100),
+            audio: stereo(48_000),
+        };
+        assert_eq!(native.play(&audio(16)), Err(expected));
+        assert!(scripted.script().built.is_none());
+        assert_eq!(native.buffer_frames(), None);
+    }
+
+    #[test]
+    fn a_device_without_binary32_samples_is_refused_with_the_sample_type_error() {
+        let ranges = vec![
+            range(48_000, SampleFormat::I16, BUFFERS),
+            range(48_000, SampleFormat::I32, BUFFERS),
+        ];
+        let scripted = device(ranges, Some(256));
+        let mut native = scripted.open();
+        assert_eq!(native.play(&audio(16)), Err(DeviceError::SampleType));
+        assert!(scripted.script().built.is_none());
+    }
+
+    #[test]
+    fn the_ring_holds_the_measured_buffer_size_times_the_periods_ahead() {
+        let ranges = vec![
+            range(44_100, SampleFormat::F32, BUFFERS),
+            range(48_000, SampleFormat::F32, BUFFERS),
+        ];
+        let scripted = device(ranges, Some(256));
+        let mut native = scripted.open().with_periods_ahead(3);
+        native.play(&audio(16)).unwrap();
+        assert_eq!(native.buffer_frames(), Some(256));
+        assert_eq!(native.ring_frames(), Some(768));
+
+        let script = scripted.script();
+        let (config, format) = script.built.as_ref().unwrap();
+        assert_eq!(config.sample_rate, 48_000);
+        assert_eq!(config.channels, 2);
+        assert_eq!(config.buffer_size, cpal::BufferSize::Default);
+        assert_eq!(*format, SampleFormat::F32);
+        assert!(script.playing);
+    }
+
+    #[test]
+    fn a_stream_that_doesnt_measure_its_buffer_sizes_the_ring_from_the_devices_most() {
+        let scripted = device(vec![range(48_000, SampleFormat::F32, BUFFERS)], None);
+        let mut native = scripted.open().with_periods_ahead(2);
+        native.play(&audio(16)).unwrap();
+        assert_eq!(native.buffer_frames(), Some(1024));
+        assert_eq!(native.ring_frames(), Some(2048));
+    }
+
+    #[test]
+    fn a_device_without_any_buffer_size_is_refused() {
+        let unknown = range(48_000, SampleFormat::F32, SupportedBufferSize::Unknown);
+        let scripted = device(vec![unknown], None);
+        let mut native = scripted.open();
+        assert_eq!(native.play(&audio(16)), Err(DeviceError::BufferSize));
+        assert_eq!(native.buffer_frames(), None);
+    }
+
+    #[test]
+    fn a_stream_built_stopped_plays_silence_until_its_ring_arrives_then_every_frame() {
+        let scripted = ScriptedDevice::new(Script {
+            ranges: vec![range(48_000, SampleFormat::F32, BUFFERS)],
+            measured: Some(64),
+            period_at_build: Some(64),
+            ..Script::default()
+        });
+        let mut native = scripted.open();
+        let prepared = audio(1000);
+        native.play(&prepared).unwrap();
+        {
+            let script = scripted.script();
+            let silence = script.played_at_build.as_ref().unwrap();
+            assert_eq!(silence, &vec![0.0f32; 128]);
+            assert!(script.playing);
+        }
+        assert_eq!(native.counters().unwrap().underruns(), 0);
+
+        // The reader thread fills the ring at its own pace: keep the audio's
+        // samples of each period, until the callback reports the end.
+        let mut played = Vec::new();
+        let mut ended = false;
+        while !ended {
+            let period = scripted.period(64, at(1, 0), at(1, 0));
+            played.extend(period.into_iter().filter(|sample| sample.to_bits() != 0));
+            while let Some(event) = native.next_event() {
+                ended |= event == PlaybackEvent::Ended;
+            }
+            std::thread::yield_now();
+        }
+        assert_eq!(played.len(), prepared.samples().len());
+        for (played, expected) in played.iter().zip(prepared.samples()) {
+            assert_eq!(played.to_bits(), expected.to_bits());
+        }
+    }
+
+    #[test]
+    fn a_device_loss_reported_by_the_error_callback_comes_back_as_device_lost() {
+        let scripted = device(vec![range(48_000, SampleFormat::F32, BUFFERS)], Some(64));
+        let mut native = scripted.open();
+        native.play(&audio(16)).unwrap();
+        assert_eq!(native.next_event(), None);
+        scripted.fail(ErrorKind::DeviceNotAvailable);
+        assert_eq!(native.next_event(), Some(PlaybackEvent::DeviceLost));
+        scripted.fail(ErrorKind::DeviceChanged);
+        assert_eq!(native.next_event(), Some(PlaybackEvent::DeviceChanged));
+        assert_eq!(native.next_event(), None);
+    }
+
+    #[test]
+    fn the_reported_latency_is_the_playback_timestamp_less_the_callback_timestamp() {
+        let scripted = device(vec![range(48_000, SampleFormat::F32, BUFFERS)], Some(64));
+        let mut native = scripted.open();
+        native.play(&audio(1000)).unwrap();
+        assert_eq!(native.latency(), None);
+        scripted.period(64, at(10, 250_000_000), at(10, 262_500_000));
+        assert_eq!(native.latency(), Some(Duration::from_micros(12_500)));
+        scripted.period(64, at(11, 999_000_000), at(12, 4_000_000));
+        assert_eq!(native.latency(), Some(Duration::from_millis(5)));
     }
 }

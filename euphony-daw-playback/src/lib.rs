@@ -6,7 +6,7 @@
 //! blocking.
 
 mod device;
-#[cfg(feature = "native")]
+#[cfg(any(feature = "native", test))]
 pub mod native;
 mod prepare;
 pub mod ring;
