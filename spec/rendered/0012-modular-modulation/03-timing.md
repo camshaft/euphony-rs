@@ -59,7 +59,11 @@ A route that asks for sample accuracy to a target that accepts updates once a bl
 
 ### EU-0012-054 {#EU-0012-054}
 
-Reducing the rate of a control MUST filter it against aliasing and record the latency the filter adds.
+Reducing the rate of a control MUST filter it against aliasing.
+
+### EU-0012-155 {#EU-0012-155}
+
+Reducing the rate of a control MUST record the latency its anti-alias filter adds.
 
 ### EU-0012-055 {#EU-0012-055}
 
