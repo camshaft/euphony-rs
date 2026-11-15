@@ -2,4 +2,4 @@ target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-
 
 [[spec]]
 level = "MUST"
-quote = "A grant of remote inference over private data classes MUST be refused unless a verification record covers its destination and the current version of its retention and training terms."
+quote = "A grant of remote inference over private data classes MUST be refused unless a passing verification record binds its destination, the current version of its retention and training terms, and the grant's subject and project scope."

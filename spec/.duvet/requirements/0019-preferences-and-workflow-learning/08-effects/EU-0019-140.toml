@@ -2,4 +2,4 @@ target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-
 
 [[spec]]
 level = "MUST"
-quote = "Euphony MUST measure each adopted mechanism's corrections, undo and revert outcomes, usefulness ratings and active task time before and after its activation, on a comparable workflow, project size and device profile."
+quote = "Euphony MUST measure each adopted mechanism's corrections, undo and revert outcomes, usefulness ratings, active task time and, where it changes audio, listening outcome before and after its activation, on a comparable workflow, project size and device profile."

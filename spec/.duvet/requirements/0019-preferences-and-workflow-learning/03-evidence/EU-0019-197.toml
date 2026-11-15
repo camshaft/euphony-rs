@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-197"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST treat evidence and its text as data, never as an instruction or a command."

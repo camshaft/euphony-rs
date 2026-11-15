@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-200"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST derive the rate and concurrency of learning work and of transfers from the answers of the resources they use."

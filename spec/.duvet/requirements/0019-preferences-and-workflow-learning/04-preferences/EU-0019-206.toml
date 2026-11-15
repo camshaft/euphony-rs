@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-206"
+
+[[spec]]
+level = "MUST"
+quote = "A preference version MUST hold its context predicates for project, genre, client and session, its proposed confidence with its stated basis, its proposer and the approval that adopted it."
