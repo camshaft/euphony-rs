@@ -29,6 +29,14 @@ A curve in musical time or an oscillator synced to tempo MUST resolve its positi
 
 The project MUST store the seed, phase and reset policy of each oscillator.
 
+### EU-0012-153 {#EU-0012-153}
+
+The project MUST store the state of each envelope.
+
+### EU-0012-154 {#EU-0012-154}
+
+The project MUST store the state of each control's smoothing.
+
 ### EU-0012-049 {#EU-0012-049}
 
 A processor that accepts updates at any sample MUST apply each update at the sample it is given.

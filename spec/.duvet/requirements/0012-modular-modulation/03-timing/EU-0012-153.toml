@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-153"
+
+[[spec]]
+level = "MUST"
+quote = "The project MUST store the state of each envelope."
