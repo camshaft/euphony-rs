@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/03-key-constraints.md#EU-0009-033"
+
+[[spec]]
+level = "MUST"
+quote = "A program whose output fails validation MUST NOT change the project."

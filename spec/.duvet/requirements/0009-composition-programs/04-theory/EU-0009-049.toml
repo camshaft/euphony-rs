@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-049"
+
+[[spec]]
+level = "MUST"
+quote = "A theory operation MUST NOT grant access to an asset or a device, or a way to run native code."

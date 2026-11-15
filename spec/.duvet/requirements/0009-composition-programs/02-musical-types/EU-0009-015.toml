@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-015"
+
+[[spec]]
+level = "MUST"
+quote = "A rational musical value MUST be held reduced, with its sign on the numerator."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-012"
+
+[[spec]]
+level = "MUST"
+quote = "The types a program is checked against MUST define the same kinds of value and the same rules as the musical model of the project."

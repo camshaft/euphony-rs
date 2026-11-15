@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-040"
+
+[[spec]]
+level = "MUST"
+quote = "The resolution of a pitch to a frequency MUST use a tuning and a reference frequency that the caller states."

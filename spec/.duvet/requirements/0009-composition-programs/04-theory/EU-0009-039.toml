@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-039"
+
+[[spec]]
+level = "MUST"
+quote = "The expansion of a scale degree to a pitch and the collapse of a pitch to a scale degree MUST follow a rounding policy that the caller declares."

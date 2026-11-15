@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/01-programs.md#EU-0009-007"
+
+[[spec]]
+level = "MUST"
+quote = "The accepted output of a composition program MUST become editable tracks of the project."

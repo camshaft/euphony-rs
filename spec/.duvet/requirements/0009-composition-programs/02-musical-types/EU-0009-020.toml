@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-020"
+
+[[spec]]
+level = "MUST"
+quote = "The encoding of a rational musical value MUST hold its numerator and denominator as integers of any size that every client reads without loss."

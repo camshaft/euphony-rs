@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-041"
+
+[[spec]]
+level = "MUST"
+quote = "A conversion of a musical position or duration to the sample grid MUST read a revision of the tempo and meter map that the caller states."

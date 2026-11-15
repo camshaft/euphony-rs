@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-011"
+
+[[spec]]
+level = "MUST"
+quote = "An operation MUST NOT accept a musical value of a kind it is not defined for, such as an interval added to a duration."

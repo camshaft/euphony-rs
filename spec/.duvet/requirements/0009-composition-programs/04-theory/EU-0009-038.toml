@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-038"
+
+[[spec]]
+level = "MUST"
+quote = "Each theory operation MUST receive its conversion context explicitly."

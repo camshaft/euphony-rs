@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-047"
+
+[[spec]]
+level = "MUST"
+quote = "Each musical event a program generates MUST be placed at an exact rational position."
