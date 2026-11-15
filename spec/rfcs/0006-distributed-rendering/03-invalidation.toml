@@ -91,7 +91,7 @@ level = 'MUST'
 polarity = 'required'
 statement = 'Independent render islands and independent time ranges MUST be able to render on different workers at the same time.'
 binds_to = 'system'
-rationale = 'The work of a project fans out across the owner's computers.'
+rationale = "The work of a project fans out across the owner's computers."
 
 [[requirement]]
 id = 'EU-0006-035'
