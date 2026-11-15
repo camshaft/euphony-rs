@@ -140,9 +140,17 @@ rationale = "A runaway loop stops in one action."
 id = "EU-0012-072"
 level = "MUST"
 polarity = "required"
-statement = "An output that isn't finite MUST fault the rendering of the part of the project that produced it and protect the output."
+statement = "An output that isn't finite MUST fault the rendering of the part of the project that produced it."
 binds_to = "system"
 rationale = "A broken loop is stopped where it starts."
+
+[[requirement]]
+id = "EU-0012-156"
+level = "MUST"
+polarity = "forbidden"
+statement = "An output value that isn't finite MUST NOT reach the audio device."
+binds_to = "system"
+rationale = "A fault never reaches a listener or a device."
 
 [[requirement]]
 id = "EU-0012-073"
