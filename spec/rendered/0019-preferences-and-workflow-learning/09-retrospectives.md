@@ -34,6 +34,10 @@ The event that creates retrospective work MUST make the work available at once a
 
 Retrospective work MUST NOT depend on polling or on a calendar wake.
 
+### EU-0019-210 {#EU-0019-210}
+
+Euphony MUST show the owner the changes a retrospective proposes together as one diff.
+
 ### EU-0019-161 {#EU-0019-161}
 
 The owner MUST be able to accept or reject each change a retrospective proposes on its own.

@@ -69,6 +69,14 @@ binds_to = 'system'
 rationale = 'A retrospective follows the event that asked for it.'
 
 [[requirement]]
+id = 'EU-0019-210'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST show the owner the changes a retrospective proposes together as one diff.'
+binds_to = 'system'
+rationale = "The owner reads a retrospective's proposals as a whole before deciding each one."
+
+[[requirement]]
 id = 'EU-0019-161'
 level = 'MUST'
 polarity = 'required'
