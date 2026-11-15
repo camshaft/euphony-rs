@@ -2,4 +2,4 @@ target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#
 
 [[spec]]
 level = "MUST"
-quote = "An assistant MUST be able to preview the effect of a change it proposes through the client protocol."
+quote = "Through the client protocol, an assistant MUST be able to preview the effect of a change it proposes."
