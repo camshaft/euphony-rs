@@ -119,7 +119,6 @@ polarity = 'required'
 statement = 'A batch sent again with the idempotency key of a committed batch MUST receive the outcome of that committed batch.'
 binds_to = 'system'
 rationale = 'A sender whose answer was lost learns what happened.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-019' } ]
 
 [[requirement]]
 id = 'EU-0004-021'
