@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-109"
+
+[[spec]]
+level = "MUST"
+quote = "The aggregation of a new route MUST be the sum."

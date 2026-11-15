@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-098"
+
+[[spec]]
+level = "MUST"
+quote = "The target of a per-voice route MUST be a control of one voice of a processor that plays several notes at once."

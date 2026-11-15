@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-114"
+
+[[spec]]
+level = "MUST"
+quote = "Voice allocation and per-voice values MUST match in prepared playback, in live playback and after a checkpoint is restored."

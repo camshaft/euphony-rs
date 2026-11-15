@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-083"
+
+[[spec]]
+level = "MUST"
+quote = "A remote computer that prepares audio MUST compute the same control graph as the local renderer."

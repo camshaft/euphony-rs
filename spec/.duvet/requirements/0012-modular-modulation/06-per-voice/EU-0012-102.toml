@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-102"
+
+[[spec]]
+level = "MUST"
+quote = "A note identifier MUST NOT depend on the order in which notes arrive from several computers."
