@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-042"
+
+[[spec]]
+level = "MUST"
+quote = "The check MUST fail where a generated file differs from a fresh rendering of the sources."

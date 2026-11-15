@@ -1,0 +1,12 @@
+'$schema' = "https://awslabs.github.io/duvet/config/v0.4.0.json"
+
+# The requirement side of the trace: duvet reads every requirement file under .duvet/requirements,
+# which partimento render writes from the RFC sources, so the config doesn't list a specification
+# to extract and nothing is extracted from the rendered text (EU-0000-046).
+# An implementation that cites the requirements adds its code as [[source]] patterns.
+
+[report.json]
+enabled = true
+
+[report.html]
+enabled = true

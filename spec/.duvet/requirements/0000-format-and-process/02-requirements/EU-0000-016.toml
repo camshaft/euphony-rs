@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-016"
+
+[[spec]]
+level = "MUST"
+quote = "An identifier MUST NOT be held by two requirements, at the same time or one after the other."

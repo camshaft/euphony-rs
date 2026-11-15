@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/05-implementations.md#EU-0000-044"
+
+[[spec]]
+level = "MUST"
+quote = "A citation of a requirement MUST quote the requirement's statement."

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/05-implementations.md#EU-0000-045"
+
+[[spec]]
+level = "MUST"
+quote = "An implementation that leaves a requirement unbuilt on purpose MUST say so in its citation of that requirement, with its reason."

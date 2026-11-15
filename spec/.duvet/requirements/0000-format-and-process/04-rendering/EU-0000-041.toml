@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-041"
+
+[[spec]]
+level = "MUST"
+quote = "A generated file MUST NOT be written by anything other than the renderer."

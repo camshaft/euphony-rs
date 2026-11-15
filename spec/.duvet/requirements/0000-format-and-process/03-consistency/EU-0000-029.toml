@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-029"
+
+[[spec]]
+level = "MUST"
+quote = "A change MUST NOT merge while the formulas of the set are unsatisfiable together."

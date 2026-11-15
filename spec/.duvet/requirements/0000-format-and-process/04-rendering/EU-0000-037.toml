@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-037"
+
+[[spec]]
+level = "MUST"
+quote = "The rendered text MUST hold each requirement as a heading of its identifier followed by its statement, in the order of the source."

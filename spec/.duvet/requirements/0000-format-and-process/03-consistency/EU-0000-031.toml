@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-031"
+
+[[spec]]
+level = "MUST"
+quote = "Each condition of a requirement MUST be able to hold together with the rest of the set."

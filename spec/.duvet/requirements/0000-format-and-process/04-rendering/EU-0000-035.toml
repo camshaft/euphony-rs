@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-035"
+
+[[spec]]
+level = "MUST"
+quote = "The rendered text of a section MUST begin with the section title in a heading that carries its anchor."

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-051"
+
+[[spec]]
+level = "MUST"
+quote = "A change MUST merge only once its check has passed on its last commit."

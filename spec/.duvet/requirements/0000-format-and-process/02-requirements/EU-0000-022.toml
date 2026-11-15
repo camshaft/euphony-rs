@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-022"
+
+[[spec]]
+level = "MUST"
+quote = "A statement MUST NOT name a product, vendor, library or technology where it can name the category."

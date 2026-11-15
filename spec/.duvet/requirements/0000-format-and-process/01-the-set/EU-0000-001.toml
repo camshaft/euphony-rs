@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-001"
+
+[[spec]]
+level = "MUST"
+quote = "The set MUST hold exactly one configuration file."

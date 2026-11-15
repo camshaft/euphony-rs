@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-015"
+
+[[spec]]
+level = "MUST"
+quote = "A requirement MUST keep its identifier for its life, including after it moves to another RFC."

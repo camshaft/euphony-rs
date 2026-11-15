@@ -1,0 +1,138 @@
+[section]
+anchor = 'requirements'
+title = 'Sections, requirements and identifiers'
+problem = """\
+  A citation of a requirement breaks when its words change, a requirement that states two obligations \
+  or an implementation choice cannot be checked or built in another way, and a reader cannot tell why \
+  a requirement exists, unless each requirement has a fixed form and a fixed identifier."""
+motivation = """\
+  Fields for every part of a requirement, an identifier kept for life, and one key word and one \
+  obligation in each statement let a reader, a tool and an implementation read each requirement \
+  the same way, whatever language builds it."""
+prose = """
+A section file holds one section table, with the fields anchor, title, problem, motivation and prose,
+and then one requirement table for each requirement. The fields of a requirement are id, label,
+level, polarity, statement, conditions, compose, parts, relations, logic, params, binds_to and
+rationale. The level is one of the levels the configuration file lists, from the strongest, through
+the recommended, to the permissive, and the polarity is required or forbidden. A requirement binds
+to the system, or to the process by which the specification itself changes. The label can change;
+the identifier never does. A key word is written in capitals. An identifier is the prefix, a hyphen, the four-digit number of the RFC
+that first held the requirement, a hyphen and a three-digit sequence number. The anchor of a section
+is unique in its RFC and stays the same when its title changes. The rationale says why a requirement
+exists, and the check doesn't read it. An RFC of the system group states where its component
+is going, as a person or another component sees it, and leaves how to build it to each
+implementation."""
+
+[[requirement]]
+id = 'EU-0000-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each section MUST state the problem it solves and the motivation for its requirements.'
+binds_to = 'process'
+rationale = 'A reader knows what a section solves and why before reading its requirements.'
+
+[[requirement]]
+id = 'EU-0000-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each requirement MUST have an identifier made of the prefix, the number of the RFC that first held it, and a sequence number.'
+binds_to = 'process'
+rationale = 'A reader finds where a requirement was first written from its identifier alone.'
+relations = [ { kind = 'depends_on', target = 'EU-0000-002' } ]
+
+[[requirement]]
+id = 'EU-0000-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'A requirement MUST keep its identifier for its life, including after it moves to another RFC.'
+binds_to = 'process'
+rationale = 'Every citation of a requirement keeps pointing at it.'
+
+[[requirement]]
+id = 'EU-0000-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An identifier MUST NOT be held by two requirements, at the same time or one after the other.'
+binds_to = 'process'
+rationale = 'A citation of a removed requirement never points at a new one.'
+
+[[requirement]]
+id = 'EU-0000-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'An RFC MUST list in its retired list the identifier of each requirement it removes.'
+binds_to = 'process'
+rationale = 'The check finds every identifier ever removed, and refuses to use it for another requirement; a requirement that moves keeps its identifier and is not retired.'
+
+[[requirement]]
+id = 'EU-0000-018'
+level = 'MUST'
+polarity = 'required'
+statement = "A requirement's statement MUST hold exactly one key word."
+binds_to = 'process'
+rationale = 'Each statement has one level that a reader and the tracing tool read the same way.'
+
+[[requirement]]
+id = 'EU-0000-019'
+level = 'MUST'
+polarity = 'required'
+statement = "The key word of a statement MUST match the requirement's level and polarity."
+binds_to = 'process'
+rationale = 'The fields and the words of a requirement never disagree.'
+relations = [ { kind = 'depends_on', target = 'EU-0000-018' } ]
+
+[[requirement]]
+id = 'EU-0000-020'
+level = 'MUST'
+polarity = 'required'
+statement = "A requirement's statement MUST state exactly one obligation."
+binds_to = 'process'
+rationale = 'Each citation and each check covers one thing.'
+
+[[requirement]]
+id = 'EU-0000-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A statement MUST NOT describe how any implementation meets it.'
+binds_to = 'process'
+rationale = 'An implementation in any language can be built from the set alone.'
+
+[[requirement]]
+id = 'EU-0000-022'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A statement MUST NOT name a product, vendor, library or technology where it can name the category.'
+binds_to = 'process'
+rationale = 'The requirement stays true when an implementation changes what it is built with.'
+
+[[requirement]]
+id = 'EU-0000-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An RFC MUST NOT state which requirements any implementation builds.'
+binds_to = 'process'
+rationale = 'What an implementation builds is read from its citations, so the set never falls behind it.'
+
+[[requirement]]
+id = 'EU-0000-024'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An RFC MUST NOT offer alternatives for an implementer to choose between.'
+binds_to = 'process'
+rationale = 'Every implementation meets the same requirements.'
+
+[[requirement]]
+id = 'EU-0000-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each RFC of the system group MUST state the end state of its component, whether or not an implementation has reached it.'
+binds_to = 'process'
+rationale = 'The set states every capability euphony is meant to have.'
+
+[[requirement]]
+id = 'EU-0000-026'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The prose of a section MUST NOT hold a key word.'
+binds_to = 'process'
+rationale = 'Every obligation is a requirement with an identifier.'

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-057"
+
+[[spec]]
+level = "MUST"
+quote = "Before an RFC first merges, its writer MUST carry into it each change its sources had since they were read."

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-050"
+
+[[spec]]
+level = "MUST"
+quote = "The writer of a change MUST NOT approve it."

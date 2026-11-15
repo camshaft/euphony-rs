@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-039"
+
+[[spec]]
+level = "MUST"
+quote = "A requirement file MUST hold one entry whose level is the requirement's level and whose quote is its statement without the white space at its ends."

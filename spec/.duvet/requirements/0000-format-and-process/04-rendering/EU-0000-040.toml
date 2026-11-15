@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-040"
+
+[[spec]]
+level = "MUST"
+quote = "Two renderings of the same sources MUST produce the same bytes."

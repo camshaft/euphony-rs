@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-014"
+
+[[spec]]
+level = "MUST"
+quote = "Each requirement MUST have an identifier made of the prefix, the number of the RFC that first held it, and a sequence number."

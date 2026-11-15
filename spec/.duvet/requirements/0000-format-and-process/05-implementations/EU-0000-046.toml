@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/05-implementations.md#EU-0000-046"
+
+[[spec]]
+level = "MUST"
+quote = "An implementation's tracing configuration MUST NOT list the rendered text as a specification to extract."

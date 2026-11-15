@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-002"
+
+[[spec]]
+level = "MUST"
+quote = "The configuration file MUST state the prefix of every requirement identifier of the set."

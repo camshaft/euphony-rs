@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-026"
+
+[[spec]]
+level = "MUST"
+quote = "The prose of a section MUST NOT hold a key word."

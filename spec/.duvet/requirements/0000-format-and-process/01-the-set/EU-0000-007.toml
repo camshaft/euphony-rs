@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-007"
+
+[[spec]]
+level = "MUST"
+quote = "The index MUST list every RFC of the set by its number, title and area."

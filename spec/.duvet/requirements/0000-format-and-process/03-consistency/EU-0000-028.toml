@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-028"
+
+[[spec]]
+level = "MUST"
+quote = "The check MUST read the requirements, conditions, compositions, relations and logic formulas of the set as the propositional logic this section states."

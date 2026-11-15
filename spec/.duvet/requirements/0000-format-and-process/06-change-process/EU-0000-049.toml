@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-049"
+
+[[spec]]
+level = "MUST"
+quote = "A change MUST be reviewed by a reviewer other than its writer before it merges."

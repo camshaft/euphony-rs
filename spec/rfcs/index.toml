@@ -1,0 +1,122 @@
+# Every RFC of the set by number, title and area. An RFC is written where the set holds its
+# directory, and planned otherwise.
+
+[[rfc]]
+number = 0
+title = 'Format, identifiers and the change process'
+area = 'specification'
+
+[[rfc]]
+number = 1
+title = 'System overview: end state, shared requirements and trust model'
+area = 'euphony'
+
+[[rfc]]
+number = 2
+title = 'Engine daemon and session host'
+area = 'euphony'
+
+[[rfc]]
+number = 3
+title = 'Client protocol and assistant adapter'
+area = 'euphony'
+
+[[rfc]]
+number = 4
+title = 'Project model, commands and history'
+area = 'euphony'
+
+[[rfc]]
+number = 5
+title = 'Audio device and live render'
+area = 'euphony'
+
+[[rfc]]
+number = 6
+title = 'Distributed rendering and workers'
+area = 'euphony'
+
+[[rfc]]
+number = 7
+title = 'Sample format and storage'
+area = 'euphony'
+
+[[rfc]]
+number = 8
+title = 'Content store and sample catalog'
+area = 'euphony'
+
+[[rfc]]
+number = 9
+title = 'Composition programs'
+area = 'euphony'
+
+[[rfc]]
+number = 10
+title = 'Built-in sound and captured gear'
+area = 'euphony'
+
+[[rfc]]
+number = 11
+title = 'Channel strip'
+area = 'euphony'
+
+[[rfc]]
+number = 12
+title = 'Modular modulation'
+area = 'euphony'
+
+[[rfc]]
+number = 13
+title = 'Sync and collaboration'
+area = 'euphony'
+
+[[rfc]]
+number = 14
+title = 'Project interchange with other workstations'
+area = 'euphony'
+
+[[rfc]]
+number = 15
+title = 'Listener mixes, spatial audio and stations'
+area = 'euphony'
+
+[[rfc]]
+number = 16
+title = 'Networked MIDI and live transforms'
+area = 'euphony'
+
+[[rfc]]
+number = 17
+title = 'Control surfaces and phone controllers'
+area = 'euphony'
+
+[[rfc]]
+number = 18
+title = 'Desktop interface and browser companion'
+area = 'euphony'
+
+[[rfc]]
+number = 19
+title = 'Preferences and workflow learning'
+area = 'euphony'
+
+[[rfc]]
+number = 20
+title = 'Audio analysis'
+area = 'euphony'
+
+[[rfc]]
+number = 21
+title = 'Telemetry and improvement'
+area = 'euphony'
+
+[[rfc]]
+number = 22
+title = 'Working to picture'
+area = 'euphony'
+
+[[rfc]]
+number = 23
+title = 'Rebuilding a sound'
+area = 'euphony'

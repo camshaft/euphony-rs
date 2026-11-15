@@ -1,0 +1,9 @@
+number = 0
+title = 'Format, identifiers and the change process'
+area = 'specification'
+abstract = """\
+  The format of euphony's specification set: its configuration and index, its sections, requirements \
+  and identifiers, how relations read as propositional logic and the consistency check, the rendered \
+  files, how an implementation cites requirements, and how a change reaches the default branch."""
+retired = []
+sources = []
