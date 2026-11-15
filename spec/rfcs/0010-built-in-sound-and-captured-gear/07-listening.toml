@@ -115,9 +115,18 @@ rationale = "A model can't be retested until it passes by chance."
 id = 'EU-0010-119'
 level = 'MUST'
 polarity = 'required'
-statement = "The trial count of each listener MUST be fixed before the test and computed exactly from the binomial distribution for the declared values."
+statement = "The trial count of each listener MUST be fixed before the test."
 binds_to = 'system'
-rationale = "The test is large enough for its claim, and its size never follows its results."
+rationale = "The size of the test never follows its results."
+
+[[requirement]]
+id = 'EU-0010-260'
+level = 'MUST'
+polarity = 'required'
+statement = "The trial count of each listener MUST be computed exactly from the binomial distribution for the declared values."
+binds_to = 'system'
+rationale = "The test is large enough for its claim."
+relations = [ { kind = 'depends_on', target = 'EU-0010-113' } ]
 
 [[requirement]]
 id = 'EU-0010-120'
@@ -220,9 +229,17 @@ rationale = "A reader knows how well the clips were matched."
 id = 'EU-0010-132'
 level = 'MUST'
 polarity = 'required'
-statement = "The clips of the hardware and of the model MUST be aligned to the sample, and trimmed and faded the same way."
+statement = "The clips of the hardware and of the model MUST be aligned to the sample."
 binds_to = 'system'
-rationale = "Timing and edits never tell the clips apart."
+rationale = "Timing never tells the clips apart."
+
+[[requirement]]
+id = 'EU-0010-261'
+level = 'MUST'
+polarity = 'required'
+statement = "The clips of the hardware and of the model MUST be trimmed and faded the same way."
+binds_to = 'system'
+rationale = "Edits never tell the clips apart."
 
 [[requirement]]
 id = 'EU-0010-133'
