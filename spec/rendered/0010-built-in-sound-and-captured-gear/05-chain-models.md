@@ -9,12 +9,15 @@ families are fitted to the same capture, and the evaluation of each device decid
 musician accepts. A model is a versioned, content-addressed object, and one built-in processor for
 each family loads model objects as data. The modeled delay is the behavior of the hardware itself;
 the added delay is what the model adds beyond it, such as buffering, look-ahead and resampling.
-The random part of a model is a random process with a stored seed. The first version of a model of
-an external chain copies the chain at the control settings used during its capture and offers one
-control, a blend of the unprocessed and processed sound; a later version captures several settings
-and conditions the model on them. Training, fitting and evaluation run as durable jobs on the
-owner's paired computers, and playback runs live on the audio computer or ahead into the render
-cache.
+The random part of a model is a random process with a stored seed. A model of an external chain
+captured at one setting of its controls copies the chain at that setting and offers one control, a
+blend of the unprocessed and processed sound. A chain captured at several settings of its controls
+is offered both as a set of models at fixed settings that the musician switches between and as one
+model conditioned on the captured settings, which reports its error at each captured setting and
+marks each setting between them as unverified. Gear that recalls its settings digitally lets the
+capture rig step the settings between captures, instead of a person turning each control.
+Training, fitting and evaluation run as durable jobs on the owner's paired computers, and playback
+runs live on the audio computer or ahead into the render cache.
 
 ### EU-0010-063 {#EU-0010-063}
 
@@ -86,7 +89,27 @@ Delay compensation and the blend control MUST use the measured added delay of a 
 
 ### EU-0010-079 {#EU-0010-079}
 
-The first version of a model of an external chain MUST copy the chain at the control settings used during its capture.
+A model of an external chain captured at one setting of its controls MUST copy the chain at that setting.
+
+### EU-0010-240 {#EU-0010-240}
+
+euphony MUST let the musician switch between the models of one external chain captured at different settings of its controls.
+
+### EU-0010-241 {#EU-0010-241}
+
+euphony MUST offer, for an external chain captured at several settings of its controls, a model conditioned on those settings.
+
+### EU-0010-242 {#EU-0010-242}
+
+A model conditioned on control settings MUST report its held-out error at each captured setting.
+
+### EU-0010-243 {#EU-0010-243}
+
+A model conditioned on control settings MUST mark each setting between the captured settings as unverified.
+
+### EU-0010-244 {#EU-0010-244}
+
+Where the gear recalls its control settings digitally, the capture rig MUST step the settings between captures.
 
 ### EU-0010-080 {#EU-0010-080}
 
