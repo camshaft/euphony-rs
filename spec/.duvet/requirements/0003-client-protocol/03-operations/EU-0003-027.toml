@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/03-operations.md#EU-0003-027"
+
+[[spec]]
+level = "MUST"
+quote = "An attach MUST return the generation of the session, the generation of its control, a snapshot of the part of the session the client may see and a subscription cursor."
