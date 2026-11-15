@@ -1,0 +1,119 @@
+[section]
+anchor = 'execution'
+title = 'Running a program'
+problem = """\
+  A program is code that a musician, an agent or a shared project supplies, so a program that can \
+  reach files, the network or the project directly, that runs on the audio path, or that can't be \
+  stopped, can harm the project, interrupt playback or hold the computer."""
+motivation = """\
+  A restricted runner that reads only what a program declares, output that reaches the project only \
+  as a proposed change the authority checks, work spread across the owner's computers, and a \
+  cancel that keeps accepted work let programs run safely beside live music."""
+prose = """
+A program runs in a restricted runner. The runner reads only the objects the program declares and
+the deterministic random and time services the host supplies. It has no access of its own to files
+or to the network, and it can't change the project. Once a program finishes, its canonical output
+reaches the authority of the project as a proposed change, which the authority validates and
+applies through the ordinary commands of the project. A program runs when a musician or an agent
+asks, and never on the audio path. Independent composition units, such as separate movements or
+tracks whose dependencies are explicit, run as separate jobs across the owner's computers, while a
+sequential program stays one job. A worker reports the resources it has, and where they run out,
+the authority keeps the paused work and its diagnostics. The owner can cancel a program that runs
+away. The browser companion sends composition commands to a native host and doesn't run programs
+itself."""
+
+[[requirement]]
+id = 'EU-0009-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The runner MUST NOT give a program access to a file or to the network beyond the objects the program declares.'
+binds_to = 'system'
+rationale = 'A program reads only what its version records.'
+
+[[requirement]]
+id = 'EU-0009-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'A program MUST read randomness and time only from the services the host supplies.'
+binds_to = 'system'
+rationale = 'The randomness and time a program reads are the same on every run with the same seed.'
+
+[[requirement]]
+id = 'EU-0009-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A program MUST NOT change the project directly.'
+binds_to = 'system'
+rationale = 'Every change of the project passes the authority and its checks.'
+
+[[requirement]]
+id = 'EU-0009-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'The output of a program MUST reach the project as a proposed change that the authority validates and applies as an ordinary command.'
+binds_to = 'system'
+rationale = 'Generated changes are journaled, undone and synchronized like every other change.'
+
+[[requirement]]
+id = 'EU-0009-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A program MUST NOT gain authority through what it returns or through a capability it asks for.'
+binds_to = 'system'
+rationale = 'Output that holds instructions, or a request for more access, never widens what a program can do.'
+
+[[requirement]]
+id = 'EU-0009-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A program MUST NOT run on the audio path.'
+binds_to = 'system'
+rationale = 'A slow or failing program never interrupts what a musician hears.'
+
+[[requirement]]
+id = 'EU-0009-056'
+level = 'MUST'
+polarity = 'required'
+statement = 'Independent composition units whose dependencies are explicit MUST be able to run as separate jobs on different computers of the owner.'
+binds_to = 'system'
+rationale = 'A large composition uses every computer the owner has.'
+
+[[requirement]]
+id = 'EU-0009-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'A sequential program MUST run as one job.'
+binds_to = 'system'
+rationale = 'A program whose steps depend on each other keeps its order.'
+
+[[requirement]]
+id = 'EU-0009-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the resources of a worker run out, the authority MUST keep the paused work and its diagnostics.'
+binds_to = 'system'
+rationale = 'Work stopped by a lack of resources resumes instead of being lost.'
+
+[[requirement]]
+id = 'EU-0009-059'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner of a project MUST be able to cancel a running program.'
+binds_to = 'system'
+rationale = 'A program that runs away never holds a computer.'
+
+[[requirement]]
+id = 'EU-0009-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The cancel of a program MUST NOT discard an accepted edit of the project.'
+binds_to = 'system'
+rationale = 'Stopping a program never costs work already in the project.'
+
+[[requirement]]
+id = 'EU-0009-061'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The browser companion MUST NOT run a composition program itself.'
+binds_to = 'system'
+rationale = 'Programs run in one kind of runner, whose output is the same on every compatible computer.'

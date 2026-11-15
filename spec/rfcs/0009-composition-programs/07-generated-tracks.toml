@@ -1,0 +1,99 @@
+[section]
+anchor = 'generated-tracks'
+title = 'Generated tracks and regeneration'
+problem = """\
+  A musician who edits a generated track and then changes the program loses those edits, or keeps \
+  stale music, unless the track remembers what made it and regeneration keeps the two apart, and a \
+  project made of programs can't be rebuilt if any input is lost."""
+motivation = """\
+  Tracks linked to the program version and inputs that made them, events with explicit times and \
+  stable identities, a preview before each regeneration, edits kept in a layer of their own, and \
+  every input retained let a musician mix generated and hand-made music and rebuild it later."""
+prose = """
+Each generated track stays linked to the version of the program and the identity of each input that
+made it. Each generated event has an explicit start and an explicit end, which an editor shows and
+moves, and an identity that stays the same across regenerations of the same program. Regenerating a
+track shows the difference first. The musician's own edits of a generated track stay in a layer of
+their own, and replacing them is an explicit command that can be undone. A project made only of
+notes and programs keeps every input needed to rebuild its music, and a new version of a definition
+leaves the meaning of saved values as it was until an explicit migration changes it."""
+
+[[requirement]]
+id = 'EU-0009-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'A generated track MUST stay linked to the version of the program and the identity of each input that made it.'
+binds_to = 'system'
+rationale = 'A musician and the system know where each generated track came from.'
+
+[[requirement]]
+id = 'EU-0009-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each generated event MUST have an explicit start and an explicit end.'
+binds_to = 'system'
+rationale = 'An editor shows and moves the length of each generated note.'
+
+[[requirement]]
+id = 'EU-0009-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each generated event MUST keep the same identity across regenerations of the same program.'
+binds_to = 'system'
+rationale = 'An edit of a generated event still applies to it after a regeneration.'
+
+[[requirement]]
+id = 'EU-0009-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'A regeneration MUST show a preview of its difference before it changes the project.'
+binds_to = 'system'
+rationale = 'A musician sees what a regeneration changes before accepting it.'
+
+[[requirement]]
+id = 'EU-0009-074'
+level = 'MUST'
+polarity = 'required'
+statement = 'The edits a musician makes to a generated track MUST be kept in a layer apart from the generated events.'
+binds_to = 'system'
+rationale = 'A regeneration changes the generated events and leaves the edits as they are.'
+
+[[requirement]]
+id = 'EU-0009-075'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A regeneration MUST NOT replace the edits of a musician except through an explicit command.'
+binds_to = 'system'
+rationale = 'Hand-made changes are never lost as a side effect.'
+
+[[requirement]]
+id = 'EU-0009-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command that replaces the edits of a musician with generated events MUST be undoable.'
+binds_to = 'system'
+rationale = 'A musician who replaces edits by mistake gets them back.'
+
+[[requirement]]
+id = 'EU-0009-077'
+level = 'MUST'
+polarity = 'required'
+statement = 'A project made only of notes and composition programs MUST keep every input needed to rebuild its musical content.'
+binds_to = 'system'
+rationale = 'Such a project is rebuilt from what it holds, without any outside material.'
+
+[[requirement]]
+id = 'EU-0009-078'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A new version of a definition MUST NOT change the meaning of a value that a saved project holds without an explicit migration.'
+binds_to = 'system'
+rationale = 'A saved project means what it meant when it was saved.'
+
+[[requirement]]
+id = 'EU-0009-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'A migration of the values of a saved project to a new version of a definition MUST be undoable.'
+binds_to = 'system'
+rationale = 'A musician who disagrees with a migration returns to the earlier meaning.'

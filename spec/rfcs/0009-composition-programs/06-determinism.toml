@@ -1,0 +1,86 @@
+[section]
+anchor = 'determinism'
+title = 'Reproducing and reusing output'
+problem = """\
+  A program whose output changes with the computer, a dependency or the way its seed was written \
+  can't be trusted to rebuild the same music, and a program run again for every unchanged input \
+  wastes the time of the musician and the computers."""
+motivation = """\
+  An output identified by everything that made it, random sources that are specified and seeded, \
+  and reuse of stored output let the same program, inputs and seed give the same notes on any \
+  compatible computer, and run only what changed."""
+prose = """
+The identity of the output of a program is everything that made it: the text of the program, its
+declared inputs, its seed, and the version of the runtime, the type library, each definition, each
+tuning, each rounding policy and the numerical profile it ran under. Two runs with the same identity
+on compatible computers produce the same events, and a stored output with that identity is reused
+instead of run again; reused output then feeds the ordinary rendering and its cache. Every random
+source of the runtime is a specified algorithm with an explicit seed and a version, so its output
+doesn't depend on the computer, on the version of a dependency or on how the seed was written. The
+output of a program is put in canonical form before it is proposed. After a regeneration, only the
+passages whose output changed are loaded again."""
+
+[[requirement]]
+id = 'EU-0009-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'Two runs of a program with the same text, inputs, seed and runtime profile MUST produce the same musical events on compatible computers.'
+binds_to = 'system'
+rationale = 'A saved program rebuilds the same music later and elsewhere.'
+
+[[requirement]]
+id = 'EU-0009-063'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every random source of the composition runtime MUST be a specified algorithm with an explicit seed and a version.'
+binds_to = 'system'
+rationale = 'Random output is repeatable and changes only with a new version.'
+
+[[requirement]]
+id = 'EU-0009-064'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The output of a random source of the composition runtime MUST NOT depend on the computer that runs it.'
+binds_to = 'system'
+rationale = 'The same seed means the same music on every compatible computer.'
+
+[[requirement]]
+id = 'EU-0009-065'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The output of a random source of the composition runtime MUST NOT depend on how its seed was written.'
+binds_to = 'system'
+rationale = 'One seed value gives one stream, whether a program wrote it as a constant or computed it.'
+
+[[requirement]]
+id = 'EU-0009-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'The identity of the output of a program MUST cover its text, inputs and seed, and the versions of the runtime, the type library, each definition, each tuning, each rounding policy and the numerical profile.'
+binds_to = 'system'
+rationale = 'Two outputs share an identity only where nothing that made them differs.'
+
+[[requirement]]
+id = 'EU-0009-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'A stored output whose identity matches a requested run MUST be reused instead of run again.'
+binds_to = 'system'
+rationale = 'An unchanged program and unchanged inputs cost nothing to ask for again.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-066' } ]
+
+[[requirement]]
+id = 'EU-0009-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'The output of a program MUST be in canonical form before it is proposed to the project.'
+binds_to = 'system'
+rationale = 'Equal music is one value, so its identity and its comparison are stable.'
+
+[[requirement]]
+id = 'EU-0009-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'A regeneration MUST load again only the passages whose output changed.'
+binds_to = 'system'
+rationale = 'A small change of a program costs a small amount of work.'
