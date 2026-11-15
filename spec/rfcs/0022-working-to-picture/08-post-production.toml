@@ -74,7 +74,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A sync point MUST snap to frames and to picture markers."
 binds_to = 'system'
-rationale = "A sound lands on the frame it belongs to."
+rationale = "A sound sits on the frame it belongs to."
 
 [[requirement]]
 id = 'EU-0022-132'
@@ -82,7 +82,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to place a region's sync point at a timecode."
 binds_to = 'system'
-rationale = "A sound is spotted to the timecode a list gives."
+rationale = "A sound is spotted to the timecode a list states."
 
 [[requirement]]
 id = 'EU-0022-133'
@@ -130,7 +130,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A candidate sound effect MUST play at the playhead in step with the picture, looped over the selection, before the person places it."
 binds_to = 'system'
-rationale = "The designer hears an effect against the picture before choosing it."
+rationale = "The designer listens to an effect against the picture before choosing it."
 
 [[requirement]]
 id = 'EU-0022-139'
@@ -138,4 +138,4 @@ level = 'MUST'
 polarity = 'required'
 statement = "Placing a sound effect MUST align its sync point, its first strong attack by default, with the chosen frame or marker."
 binds_to = 'system'
-rationale = "A placed effect lands on its moment without a nudge."
+rationale = "A placed effect sits on its moment without a nudge."
