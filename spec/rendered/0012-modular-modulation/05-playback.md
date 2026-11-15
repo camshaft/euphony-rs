@@ -61,7 +61,7 @@ Where matching state is missing at a switch between prepared and live playback, 
 
 ### EU-0012-089 {#EU-0012-089}
 
-A seek MUST restore a verified checkpoint and replay the history it needs.
+A seek MUST restore a verified checkpoint.
 
 ### EU-0012-090 {#EU-0012-090}
 
@@ -69,7 +69,7 @@ A missed live deadline MUST NOT silently lower the rate of modulation.
 
 ### EU-0012-091 {#EU-0012-091}
 
-A missed live deadline MUST keep the previous revision playing or mark the preview unavailable, visibly.
+Where a previous revision covers the range being played, a missed live deadline MUST keep that revision playing.
 
 ### EU-0012-092 {#EU-0012-092}
 
@@ -77,7 +77,7 @@ An accepted edit MUST stay saved when the graph it makes can't run on the availa
 
 ### EU-0012-093 {#EU-0012-093}
 
-Where a graph can't run, playback MUST keep the previous revision and say so.
+Where a graph can't run, playback MUST keep the previous revision.
 
 ### EU-0012-094 {#EU-0012-094}
 
@@ -86,3 +86,19 @@ The system MUST NOT limit the number of routes or voices by a fixed count.
 ### EU-0012-095 {#EU-0012-095}
 
 Validating a graph MUST NOT wait on any project other than its own.
+
+### EU-0012-157 {#EU-0012-157}
+
+After a seek restores a checkpoint, the system MUST replay the history between that checkpoint and the position of the seek.
+
+### EU-0012-158 {#EU-0012-158}
+
+Where a graph can't run, the system MUST tell the musician that it can't run.
+
+### EU-0012-160 {#EU-0012-160}
+
+Where no previous revision covers the range being played, a missed live deadline MUST mark the preview unavailable.
+
+### EU-0012-161 {#EU-0012-161}
+
+The interface MUST show the musician each missed live deadline.
