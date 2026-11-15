@@ -126,9 +126,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0007-039' } ]
 id = 'EU-0007-130'
 level = 'MUST'
 polarity = 'required'
-statement = 'The encoded digest of an encoded object MUST cover its manifest.'
+statement = 'The encoded digest of an encoded object MUST be the digest of its manifest.'
 binds_to = 'system'
-rationale = "The object's encoded digest binds each chunk digest the manifest holds, so a sender can't replace a chunk together with its digest."
+rationale = "Through the chunk digests the manifest holds, the object's encoded digest covers every encoded byte, a sender can't replace a chunk together with its digest, and a reader verifies the manifest without reading any chunk."
 relations = [ { kind = 'depends_on', target = 'EU-0007-022' }, { kind = 'depends_on', target = 'EU-0007-129' } ]
 
 [[requirement]]

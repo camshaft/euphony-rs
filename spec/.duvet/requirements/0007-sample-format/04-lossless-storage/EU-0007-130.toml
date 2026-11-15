@@ -2,4 +2,4 @@ target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-130"
 
 [[spec]]
 level = "MUST"
-quote = "The encoded digest of an encoded object MUST cover its manifest."
+quote = "The encoded digest of an encoded object MUST be the digest of its manifest."

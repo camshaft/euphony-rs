@@ -63,7 +63,7 @@ The manifest of an encoded object MUST hold the position and the encoded digest 
 
 ### EU-0007-130 {#EU-0007-130}
 
-The encoded digest of an encoded object MUST cover its manifest.
+The encoded digest of an encoded object MUST be the digest of its manifest.
 
 ### EU-0007-131 {#EU-0007-131}
 
