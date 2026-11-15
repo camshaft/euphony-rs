@@ -252,6 +252,24 @@ binds_to = 'system'
 rationale = "No message is lost to an overloaded device."
 
 [[requirement]]
+id = 'EU-0010-204'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST keep each queued experiment when the device overruns or drops an update."
+binds_to = 'system'
+rationale = "An overloaded device delays the plan without losing any of it."
+relations = [ { kind = 'depends_on', target = 'EU-0010-166' } ]
+
+[[requirement]]
+id = 'EU-0010-205'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST lower its message rate when the device overruns or drops an update."
+binds_to = 'system'
+rationale = "The capture slows to the rate the device sustains, which it learns from the device's answers."
+relations = [ { kind = 'depends_on', target = 'EU-0010-166' } ]
+
+[[requirement]]
 id = 'EU-0010-167'
 level = 'MUST'
 polarity = 'required'
