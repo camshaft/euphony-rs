@@ -1,5 +1,0 @@
-target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-131"
-
-[[spec]]
-level = "MUST"
-quote = "Code of a composition program MUST NOT run in the path that processes samples."
