@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-037"
+
+[[spec]]
+level = "MUST"
+quote = "A sink endpoint's key MUST NOT reach any command or object other than its own sink's stream, meters, mix commands and control map."

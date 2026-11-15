@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-058"
+
+[[spec]]
+level = "MUST"
+quote = "A new connection of a sink endpoint MUST start muted."

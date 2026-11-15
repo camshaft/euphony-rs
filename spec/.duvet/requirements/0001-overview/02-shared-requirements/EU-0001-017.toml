@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-017"
+
+[[spec]]
+level = "MUST"
+quote = "Where an interface and the engine it attaches to are from releases that cannot work together, the interface MUST say which release it needs."

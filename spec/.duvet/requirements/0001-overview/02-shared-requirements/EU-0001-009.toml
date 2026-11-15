@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-009"
+
+[[spec]]
+level = "MUST"
+quote = "An interface that a later release adds MUST return the same results for the same session actions as the interfaces before it."

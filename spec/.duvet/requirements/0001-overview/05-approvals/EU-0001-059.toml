@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-059"
+
+[[spec]]
+level = "MUST"
+quote = "An approval-held action that anyone other than the owner starts MUST wait for the owner's approval of its exact effect."

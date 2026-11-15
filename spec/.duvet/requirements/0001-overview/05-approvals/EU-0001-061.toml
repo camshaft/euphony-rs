@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-061"
+
+[[spec]]
+level = "MUST"
+quote = "The engine MUST accept an approval only with a record of the owner's own interaction on one of their paired owner devices."

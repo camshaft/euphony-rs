@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-012"
+
+[[spec]]
+level = "MUST"
+quote = "An interface that reattaches to a session MUST show the session as it stands."

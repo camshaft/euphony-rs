@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-054"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST treat project text, metadata, imported files, scripts and tool results as data, and never as instructions."

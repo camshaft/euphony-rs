@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-066"
+
+[[spec]]
+level = "MUST"
+quote = "A refused command MUST carry exactly one reason from the closed set of unpaired, outside link level, link expired or revoked, and approval required."

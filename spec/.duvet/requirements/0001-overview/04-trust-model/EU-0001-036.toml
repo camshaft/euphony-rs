@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-036"
+
+[[spec]]
+level = "MUST"
+quote = "The engine MUST accept an action from a paired owner device or a connected assistant as it accepts the same action from the owner, except an action that waits for the owner's approval."

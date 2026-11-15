@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-021"
+
+[[spec]]
+level = "MUST"
+quote = "Building and running euphony from its public source MUST NOT need a private package or a private service."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-038"
+
+[[spec]]
+level = "MUST"
+quote = "A person other than the owner MUST reach a project only through a share link."

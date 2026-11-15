@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-051"
+
+[[spec]]
+level = "MUST"
+quote = "The engine MUST stop an unencrypted real-time stream when the computer's network attachment no longer matches the network the owner marked."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-047"
+
+[[spec]]
+level = "MUST"
+quote = "Revoking a share link MUST end its participants' connections immediately."

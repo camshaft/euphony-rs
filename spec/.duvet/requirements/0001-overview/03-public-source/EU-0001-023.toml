@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-023"
+
+[[spec]]
+level = "MUST"
+quote = "Each upstream-derived file MUST carry the copyright or permission notice its upstream requires."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-067"
+
+[[spec]]
+level = "MUST"
+quote = "Pairings, share links and approvals MUST be managed through commands of the same command set that every client uses."
