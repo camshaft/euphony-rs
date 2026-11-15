@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-155"
+
+[[spec]]
+level = "MUST"
+quote = "Creating retrospective work MUST be idempotent for the same interval."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-141"
+
+[[spec]]
+level = "MUST"
+quote = "The measurement MUST keep time spent waiting or listening apart from editing time."

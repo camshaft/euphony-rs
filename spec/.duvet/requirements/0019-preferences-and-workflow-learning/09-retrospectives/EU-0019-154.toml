@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-154"
+
+[[spec]]
+level = "MUST"
+quote = "The end of a session, the completion of a project or an explicit request MUST create retrospective work over a closed interval of events."

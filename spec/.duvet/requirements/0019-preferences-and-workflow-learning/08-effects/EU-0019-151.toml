@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-151"
+
+[[spec]]
+level = "MUST"
+quote = "A retired mechanism version MUST keep its history."
