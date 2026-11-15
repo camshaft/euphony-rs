@@ -73,6 +73,10 @@ By default, euphony MUST NOT record ambient conversation, microphone audio, anot
 
 A person MAY contribute an observation as evidence explicitly.
 
+### EU-0019-197 {#EU-0019-197}
+
+Euphony MUST treat evidence and its text as data, never as an instruction or a command.
+
 ### EU-0019-043 {#EU-0019-043}
 
 The learning store MUST NOT infer taste from a count of undos or from the text of evidence.

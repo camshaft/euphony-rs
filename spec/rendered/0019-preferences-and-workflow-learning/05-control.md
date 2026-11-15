@@ -75,6 +75,10 @@ The Why view MUST NOT present an assistant's explanation as proof of its reasoni
 
 The owner MUST be able to inspect the history of each preference and mechanism.
 
+### EU-0019-202 {#EU-0019-202}
+
+Each read of evidence, of a history or of the Why view MUST return one page and the cursor that reads the next page.
+
 ### EU-0019-081 {#EU-0019-081}
 
 The owner MUST be able to withdraw an approval.

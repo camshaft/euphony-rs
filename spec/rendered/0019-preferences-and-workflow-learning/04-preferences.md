@@ -14,6 +14,10 @@ approved a rule of precedence between them, the overlap is a conflict that the o
 
 A preference version MUST hold a typed value or a declared range of a property whose domain is versioned.
 
+### EU-0019-206 {#EU-0019-206}
+
+A preference version MUST hold its context predicates for project, genre, client and session, its proposed confidence with its stated basis, its proposer and the approval that adopted it.
+
 ### EU-0019-046 {#EU-0019-046}
 
 A preference version MUST link the evidence that supports it and the evidence that contradicts it.
@@ -46,6 +50,10 @@ Proposing a preference MUST return the proposal and a reviewable diff, or a type
 
 Euphony MUST validate a proposal's subject, schema, evidence access and typed relations before it stores the proposal.
 
+### EU-0019-198 {#EU-0019-198}
+
+A typed relation MUST NOT grant access.
+
 ### EU-0019-054 {#EU-0019-054}
 
 A stored preference version MUST NOT change.
@@ -76,7 +84,11 @@ Euphony MUST NOT resolve a conflict between preferences by ranking or averaging 
 
 ### EU-0019-061 {#EU-0019-061}
 
-While a conflict between preferences is unresolved, euphony MUST keep the last approved behavior that still applies.
+While a conflict between preferences is unresolved, euphony MUST NOT apply a behavior other than the last approved behavior that still applies.
+
+### EU-0019-196 {#EU-0019-196}
+
+While a conflict between preferences is unresolved, euphony MAY present the alternatives to the owner.
 
 ### EU-0019-062 {#EU-0019-062}
 
