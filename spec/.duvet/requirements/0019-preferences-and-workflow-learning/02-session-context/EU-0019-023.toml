@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-023"
+
+[[spec]]
+level = "MUST"
+quote = "A reconnection MUST resume from the assistant's cursor, or from a revisioned snapshot where the history after that cursor was retired."

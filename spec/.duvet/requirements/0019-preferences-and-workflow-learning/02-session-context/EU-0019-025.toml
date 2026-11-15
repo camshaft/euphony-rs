@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-025"
+
+[[spec]]
+level = "MUST"
+quote = "A context read MUST NOT cut the preferences it returns at a fixed count."

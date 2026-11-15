@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-041"
+
+[[spec]]
+level = "MUST"
+quote = "By default, euphony MUST NOT record ambient conversation, microphone audio, another application's actions or an assistant's transcript."

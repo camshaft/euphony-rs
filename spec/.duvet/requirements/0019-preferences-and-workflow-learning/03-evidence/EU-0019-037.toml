@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-037"
+
+[[spec]]
+level = "MUST"
+quote = "A speaker an assistant reports MUST NOT be stored as a confirmed statement of that speaker."

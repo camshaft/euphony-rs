@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-035"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST refuse submitted evidence whose claimed author or speaker isn't the caller, unless the journal proves that principal's own action or the subject confirmed the exact statement and its attribution."

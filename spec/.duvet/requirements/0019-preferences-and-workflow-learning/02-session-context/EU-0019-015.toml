@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-015"
+
+[[spec]]
+level = "MUST"
+quote = "A context handle MUST be bound to its principal, its scope and the revision it was read at."

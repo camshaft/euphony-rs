@@ -1,0 +1,157 @@
+[section]
+anchor = 'evidence'
+title = 'Learning evidence'
+problem = """\
+  Taste inferred from a count of undos, an accepted suggestion or an assistant's paraphrase can record the wrong lesson, and a statement credited to the person that they never made can become their preference."""
+motivation = """\
+  Typed evidence records that keep their source, their author and their limits, with the author derived from authentication alone, let an assistant propose a preference from evidence the owner can inspect, while euphony itself never decides what the evidence means."""
+prose = """
+Learning evidence is an observation about the owner's taste or way of working. Each evidence record
+holds a stable identity, a schema version, the subject person, the kind of its author or source,
+the project, session and branch revision, the event cursor, the observation time, the command or
+suggestion that caused it, the revisions before and after, the assets it refers to, its visibility
+policy and the consent it was captured under. Its source is one of: an explicit statement; a
+suggestion accepted or rejected; an undo or redo of an assistant's transaction; a later edit by the
+person; a choice between two alternatives; and a listening result. Each source carries its own
+fields, such as the exact statement and its speaker, or a listening trial's alternatives, revision,
+playback quality, level calibration, presentation order, choice and uncertainty. A reversal can be
+an experiment, an accident or a timing correction, and accepting a suggestion can reflect a
+deadline rather than taste, so evidence is material for a proposal and never a preference by
+itself."""
+
+[[requirement]]
+id = 'EU-0019-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each evidence record MUST hold its subject person, its author or source kind, its project, session and branch revision, its observation time, its cause, its revisions before and after, its visibility policy and its consent provenance.'
+binds_to = 'system'
+rationale = 'Each piece of evidence can be read in the context it came from.'
+
+[[requirement]]
+id = 'EU-0019-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each evidence record MUST carry the fields of its source kind.'
+binds_to = 'system'
+rationale = 'A statement, a reversal and a listening trial each keep the facts that make them meaningful.'
+
+[[requirement]]
+id = 'EU-0019-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An observation time MUST NOT count as a confirmation by the person.'
+binds_to = 'system'
+rationale = 'When something was seen says nothing about whether the person agrees with it.'
+
+[[requirement]]
+id = 'EU-0019-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'Evidence MUST preserve ties, skipped trials, unknown motives and incomplete capture as they were recorded.'
+binds_to = 'system'
+rationale = 'Uncertain evidence stays uncertain instead of becoming a confident lesson.'
+
+[[requirement]]
+id = 'EU-0019-032'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST derive the evidence of a person's actions in the application from its journal of authorized commands."
+binds_to = 'system'
+rationale = 'The journal is the record of what the person actually did.'
+
+[[requirement]]
+id = 'EU-0019-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'Submitting evidence MUST carry the expected learning revision and an idempotency key.'
+binds_to = 'system'
+rationale = 'A retried submission is stored once, and a submission against a moved revision is visible.'
+
+[[requirement]]
+id = 'EU-0019-034'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST derive the author of submitted evidence from the caller's authentication."
+binds_to = 'system'
+rationale = 'No caller can claim to be someone else.'
+
+[[requirement]]
+id = 'EU-0019-035'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST refuse submitted evidence whose claimed author or speaker isn't the caller, unless the journal proves that principal's own action or the subject confirmed the exact statement and its attribution."
+binds_to = 'system'
+rationale = 'A statement credited to a person is one that person made or confirmed.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-034' } ]
+
+[[requirement]]
+id = 'EU-0019-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Evidence an assistant reports MUST be stored as agent-reported, with the reporting assistant and its permitted source.'
+binds_to = 'system'
+rationale = 'A report stays attributed to the assistant that made it.'
+
+[[requirement]]
+id = 'EU-0019-037'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A speaker an assistant reports MUST NOT be stored as a confirmed statement of that speaker.'
+binds_to = 'system'
+rationale = "An assistant's account of what someone said is never that person's own statement."
+
+[[requirement]]
+id = 'EU-0019-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST check a confirmation or a journal link for its exact content, subject, scope and current access before it stores the evidence.'
+binds_to = 'system'
+rationale = 'A confirmation of one statement never vouches for another.'
+
+[[requirement]]
+id = 'EU-0019-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'Submitted evidence whose attribution fails its check MUST be refused as attribution-unverified, without writing any evidence.'
+binds_to = 'system'
+rationale = 'Evidence with a false attribution never reaches the store.'
+
+[[requirement]]
+id = 'EU-0019-040'
+level = 'MUST'
+polarity = 'required'
+statement = "The owner's capture consent MUST decide which kinds of evidence euphony keeps."
+binds_to = 'system'
+rationale = 'The owner decides what is observed about them.'
+
+[[requirement]]
+id = 'EU-0019-041'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "By default, euphony MUST NOT record ambient conversation, microphone audio, another application's actions or an assistant's transcript."
+binds_to = 'system'
+rationale = 'Learning observes only what the person does in euphony unless they choose otherwise.'
+
+[[requirement]]
+id = 'EU-0019-042'
+level = 'MAY'
+polarity = 'required'
+statement = 'A person MAY contribute an observation as evidence explicitly.'
+binds_to = 'system'
+rationale = 'A person can say what they want instead of waiting for it to be observed.'
+
+[[requirement]]
+id = 'EU-0019-043'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The learning store MUST NOT infer taste from a count of undos or from the text of evidence.'
+binds_to = 'system'
+rationale = "Interpreting evidence is an assistant's proposal for the owner to review, never a rule of the store."
+
+[[requirement]]
+id = 'EU-0019-044'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Evidence MUST NOT turn a sealed final evaluation into training material or an approval of a preference.'
+binds_to = 'system'
+rationale = 'A sealed evaluation stays a fair test.'

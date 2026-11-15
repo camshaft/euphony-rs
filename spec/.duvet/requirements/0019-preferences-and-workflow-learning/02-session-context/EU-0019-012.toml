@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-012"
+
+[[spec]]
+level = "MUST"
+quote = "Each record a context read returns MUST carry its type and its provenance."

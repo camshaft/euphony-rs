@@ -1,0 +1,164 @@
+[section]
+anchor = 'session-context'
+title = 'Session context for an assistant'
+problem = """\
+  An assistant that starts work without the owner's current preferences, or works from a stale or partial copy of them, makes changes against taste the owner already stated, and no record shows what it read."""
+motivation = """\
+  A context handshake that returns a revisioned snapshot, binds a handle to what was read, and refuses an assisted change made on a stale handle lets euphony show that each assistant received the current context, without claiming that it understood it."""
+prose = """
+An assistant begins a learning context for an authenticated principal, a project and the client,
+genre and session it works in, with the schema versions it supports and, where it resumes, a cursor.
+The answer is a snapshot of the context: its identity, the policy and context revision it was read
+at, the active preferences and mechanisms, the unresolved conflicts, the pending work the principal
+can read, and cursors to page through each kind of record. Context labels select which records
+apply. The assistant reads the records of the snapshot and acknowledges the snapshot by its
+identity, and the context handle that results is bound to the principal, the scope and the revision
+it was read at. An acknowledgement shows that the context was delivered, and doesn't show that the
+assistant understood it. Changes reach a connected assistant as events of the resumable event
+stream; an assistant that can't subscribe refreshes its context when it begins or resumes work, and
+when a command answers that its context is stale."""
+
+[[requirement]]
+id = 'EU-0019-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'Beginning a learning context MUST return the snapshot identity, the context revision, the active preference and mechanism references, the unresolved conflicts, the pending work the principal can read and a cursor for each kind of record.'
+binds_to = 'system'
+rationale = 'An assistant starts from everything that applies to its work, in pages it can read.'
+
+[[requirement]]
+id = 'EU-0019-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A context label MUST NOT grant access to any record.'
+binds_to = 'system'
+rationale = 'A label selects which records apply; access stays with the access model.'
+
+[[requirement]]
+id = 'EU-0019-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each record a context read returns MUST carry its type and its provenance.'
+binds_to = 'system'
+rationale = 'An assistant and the owner can tell where each piece of context came from.'
+
+[[requirement]]
+id = 'EU-0019-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'An acknowledgement of a learning context MUST record that the snapshot it names was delivered to its principal.'
+binds_to = 'system'
+rationale = 'Each assisted change can be traced to the context its assistant received.'
+
+[[requirement]]
+id = 'EU-0019-014'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT present an acknowledgement as evidence that an assistant understood the context.'
+binds_to = 'system'
+rationale = "Delivery can be checked, while understanding can't."
+
+[[requirement]]
+id = 'EU-0019-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'A context handle MUST be bound to its principal, its scope and the revision it was read at.'
+binds_to = 'system'
+rationale = "A handle can't be reused by another principal, in another scope or after the context moved."
+
+[[requirement]]
+id = 'EU-0019-016'
+level = 'MUST'
+polarity = 'required'
+statement = "A mutating command in an assisted session that doesn't carry a context handle MUST be refused as context-required."
+binds_to = 'system'
+rationale = "No assistant changes the project without first receiving the owner's context."
+
+[[requirement]]
+id = 'EU-0019-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'A mutating command in an assisted session whose context handle is no longer current MUST be refused as context-stale, with a refreshed context the principal can read.'
+binds_to = 'system'
+rationale = 'An assistant never acts on preferences the owner has since changed, and it can recover at once.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-015' } ]
+
+[[requirement]]
+id = 'EU-0019-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'Read-only discovery MUST stay available to an assistant without a context handle.'
+binds_to = 'system'
+rationale = 'A new assistant can find what euphony offers before it begins a context.'
+
+[[requirement]]
+id = 'EU-0019-019'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST check the principal's current authority and the relevant context revision again when it applies each assisted command."
+binds_to = 'system'
+rationale = 'A handle never outlives a change of access or of context.'
+
+[[requirement]]
+id = 'EU-0019-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'Unpairing a device or revoking a link MUST invalidate at once each context handle and subscription it affects.'
+binds_to = 'system'
+rationale = 'A revoked device or link stops receiving private learning at once.'
+
+[[requirement]]
+id = 'EU-0019-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change to the learning context MUST reach a subscribed assistant as an event of the resumable event stream.'
+binds_to = 'system'
+rationale = 'A connected assistant learns of each change as it happens.'
+
+[[requirement]]
+id = 'EU-0019-022'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT require an assistant to poll for changes to its context.'
+binds_to = 'system'
+rationale = 'Changes arrive by events, and an assistant without subscriptions refreshes at the points this section states.'
+
+[[requirement]]
+id = 'EU-0019-023'
+level = 'MUST'
+polarity = 'required'
+statement = "A reconnection MUST resume from the assistant's cursor, or from a revisioned snapshot where the history after that cursor was retired."
+binds_to = 'system'
+rationale = "An assistant that reconnects doesn't miss a change or repeat one."
+
+[[requirement]]
+id = 'EU-0019-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'A context read MUST follow the context capacity the client declares.'
+binds_to = 'system'
+rationale = 'The client knows how much context it can hold.'
+
+[[requirement]]
+id = 'EU-0019-025'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A context read MUST NOT cut the preferences it returns at a fixed count.'
+binds_to = 'system'
+rationale = 'A fixed count would drop preferences the owner approved without saying so.'
+
+[[requirement]]
+id = 'EU-0019-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'A context read that returns part of the context MUST say that it is incomplete.'
+binds_to = 'system'
+rationale = 'An assistant never takes a partial context for the whole.'
+
+[[requirement]]
+id = 'EU-0019-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'A failed context read MUST leave assisted mutation unavailable, with its reason.'
+binds_to = 'system'
+rationale = "No assistant changes the project without the owner's context, and the person sees why."
