@@ -124,7 +124,7 @@ rationale = "The musician sees an unstable loop before hearing it."
 id = "EU-0012-070"
 level = "MUST"
 polarity = "required"
-statement = "The output MUST stay within its authorized safe gain."
+statement = "The output MUST stay within the safe gain that the output device's profile stores."
 binds_to = "system"
 rationale = "An unstable loop never harms a listener or a device."
 

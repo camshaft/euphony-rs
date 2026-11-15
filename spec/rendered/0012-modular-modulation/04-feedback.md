@@ -65,7 +65,7 @@ The interface MUST warn of a cycle whose gain or range can grow.
 
 ### EU-0012-070 {#EU-0012-070}
 
-The output MUST stay within its authorized safe gain.
+The output MUST stay within the safe gain that the output device's profile stores.
 
 ### EU-0012-071 {#EU-0012-071}
 
