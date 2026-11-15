@@ -1,0 +1,150 @@
+[section]
+anchor = 'stations'
+title = 'Headphone stations'
+problem = """\
+  A player at their seat can't hold their own mix without a screen, and a small device that carries \
+  unreleased material or reaches the session beyond its own mix is easy to carry away or misuse."""
+motivation = """\
+  A small networked box that plays one finished mix, offers knobs and lights for that mix alone, and \
+  reaches nothing else offers each player physical control of their own mix while it holds the least \
+  material and the least access."""
+prose = """
+A headphone station is a small networked computer with a headphone output, rotary encoders with
+push switches, and lights, placed where a listener sits. It joins a session on the local network and
+is the sink of one listener. The session host calculates the station's sink mix as it calculates
+every other sink mix and sends the station the finished stream, which the station plays after its
+own output protection. The station doesn't run the session host, compile the graph or render for the
+session, and doesn't hold project objects or stems. The hardware description of a station lists its
+encoders, switches and light groups by stable identity, its output formats and its jack state. A
+station reaches its listener's sink alone: that sink's stream and meters, its mix parameters, its mix
+revision and its control map. A wired network connection is the recommended path, and a wireless
+connection is supported and measured. A station isn't a mixer on its own: it plays and controls its
+listener's mix only while it is connected to the session's host."""
+
+[[requirement]]
+id = 'EU-0015-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'A headphone station MUST appear in its session as the sink of one listener.'
+binds_to = 'system'
+rationale = 'A station is one more listening output, under the same rules as every other sink.'
+
+[[requirement]]
+id = 'EU-0015-042'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST calculate a station's sink mix as it calculates every other sink mix."
+binds_to = 'system'
+rationale = 'A station mix has the same limits, revisions and isolation as every other sink mix.'
+
+[[requirement]]
+id = 'EU-0015-043'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A station MUST NOT receive the separate sources of its listener's mix."
+binds_to = 'system'
+rationale = 'A device that is easy to carry away never holds unreleased stems.'
+
+[[requirement]]
+id = 'EU-0015-044'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A station MUST NOT hold project objects.'
+binds_to = 'system'
+rationale = 'A lost station exposes nothing of the project but the mix it was playing.'
+
+[[requirement]]
+id = 'EU-0015-045'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A station MUST NOT play or control a mix while it isn't connected to the session's host."
+binds_to = 'system'
+rationale = 'Every mix a station plays is one the host calculated under the limits of the owner.'
+
+[[requirement]]
+id = 'EU-0015-046'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's hardware description MUST list each of its encoders, switches and light groups by a stable identity."
+binds_to = 'system'
+rationale = 'A control map refers to each control the same way on every connection.'
+
+[[requirement]]
+id = 'EU-0015-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST read the rates, formats, period sizes and jack detection its output device supports from the device.'
+binds_to = 'system'
+rationale = 'A station plays correctly on any output device, without assumed settings.'
+
+[[requirement]]
+id = 'EU-0015-048'
+level = 'MUST'
+polarity = 'required'
+statement = "A station MUST apply its output protection before it plays its sink's stream."
+binds_to = 'system'
+rationale = 'The listener at the station is protected where the sound plays.'
+
+[[requirement]]
+id = 'EU-0015-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and jack state.'
+binds_to = 'system'
+rationale = 'The host knows what the station can play and how late it plays.'
+
+[[requirement]]
+id = 'EU-0015-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where its hardware reports headphone insertion, a station MUST report each insertion and removal as an event.'
+binds_to = 'system'
+rationale = 'The host knows when the listener plugs in or unplugs, without polling.'
+
+[[requirement]]
+id = 'EU-0015-051'
+level = 'MUST'
+polarity = 'required'
+statement = "Where its hardware doesn't report headphone insertion, a station MUST report its jack state as unknown."
+binds_to = 'system'
+rationale = 'The host never reads a missing report as headphones being plugged in.'
+
+[[requirement]]
+id = 'EU-0015-052'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST take a station's class from its pairing record, whatever the station sends."
+binds_to = 'system'
+rationale = 'A station can never claim more access than its pairing gave it.'
+
+[[requirement]]
+id = 'EU-0015-053'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The host MUST NOT give a station any record other than its own sink's stream, meters, mix parameters, mix revision and control map."
+binds_to = 'system'
+rationale = 'Neither a guest at the station nor a thief with its key reads the project.'
+
+[[requirement]]
+id = 'EU-0015-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The host MUST NOT accept a station's command for anything other than its own sink's mix parameters."
+binds_to = 'system'
+rationale = 'A station never changes the main mix, another sink, routing or a recording.'
+
+[[requirement]]
+id = 'EU-0015-055'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'A station SHOULD connect to the session over a wired network.'
+binds_to = 'system'
+rationale = 'A wired connection has the shortest and steadiest delay.'
+
+[[requirement]]
+id = 'EU-0015-056'
+level = 'MUST'
+polarity = 'required'
+statement = 'The readiness view MUST label a station on a wireless connection as wireless.'
+binds_to = 'system'
+rationale = 'The owner sees which stations take the less reliable path.'

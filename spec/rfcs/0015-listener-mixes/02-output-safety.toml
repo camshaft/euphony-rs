@@ -1,0 +1,78 @@
+[section]
+anchor = 'output-safety'
+title = 'Alignment, monitoring delay and output protection'
+problem = """\
+  Listening outputs run on different devices, clocks and network paths, so without alignment and \
+  measurement a listener gets audio out of time without knowing it, and an abrupt change of device \
+  can send a loud signal to someone's ears."""
+motivation = """\
+  Measured latency, explicit resampling, a delay each listener can see, and protection that acts \
+  where the sound plays keep every output in time and safe, and tell each listener what they \
+  actually hear."""
+prose = """
+Each sink stream is aligned to the session by the measured latency of its device and its network
+path, and is resampled where it crosses from one clock domain to another. The monitoring delay of a
+sink is the time from the session's timeline to the sound at the listener's ears. A listener chooses
+the monitoring mode they accept for their sink after its delay is measured, and a sink whose delay is
+longer than that mode stays available with its delay shown. Moving rendering to another computer
+doesn't shorten a monitoring path. Output protection is the gain protection, the mute on an unsafe
+transition and the hearing-safety policy of an output. The owner chooses the output limits of a sink
+from the calibrated capability of its device and the needs of the session; these limits bound the
+signal for safety, and are neither a permission nor a capacity limit. A performer listens to their own
+instrument from the computer that records it."""
+
+[[requirement]]
+id = 'EU-0015-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST align each sink stream to the session using the measured latency of its device and its network path.'
+binds_to = 'system'
+rationale = 'Every listener receives the session in time, whatever device and path they listen through.'
+
+[[requirement]]
+id = 'EU-0015-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'A sink stream that crosses from one clock domain to another MUST be resampled explicitly.'
+binds_to = 'system'
+rationale = "Two clocks that run at different rates never slip or click in a listener's ears."
+
+[[requirement]]
+id = 'EU-0015-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each listener MUST be shown the measured monitoring delay of their sink.'
+binds_to = 'system'
+rationale = 'A listener knows how late what they hear is.'
+
+[[requirement]]
+id = 'EU-0015-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A sink whose measured delay is longer than the monitoring mode its listener accepted MUST NOT be described as live monitoring.'
+binds_to = 'system'
+rationale = 'A player never plays along to a mix that is later than they were told.'
+
+[[requirement]]
+id = 'EU-0015-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'Output protection MUST act on the computer that plays the output, without waiting on the network.'
+binds_to = 'system'
+rationale = "A lost or slow network never delays the protection of a listener's hearing."
+
+[[requirement]]
+id = 'EU-0015-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'After a change of its output device, a sink MUST stay muted until its route and limits are validated.'
+binds_to = 'system'
+rationale = 'An abrupt device change never sends an unchecked signal to a listener.'
+
+[[requirement]]
+id = 'EU-0015-021'
+level = 'MUST'
+polarity = 'required'
+statement = "A performer's monitoring of their own instrument MUST play from the computer that records that instrument."
+binds_to = 'system'
+rationale = 'No network path makes a performer hear their own playing late.'

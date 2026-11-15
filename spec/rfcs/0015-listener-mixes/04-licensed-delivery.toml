@@ -1,0 +1,84 @@
+[section]
+anchor = 'licensed-delivery'
+title = 'Licensed spatial delivery formats'
+problem = """\
+  Some spatial delivery formats are proprietary and licensed, and a public build that labels generic \
+  spatial output with such a format, or carries its code, misleads the musician and breaks its \
+  license."""
+motivation = """\
+  Keeping licensed delivery an optional, separate integration that is reported only after its \
+  licensor's validation keeps every public build honest and free to redistribute, while spatial \
+  mixing stays fully usable."""
+prose = """
+A proprietary licensed spatial delivery format is a format whose renderer, authoring and export
+tools, delivery file and validation are licensed by its owner. Delivery in such a format is a
+separate integration, and generic spatial rendering, whatever file it writes, isn't that delivery.
+The owner of the product decides which licensed deliverables to support and their licensing budget.
+Until the license and distribution terms of an integration are known to fit, delivery in that format
+stays unavailable, and that part of spatial delivery stays explicitly unresolved. A musician who
+owns an external licensed renderer can send the multichannel outputs of a session to it as an
+ordinary multichannel sink."""
+
+[[requirement]]
+id = 'EU-0015-033'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT report a stereo bounce, a generic object file or any other output of generic spatial rendering as delivery in a proprietary licensed spatial format.'
+binds_to = 'system'
+rationale = 'A musician never delivers a file that would fail the validation of its licensor.'
+
+[[requirement]]
+id = 'EU-0015-034'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A public build MUST NOT link or redistribute proprietary code.'
+binds_to = 'system'
+rationale = 'Anyone can build and share the public workstation.'
+
+[[requirement]]
+id = 'EU-0015-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'An integration with a proprietary licensed spatial format MUST be optional.'
+binds_to = 'system'
+rationale = 'The workstation works whole without any licensed integration.'
+
+[[requirement]]
+id = 'EU-0015-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Delivery in a proprietary licensed spatial format MUST stay unavailable until its license and distribution terms are known to fit the build that offers it.'
+binds_to = 'system'
+rationale = 'No build offers a delivery it has no right to make.'
+
+[[requirement]]
+id = 'EU-0015-037'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An export in a proprietary licensed spatial format MUST NOT be reported as that delivery before it passes the validation its licensor requires.'
+binds_to = 'system'
+rationale = 'A reported licensed deliverable is one its licensor accepts.'
+
+[[requirement]]
+id = 'EU-0015-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'Spatial mixing, object history and public export formats MUST stay usable without any proprietary integration.'
+binds_to = 'system'
+rationale = 'A musician mixes in space whether or not a licensed integration exists.'
+
+[[requirement]]
+id = 'EU-0015-039'
+level = 'MAY'
+polarity = 'required'
+statement = 'A musician MAY send the multichannel outputs of a session to an external renderer as an ordinary multichannel sink.'
+binds_to = 'system'
+rationale = 'A musician who owns a licensed renderer uses it with the workstation.'
+
+[[requirement]]
+id = 'EU-0015-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT label a route to an external renderer, or its result, as licensed delivery.'
+binds_to = 'system'
+rationale = 'The workstation claims only the delivery it validates itself.'
