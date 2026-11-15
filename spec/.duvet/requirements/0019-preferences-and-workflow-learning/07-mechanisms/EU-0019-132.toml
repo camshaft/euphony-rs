@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-132"
+
+[[spec]]
+level = "MUST"
+quote = "The executor MUST deduplicate invocations by mechanism version, trigger event and operation identity."

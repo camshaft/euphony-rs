@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-124"
+
+[[spec]]
+level = "MUST"
+quote = "Activation MUST be refused unless the exact version digest, the current scope, the test profile and a passing result match the preview the owner accepted."

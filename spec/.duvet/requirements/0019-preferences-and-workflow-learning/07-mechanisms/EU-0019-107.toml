@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-107"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST serve pending learning work to an assistant when the assistant attaches."

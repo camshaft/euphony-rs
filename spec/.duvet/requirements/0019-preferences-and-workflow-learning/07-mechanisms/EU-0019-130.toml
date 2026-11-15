@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-130"
+
+[[spec]]
+level = "MUST"
+quote = "Activating a mechanism MUST NOT approve an effect of a later invocation in advance."

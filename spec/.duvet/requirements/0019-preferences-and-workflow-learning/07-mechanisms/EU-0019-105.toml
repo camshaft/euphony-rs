@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-105"
+
+[[spec]]
+level = "MUST"
+quote = "Similar prose alone MUST NOT join two findings."

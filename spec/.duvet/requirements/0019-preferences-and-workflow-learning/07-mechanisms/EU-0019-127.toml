@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-127"
+
+[[spec]]
+level = "MUST"
+quote = "A change to a mechanism's definition MUST invalidate its tests and its acceptance."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-134"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST reject a cycle of triggers and effects that lacks a validated finite execution plan."
