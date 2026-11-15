@@ -98,6 +98,14 @@ binds_to = 'system'
 rationale = 'Encrypted bytes do not compress.'
 
 [[requirement]]
+id = 'EU-0007-124'
+level = 'MUST'
+polarity = 'required'
+statement = 'Stored, cached and synced objects of working audio MUST move between machines only on authenticated, encrypted transfers.'
+binds_to = 'system'
+rationale = 'Compression never weakens the protection of audio in transit.'
+
+[[requirement]]
 id = 'EU-0007-038'
 level = 'MUST'
 polarity = 'required'
@@ -128,6 +136,15 @@ polarity = 'required'
 statement = 'A byte rearrangement applied before compression MUST be recorded as a versioned encoding.'
 binds_to = 'system'
 rationale = 'A reader knows which inverse restores the bytes.'
+
+[[requirement]]
+id = 'EU-0007-128'
+level = 'MUST'
+polarity = 'required'
+statement = 'The inverse of a byte rearrangement applied before compression MUST restore each bit of every chunk the rearrangement encodes.'
+binds_to = 'system'
+rationale = 'A rearrangement is lossless, and an implementation can test that it is.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-041' } ]
 
 [[requirement]]
 id = 'EU-0007-042'
@@ -170,9 +187,17 @@ binds_to = 'system'
 rationale = 'Correct live audio comes before resource savings.'
 
 [[requirement]]
+id = 'EU-0007-126'
+level = 'MUST'
+polarity = 'required'
+statement = 'Accepted encoding, capture and migration work MUST stay durable while the resources to run it are unavailable.'
+binds_to = 'system'
+rationale = 'A shortage of resources delays accepted work without losing it.'
+
+[[requirement]]
 id = 'EU-0007-047'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, capture journals and objects with a measured raw exception.'
+statement = 'Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, export deliveries, capture journals and objects with a measured raw exception.'
 binds_to = 'system'
 rationale = 'Raw samples exist only where a deadline or a measurement needs them.'
