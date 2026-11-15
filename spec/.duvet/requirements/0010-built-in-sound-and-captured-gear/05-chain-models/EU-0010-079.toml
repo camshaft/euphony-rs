@@ -2,4 +2,4 @@ target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0
 
 [[spec]]
 level = "MUST"
-quote = "The first version of a model of an external chain MUST copy the chain at the control settings used during its capture."
+quote = "A model of an external chain captured at one setting of its controls MUST copy the chain at that setting."
