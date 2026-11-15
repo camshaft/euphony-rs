@@ -1,0 +1,78 @@
+[section]
+anchor = 'consistency'
+title = 'Relations and the consistency check'
+problem = """\
+  Requirements written by many writers over time can contradict each other, or hold only where \
+  nothing is ever true, and a reader cannot find the conflict by reading."""
+motivation = """\
+  Reading every requirement and relation as propositional logic lets a check prove on each change \
+  that the requirements can all hold together, and name the requirements that conflict where they \
+  can't."""
+prose = """
+Each requirement identifier is an atom of propositional logic, true where the obligation holds in
+the target system. A requirement without conditions that isn't a part of a composed requirement is
+asserted. A requirement with conditions holds where all of its conditions hold. A relation of kind
+depends_on, implies or refines from A to B adds that A implies B, conflicts_with adds that A and B
+don't both hold, and supersedes retires its target. A requirement composed as all_of, any_of or
+exactly_one holds exactly where all, any or exactly one of its parts hold, and one composed as
+unless holds exactly where its exception doesn't. Each logic formula is added as written, over
+identifiers, negation, conjunction, disjunction, implication, equivalence and parentheses. Each
+parameter a requirement sets has a name, a type, a unit and a bound. The check reads the whole set
+this way on every change."""
+
+[[requirement]]
+id = 'EU-0000-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each relation and each logic formula MUST name only identifiers of requirements the set holds.'
+binds_to = 'process'
+rationale = 'A relation to nothing proves nothing.'
+
+[[requirement]]
+id = 'EU-0000-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'The check MUST read the requirements, conditions, compositions, relations and logic formulas of the set as the propositional logic this section states.'
+binds_to = 'process'
+rationale = 'Every reader and every check read a requirement the same way.'
+
+[[requirement]]
+id = 'EU-0000-029'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A change MUST NOT merge while the formulas of the set are unsatisfiable together.'
+binds_to = 'process'
+rationale = 'The default branch always holds requirements that can all be met.'
+relations = [ { kind = 'depends_on', target = 'EU-0000-028' } ]
+
+[[requirement]]
+id = 'EU-0000-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the formulas of the set are unsatisfiable, the check MUST report a minimal subset of them with the identifier of each requirement it names.'
+binds_to = 'process'
+rationale = 'The writer of the change finds the requirements that conflict.'
+
+[[requirement]]
+id = 'EU-0000-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each condition of a requirement MUST be able to hold together with the rest of the set.'
+binds_to = 'process'
+rationale = 'No requirement holds only because its condition can never be true.'
+
+[[requirement]]
+id = 'EU-0000-032'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The relations of kind implies, refines and supersedes MUST NOT form a cycle.'
+binds_to = 'process'
+rationale = 'A requirement never refines or replaces itself through others.'
+
+[[requirement]]
+id = 'EU-0000-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'The bounds that requirements set on one parameter MUST leave at least one value.'
+binds_to = 'process'
+rationale = 'Two requirements never ask for a value that no number meets.'

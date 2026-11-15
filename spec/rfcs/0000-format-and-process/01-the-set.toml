@@ -1,0 +1,128 @@
+[section]
+anchor = 'the-set'
+title = 'The set and its configuration'
+problem = """\
+  A reader or a tool cannot find every RFC of euphony, cannot tell which RFC holds a behavior, and \
+  cannot read identifiers, locations and number ranges the same way as every other reader, without \
+  one place that states them."""
+motivation = """\
+  One configuration file and one index answer every reader and every tool the same way, so that a \
+  tool doesn't hold a name or a location of its own, and a reader finds each behavior in exactly one \
+  RFC."""
+prose = """
+The specification of euphony is one set of RFCs. Each RFC has a number, a title, an area and, once
+written, a slug and one or more sections. RFC numbers fall in ranges called groups. The foundation
+group holds the format of the set and how the set changes. The system group holds the behavior of
+euphony, one RFC for each component of its implementation, and states the end state of each
+component, whether or not an implementation has reached it. The contract group holds each interface
+that components deployed apart offer each other. Each group has a name and a range of RFC numbers,
+which the configuration file states, and the area of an RFC is the name of the group whose range
+holds its number.
+
+The configuration file is the file spec.toml at the root of the set. It states the prefix of every
+requirement identifier, the levels, the implementation terms on which the check warns, the location
+of the sources and of each kind of generated file, and each group. The index is the file index.toml
+in the source directory, and lists every RFC by number, title, area and state, planned or written.
+An RFC is written where the set holds its directory, named of its four-digit number, a hyphen and its
+slug. That directory holds the metadata file rfc.toml and one section file for each section, named
+of a two-digit number, a hyphen and a slug; the number orders the sections. The fields of a metadata
+file are number, title, area, abstract, retired and sources. The registry file lists each kind of
+self-describing identifier an RFC specifies, and holds comment lines alone until an RFC specifies
+one."""
+
+[[requirement]]
+id = 'EU-0000-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'The set MUST hold exactly one configuration file.'
+binds_to = 'process'
+rationale = 'Every tool and reader takes the same answers from one place.'
+
+[[requirement]]
+id = 'EU-0000-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The configuration file MUST state the prefix of every requirement identifier of the set.'
+binds_to = 'process'
+rationale = 'The identifiers of the set stay apart from those of any other specification set.'
+
+[[requirement]]
+id = 'EU-0000-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'The configuration file MUST state the location of the sources and of each kind of generated file.'
+binds_to = 'process'
+rationale = 'Locations change without a change to any tool.'
+
+[[requirement]]
+id = 'EU-0000-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'The configuration file MUST state the name and the number range of each group.'
+binds_to = 'process'
+rationale = 'The check reads the area of each RFC and the groups of each relation from it.'
+
+[[requirement]]
+id = 'EU-0000-005'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The number ranges of two groups MUST NOT overlap.'
+binds_to = 'process'
+rationale = 'Each RFC belongs to exactly one group.'
+
+[[requirement]]
+id = 'EU-0000-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'A tool of the set MUST take every name, location, prefix and number range from the configuration file.'
+binds_to = 'process'
+rationale = 'A tool then serves any specification set, and a change of layout is one edit.'
+
+[[requirement]]
+id = 'EU-0000-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'The index MUST list every RFC of the set by its number, title and area.'
+binds_to = 'process'
+rationale = 'A reader sees the whole set, planned RFCs included, in one file.'
+
+[[requirement]]
+id = 'EU-0000-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'The area of an RFC MUST be the name of the group whose range holds its number.'
+binds_to = 'process'
+rationale = 'The area and the number of an RFC never disagree.'
+relations = [ { kind = 'depends_on', target = 'EU-0000-004' } ]
+
+[[requirement]]
+id = 'EU-0000-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each written RFC MUST have one metadata file that states its number, title, area and abstract.'
+binds_to = 'process'
+rationale = 'A reader learns what an RFC covers before reading its sections.'
+
+[[requirement]]
+id = 'EU-0000-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'The metadata file of an RFC MUST list each source the RFC was written from.'
+binds_to = 'process'
+rationale = 'A reader and a later writer find the material the RFC carries.'
+
+[[requirement]]
+id = 'EU-0000-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each behavior of euphony MUST be specified in exactly one RFC.'
+binds_to = 'process'
+rationale = 'Two RFCs never state the same behavior in different words.'
+
+[[requirement]]
+id = 'EU-0000-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each RFC of the system group MUST cover one component of the implementation.'
+binds_to = 'process'
+rationale = 'Each component of the implementation maps to the RFC that states what it does.'
