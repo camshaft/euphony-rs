@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-086"
+
+[[spec]]
+level = "MUST"
+quote = "Before a purge, euphony MUST show what the purge can't recover."

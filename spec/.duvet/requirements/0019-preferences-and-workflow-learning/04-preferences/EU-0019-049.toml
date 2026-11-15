@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-049"
+
+[[spec]]
+level = "MUST"
+quote = "The last confirmation time of a preference MUST change only when the person confirms it."

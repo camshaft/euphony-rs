@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-087"
+
+[[spec]]
+level = "MUST"
+quote = "A purge MUST be a separate operation from a reset."

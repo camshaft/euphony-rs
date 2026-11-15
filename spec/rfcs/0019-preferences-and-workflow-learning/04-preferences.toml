@@ -1,0 +1,177 @@
+[section]
+anchor = 'preferences'
+title = 'Preference versions and conflicts'
+problem = """\
+  A preference that is overwritten in place, ranked against a contrary one by a guess, or aged out by a timer loses what the owner approved, and the owner can't tell why an assistant behaved as it did."""
+motivation = """\
+  Immutable, typed preference versions that keep their evidence and their history, and that turn an unresolved overlap into a visible conflict, let the owner and every assistant read the same answer to which preference applies."""
+prose = """
+A preference version holds the subject person, a property with a versioned domain, a typed desired
+value or declared range, context predicates for project, genre, client and session, a strength, a
+proposed confidence and its stated basis, the evidence that supports and contradicts it, its
+proposer, the versions it supersedes, the time the person last confirmed it and the approval that
+adopted it. The strength is tentative, preferred or required. A free-text explanation accompanies
+the typed fields. A property whose domain the store doesn't support stays an inspectable note. An
+assistant proposes a preference with its evidence, and the proposal waits for the owner's decision.
+Where approved preferences of the project, the client and the genre overlap and the owner hasn't
+approved a rule of precedence between them, the overlap is a conflict that the owner resolves."""
+
+[[requirement]]
+id = 'EU-0019-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A preference version MUST hold a typed value or a declared range of a property whose domain is versioned.'
+binds_to = 'system'
+rationale = 'Every assistant reads a preference the same way.'
+
+[[requirement]]
+id = 'EU-0019-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A preference version MUST link the evidence that supports it and the evidence that contradicts it.'
+binds_to = 'system'
+rationale = 'The owner sees both sides of each preference.'
+
+[[requirement]]
+id = 'EU-0019-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'The strength of a preference version MUST be tentative, preferred or required.'
+binds_to = 'system'
+rationale = 'An assistant knows how far it can depart from a preference.'
+
+[[requirement]]
+id = 'EU-0019-048'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A preference whose domain the store doesn't support MUST NOT be applied as executable policy."
+binds_to = 'system'
+rationale = 'Only a preference the store can check changes behavior.'
+
+[[requirement]]
+id = 'EU-0019-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'The last confirmation time of a preference MUST change only when the person confirms it.'
+binds_to = 'system'
+rationale = "Use of a preference is never mistaken for the person's renewed agreement."
+
+[[requirement]]
+id = 'EU-0019-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A required preference MUST NOT relax an access, safety, rights or project requirement.'
+binds_to = 'system'
+rationale = 'Taste never overrides protection.'
+
+[[requirement]]
+id = 'EU-0019-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'Proposing a preference MUST carry its evidence versions, the expected learning revision and an idempotency key.'
+binds_to = 'system'
+rationale = 'A proposal names the evidence it depends on, and a retry is stored once.'
+
+[[requirement]]
+id = 'EU-0019-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Proposing a preference MUST return the proposal and a reviewable diff, or a typed refusal of denied, missing authorized evidence, invalid domain, conflict or unavailable storage.'
+binds_to = 'system'
+rationale = 'The proposer learns exactly what happened to the proposal.'
+
+[[requirement]]
+id = 'EU-0019-053'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST validate a proposal's subject, schema, evidence access and typed relations before it stores the proposal."
+binds_to = 'system'
+rationale = "An invalid proposal never reaches the owner's review."
+
+[[requirement]]
+id = 'EU-0019-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A stored preference version MUST NOT change.'
+binds_to = 'system'
+rationale = 'Each version the owner reviewed stays the version they reviewed.'
+
+[[requirement]]
+id = 'EU-0019-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'A proposal that narrows or replaces a preference MUST link the version it supersedes.'
+binds_to = 'system'
+rationale = 'A preference is never silently overwritten.'
+
+[[requirement]]
+id = 'EU-0019-056'
+level = 'MUST'
+polarity = 'required'
+statement = 'Contradicting evidence MUST be kept with its context.'
+binds_to = 'system'
+rationale = 'A contrary observation stays available for a later review.'
+
+[[requirement]]
+id = 'EU-0019-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'The preferences of two subjects MUST stay independent of each other.'
+binds_to = 'system'
+rationale = "One person's taste never becomes another's."
+
+[[requirement]]
+id = 'EU-0019-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'An accepted session override MUST take precedence only within the scope it declares.'
+binds_to = 'system'
+rationale = "A choice made for one session doesn't change the owner's lasting taste."
+
+[[requirement]]
+id = 'EU-0019-059'
+level = 'MUST'
+polarity = 'required'
+statement = 'Overlapping approved preferences without an approved rule of precedence between them MUST yield an unresolved conflict.'
+binds_to = 'system'
+rationale = 'The owner decides between their own preferences.'
+
+[[requirement]]
+id = 'EU-0019-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT resolve a conflict between preferences by ranking or averaging them.'
+binds_to = 'system'
+rationale = "A guess never stands in for the owner's decision."
+
+[[requirement]]
+id = 'EU-0019-061'
+level = 'MUST'
+polarity = 'required'
+statement = 'While a conflict between preferences is unresolved, euphony MUST keep the last approved behavior that still applies.'
+binds_to = 'system'
+rationale = "A new conflict doesn't change what the owner already approved."
+
+[[requirement]]
+id = 'EU-0019-062'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT change a persistent default to resolve a conflict between preferences.'
+binds_to = 'system'
+rationale = "Only the owner's decision resolves a conflict."
+
+[[requirement]]
+id = 'EU-0019-063'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The age of a preference MUST NOT change an approved preference.'
+binds_to = 'system'
+rationale = 'A preference lasts until the owner changes it.'
+
+[[requirement]]
+id = 'EU-0019-064'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST show the age of a preference as uncertainty.'
+binds_to = 'system'
+rationale = 'An old preference is shown as one the owner may want to confirm again.'

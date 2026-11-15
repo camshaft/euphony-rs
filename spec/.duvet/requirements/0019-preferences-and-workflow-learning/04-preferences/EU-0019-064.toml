@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-064"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST show the age of a preference as uncertainty."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-056"
+
+[[spec]]
+level = "MUST"
+quote = "Contradicting evidence MUST be kept with its context."
