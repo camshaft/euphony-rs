@@ -1,0 +1,125 @@
+[section]
+anchor = 'host-service'
+title = 'The host service'
+problem = """\
+  The engine of a session stops when the window that started it closes, and a computer can't offer \
+  its sessions, its audio device or its rendering to an interface that arrives later, unless one \
+  long-lived program on each computer starts and supervises the engine."""
+motivation = """\
+  One host service on each of the owner's computers, started by the operating system when a client \
+  first connects to it, holds that computer's sessions and endpoints and starts each engine process \
+  when it is needed, so that no interface owns the engine and nothing runs or polls before it is \
+  needed."""
+prose = """
+Each of the owner's computers runs one host service for the owner's account. The host service
+supervises the engine processes of that computer: one session host for each open session, the audio
+device process once the owner activates an audio device, the worker role where the owner enrolled
+the computer for rendering, and the runners of composition programs. It holds the computer's list of
+sessions, its local endpoint for clients on the same computer and its network endpoint for the
+owner's other paired computers. The operating system's service manager starts the host service when
+a client first connects to its local endpoint. The behavior of the audio device process, of the
+worker and of the runners is specified in the RFCs of those components."""
+
+[[requirement]]
+id = 'EU-0002-001'
+level = 'MUST'
+polarity = 'required'
+statement = "Each of the owner's computers that runs euphony MUST run the host service as a per-user service of the operating system for the owner's account."
+binds_to = 'system'
+rationale = 'The engine of each computer has one supervisor that belongs to the owner and outlives every interface.'
+
+[[requirement]]
+id = 'EU-0002-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The operating system MUST start the host service when a client first connects to its local endpoint.'
+binds_to = 'system'
+rationale = 'The host service runs only once a client needs it.'
+
+[[requirement]]
+id = 'EU-0002-003'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The host service MUST NOT poll for clients or for work.'
+binds_to = 'system'
+rationale = 'Every start and every action of the host service follows an event.'
+
+[[requirement]]
+id = 'EU-0002-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST start one session host for each session a client opens.'
+binds_to = 'system'
+rationale = 'Each open session has exactly one owner of its state.'
+
+[[requirement]]
+id = 'EU-0002-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST start the audio device process only once the owner activates an audio device.'
+binds_to = 'system'
+rationale = 'A computer reaches its audio hardware only when the owner asks it to.'
+
+[[requirement]]
+id = 'EU-0002-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST run the worker role only on a computer the owner enrolled for rendering.'
+binds_to = 'system'
+rationale = "A computer renders for the owner's projects only once the owner chose it."
+
+[[requirement]]
+id = 'EU-0002-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST run each runner of a composition program as a process of its own.'
+binds_to = 'system'
+rationale = 'A composition program never runs inside the session host or the audio device process.'
+
+[[requirement]]
+id = 'EU-0002-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST hold the list of the sessions open on its computer.'
+binds_to = 'system'
+rationale = 'A client finds each session it can attach to in one place.'
+
+[[requirement]]
+id = 'EU-0002-009'
+level = 'MUST'
+polarity = 'required'
+statement = "The host service MUST hold its computer's local endpoint and network endpoint."
+binds_to = 'system'
+rationale = 'Every client, local or remote, reaches the engine of a computer through the host service.'
+
+[[requirement]]
+id = 'EU-0002-010'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A failure of the host service MUST NOT stop a running session host or audio device process.'
+binds_to = 'system'
+rationale = 'Playback and recording outlive a failure of their supervisor.'
+
+[[requirement]]
+id = 'EU-0002-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restarted host service MUST find each running session host and audio device process of its computer through the endpoints they registered.'
+binds_to = 'system'
+rationale = 'A restart of the supervisor recovers every running session without starting a second copy of it.'
+
+[[requirement]]
+id = 'EU-0002-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'The location of the local endpoint MUST be configurable.'
+binds_to = 'system'
+rationale = 'An owner places the endpoint where their computer needs it.'
+
+[[requirement]]
+id = 'EU-0002-013'
+level = 'SHOULD'
+polarity = 'required'
+statement = "By default, the local endpoint SHOULD be at the location the operating system's convention sets for a per-user service."
+binds_to = 'system'
+rationale = "A client finds the endpoint where the platform's other per-user services are found."

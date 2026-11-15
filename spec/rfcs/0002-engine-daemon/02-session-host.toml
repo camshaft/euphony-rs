@@ -1,0 +1,150 @@
+[section]
+anchor = 'session-host'
+title = 'The session host'
+problem = """\
+  Two interfaces that each hold their own copy of a session's state disagree, and an edit is lost \
+  when the program that accepted it exits, unless one long-lived process owns each open session."""
+motivation = """\
+  One session host for each open session owns its history and its state, runs whether or not any \
+  client is attached, and is the only writer of the session's project state, so that every \
+  interface sees one session and every accepted change is kept."""
+prose = """
+The session host is the daemon of one session. It starts when a client opens a local copy of a
+project, and owns that copy's journal, signed revision graph, branch references, render manifest and
+render scheduler, together with the session's transport and state; the audio device process owns the
+audio stream. It publishes typed events to the clients attached to it, over the local endpoint or
+over an authenticated connection from a peer. Every collaborator runs a session host for their own
+copy and edits their own branch offline. Authority is local to a working branch and a playback
+device, and shared history doesn't need a central leader. The session host reads its configuration
+from project and device records: peer enrollment, the clock domain, devices, negotiated profiles,
+storage policy, allowed processors, render priorities, pairings, links, source imports and script
+profiles. The journal, the revision graph and the commands are specified in the RFC of the project
+model, and the render scheduler in the RFC of distributed rendering."""
+
+[[requirement]]
+id = 'EU-0002-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST run as a process apart from every client.'
+binds_to = 'system'
+rationale = 'A client that fails or exits leaves the session running.'
+
+[[requirement]]
+id = 'EU-0002-015'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST be the only writer of its session's project state."
+binds_to = 'system'
+rationale = 'Every client sees one state, and no two writers disagree.'
+
+[[requirement]]
+id = 'EU-0002-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST own the journal, the revision graph, the branch references and the render manifest of its copy of the project.'
+binds_to = 'system'
+rationale = 'The history of a copy has one keeper.'
+
+[[requirement]]
+id = 'EU-0002-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST keep running whether or not a client is attached to its session.'
+binds_to = 'system'
+rationale = 'A session never depends on an interface being open.'
+
+[[requirement]]
+id = 'EU-0002-018'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST publish each change of its session's state to its attached clients as a typed event."
+binds_to = 'system'
+rationale = 'Every client learns each change in the same typed form.'
+
+[[requirement]]
+id = 'EU-0002-019'
+level = 'MUST'
+polarity = 'required'
+statement = "A collaborator's session host MUST accept edits to that collaborator's own branch while no other collaborator's session host is reachable."
+binds_to = 'system'
+rationale = 'Each collaborator works offline.'
+
+[[requirement]]
+id = 'EU-0002-020'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The loss of one collaborator's session host MUST NOT make another collaborator's copy of the project read-only."
+binds_to = 'system'
+rationale = 'Each copy stays editable whatever happens to another copy.'
+
+[[requirement]]
+id = 'EU-0002-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Shared project history MUST NOT require a central leader.'
+binds_to = 'system'
+rationale = 'A single computer never holds every collaborator up.'
+
+[[requirement]]
+id = 'EU-0002-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'A lost local journal MUST be restored only from its own backup or from a peer revision the owner explicitly chooses.'
+binds_to = 'system'
+rationale = "A restore never adopts another copy's history without the owner's choice."
+
+[[requirement]]
+id = 'EU-0002-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST read its configuration from project and device records.'
+binds_to = 'system'
+rationale = 'Configuration changes without a change to the code.'
+
+[[requirement]]
+id = 'EU-0002-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST read each project, device and assistant identity from records.'
+binds_to = 'system'
+rationale = 'An implementation never fixes an identity in its code.'
+
+[[requirement]]
+id = 'EU-0002-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST emit an operational event for each command acceptance, command conflict, preparation start, preparation completion, preparation failure, cache validation, worker arrival, worker loss, clock state change and underrun.'
+binds_to = 'system'
+rationale = 'Each operation of the engine can be observed as it happens.'
+
+[[requirement]]
+id = 'EU-0002-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The type of each operational event MUST be defined in the public schema.'
+binds_to = 'system'
+rationale = 'Every reader of an event reads the same type.'
+
+[[requirement]]
+id = 'EU-0002-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each metric of the session host MUST use a closed set of categories.'
+binds_to = 'system'
+rationale = 'Metrics stay comparable, and the categories bound their size.'
+
+[[requirement]]
+id = 'EU-0002-028'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A metric of the session host MUST NOT use a diagnostic identifier as a category.'
+binds_to = 'system'
+rationale = 'A diagnostic identifier stays an attribute of its event.'
+
+[[requirement]]
+id = 'EU-0002-029'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT have to poll the session host to learn of a change.'
+binds_to = 'system'
+rationale = 'Changes reach clients as events.'
