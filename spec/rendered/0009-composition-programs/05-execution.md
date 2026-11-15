@@ -10,8 +10,9 @@ tracks whose dependencies are explicit, run as separate jobs across the owner's 
 sequential program stays one job. A worker reports the resources it has, and where they run out,
 the authority keeps the paused work and its diagnostics. The owner can cancel a program that runs
 away. Every composition command passes the authorization of the caller that sends it before the
-runner starts a program for it or the authority applies the program's output. The browser companion
-sends authorized composition commands to a native host and doesn't run programs itself.
+runner starts a program for it, and again before the authority applies the program's output. The
+browser companion sends authorized composition commands to a native host and doesn't run programs
+itself.
 
 ### EU-0009-050 {#EU-0009-050}
 
@@ -63,4 +64,4 @@ The browser companion MUST NOT run a composition program itself.
 
 ### EU-0009-083 {#EU-0009-083}
 
-A composition command MUST pass the authorization of the caller that sends it before the runner starts a program for it or the authority applies the output of that program.
+A composition command MUST pass the authorization of the caller that sends it before the runner starts a program for it, and again before the authority applies the output of that program.
