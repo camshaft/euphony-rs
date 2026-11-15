@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/12-observability.md#EU-0019-188"
+
+[[spec]]
+level = "MUST"
+quote = "A learning metric MUST use closed categories of reason, source and status."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-186"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT capture talkback as learning evidence."

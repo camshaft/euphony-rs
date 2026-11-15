@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-182"
+
+[[spec]]
+level = "MUST"
+quote = "A comment link MUST NOT allow anything beyond comments."

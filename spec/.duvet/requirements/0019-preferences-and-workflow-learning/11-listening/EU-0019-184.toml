@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-184"
+
+[[spec]]
+level = "MUST"
+quote = "A listener's statement MUST NOT become another person's approved preference."

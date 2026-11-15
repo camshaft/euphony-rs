@@ -1,0 +1,79 @@
+[section]
+anchor = 'observability'
+title = 'Events, metrics and conformance'
+problem = """\
+  Without events and metrics no one can see whether learning works, and a learning profile released without evidence that it conforms can leak private data or fail to roll back."""
+motivation = """\
+  Generated events for each step of learning, metrics that carry no personal data, and a release that refuses a profile without its exact-build evidence make learning observable and keep every supported profile verified."""
+prose = """
+Euphony publishes events for evidence capture and omission, proposal state, context freshness,
+activation and refusal, invocation, suspension, retirement, synchronization conflicts and
+retrospective completion. It measures the size and time of context reads, queue delay, correction
+outcomes and resource cost as demand grows. A learning profile is a supported combination of
+preference domains, protocol capabilities and execution profiles, with the conformance, privacy
+and rollback results of the exact build that supports it. Conformance fixtures use synthetic
+subjects and recordings."""
+
+[[requirement]]
+id = 'EU-0019-187'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST publish an event for each evidence capture or omission, proposal state change, context freshness change, activation or refusal, invocation, suspension, retirement, synchronization conflict and retrospective completion.'
+binds_to = 'system'
+rationale = 'Each step of learning can be observed.'
+
+[[requirement]]
+id = 'EU-0019-188'
+level = 'MUST'
+polarity = 'required'
+statement = 'A learning metric MUST use closed categories of reason, source and status.'
+binds_to = 'system'
+rationale = 'Metrics can be compared and aggregated.'
+
+[[requirement]]
+id = 'EU-0019-189'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A learning metric MUST NOT carry personal text or an identity as a label.'
+binds_to = 'system'
+rationale = 'Metrics never leak private learning.'
+
+[[requirement]]
+id = 'EU-0019-190'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT set a fixed limit on the number of preferences, collaborators or proposals.'
+binds_to = 'system'
+rationale = 'Limits come from measured demand, not from an invented count.'
+
+[[requirement]]
+id = 'EU-0019-191'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST schedule the work of independent learning scopes concurrently.'
+binds_to = 'system'
+rationale = "One scope's work never waits on another's."
+
+[[requirement]]
+id = 'EU-0019-192'
+level = 'MUST'
+polarity = 'required'
+statement = 'A new preference domain, protocol capability or execution profile MUST have versioned conformance evidence before it is activated.'
+binds_to = 'system'
+rationale = 'Each addition is shown to work before anyone relies on it.'
+
+[[requirement]]
+id = 'EU-0019-193'
+level = 'MUST'
+polarity = 'required'
+statement = 'A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail.'
+binds_to = 'system'
+rationale = 'Every supported profile is verified on the build that releases it.'
+
+[[requirement]]
+id = 'EU-0019-194'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A conformance fixture MUST NOT hold private client names, recordings or notes.'
+binds_to = 'system'
+rationale = "Tests never expose anyone's private work."

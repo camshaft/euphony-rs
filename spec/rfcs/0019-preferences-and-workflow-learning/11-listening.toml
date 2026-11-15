@@ -1,0 +1,68 @@
+[section]
+anchor = 'listening'
+title = 'Listening results as evidence'
+problem = """\
+  A listening result taken from a listener on a poor connection, at a level no one aligned, or credited to the wrong person teaches the wrong taste, and a collaborator's opinion can end up as the owner's preference."""
+motivation = """\
+  Listening results that keep the listener, the quality actually received and the alignment of the trial, and that become evidence about a listener's taste only by that listener's choice, let listening sessions inform taste without overstating what they show."""
+prose = """
+A listening result from a listening session keeps the listener, the project revision, the sink the
+listener chose, the codec and quality the listener received, the level alignment, the output profile
+and the reported timing uncertainty. A comment link lets its holder comment and nothing else.
+Talkback stays outside capture, and this RFC doesn't add voice transcription."""
+
+[[requirement]]
+id = 'EU-0019-180'
+level = 'MUST'
+polarity = 'required'
+statement = "A listening result MUST keep the actual listener's identity, the project revision, the selected sink, the received codec and quality, the level alignment, the output profile and the reported timing uncertainty."
+binds_to = 'system'
+rationale = 'A listening result is read with the conditions it was heard under.'
+
+[[requirement]]
+id = 'EU-0019-181'
+level = 'MUST'
+polarity = 'required'
+statement = 'A listening result MUST record the quality the listener reported receiving, not the quality the host intended.'
+binds_to = 'system'
+rationale = 'A judgment is tied to what the listener actually heard.'
+
+[[requirement]]
+id = 'EU-0019-182'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A comment link MUST NOT allow anything beyond comments.'
+binds_to = 'system'
+rationale = 'A comment link never becomes a way to edit or to read learning.'
+
+[[requirement]]
+id = 'EU-0019-183'
+level = 'MUST'
+polarity = 'required'
+statement = 'A listener MUST choose whether their contribution is used as evidence about their taste.'
+binds_to = 'system'
+rationale = 'Each listener decides what is learned about them.'
+
+[[requirement]]
+id = 'EU-0019-184'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A listener's statement MUST NOT become another person's approved preference."
+binds_to = 'system'
+rationale = "One person's opinion never becomes another's taste."
+
+[[requirement]]
+id = 'EU-0019-185'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A listening result of mixed quality or without level alignment MUST NOT establish a calibrated preference about sound.'
+binds_to = 'system'
+rationale = 'Uncontrolled listening stays contextual evidence with its limits.'
+
+[[requirement]]
+id = 'EU-0019-186'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT capture talkback as learning evidence.'
+binds_to = 'system'
+rationale = 'Conversation between musicians stays out of learning.'

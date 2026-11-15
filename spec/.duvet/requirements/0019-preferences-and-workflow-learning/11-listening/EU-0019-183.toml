@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-183"
+
+[[spec]]
+level = "MUST"
+quote = "A listener MUST choose whether their contribution is used as evidence about their taste."
