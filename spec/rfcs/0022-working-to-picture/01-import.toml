@@ -63,7 +63,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "Each audio stream of an imported video MUST become a region on a track of its own, placed by the same timing as the picture."
 binds_to = 'system'
-rationale = "The musician hears the video's own sound, such as its guide track, in its place against the picture."
+rationale = "The musician listens to the video's own sound, such as its guide track, in its place against the picture."
 
 [[requirement]]
 id = 'EU-0022-007'
