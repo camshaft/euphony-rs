@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-013"
+
+[[spec]]
+level = "MUST"
+quote = "A switch or a choice among values MUST accept modulation only through an explicit threshold with hysteresis or through index selection."

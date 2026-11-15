@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-007"
+
+[[spec]]
+level = "MUST"
+quote = "A source of note or controller events MUST select its events by port, channel and event type."

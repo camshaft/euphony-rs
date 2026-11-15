@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-009"
+
+[[spec]]
+level = "MUST"
+quote = "A conversion from a signal of more than one channel to a control value MUST state how it selects or mixes the channels."

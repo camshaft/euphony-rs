@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-050"
+
+[[spec]]
+level = "MUST"
+quote = "A processor that accepts updates only once a block MUST declare the interval at which it accepts them."

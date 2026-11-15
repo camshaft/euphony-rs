@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-043"
+
+[[spec]]
+level = "MUST"
+quote = "Two collaborative changes of one target's combination mode MUST conflict when they merge."

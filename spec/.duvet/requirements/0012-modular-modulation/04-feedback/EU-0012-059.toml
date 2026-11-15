@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-059"
+
+[[spec]]
+level = "MUST"
+quote = "A feedback delay MUST be a positive integer number of project samples."

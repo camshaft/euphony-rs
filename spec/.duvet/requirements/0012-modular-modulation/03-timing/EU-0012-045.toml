@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-045"
+
+[[spec]]
+level = "MUST"
+quote = "A note or controller value MUST keep its original integer value until its conversion maps it."

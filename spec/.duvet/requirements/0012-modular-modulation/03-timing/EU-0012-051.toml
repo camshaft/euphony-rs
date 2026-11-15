@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-051"
+
+[[spec]]
+level = "MUST"
+quote = "The interface MUST show the update interval of a target that accepts updates once a block, with its duration at the project's sample rate."

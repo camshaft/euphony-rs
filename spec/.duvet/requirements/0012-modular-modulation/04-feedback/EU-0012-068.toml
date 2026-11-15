@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-068"
+
+[[spec]]
+level = "MUST"
+quote = "A change of the project's sample rate MUST restate each feedback delay in samples."

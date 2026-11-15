@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-057"
+
+[[spec]]
+level = "MUST"
+quote = "A cycle in the graph of audio, notes and controls MUST be refused unless a delay the musician sets breaks it."

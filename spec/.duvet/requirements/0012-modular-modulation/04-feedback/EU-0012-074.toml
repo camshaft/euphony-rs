@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-074"
+
+[[spec]]
+level = "MUST"
+quote = "Any limiting of the output MUST be an explicit processor of the project."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-018"
+
+[[spec]]
+level = "MUST"
+quote = "Soloing a track to audition it MUST NOT change the saved routes."

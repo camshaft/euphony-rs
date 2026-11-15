@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-024"
+
+[[spec]]
+level = "MUST"
+quote = "A route's contribution MUST be its offset plus its depth times its curve applied to the source's value."

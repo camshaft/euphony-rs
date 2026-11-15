@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-022"
+
+[[spec]]
+level = "MUST"
+quote = "An offline render MUST NOT render a range for which a live source's input wasn't captured."

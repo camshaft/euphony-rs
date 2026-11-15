@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-023"
+
+[[spec]]
+level = "MUST"
+quote = "Each source conversion MUST produce a dimensionless value in its declared unipolar or bipolar domain."

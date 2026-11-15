@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-069"
+
+[[spec]]
+level = "MUST"
+quote = "The interface MUST warn of a cycle whose gain or range can grow."

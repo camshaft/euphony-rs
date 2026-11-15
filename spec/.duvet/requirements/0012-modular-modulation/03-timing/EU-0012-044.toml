@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-044"
+
+[[spec]]
+level = "MUST"
+quote = "A control stream MUST carry its values at the resolution of the project's numerical profile."

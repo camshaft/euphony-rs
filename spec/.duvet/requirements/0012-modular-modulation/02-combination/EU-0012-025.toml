@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-025"
+
+[[spec]]
+level = "MUST"
+quote = "A route's output range MUST clip its contribution."

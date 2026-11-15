@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-032"
+
+[[spec]]
+level = "MUST"
+quote = "When a target's mode is set to Replace, its replacement base MUST start at the target's unmodulated value."

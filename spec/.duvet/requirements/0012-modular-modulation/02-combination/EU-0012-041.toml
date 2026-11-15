@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-041"
+
+[[spec]]
+level = "MUST"
+quote = "Each change of a combination mode, an offset, a depth or a curve MUST make a new revision of the project that can be undone."
