@@ -3,7 +3,7 @@ anchor = 'theory'
 title = 'Musical theory operations'
 problem = """\
   A conversion between musical values, such as a scale degree to a pitch, a pitch to a frequency or \
-  a musical duration to samples, gives different answers under different scales, tunings, tempo \
+  a musical duration to samples, has different answers under different scales, tunings, tempo \
   maps and rounding, so a conversion that hides its context, or rounds without saying so, changes \
   the music without anyone knowing."""
 motivation = """\
@@ -45,7 +45,7 @@ level = 'MUST'
 polarity = 'required'
 statement = 'The expansion of a scale degree to a pitch and the collapse of a pitch to a scale degree MUST follow a rounding policy that the caller declares.'
 binds_to = 'system'
-rationale = 'A pitch outside the scale lands on the degree the caller chose, every time.'
+rationale = 'A pitch outside the scale goes to the degree the caller chose, every time.'
 
 [[requirement]]
 id = 'EU-0009-040'

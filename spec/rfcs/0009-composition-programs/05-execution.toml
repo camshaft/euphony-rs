@@ -68,7 +68,7 @@ level = 'MUST'
 polarity = 'forbidden'
 statement = 'A program MUST NOT run on the audio path.'
 binds_to = 'system'
-rationale = 'A slow or failing program never interrupts what a musician hears.'
+rationale = 'A slow or failing program never interrupts playback.'
 
 [[requirement]]
 id = 'EU-0009-056'

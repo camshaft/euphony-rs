@@ -7,7 +7,7 @@ problem = """\
   wastes the time of the musician and the computers."""
 motivation = """\
   An output identified by everything that made it, random sources that are specified and seeded, \
-  and reuse of stored output let the same program, inputs and seed give the same notes on any \
+  and reuse of stored output let the same program, inputs and seed produce the same notes on any \
   compatible computer, and run only what changed."""
 prose = """
 The identity of the output of a program is everything that made it: the text of the program, its
@@ -50,7 +50,7 @@ level = 'MUST'
 polarity = 'forbidden'
 statement = 'The output of a random source of the composition runtime MUST NOT depend on how its seed was written.'
 binds_to = 'system'
-rationale = 'One seed value gives one stream, whether a program wrote it as a constant or computed it.'
+rationale = 'One seed value starts one stream, whether a program wrote it as a constant or computed it.'
 
 [[requirement]]
 id = 'EU-0009-066'
