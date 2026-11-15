@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-072"
+
+[[spec]]
+level = "MUST"
+quote = "The validation of a model MUST run outside the real-time audio processing."

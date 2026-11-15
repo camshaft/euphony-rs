@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-187"
+
+[[spec]]
+level = "MUST"
+quote = "A null test of an instrument model MUST be applied only where reset, phase, timing and deterministic state can be matched."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-002"
+
+[[spec]]
+level = "MUST"
+quote = "Each built-in processor MUST declare how automation of each of its parameters takes effect."

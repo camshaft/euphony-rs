@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-119"
+
+[[spec]]
+level = "MUST"
+quote = "The trial count of each listener MUST be fixed before the test and computed exactly from the binomial distribution for the declared values."

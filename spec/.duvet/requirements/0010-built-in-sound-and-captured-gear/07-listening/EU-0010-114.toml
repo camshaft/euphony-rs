@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-114"
+
+[[spec]]
+level = "MUST"
+quote = "The scope of the final evaluation MUST default to one candidate chosen in advance and tested once."

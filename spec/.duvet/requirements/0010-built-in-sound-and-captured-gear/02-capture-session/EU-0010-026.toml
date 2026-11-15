@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-026"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST stop emission before its next segment when its device, channels, sample rate, clock source or channel map changes."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-020"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST NOT emit to an output channel that its approval does not name."

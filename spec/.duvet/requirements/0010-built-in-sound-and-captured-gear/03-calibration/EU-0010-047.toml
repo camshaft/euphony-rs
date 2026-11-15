@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-047"
+
+[[spec]]
+level = "MUST"
+quote = "A capture MUST stop once its error lies within the tolerance the musician declares and its random-part comparisons pass, once more capture no longer improves its estimates beyond their intervals, or on the musician's stop."

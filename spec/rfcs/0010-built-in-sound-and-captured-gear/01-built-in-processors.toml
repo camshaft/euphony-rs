@@ -1,0 +1,145 @@
+[section]
+anchor = 'built-in-processors'
+title = 'Built-in instruments and effects'
+problem = "A musician relies on particular instruments and effects, and a project made with them stops sounding the same when the algorithm of a processor changes, or when the engine runs a processor it can't vouch for."
+motivation = "Versioned built-in processors with a declared contract keep every saved project sounding as it did, let the engine run only processors it includes, and let each replacement of an instrument or effect be accepted against the musician's own tests."
+prose = """
+euphony runs only its own built-in processors: instruments, which turn events into audio, and
+effects, which turn audio into audio. Each processor declares a contract: its typed parameters with
+their ranges and units, how automation of each parameter takes effect, its latency, its tail after
+the input stops, its supported sample rates, how it handles stereo, how it resets its state, and
+which numerical results it reproduces. Each processor has a version, and a saved project names the
+version of each processor it uses. A replacement is a built-in processor written for an instrument
+or effect that the musician lists, and the musician accepts it against listening and signal tests
+they choose. euphony doesn't promise an indistinguishable copy of an unspecified commercial effect.
+A comparison with another product uses only a reference that its license permits and a method that
+a legal review accepts."""
+
+[[requirement]]
+id = 'EU-0010-001'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST declare its typed parameters, with the range and the unit of each."
+binds_to = 'system'
+rationale = "Every editor, automation lane and assistant reads a parameter the same way."
+
+[[requirement]]
+id = 'EU-0010-002'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST declare how automation of each of its parameters takes effect."
+binds_to = 'system'
+rationale = "An automated project renders the same on every computer."
+
+[[requirement]]
+id = 'EU-0010-003'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST declare its latency and its tail."
+binds_to = 'system'
+rationale = "Delay compensation and rendering know when its output starts and ends."
+
+[[requirement]]
+id = 'EU-0010-004'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST declare the sample rates it supports."
+binds_to = 'system'
+rationale = "A project never runs a processor at a rate it was not built for."
+
+[[requirement]]
+id = 'EU-0010-005'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST serialize its state so that a saved project restores it."
+binds_to = 'system'
+rationale = "A reopened project sounds as it did when it was saved."
+
+[[requirement]]
+id = 'EU-0010-006'
+level = 'MUST'
+polarity = 'required'
+statement = "Each built-in processor MUST have a version that a saved project names."
+binds_to = 'system'
+rationale = "A project records exactly which algorithm made its sound."
+
+[[requirement]]
+id = 'EU-0010-007'
+level = 'MUST'
+polarity = 'required'
+statement = "A saved project MUST keep playing the processor version it names after a newer version exists."
+binds_to = 'system'
+rationale = "An update of euphony never changes the sound of a finished project."
+relations = [ { kind = 'depends_on', target = 'EU-0010-006' } ]
+
+[[requirement]]
+id = 'EU-0010-008'
+level = 'MUST'
+polarity = 'required'
+statement = "A change that alters the output of a processor for any input MUST produce a new processor version."
+binds_to = 'system'
+rationale = "Two renders under one version always sound the same."
+
+[[requirement]]
+id = 'EU-0010-009'
+level = 'MUST'
+polarity = 'required'
+statement = "A new processor version MUST have a cache identity distinct from that of every earlier version."
+binds_to = 'system'
+rationale = "Audio rendered by an earlier version is never reused for a later one."
+
+[[requirement]]
+id = 'EU-0010-010'
+level = 'MUST'
+polarity = 'required'
+statement = "Moving a project to a new processor version MUST be an explicit edit that the musician can undo."
+binds_to = 'system'
+rationale = "The musician decides when a project changes sound, and can go back."
+
+[[requirement]]
+id = 'EU-0010-011'
+level = 'MUST'
+polarity = 'required'
+statement = "A move of a project to a new processor version MUST offer the musician a comparison of the sound before and after the move."
+binds_to = 'system'
+rationale = "The musician listens to what the move changes before keeping it."
+
+[[requirement]]
+id = 'EU-0010-012'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The engine MUST NOT load a processor that is not built into it."
+binds_to = 'system'
+rationale = "The engine runs only code it includes and has tested."
+
+[[requirement]]
+id = 'EU-0010-013'
+level = 'MUST'
+polarity = 'required'
+statement = "For each instrument or effect the musician lists for replacement, euphony MUST offer a built-in processor that meets the listening and signal tests the musician accepts for it."
+binds_to = 'system'
+rationale = "A musician can move to euphony without losing the sounds they rely on."
+
+[[requirement]]
+id = 'EU-0010-014'
+level = 'MUST'
+polarity = 'required'
+statement = "The code of each built-in processor MUST be distributable under the license of the code of euphony."
+binds_to = 'system'
+rationale = "No processor changes the terms under which euphony is distributed."
+
+[[requirement]]
+id = 'EU-0010-015'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A comparison of a built-in processor with another product MUST NOT use a reference whose license does not permit that comparison."
+binds_to = 'system'
+rationale = "A replacement is accepted only on evidence that was lawful to gather."
+
+[[requirement]]
+id = 'EU-0010-016'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST record each listed instrument or effect that no accepted built-in processor replaces yet."
+binds_to = 'system'
+rationale = "An unmet replacement stays visible rather than being claimed as met."

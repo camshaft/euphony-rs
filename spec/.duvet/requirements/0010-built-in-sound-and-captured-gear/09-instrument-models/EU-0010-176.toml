@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-176"
+
+[[spec]]
+level = "MUST"
+quote = "Where the runtime can't sustain the modeled voice behavior, euphony MUST mark live use of the model unavailable."

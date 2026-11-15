@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-171"
+
+[[spec]]
+level = "MUST"
+quote = "The pitch of each voice of a structured instrument model MUST come from the events it plays."

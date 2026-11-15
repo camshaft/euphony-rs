@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-075"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST declare its added delay apart from its modeled delay."

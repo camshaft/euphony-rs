@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-169"
+
+[[spec]]
+level = "MUST"
+quote = "For each synthesizer capture, euphony MUST fit a structured instrument model and a learned instrument model to the same capture."

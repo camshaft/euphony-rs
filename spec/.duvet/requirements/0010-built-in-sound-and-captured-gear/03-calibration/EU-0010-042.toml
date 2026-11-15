@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-042"
+
+[[spec]]
+level = "MUST"
+quote = "Each test signal MUST have a stored seed and version, so that a capture can be repeated."

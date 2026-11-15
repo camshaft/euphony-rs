@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-034"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST describe the gear without the delay, response or noise of the audio interface."

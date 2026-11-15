@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-062"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST record whether the musician accepted the model, apart from its statistical results."

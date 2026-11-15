@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-197"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST keep the provenance and the restrictions of the captures it was derived from."

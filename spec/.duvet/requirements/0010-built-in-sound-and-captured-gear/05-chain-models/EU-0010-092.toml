@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-092"
+
+[[spec]]
+level = "MAY"
+quote = "Each paired computer that offers the capacity MAY run training, fitting and evaluation jobs."

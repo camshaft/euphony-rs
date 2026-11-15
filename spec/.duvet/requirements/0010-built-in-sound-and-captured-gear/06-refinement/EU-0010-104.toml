@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-104"
+
+[[spec]]
+level = "MUST"
+quote = "The stop of a refinement run MUST NOT affect accepted models, completed jobs or other runs."

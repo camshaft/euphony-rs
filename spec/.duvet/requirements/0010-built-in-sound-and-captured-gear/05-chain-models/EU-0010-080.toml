@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-080"
+
+[[spec]]
+level = "MUST"
+quote = "A model of an external chain MUST offer a control that blends the unprocessed and processed sound."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-107"
+
+[[spec]]
+level = "MUST"
+quote = "The stop check MUST take the metrics, tolerances, stagnation rule and resume authority of any refinement run, so that every refinement loop of euphony uses it."

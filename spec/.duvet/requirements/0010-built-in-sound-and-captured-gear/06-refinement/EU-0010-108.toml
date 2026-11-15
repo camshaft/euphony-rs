@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-108"
+
+[[spec]]
+level = "MUST"
+quote = "A stopped run MUST report its best candidates with their error and their cost."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-043"
+
+[[spec]]
+level = "MUST"
+quote = "The test signal set MUST hold sine sweeps and noise bursts at several levels, transients, level steps and tone bursts of several sizes and lengths, silence, a steady tone, a pulse train and the musician's own program material."

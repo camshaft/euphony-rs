@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-177"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument model MUST derive the random stream of each voice from a root seed and stable event and voice identities."

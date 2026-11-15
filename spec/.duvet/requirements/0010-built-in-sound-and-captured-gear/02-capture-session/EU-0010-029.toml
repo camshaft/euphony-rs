@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-029"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST mark a segment unusable when it mutes its output for feedback, clipping or a missing return."

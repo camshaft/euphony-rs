@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-145"
+
+[[spec]]
+level = "MUST"
+quote = "Synthesizer calibration MUST estimate the distribution of the delay from a sent message to the observed onset from repeated timestamped notes of a reference patch."

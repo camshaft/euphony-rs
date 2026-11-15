@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-151"
+
+[[spec]]
+level = "MUST"
+quote = "After a device reconnects, a synthesizer capture MUST check the identity and calibration of the device before it resumes."

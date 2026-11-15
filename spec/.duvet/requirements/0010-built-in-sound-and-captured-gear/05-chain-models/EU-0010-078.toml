@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-078"
+
+[[spec]]
+level = "MUST"
+quote = "Delay compensation and the blend control MUST use the measured added delay of a model."
