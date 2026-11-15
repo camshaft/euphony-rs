@@ -2,4 +2,4 @@ target = "rendered/0007-sample-format/09-migration.md#EU-0007-106"
 
 [[spec]]
 level = "MUST"
-quote = "The registration of a verified decoder or a supported version MUST negotiate again, in the same atomic step, each held item that waits for it."
+quote = "The registration of a verified decoder or a supported version MUST mark each held item that waits for it ready, in an atomic step whose work does not grow with the number of held items."
