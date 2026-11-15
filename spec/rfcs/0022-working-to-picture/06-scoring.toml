@@ -72,7 +72,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to fit a tempo map to the hits of a range under the constraints this section lists."
 binds_to = 'system'
-rationale = "The composer finds a tempo that lands the hits on beats."
+rationale = "The composer finds a tempo that puts the hits on beats."
 
 [[requirement]]
 id = 'EU-0022-089'
@@ -112,7 +112,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to preview each candidate tempo map before applying it."
 binds_to = 'system'
-rationale = "The composer hears a candidate with the picture before choosing it."
+rationale = "The composer listens to a candidate with the picture before choosing it."
 
 [[requirement]]
 id = 'EU-0022-094'
@@ -232,7 +232,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "The click MUST follow the fitted tempo, with a count-in before each cue."
 binds_to = 'system'
-rationale = "Players record to the tempo that lands the hits."
+rationale = "Players record to the tempo that puts the hits on their beats."
 
 [[requirement]]
 id = 'EU-0022-109'
