@@ -1,0 +1,82 @@
+[section]
+anchor = 'acceptance'
+title = 'Listening and acceptance'
+problem = """\
+  Measures can disagree with the musician's listening, and a rebuilt sound added to a project \
+  before the musician listens to it, or without a way back, changes the project without the \
+  musician's decision."""
+motivation = """\
+  A blind listening comparison that the musician takes, and an acceptance that waits on it and that \
+  the musician undoes in one step, keep the musician deciding what enters the project."""
+prose = """
+The blind comparison plays the original passage and the candidate's render of the same notes, at
+matched levels and in random order, and records the musician's result. Failing to tell the two
+apart isn't proof that they are the same. Acceptance adds a candidate to the project as an
+instrument track or an effect chain, as an ordinary revision that the musician previews and undoes
+in one step. Before acceptance, a rebuild leaves the project as it was."""
+
+[[requirement]]
+id = 'EU-0023-037'
+level = 'MUST'
+polarity = 'required'
+statement = "The blind comparison of a candidate MUST play the original passage and the candidate's render of the same notes at matched levels and in random order."
+binds_to = 'system'
+rationale = 'The musician listens without knowing which sound is which.'
+
+[[requirement]]
+id = 'EU-0023-038'
+level = 'MUST'
+polarity = 'required'
+statement = "The blind comparison MUST record the musician's result with its candidate."
+binds_to = 'system'
+rationale = 'The acceptance check reads the result from the candidate.'
+
+[[requirement]]
+id = 'EU-0023-039'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A blind result in which the musician could not tell the two apart MUST NOT be reported as proof that they are the same.'
+binds_to = 'system'
+rationale = "A blind result doesn't prove that two sounds are the same."
+
+[[requirement]]
+id = 'EU-0023-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'Acceptance MUST add the candidate to the project as an instrument track or an effect chain in one revision that the musician can preview.'
+binds_to = 'system'
+rationale = 'An accepted sound is an ordinary part of the project.'
+
+[[requirement]]
+id = 'EU-0023-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'The musician MUST be able to undo an acceptance in one step.'
+binds_to = 'system'
+rationale = 'An acceptance is undone like any other change.'
+relations = [ { kind = 'depends_on', target = 'EU-0023-040' } ]
+
+[[requirement]]
+id = 'EU-0023-042'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A rebuild MUST NOT change the project before one of its candidates is accepted.'
+binds_to = 'system'
+rationale = 'Nothing in the project changes before the musician accepts a sound.'
+
+[[requirement]]
+id = 'EU-0023-043'
+level = 'MUST'
+polarity = 'required'
+statement = "Acceptance MUST refuse a candidate that has no recorded blind result of the musician's own, whoever asks for it."
+binds_to = 'system'
+rationale = "An assistant's acceptance waits for the musician's own listening."
+relations = [ { kind = 'depends_on', target = 'EU-0023-038' } ]
+
+[[requirement]]
+id = 'EU-0023-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'An accepted sound MUST stay linked to the records of the candidate it came from.'
+binds_to = 'system'
+rationale = 'The musician can trace an accepted sound to how it was measured.'

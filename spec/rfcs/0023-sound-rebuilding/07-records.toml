@@ -1,0 +1,92 @@
+[section]
+anchor = 'records'
+title = 'Records, repeatability and rights'
+problem = """\
+  A rebuild that cannot be repeated cannot be checked, and a rebuilt sound that needs its source \
+  audio stops playing when the source is gone or isn't shared."""
+motivation = """\
+  A complete record of each rebuild, candidates addressed by their content, and accepted sounds \
+  saved as processors and settings alone make a rebuild repeatable and a rebuilt sound play \
+  anywhere the project opens."""
+prose = """
+The record of a rebuild holds the source digest and interval, the analysis results it read, the
+versions of its planner, its fitter, its measurements and its processors, its seeds, its held-back
+notes, and each structure proposed for it, whether the planner or an assistant proposed it. A
+repeat from the same record fits the same structures again. A fit computes its sums in a fixed
+order on one numerical profile. An accepted sound is saved in the project as processors and
+settings, and its source passage stays in the owner's store."""
+
+[[requirement]]
+id = 'EU-0023-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'The record of a rebuild MUST hold its source digest and interval, the analysis results it read, the versions of its planner, fitter, measurements and processors, its seeds, its held-back notes and each structure proposed for it.'
+binds_to = 'system'
+rationale = 'A repeat has everything it needs.'
+
+[[requirement]]
+id = 'EU-0023-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'A repeat of a rebuild from its record MUST fit the recorded structures again without asking for new proposals.'
+binds_to = 'system'
+rationale = "A repeat doesn't depend on a planner's or an assistant's new ideas."
+relations = [ { kind = 'depends_on', target = 'EU-0023-049' } ]
+
+[[requirement]]
+id = 'EU-0023-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'A repeat of a rebuild from the same record MUST offer the same candidates with the same measurements.'
+binds_to = 'system'
+rationale = 'A repeat offers the same result.'
+relations = [ { kind = 'depends_on', target = 'EU-0023-049' } ]
+
+[[requirement]]
+id = 'EU-0023-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each candidate MUST be addressed by the digest of its content.'
+binds_to = 'system'
+rationale = 'Identical candidates have one identity.'
+
+[[requirement]]
+id = 'EU-0023-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fit computed on another numerical profile MUST have another identity.'
+binds_to = 'system'
+rationale = "Results computed another way aren't mistaken for the recorded ones."
+
+[[requirement]]
+id = 'EU-0023-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'An accepted sound MUST be saved in the project as processors and settings without the source audio.'
+binds_to = 'system'
+rationale = "The project doesn't depend on the source audio."
+
+[[requirement]]
+id = 'EU-0023-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'An accepted sound MUST play without the recording, the plug-in or the gear it was rebuilt from.'
+binds_to = 'system'
+rationale = "The sound plays years later and on a collaborator's computer."
+relations = [ { kind = 'depends_on', target = 'EU-0023-054' } ]
+
+[[requirement]]
+id = 'EU-0023-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A project shared with a collaborator MUST NOT hold the source passage of a rebuilt sound unless the musician shares the source too.'
+binds_to = 'system'
+rationale = 'The musician decides whether the source audio is shared.'
+
+[[requirement]]
+id = 'EU-0023-057'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Rebuilding MUST NOT inspect the code of a plug-in or extract its presets.'
+binds_to = 'system'
+rationale = "Rebuilding reads only audio and doesn't take a plug-in apart."

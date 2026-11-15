@@ -1,0 +1,10 @@
+number = 23
+title = 'Rebuilding a sound'
+area = 'euphony'
+abstract = """\
+  Rebuilding a sound from a passage of a recording or a sample, or from gear the musician owns, with \
+  euphony's built-in instruments and effects: choosing the source, proposing and fitting structures, \
+  measuring each rebuilt sound against its original, the musician's blind listening and acceptance, \
+  the records that make a rebuild repeatable, and the commands that start and accept a rebuild."""
+retired = []
+sources = []

@@ -1,0 +1,131 @@
+[section]
+anchor = 'commands'
+title = 'Commands, compute and access'
+problem = """\
+  A rebuild that only the desktop can start, or that runs outside the owner's computers or at a \
+  fixed size, leaves assistants out, exposes the musician's audio, or stalls when capacity changes."""
+motivation = """\
+  Typed commands that the desktop and every connected assistant use alike, fitting admitted at \
+  measured capacity on the musician's own workers, and a project that only acceptance changes keep \
+  rebuilding open to assistants and safe for the musician."""
+prose = """
+Four typed commands drive a rebuild, the same for the desktop interface and for each assistant the
+musician connects: prepare a rebuild, run or cancel it, start the blind comparison of a candidate,
+and accept a candidate. Fitting runs on the workers of distributed rendering through its
+scheduler. The entry points of a rebuild are source media, structure proposals and worker results;
+a proposal is checked against the processor catalog, and a worker's result is a candidate. This
+RFC doesn't add an access rule of its own: an assistant's rebuild commands act as the musician's
+own, under the trust model of the system overview."""
+
+[[requirement]]
+id = 'EU-0023-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each rebuild command MUST be available equally to the desktop interface and to each assistant the musician connects.'
+binds_to = 'system'
+rationale = 'The musician and an assistant use the same commands.'
+
+[[requirement]]
+id = 'EU-0023-059'
+level = 'MUST'
+polarity = 'required'
+statement = 'A connected assistant MUST be able to start, follow and compare a rebuild as the musician does.'
+binds_to = 'system'
+rationale = 'An assistant can do everything the musician can do in a rebuild.'
+
+[[requirement]]
+id = 'EU-0023-060'
+level = 'MUST'
+polarity = 'required'
+statement = 'The prepare command MUST take a source item and interval, or the identity of a capture, with optional notes, the kinds of structure to try and the expected project revision.'
+binds_to = 'system'
+rationale = 'A rebuild states what it will do before it runs.'
+
+[[requirement]]
+id = 'EU-0023-061'
+level = 'MUST'
+polarity = 'required'
+statement = 'The prepare command MUST return a plan, or one of denied, missing asset, unsupported source, not enough material and interval outside the item.'
+binds_to = 'system'
+rationale = "A caller learns why a rebuild can't start."
+
+[[requirement]]
+id = 'EU-0023-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'The run command MUST return durable state events and each candidate as it finishes.'
+binds_to = 'system'
+rationale = 'The musician follows a rebuild as it runs and sees each candidate as soon as it exists.'
+
+[[requirement]]
+id = 'EU-0023-063'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a run doesn't finish, the run command MUST return one of cancelled, failed fit and worker lost."
+binds_to = 'system'
+rationale = 'A caller learns why a run stopped.'
+
+[[requirement]]
+id = 'EU-0023-064'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a worker is lost, the queued work of the run MUST resume on another worker.'
+binds_to = 'system'
+rationale = "A lost worker doesn't lose the rebuild."
+
+[[requirement]]
+id = 'EU-0023-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'The blind comparison command MUST return its trials and the recorded result.'
+binds_to = 'system'
+rationale = 'The musician can take the blind comparison through any client.'
+
+[[requirement]]
+id = 'EU-0023-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'The accept command MUST return the committed revision, or one of denied, stale revision, missing candidate and no blind result.'
+binds_to = 'system'
+rationale = 'A caller learns why an acceptance was refused.'
+
+[[requirement]]
+id = 'EU-0023-067'
+level = 'MUST'
+polarity = 'required'
+statement = "The accept command MUST return the outcome no blind result for a candidate whose blind comparison the musician hasn't taken, whether the musician or an assistant calls it."
+binds_to = 'system'
+rationale = "An assistant can't accept a sound the musician hasn't listened to."
+relations = [ { kind = 'depends_on', target = 'EU-0023-043' } ]
+
+[[requirement]]
+id = 'EU-0023-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'Fitting MUST run on the workers of distributed rendering through its scheduler.'
+binds_to = 'system'
+rationale = "Fitting shares the musician's computers with the other rendering work."
+
+[[requirement]]
+id = 'EU-0023-069'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Fitting MUST NOT be held to a fixed bound on rounds, workers or jobs.'
+binds_to = 'system'
+rationale = 'Fitting uses the capacity the workers report.'
+
+[[requirement]]
+id = 'EU-0023-070'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A rebuild MUST NOT send anything outside the owner's computers."
+binds_to = 'system'
+rationale = "The musician's audio stays on their own computers."
+
+[[requirement]]
+id = 'EU-0023-071'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A worker's result MUST NOT change the project."
+binds_to = 'system'
+rationale = 'Only the accept command changes the project.'

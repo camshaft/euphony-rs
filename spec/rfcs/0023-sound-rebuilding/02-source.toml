@@ -1,0 +1,73 @@
+[section]
+anchor = 'source'
+title = 'Choosing the source and reading its analysis'
+problem = """\
+  A rebuild cannot fit a sound without knowing which audio it rebuilds and which notes that audio \
+  plays, and a sound inside a mix can be mistaken for the sound alone."""
+motivation = """\
+  Recording the exact source and reading the analysis of the passage, with the musician's own notes \
+  first, let every rebuild start from the same material and tell the musician what its target is."""
+prose = """
+A rebuild from a passage starts from an item of the content store and a half-open interval of its
+samples, or from a stem that the analysis separated from such an item. The rebuild reads the
+analysis results for the passage: notes, pitch contour, onsets, loudness, spectral balance,
+instrument tags and effect hypotheses, each with its confidence. Notes the musician enters or
+corrects come before the estimates. A sound inside a full mix is rebuilt from a separated stem,
+which is an estimate of the sound and not the sound alone, and what separation leaves in the stem
+limits the comparison."""
+
+[[requirement]]
+id = 'EU-0023-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'The request of a rebuild from a passage MUST record the digest of the source item and the interval of its samples.'
+binds_to = 'system'
+rationale = 'A rebuild can be traced to the exact audio it came from and repeated.'
+
+[[requirement]]
+id = 'EU-0023-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild from a passage MUST read the analysis results for the passage, each with its confidence.'
+binds_to = 'system'
+rationale = 'The fit starts from what the analysis knows of the passage.'
+
+[[requirement]]
+id = 'EU-0023-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the musician entered or corrected notes for the passage, the rebuild MUST use them instead of the estimated notes.'
+binds_to = 'system'
+rationale = 'The musician knows the notes better than any estimate.'
+
+[[requirement]]
+id = 'EU-0023-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where an analysis result that a rebuild needs is missing, the rebuild MUST request it through the ordinary analysis request and show that it waits on it.'
+binds_to = 'system'
+rationale = 'A rebuild waits on the result it needs instead of failing or guessing.'
+
+[[requirement]]
+id = 'EU-0023-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild whose target is a separated stem MUST report that its target is an estimate of the sound rather than the sound alone.'
+binds_to = 'system'
+rationale = "The musician doesn't take a separated stem for the original sound."
+
+[[requirement]]
+id = 'EU-0023-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild whose target is a separated stem MUST show in its comparison what separation left in the target.'
+binds_to = 'system'
+rationale = 'The musician sees how much of the comparison comes from separation.'
+
+[[requirement]]
+id = 'EU-0023-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A rebuild MUST NOT read audio other than audio the musician holds.'
+binds_to = 'system'
+rationale = 'Rebuilding stays within the audio the musician has the right to use.'

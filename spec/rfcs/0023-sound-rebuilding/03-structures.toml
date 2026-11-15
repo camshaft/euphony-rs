@@ -1,0 +1,92 @@
+[section]
+anchor = 'structures'
+title = 'Proposing structures and fitting them'
+problem = """\
+  A fit that could run any processor or any code would leave the project with a sound the musician \
+  cannot read or trust, and a fit without a recorded start cannot be repeated."""
+motivation = """\
+  Structures checked against the built-in processor catalog, and fits that record how they started, \
+  keep every rebuilt sound readable, adjustable and repeatable."""
+prose = """
+A structure is a typed graph of built-in processors: a voice, such as a subtractive, wavetable,
+frequency-modulation or physical-model voice, a sampler of built-in sounds or a noise source,
+followed by a chain of built-in effects, such as filters, an equalizer, a compressor, saturation,
+chorus, delay and reverb. Each parameter of each processor has the domain and the units the
+processor catalog states. The rebuild's planner and the assistants the musician connects propose
+structures, starting from the analysis of the passage. A fit tunes the settings of one structure
+until its render of the passage's notes measures closest to the original. A run fits each proposed
+structure, and ends by its stopping rules or when the musician stops it."""
+
+[[requirement]]
+id = 'EU-0023-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each proposed structure MUST be a typed graph of processors that the built-in processor catalog holds.'
+binds_to = 'system'
+rationale = 'Every setting of the result is a control of a built-in processor.'
+
+[[requirement]]
+id = 'EU-0023-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A proposed structure MUST NOT hold code.'
+binds_to = 'system'
+rationale = "A proposal can't run anything on the musician's computers."
+
+[[requirement]]
+id = 'EU-0023-019'
+level = 'MUST'
+polarity = 'required'
+statement = "A rebuild MUST refuse a proposed structure that holds a processor the catalog doesn't hold."
+binds_to = 'system'
+rationale = "A structure the catalog doesn't hold can't reach a fit."
+relations = [ { kind = 'depends_on', target = 'EU-0023-017' } ]
+
+[[requirement]]
+id = 'EU-0023-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'An assistant the musician connects MUST be able to propose structures for a rebuild.'
+binds_to = 'system'
+rationale = 'An assistant brings its own knowledge of how sounds are made.'
+
+[[requirement]]
+id = 'EU-0023-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fit MUST render the notes of the passage through its structure and measure the difference of that render from the original.'
+binds_to = 'system'
+rationale = 'The measured difference is the only judge of a fit.'
+
+[[requirement]]
+id = 'EU-0023-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fit MUST tune the settings of its structure to reduce its measured difference from the original.'
+binds_to = 'system'
+rationale = 'The fit moves its settings toward the original.'
+relations = [ { kind = 'depends_on', target = 'EU-0023-021' } ]
+
+[[requirement]]
+id = 'EU-0023-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each fit MUST record its seed, its starting values, the versions of its processors and the version of its measurements.'
+binds_to = 'system'
+rationale = 'A fit can be repeated exactly.'
+
+[[requirement]]
+id = 'EU-0023-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'A run MUST end when its held-back measures stop improving beyond their intervals.'
+binds_to = 'system'
+rationale = 'A run stops once more rounds no longer help.'
+
+[[requirement]]
+id = 'EU-0023-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'A run MUST end when the musician stops it.'
+binds_to = 'system'
+rationale = 'The musician stays in control of how long a rebuild runs.'
