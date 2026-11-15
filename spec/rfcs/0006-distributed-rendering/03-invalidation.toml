@@ -1,0 +1,126 @@
+[section]
+anchor = 'invalidation'
+title = 'Dependencies and invalidation'
+problem = """\
+  An edit, a tempo change or a stateful effect changes audio beyond the region it touches, and a \
+  renderer that guesses where that change ends plays audio that no longer matches the project."""
+motivation = """\
+  Recomputing descriptors through the true dependencies of the graph, and rendering a range only \
+  from a known start state, keeps every saved result true to its revision while reusing every \
+  result an edit doesn't reach."""
+prose = """
+The project holds rational musical time, explicit tempo and meter maps, sample-positioned audio,
+stable identities of tracks and regions, bus routing, automation curves, processor definitions and
+references to immutable assets. Its graph is compiled into render islands. A render island is a
+subgraph that renders from explicit input streams and an explicit start state. Independent tracks
+and islands render in parallel, while sends, sidechains and buses wait on their upstream. A feedback
+cycle is collapsed into one island with an explicit delay and state transition, since moving a
+stateful loop between computers while it renders changes how it sounds. A checkpoint holds the
+running state of each processor it covers, such as filter memory and the contents of a delay line,
+which a processor's saved parameters don't hold. Edits create a new revision. Tempo, meter,
+automation interpolation, loop boundaries, latency compensation, tails and processor state are
+dependencies like any other input."""
+
+[[requirement]]
+id = 'EU-0006-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'Musical positions MUST be held exactly until they are resolved to sample positions.'
+binds_to = 'system'
+rationale = 'Positions such as triplets never drift across a project.'
+
+[[requirement]]
+id = 'EU-0006-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'Musical positions MUST be resolved to sample positions by one stated rounding rule.'
+binds_to = 'system'
+rationale = 'Every worker places every event on the same sample.'
+
+[[requirement]]
+id = 'EU-0006-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each feedback cycle MUST be rendered inside one render island with an explicit delay.'
+binds_to = 'system'
+rationale = 'A feedback loop has a defined order of calculation and a defined state.'
+
+[[requirement]]
+id = 'EU-0006-029'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A feedback cycle without a delay MUST NOT be rendered.'
+binds_to = 'system'
+rationale = 'A cycle that no order of calculation can schedule is refused instead of rendered wrongly.'
+
+[[requirement]]
+id = 'EU-0006-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A feedback cycle MUST NOT be divided between workers.'
+binds_to = 'system'
+rationale = 'A network hop inside a loop would change its timing and how it sounds.'
+
+[[requirement]]
+id = 'EU-0006-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'A time range MUST be rendered on its own only where its start state and its complete input history are known.'
+binds_to = 'system'
+rationale = 'A range rendered apart sounds the same as the same range of an uninterrupted render.'
+
+[[requirement]]
+id = 'EU-0006-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'A stateful processor MUST start each range from its initial state or from a verified checkpoint.'
+binds_to = 'system'
+rationale = 'No range starts from a state that no render produced.'
+
+[[requirement]]
+id = 'EU-0006-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'A checkpoint MUST hold the running state of each processor it covers.'
+binds_to = 'system'
+rationale = 'A range can start partway through a project and sound as it would after an uninterrupted render.'
+
+[[requirement]]
+id = 'EU-0006-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'Independent render islands and independent time ranges MUST be able to render on different workers at the same time.'
+binds_to = 'system'
+rationale = 'The work of a project fans out across the owner's computers.'
+
+[[requirement]]
+id = 'EU-0006-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'An edit MUST create a new revision without changing any result of an earlier revision.'
+binds_to = 'system'
+rationale = 'An earlier revision still plays as it did, and its results stay reusable.'
+
+[[requirement]]
+id = 'EU-0006-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'An edit MUST invalidate every result that depends on its changed input through any dependency of the graph.'
+binds_to = 'system'
+rationale = 'Downstream buses, sidechains, latency compensation, tails and state follow the edit.'
+
+[[requirement]]
+id = 'EU-0006-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change of tempo or meter MUST invalidate every result whose timing it changes, whether or not its notes changed.'
+binds_to = 'system'
+rationale = 'Timing conversions are inputs of the audio like the notes are.'
+
+[[requirement]]
+id = 'EU-0006-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a tail is unbounded or unknown, the remainder that depends on it MUST stay invalid until it is rendered again.'
+binds_to = 'system'
+rationale = 'A renderer never guesses a short tail.'
