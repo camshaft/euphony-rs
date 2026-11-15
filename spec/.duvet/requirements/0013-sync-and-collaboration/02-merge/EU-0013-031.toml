@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-031"
+
+[[spec]]
+level = "MUST"
+quote = "Where the merge bases of two versions conflict with each other, the merge MUST require an explicit resolution of those conflicts."

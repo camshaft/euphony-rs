@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-026"
+
+[[spec]]
+level = "MUST"
+quote = "A merge MUST validate the timing, the routing cycles and the musical constraints of its result, also where no edits conflicted."
