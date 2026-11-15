@@ -2,5 +2,5 @@ number = 12
 title = "Modular modulation"
 area = "euphony"
 abstract = "The modulation engine of euphony: routes that let any track's audio, notes, automation or generated patterns vary another track's or effect's sound controls, how routes combine with drawn automation, their rate and timing, feedback through explicit delays, prepared and live playback, per-voice modulation, patching, commands and import, and access."
-retired = []
+retired = ["EU-0012-131"]
 sources = []
