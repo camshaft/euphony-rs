@@ -61,7 +61,7 @@ A change of the project's sample rate MUST restate each feedback delay in sample
 
 ### EU-0012-069 {#EU-0012-069}
 
-The interface MUST warn of a cycle whose gain or range can grow.
+The interface MUST warn of each feedback loop whose gain around the loop can exceed one, at any frequency or for any value it carries, or whose gain around the loop the analysis can't bound.
 
 ### EU-0012-070 {#EU-0012-070}
 

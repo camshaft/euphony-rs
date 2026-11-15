@@ -116,9 +116,9 @@ rationale = "A delay never changes its length silently with the sample rate."
 id = "EU-0012-069"
 level = "MUST"
 polarity = "required"
-statement = "The interface MUST warn of a cycle whose gain or range can grow."
+statement = "The interface MUST warn of each feedback loop whose gain around the loop can exceed one, at any frequency or for any value it carries, or whose gain around the loop the analysis can't bound."
 binds_to = "system"
-rationale = "The musician sees an unstable loop before hearing it."
+rationale = "The musician sees an unstable loop before hearing it, and a check decides from the loop's gain which loops the warning covers."
 
 [[requirement]]
 id = "EU-0012-070"
