@@ -1,0 +1,122 @@
+[section]
+anchor = 'privacy'
+title = 'Privacy and disclosure to assistants'
+problem = """\
+  A locally connected assistant can send private taste, client names and unreleased audio references to a remote model, and the owner can't tell, at the moment of a grant, where the data goes or under which terms it is kept."""
+motivation = """\
+  Local-only defaults, a grant that names the client and the data classes and states the limit of locality, and a grant of remote inference that holds only while a verification of the destination's terms holds, keep each disclosure the owner's informed choice."""
+prose = """
+The learning store is local to the owner's devices by default, and the credentials it uses stay in
+the platform's secure storage. Personal notes are kept apart from project media and from
+collaborators' context. Serving private data to an assistant on the same computer can still send
+that data to a remote model, since a local connection doesn't prove local inference. A grant of
+remote inference over private data classes holds only while a verification record covers the
+destination and the version of its retention and training terms; the project's configuration says
+who publishes verification records. The verification shows that the consent had its prerequisite;
+it doesn't show what the provider does after disclosure. Synchronization to the owner's own paired
+devices isn't a disclosure."""
+
+[[requirement]]
+id = 'EU-0019-090'
+level = 'MUST'
+polarity = 'required'
+statement = "By default, the learning store and its evidence MUST stay local to the owner's devices."
+binds_to = 'system'
+rationale = "Private learning leaves the owner's devices only by the owner's choice."
+
+[[requirement]]
+id = 'EU-0019-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST keep the credentials of the learning store in the platform's secure storage."
+binds_to = 'system'
+rationale = 'A credential is never stored beside the data it protects.'
+
+[[requirement]]
+id = 'EU-0019-092'
+level = 'MUST'
+polarity = 'required'
+statement = "Personal notes MUST be kept apart from project media and from collaborators' context."
+binds_to = 'system'
+rationale = "Sharing a project never shares the owner's notes."
+
+[[requirement]]
+id = 'EU-0019-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'The approval that grants an assistant private data MUST show the client and the data classes it allows.'
+binds_to = 'system'
+rationale = 'The owner knows who receives what.'
+
+[[requirement]]
+id = 'EU-0019-094'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval that grants an assistant private data MUST warn that a local connection doesn't prove local inference."
+binds_to = 'system'
+rationale = "The owner isn't misled into thinking a local assistant keeps data local."
+
+[[requirement]]
+id = 'EU-0019-095'
+level = 'MUST'
+polarity = 'required'
+statement = "In private-only operation, private data MUST stay unavailable to an assistant that the owner didn't select as a trusted local assistant whose outbound connections the machine restricts."
+binds_to = 'system'
+rationale = 'Private-only operation holds only where the machine enforces it.'
+
+[[requirement]]
+id = 'EU-0019-096'
+level = 'MUST'
+polarity = 'required'
+statement = "Remote inference over private data MUST wait for the owner's approval of the exact effect."
+binds_to = 'system'
+rationale = "Sending private data to a remote model is the owner's informed choice."
+
+[[requirement]]
+id = 'EU-0019-097'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Synchronization to the owner's paired devices MUST NOT need the owner's approval of the exact effect."
+binds_to = 'system'
+rationale = "The owner's own devices are the owner's, and keeping them in step isn't a disclosure."
+
+[[requirement]]
+id = 'EU-0019-098'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT infer consent from the acceptance of a suggestion.'
+binds_to = 'system'
+rationale = 'Accepting a suggestion is a musical choice, not a grant.'
+
+[[requirement]]
+id = 'EU-0019-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'A grant of remote inference over private data classes MUST be refused unless a verification record covers its destination and the current version of its retention and training terms.'
+binds_to = 'system'
+rationale = 'The owner consents to terms that someone has checked.'
+
+[[requirement]]
+id = 'EU-0019-100'
+level = 'MUST'
+polarity = 'required'
+statement = 'The approval view MUST show the verification record and its scope before the owner consents.'
+binds_to = 'system'
+rationale = "The owner sees what was verified and what wasn't."
+
+[[requirement]]
+id = 'EU-0019-101'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST check a grant's verification again at its commit and at each release of private data."
+binds_to = 'system'
+rationale = 'A grant never outlives the terms it was given under.'
+
+[[requirement]]
+id = 'EU-0019-102'
+level = 'MUST'
+polarity = 'required'
+statement = 'A changed or unknown version of the terms MUST suspend the grant until a matching verification and a renewed approval exist.'
+binds_to = 'system'
+rationale = 'A change of terms brings the decision back to the owner.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-099' } ]

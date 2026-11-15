@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-098"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT infer consent from the acceptance of a suggestion."

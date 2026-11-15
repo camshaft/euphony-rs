@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-090"
+
+[[spec]]
+level = "MUST"
+quote = "By default, the learning store and its evidence MUST stay local to the owner's devices."
