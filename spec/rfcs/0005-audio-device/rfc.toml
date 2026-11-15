@@ -1,0 +1,9 @@
+number = 5
+title = 'Audio device and live render'
+area = 'euphony'
+abstract = """\
+  The audio device process, its input capture and the live render island: how euphony opens an \
+  audio device and keeps its deadline, what renders live and what plays from prepared audio, how \
+  playback switches between them, and how a recording is kept and kept in time."""
+retired = []
+sources = []

@@ -1,0 +1,117 @@
+[section]
+anchor = 'prepared-playback'
+title = 'Playing prepared audio'
+problem = """\
+  Calculating every instrument and effect again on each listen wastes the time the musician spends \
+  listening, and playing prepared audio carelessly, or switching to live render carelessly, causes \
+  gaps, clicks or lost tails."""
+motivation = """\
+  Playing prepared audio as the normal input, streamed into buffers ahead of the callback, and \
+  switching to live render only at aligned positions with the state carried across, lets a project \
+  replay without calculation and without an audible gap."""
+prose = """
+Prepared audio is audio of the project rendered ahead of playback, and it is the normal input of
+playback. A passage whose prepared audio matches the current revision plays from that audio, and a
+fully prepared project replays without calculating any instrument or effect. Prepared audio is
+streamed from storage into buffers that are full before the callback reads them, and playback can
+start at any sample of a prepared buffer. Playback moves between prepared audio and the live render
+island at aligned sample positions, compensates the latency of each path, crosses between them with
+a transition envelope and carries tails and instrument state across the switch. The browser
+companion plays prepared audio to its output; live rendering and capture run in the native audio
+device process."""
+
+[[requirement]]
+id = 'EU-0005-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'A passage whose prepared audio matches the current revision MUST play from that prepared audio.'
+binds_to = 'system'
+rationale = 'Each listen of an unchanged passage reuses its audio.'
+
+[[requirement]]
+id = 'EU-0005-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Replaying a fully prepared project MUST NOT render any of its instruments or effects during playback.'
+binds_to = 'system'
+rationale = "Repeated listening doesn't calculate anything again."
+
+[[requirement]]
+id = 'EU-0005-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each buffer of prepared audio MUST be filled before the callback reads it.'
+binds_to = 'system'
+rationale = 'The callback never waits for prepared audio.'
+
+[[requirement]]
+id = 'EU-0005-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback MUST stream prepared audio from storage as it plays.'
+binds_to = 'system'
+rationale = 'A project longer than memory plays, and memory is released outside the callback.'
+
+[[requirement]]
+id = 'EU-0005-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback MUST be able to start at any sample position of a prepared buffer.'
+binds_to = 'system'
+rationale = 'The musician starts playback anywhere, not only at the edge of a buffer.'
+
+[[requirement]]
+id = 'EU-0005-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'A switch between prepared audio and the live render island MUST happen at aligned sample positions.'
+binds_to = 'system'
+rationale = 'The two sources line up to the sample.'
+
+[[requirement]]
+id = 'EU-0005-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'A switch between prepared audio and the live render island MUST compensate the latency of each path.'
+binds_to = 'system'
+rationale = 'The two paths sound at the same time.'
+
+[[requirement]]
+id = 'EU-0005-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'A switch between prepared audio and the live render island MUST cross between them with a transition envelope.'
+binds_to = 'system'
+rationale = 'A switch never clicks.'
+
+[[requirement]]
+id = 'EU-0005-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'A switch between prepared audio and the live render island MUST carry tails and instrument state across the switch.'
+binds_to = 'system'
+rationale = "A reverb tail or a held note doesn't stop at the switch."
+
+[[requirement]]
+id = 'EU-0005-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'The browser companion MUST play prepared audio to its output device.'
+binds_to = 'system'
+rationale = 'A listener in a browser can play the project.'
+
+[[requirement]]
+id = 'EU-0005-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'Live rendering MUST run in a native audio device process.'
+binds_to = 'system'
+rationale = 'Live rendering needs the deadlines only a native process can meet.'
+
+[[requirement]]
+id = 'EU-0005-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'Input capture MUST run in a native audio device process.'
+binds_to = 'system'
+rationale = 'Capture needs the device access and timing only a native process has.'

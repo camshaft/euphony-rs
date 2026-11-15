@@ -1,0 +1,100 @@
+[section]
+anchor = 'live-island'
+title = 'The live render island'
+problem = """\
+  Audio the musician is playing or changing now can't come from audio prepared earlier, and a live \
+  render that can't keep up, or that mixes revisions, plays something other than what the musician \
+  asked to listen to."""
+motivation = """\
+  Rendering only what depends on the present moment, in one island on the musician's computer and \
+  one revision at a time, and showing what is sounding when the island can't keep up, lets the \
+  musician trust that what plays is what they asked for."""
+prose = """
+The live render island is the part of the project graph that the audio device process renders
+while the device plays: input monitoring, instruments played live from note input, and the track the
+musician is editing, with the buses that depend on it. Everything else plays from prepared audio.
+The island renders on the musician's own computer and doesn't wait on another computer for audio.
+Each playback segment comes from one compiled graph revision. Where the island can't meet the
+measured deadline of the device, playback keeps the previous revision the musician selected, or
+pauses the preview where the musician selected none, and euphony shows that the sound isn't the
+current revision."""
+
+[[requirement]]
+id = 'EU-0005-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'Input monitoring MUST render in the live render island of the computer the input is attached to.'
+binds_to = 'system'
+rationale = 'The musician monitors their input without a network delay.'
+
+[[requirement]]
+id = 'EU-0005-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'An instrument played live from note input MUST render in the live render island of the computer the musician plays it on.'
+binds_to = 'system'
+rationale = 'A played note sounds without a network delay.'
+
+[[requirement]]
+id = 'EU-0005-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'While a track is being edited, the audio device process MUST render the affected part of that track, and each bus that depends on it, in the live render island.'
+binds_to = 'system'
+rationale = 'An edit sounds before its audio is prepared again.'
+
+[[requirement]]
+id = 'EU-0005-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each playback segment MUST come from a single compiled graph revision.'
+binds_to = 'system'
+rationale = 'A segment never sounds a mix of two versions of the project.'
+
+[[requirement]]
+id = 'EU-0005-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Playback MUST NOT combine in one segment the audio of revisions whose automation or routing conflict.'
+binds_to = 'system'
+rationale = "Stems prepared for one revision never play against another revision's automation or routing."
+
+[[requirement]]
+id = 'EU-0005-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the live render island cannot meet the measured deadline of the device and the musician has selected a previous revision, playback MUST keep playing that revision.'
+binds_to = 'system'
+rationale = "The musician keeps listening to a sound they chose when the edit can't render in time."
+
+[[requirement]]
+id = 'EU-0005-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the live render island cannot meet the measured deadline of the device and the musician has not selected a previous revision, the audio device process MUST pause the preview.'
+binds_to = 'system'
+rationale = "An edit that can't render in time never plays as broken audio."
+
+[[requirement]]
+id = 'EU-0005-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST show the musician when playback sounds a revision other than the current one.'
+binds_to = 'system'
+rationale = 'The musician knows which version is playing.'
+
+[[requirement]]
+id = 'EU-0005-027'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT present a sound as the current revision when it was rendered from another revision.'
+binds_to = 'system'
+rationale = "The musician never judges an edit from audio that doesn't hold it."
+
+[[requirement]]
+id = 'EU-0005-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'The live render island MUST render the project graph without waiting on another computer for audio.'
+binds_to = 'system'
+rationale = 'A network or clock failure of another computer never becomes a playback failure.'
