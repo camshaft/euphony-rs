@@ -1,0 +1,34 @@
+on:
+  pull_request:
+    paths:
+      - "spec/**"
+      - ".github/workflows/spec.yml"
+
+name: spec
+
+permissions:
+  contents: read
+
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+      # actions/checkout v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      # partimento v0.6.0
+      - name: Install partimento
+        run: cargo install --locked --git https://github.com/camshaft/partimento --rev 1616d94960a1426fed9c5c4d660d0e5ec31f7c39 partimento
+
+      - name: Install duvet
+        run: cargo install --locked duvet --version 0.4.3
+
+      - name: partimento check
+        working-directory: spec
+        run: partimento check
+
+      - name: duvet report
+        working-directory: spec
+        run: duvet report
