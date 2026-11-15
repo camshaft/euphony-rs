@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-001"
+
+[[spec]]
+level = "MUST"
+quote = "Each of the owner's computers that runs euphony MUST run the host service as a per-user service of the operating system for the owner's account."

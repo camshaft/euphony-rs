@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-029"
+
+[[spec]]
+level = "MUST"
+quote = "A client MUST NOT have to poll the session host to learn of a change."

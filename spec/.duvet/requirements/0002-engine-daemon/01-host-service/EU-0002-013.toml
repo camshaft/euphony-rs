@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-013"
+
+[[spec]]
+level = "SHOULD"
+quote = "By default, the local endpoint SHOULD be at the location the operating system's convention sets for a per-user service."

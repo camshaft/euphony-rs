@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-041"
+
+[[spec]]
+level = "MUST"
+quote = "Under load, the session host MUST reduce only display frames that a newer frame replaces."

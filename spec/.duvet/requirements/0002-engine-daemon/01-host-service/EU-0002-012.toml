@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-012"
+
+[[spec]]
+level = "MUST"
+quote = "The location of the local endpoint MUST be configurable."
