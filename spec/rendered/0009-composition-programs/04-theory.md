@@ -10,7 +10,10 @@ made, or a typed error: an invalid ratio, an overflow, an unknown definition, an
 a note out of the scale, an ambiguous interpretation or an incompatible time basis. A duration in
 whole notes and a count of tempo beats are different quantities: a quarter note is one tempo beat
 only in a meter whose beat unit is the quarter note. Time stays exact while a program composes, and
-only the conversion to the sample grid rounds.
+only the conversion to the sample grid rounds. Every client can read which theory operations and
+which definition versions the project supports, and every client sees the same diagnostics and
+conversions. A typed error states where its cause is: the span of the program text, where a program
+reached the operation, or the field of the command, where a command reached it.
 
 ### EU-0009-037 {#EU-0009-037}
 
@@ -63,3 +66,15 @@ A theory operation MUST answer a typed error for an input that is not a finite n
 ### EU-0009-049 {#EU-0009-049}
 
 A theory operation MUST NOT grant access to an asset or a device, or a way to run native code.
+
+### EU-0009-080 {#EU-0009-080}
+
+The theory operations MUST include the transposition of a musical value by an interval.
+
+### EU-0009-081 {#EU-0009-081}
+
+Every client MUST be able to discover the theory operations and the definition versions the project supports.
+
+### EU-0009-082 {#EU-0009-082}
+
+A typed error of a theory operation reached through a command MUST identify the field of the command at fault.
