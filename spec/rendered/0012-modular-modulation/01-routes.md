@@ -39,6 +39,14 @@ Reading the effective value of a control MUST be a source distinct from reading 
 
 A source of note or controller events MUST select its events by port, channel and event type.
 
+### EU-0012-165 {#EU-0012-165}
+
+A musician MUST be able to use a low-frequency oscillator as the source of a route.
+
+### EU-0012-166 {#EU-0012-166}
+
+A musician MUST be able to use an envelope follower of an audio signal as the source of a route.
+
 ### EU-0012-008 {#EU-0012-008}
 
 Following an audio signal's envelope and using the raw signal MUST be distinct conversions.
