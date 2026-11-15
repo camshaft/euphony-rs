@@ -10,7 +10,8 @@ command interface offers three commands for routes: one lists the sources and ta
 project, one previews a route without activating it, and one applies a batch of route and target
 edits as one change. Composition programs build routes with the same typed data. Clients follow a
 graph through its committed, compiled, activated and failed events. Importing a project from
-another workstation brings its sidechains and automation into routes, with a report of each."""
+another workstation brings its sidechains and automation into routes, with a report of each.
+RFC 0009 states that the code of a composition program doesn't run on the audio path."""
 
 [[requirement]]
 id = "EU-0012-115"
@@ -141,14 +142,6 @@ binds_to = "system"
 rationale = "A generated route is the same kind of route as a drawn one."
 
 [[requirement]]
-id = "EU-0012-131"
-level = "MUST"
-polarity = "forbidden"
-statement = "Code of a composition program MUST NOT run in the path that processes samples."
-binds_to = "system"
-rationale = "A program's code never delays the audio device."
-
-[[requirement]]
 id = "EU-0012-132"
 level = "MUST"
 polarity = "required"
@@ -176,7 +169,15 @@ rationale = "No client has a route that another can't make."
 id = "EU-0012-135"
 level = "MUST"
 polarity = "required"
-statement = "A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly, without interrupting unrelated recording."
+statement = "A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly."
+binds_to = "system"
+rationale = "The musician learns why an edit wasn't applied."
+
+[[requirement]]
+id = "EU-0012-159"
+level = "MUST"
+polarity = "forbidden"
+statement = "A failed batch MUST NOT interrupt unrelated recording."
 binds_to = "system"
 rationale = "A refused edit never costs a take."
 
