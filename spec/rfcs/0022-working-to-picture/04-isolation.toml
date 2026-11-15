@@ -1,7 +1,7 @@
 [section]
 anchor = 'isolation'
 title = 'Keeping the sound safe from the picture'
-problem = "Decoding video takes processing time and can fail, and where it delays or stops the work that plays and records the sound, a take is lost or the musician hears a different sound."
+problem = "Decoding video takes processing time and can fail, and where it delays or stops the work that plays and records the sound, a take is lost or the musician listens to a different sound."
 motivation = "Keeping video decoding apart from the sound, counting its cost, and falling back to the lighter scrub copy where the sound suffers let the picture slow down or fail while the sound never does."
 prose = """
 Video decoding on a computer runs apart from the work that plays and records the sound, and reads
@@ -31,7 +31,7 @@ level = 'MUST'
 polarity = 'forbidden'
 statement = "Showing video MUST NOT change the sound that the computer plays."
 binds_to = 'system'
-rationale = "The musician hears the same mix with the picture shown or hidden."
+rationale = "The musician listens to the same mix with the picture shown or hidden."
 
 [[requirement]]
 id = 'EU-0022-057'
