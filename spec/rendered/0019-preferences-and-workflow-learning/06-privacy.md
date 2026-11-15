@@ -30,6 +30,10 @@ The approval that grants an assistant private data MUST show the client and the 
 
 The approval that grants an assistant private data MUST warn that a local connection doesn't prove local inference.
 
+### EU-0019-204 {#EU-0019-204}
+
+The approval that grants an assistant private data MUST warn that data euphony releases to an assistant can't be recalled.
+
 ### EU-0019-095 {#EU-0019-095}
 
 In private-only operation, private data MUST stay unavailable to an assistant that the owner didn't select as a trusted local assistant whose outbound connections the machine restricts.
@@ -37,6 +41,10 @@ In private-only operation, private data MUST stay unavailable to an assistant th
 ### EU-0019-096 {#EU-0019-096}
 
 Remote inference over private data MUST wait for the owner's approval of the exact effect.
+
+### EU-0019-195 {#EU-0019-195}
+
+An assistant's access to private data MUST wait for the owner's approval of the exact effect.
 
 ### EU-0019-097 {#EU-0019-097}
 
@@ -48,7 +56,15 @@ Euphony MUST NOT infer consent from the acceptance of a suggestion.
 
 ### EU-0019-099 {#EU-0019-099}
 
-A grant of remote inference over private data classes MUST be refused unless a verification record covers its destination and the current version of its retention and training terms.
+A grant of remote inference over private data classes MUST be refused unless a passing verification record binds its destination, the current version of its retention and training terms, and the grant's subject and project scope.
+
+### EU-0019-199 {#EU-0019-199}
+
+A verification record MUST count toward a grant of remote inference only where the publisher that the project's configuration names wrote it.
+
+### EU-0019-205 {#EU-0019-205}
+
+Euphony MUST NOT accept a verification record that a writer other than the configured publisher wrote.
 
 ### EU-0019-100 {#EU-0019-100}
 

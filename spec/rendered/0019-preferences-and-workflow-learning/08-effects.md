@@ -11,7 +11,7 @@ explains the result and the owner's acceptance of it, and its history stays.
 
 ### EU-0019-140 {#EU-0019-140}
 
-Euphony MUST measure each adopted mechanism's corrections, undo and revert outcomes, usefulness ratings and active task time before and after its activation, on a comparable workflow, project size and device profile.
+Euphony MUST measure each adopted mechanism's corrections, undo and revert outcomes, usefulness ratings, active task time and, where it changes audio, listening outcome before and after its activation, on a comparable workflow, project size and device profile.
 
 ### EU-0019-141 {#EU-0019-141}
 

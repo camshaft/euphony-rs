@@ -12,6 +12,10 @@ subjects and recordings.
 
 Euphony MUST publish an event for each evidence capture or omission, proposal state change, context freshness change, activation or refusal, invocation, suspension, retirement, synchronization conflict and retrospective completion.
 
+### EU-0019-203 {#EU-0019-203}
+
+Euphony MUST measure the size and time of context reads, queue delay, correction outcomes and resource cost as demand grows.
+
 ### EU-0019-188 {#EU-0019-188}
 
 A learning metric MUST use closed categories of reason, source and status.

@@ -15,7 +15,7 @@ A listening result MUST record the quality the listener reported receiving, not 
 
 ### EU-0019-182 {#EU-0019-182}
 
-A comment link MUST NOT allow anything beyond comments.
+A comment link MUST NOT give its holder access to the owner's learning.
 
 ### EU-0019-183 {#EU-0019-183}
 

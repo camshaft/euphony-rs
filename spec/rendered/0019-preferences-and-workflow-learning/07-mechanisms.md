@@ -154,6 +154,14 @@ A failed invocation MUST suspend the mechanism that failed.
 
 Ordinary editing MUST stay available after a mechanism invocation fails.
 
+### EU-0019-200 {#EU-0019-200}
+
+Euphony MUST derive the rate and concurrency of learning work and of transfers from the answers of the resources they use.
+
+### EU-0019-201 {#EU-0019-201}
+
+Accepted learning work past the rate its resources answer MUST stay queued.
+
 ### EU-0019-138 {#EU-0019-138}
 
 The protection of recording and audible output MUST take precedence over any mechanism.
