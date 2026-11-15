@@ -57,6 +57,14 @@ binds_to = 'system'
 rationale = "The owner isn't misled into thinking a local assistant keeps data local."
 
 [[requirement]]
+id = 'EU-0019-204'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval that grants an assistant private data MUST warn that data euphony releases to an assistant can't be recalled."
+binds_to = 'system'
+rationale = 'The owner knows a release is final before choosing it.'
+
+[[requirement]]
 id = 'EU-0019-095'
 level = 'MUST'
 polarity = 'required'
@@ -71,6 +79,14 @@ polarity = 'required'
 statement = "Remote inference over private data MUST wait for the owner's approval of the exact effect."
 binds_to = 'system'
 rationale = "Sending private data to a remote model is the owner's informed choice."
+
+[[requirement]]
+id = 'EU-0019-195'
+level = 'MUST'
+polarity = 'required'
+statement = "An assistant's access to private data MUST wait for the owner's approval of the exact effect."
+binds_to = 'system'
+rationale = "No assistant reads private data without the owner's informed choice."
 
 [[requirement]]
 id = 'EU-0019-097'
@@ -92,9 +108,27 @@ rationale = 'Accepting a suggestion is a musical choice, not a grant.'
 id = 'EU-0019-099'
 level = 'MUST'
 polarity = 'required'
-statement = 'A grant of remote inference over private data classes MUST be refused unless a verification record covers its destination and the current version of its retention and training terms.'
+statement = "A grant of remote inference over private data classes MUST be refused unless a passing verification record binds its destination, the current version of its retention and training terms, and the grant's subject and project scope."
 binds_to = 'system'
 rationale = 'The owner consents to terms that someone has checked.'
+
+[[requirement]]
+id = 'EU-0019-199'
+level = 'MUST'
+polarity = 'required'
+statement = "A verification record MUST count toward a grant of remote inference only where the publisher that the project's configuration names wrote it."
+binds_to = 'system'
+rationale = 'No one else can open the way to remote inference.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-099' } ]
+
+[[requirement]]
+id = 'EU-0019-205'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT accept a verification record that a writer other than the configured publisher wrote.'
+binds_to = 'system'
+rationale = 'A forged record never stands in for a verification.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-199' } ]
 
 [[requirement]]
 id = 'EU-0019-100'

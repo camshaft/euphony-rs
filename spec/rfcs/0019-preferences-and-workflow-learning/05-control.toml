@@ -146,6 +146,14 @@ binds_to = 'system'
 rationale = 'The owner sees how each lesson came to be.'
 
 [[requirement]]
+id = 'EU-0019-202'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each read of evidence, of a history or of the Why view MUST return one page and the cursor that reads the next page.'
+binds_to = 'system'
+rationale = 'A read costs the same however long the history grows.'
+
+[[requirement]]
 id = 'EU-0019-081'
 level = 'MUST'
 polarity = 'required'
