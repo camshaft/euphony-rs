@@ -52,7 +52,15 @@ A submission to a refinement run MUST carry the run revision it read, so that a 
 
 ### EU-0010-103 {#EU-0010-103}
 
-A job of a run that was already running when the run stopped MUST finish and have its result recorded without resuming the run.
+A job of a run that was already running when the run stopped MUST finish.
+
+### EU-0010-213 {#EU-0010-213}
+
+euphony MUST record the result of a job that finishes after its run stopped.
+
+### EU-0010-214 {#EU-0010-214}
+
+The result of a job that finishes after its run stopped MUST NOT resume the run.
 
 ### EU-0010-104 {#EU-0010-104}
 

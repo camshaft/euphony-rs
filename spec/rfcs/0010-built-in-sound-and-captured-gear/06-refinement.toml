@@ -98,9 +98,25 @@ rationale = "A race with the stopping result never admits more work."
 id = 'EU-0010-103'
 level = 'MUST'
 polarity = 'required'
-statement = "A job of a run that was already running when the run stopped MUST finish and have its result recorded without resuming the run."
+statement = "A job of a run that was already running when the run stopped MUST finish."
 binds_to = 'system'
-rationale = "Finished work is kept, and the stop still holds."
+rationale = "Work that already started isn't cut off by the stop."
+
+[[requirement]]
+id = 'EU-0010-213'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST record the result of a job that finishes after its run stopped."
+binds_to = 'system'
+rationale = "Finished work is kept."
+
+[[requirement]]
+id = 'EU-0010-214'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The result of a job that finishes after its run stopped MUST NOT resume the run."
+binds_to = 'system'
+rationale = "The stop still holds after late work finishes."
 
 [[requirement]]
 id = 'EU-0010-104'
