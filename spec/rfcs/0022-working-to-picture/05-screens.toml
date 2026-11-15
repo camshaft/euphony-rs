@@ -1,0 +1,177 @@
+[section]
+anchor = 'screens'
+title = 'Other screens and shared sessions'
+problem = "Musicians show the picture on a large display, a projector, another computer, a control surface or a client's screen far away, and each of those screens can drift from the sound or show picture to someone who shouldn't see it."
+motivation = "Each screen showing its own copy at the time its own sound plays, with its alignment measured and shown, and the picture reaching a shared session only by the owner's choice for each link, keep every screen in step and every picture where its owner put it."
+prose = """
+The picture shows on the computer that plays the audio, on a second display of a computer, on
+another of the owner's computers, on a control surface or a phone, and on the screen of a person the
+owner shares a session with through a link, as RFC 0013 states for links. Each computer that shows
+the picture decodes its own copy of the video. Another of the owner's computers follows the
+session's transport through the session timeline, maps each transport change to its own clock with
+the session's clock synchronization, and shows each frame at its presentation time. A link has a
+picture option, which carries the picture to its participant. A link participant's client shows
+each frame at the time its own output plays that frame's sound, with each delay applied once: in
+aligned mode at the time the link's shared playout gives for the frame's samples, and in host-live
+mode at that time plus the participant's own measured delay. Revoking a link ends its delivery and
+can't recall frames that a participant already received."""
+
+[[requirement]]
+id = 'EU-0022-062'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to show the picture full screen on a second display of the same computer."
+binds_to = 'system'
+rationale = "The musician watches a large picture while working on the timeline."
+
+[[requirement]]
+id = 'EU-0022-063'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to show the picture on another of their computers in step with the session's sound."
+binds_to = 'system'
+rationale = "A projector or a client's screen in the room shows the picture without decoding on the audio computer."
+
+[[requirement]]
+id = 'EU-0022-064'
+level = 'MUST'
+polarity = 'required'
+statement = "Each computer that shows the picture MUST decode it from its own copy of the video."
+binds_to = 'system'
+rationale = "No screen depends on another computer's decoding."
+
+[[requirement]]
+id = 'EU-0022-065'
+level = 'MUST'
+polarity = 'required'
+statement = "A video's items MUST reach each computer that shows its picture before playback reaches them."
+binds_to = 'system'
+rationale = "A screen never waits on a copy during playback."
+
+[[requirement]]
+id = 'EU-0022-066'
+level = 'MUST'
+polarity = 'required'
+statement = "Another computer that shows the picture MUST show each frame at the presentation time that the session's clock synchronization gives for its samples."
+binds_to = 'system'
+rationale = "Every screen of the owner shows the frame whose sound is heard."
+
+[[requirement]]
+id = 'EU-0022-067'
+level = 'MUST'
+polarity = 'required'
+statement = "The session MUST show the picture alignment of each other computer and of each link participant as it shows the alignment of their sound."
+binds_to = 'system'
+rationale = "The owner sees which screen is out of step."
+
+[[requirement]]
+id = 'EU-0022-068'
+level = 'MUST'
+polarity = 'required'
+statement = "A control surface or a phone MUST show the timecode, the current cue and marker, and a countdown to the next hit."
+binds_to = 'system'
+rationale = "A player sees what comes next without watching the main screen."
+
+[[requirement]]
+id = 'EU-0022-069'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A phone MUST NOT show the picture unless its person turns the picture on."
+binds_to = 'system'
+rationale = "A phone decodes picture only where its person wants it."
+
+[[requirement]]
+id = 'EU-0022-070'
+level = 'MUST'
+polarity = 'required'
+statement = "A phone whose person turns the picture on MUST show a small picture from the scrub copy."
+binds_to = 'system'
+rationale = "A phone can show the picture without decoding the original."
+
+[[requirement]]
+id = 'EU-0022-071'
+level = 'MUST'
+polarity = 'required'
+statement = "A link MUST carry a picture option that the owner chooses when making it."
+binds_to = 'system'
+rationale = "The owner decides for each link whether it carries the picture."
+
+[[requirement]]
+id = 'EU-0022-072'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A new link MUST NOT include the picture unless the owner chooses its picture option."
+binds_to = 'system'
+rationale = "Picture leaves the owner's computers only by their choice."
+
+[[requirement]]
+id = 'EU-0022-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A participant whose link lacks the picture option MUST NOT receive a frame."
+binds_to = 'system'
+rationale = "A link without picture never carries any."
+
+[[requirement]]
+id = 'EU-0022-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST check a link's picture option before it delivers each frame to its participant."
+binds_to = 'system'
+rationale = "A change of the option takes effect at the next frame."
+
+[[requirement]]
+id = 'EU-0022-075'
+level = 'MUST'
+polarity = 'required'
+statement = "A link participant's client MUST show each frame at the time its own output plays that frame's sound."
+binds_to = 'system'
+rationale = "A remote viewer sees the frame whose sound they hear."
+
+[[requirement]]
+id = 'EU-0022-076'
+level = 'MUST'
+polarity = 'required'
+statement = "After a seek, a loop change, a join, a change of delay or a change between aligned and host-live mode, a participant's picture MUST follow the new timing from its first refresh."
+binds_to = 'system'
+rationale = "The picture follows each change of timing as the sound does."
+
+[[requirement]]
+id = 'EU-0022-077'
+level = 'MUST'
+polarity = 'required'
+statement = "The flash-and-tone test on a link participant's client MUST see every flash during the frame whose tone that participant's output plays, in aligned and in host-live mode."
+binds_to = 'system'
+rationale = "The alignment of remote screens is measured as the owner's is."
+
+[[requirement]]
+id = 'EU-0022-078'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An assistant MUST NOT make a link with the picture option without the owner's approval of that link."
+binds_to = 'system'
+rationale = "Only the owner widens who sees their picture."
+
+[[requirement]]
+id = 'EU-0022-079'
+level = 'MUST'
+polarity = 'required'
+statement = "The dialog that makes a link with the picture option MUST say that revoking the link can't recall frames already received."
+binds_to = 'system'
+rationale = "The owner knows what a revocation can and can't undo before sharing picture."
+
+[[requirement]]
+id = 'EU-0022-080'
+level = 'MUST'
+polarity = 'required'
+statement = "Revoking a link MUST end the delivery of its frames."
+binds_to = 'system'
+rationale = "A revoked participant receives no more picture."
+
+[[requirement]]
+id = 'EU-0022-081'
+level = 'MUST'
+polarity = 'required'
+statement = "A comment link MUST show and accept positions as timecode."
+binds_to = 'system'
+rationale = "Clients and editors comment on a moment by its timecode."

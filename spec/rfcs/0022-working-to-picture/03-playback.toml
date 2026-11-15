@@ -1,0 +1,121 @@
+[section]
+anchor = 'playback'
+title = 'Picture in step with sound'
+problem = "A musician can't judge music against picture where the frame on screen isn't the frame whose sound is heard, and the delays of the audio output and of each display differ from one computer to the next."
+motivation = "Choosing each shown frame from the sample heard at that refresh, measuring what the devices don't report, and showing the measured alignment let the musician trust the picture during playback, loops, scrubbing and changes of speed."
+prose = """
+The audio device that plays the session is the reference. It publishes the sample position it is
+playing and the device time at which that sample reaches the output. At each display refresh, a
+screen shows the frame whose interval holds the sample that will be heard at that refresh's
+presentation time. That choice takes into account the audio output's delay, the time of the
+refresh and the display's delay as the platform reports them, and a per-display offset corrects
+what neither the audio device nor the display reports. The flash-and-tone test plays a video that
+shows a white frame with a tone on the same frame once a second, and records a light sensor at the
+screen and a microphone at the listening position together through the audio interface; it measures
+the time between each flash and its tone, and from it the display's offset. Scrubbing moves the
+playback position by hand while the scrubbed sound plays. Varispeed plays the timeline slower or
+faster than it was recorded."""
+
+[[requirement]]
+id = 'EU-0022-041'
+level = 'MUST'
+polarity = 'required'
+statement = "At each display refresh during playback, a screen MUST show the frame whose interval holds the sample heard at that refresh's presentation time."
+binds_to = 'system'
+rationale = "The frame on screen is the frame whose sound is heard."
+
+[[requirement]]
+id = 'EU-0022-042'
+level = 'MUST'
+polarity = 'required'
+statement = "The choice of frame MUST take into account the audio output's delay, the refresh time and the display's delay as the platform reports them."
+binds_to = 'system'
+rationale = "Each known delay is corrected without the musician's help."
+
+[[requirement]]
+id = 'EU-0022-043'
+level = 'MUST'
+polarity = 'required'
+statement = "Each display MUST have an offset that corrects the delay that neither the audio device nor the display reports."
+binds_to = 'system'
+rationale = "Displays add delays that no platform reports."
+
+[[requirement]]
+id = 'EU-0022-044'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to measure a display's offset with the flash-and-tone test."
+binds_to = 'system'
+rationale = "The offset is measured, not guessed."
+
+[[requirement]]
+id = 'EU-0022-045'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to adjust a display's offset in fractions of a frame."
+binds_to = 'system'
+rationale = "The musician can correct what they see when no test rig is at hand."
+
+[[requirement]]
+id = 'EU-0022-046'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST show a display's measured offset beside any adjustment of it."
+binds_to = 'system'
+rationale = "The musician sees how far a hand adjustment departs from the measurement."
+
+[[requirement]]
+id = 'EU-0022-047'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST show the measured difference between the picture and the sound on each screen."
+binds_to = 'system'
+rationale = "Sync is measured and shown rather than assumed."
+
+[[requirement]]
+id = 'EU-0022-048'
+level = 'MUST'
+polarity = 'required'
+statement = "Over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub."
+binds_to = 'system'
+rationale = "The alignment holds on every supported computer and display, not only at the start of a video."
+
+[[requirement]]
+id = 'EU-0022-049'
+level = 'MUST'
+polarity = 'required'
+statement = "Looping MUST snap the ends of a loop to frames by default."
+binds_to = 'system'
+rationale = "A loop repeats whole frames of picture."
+
+[[requirement]]
+id = 'EU-0022-050'
+level = 'MUST'
+polarity = 'required'
+statement = "The jump back to a loop's start MUST show the loop's first frame on the first refresh after the jump."
+binds_to = 'system'
+rationale = "A looped passage shows the right picture on every pass."
+
+[[requirement]]
+id = 'EU-0022-051'
+level = 'MUST'
+polarity = 'required'
+statement = "Scrubbing MUST show the frame for the scrub position while the scrubbed sound plays."
+binds_to = 'system'
+rationale = "The musician finds a moment by its picture and its sound together."
+
+[[requirement]]
+id = 'EU-0022-052'
+level = 'MUST'
+polarity = 'required'
+statement = "Varispeed MUST show the frame for each position, repeating or skipping frames as the rate needs."
+binds_to = 'system'
+rationale = "The picture stays in step at any playback speed."
+
+[[requirement]]
+id = 'EU-0022-053'
+level = 'MUST'
+polarity = 'required'
+statement = "Reverse playback MUST show the frame for each position."
+binds_to = 'system'
+rationale = "The picture stays in step when the musician plays backward."

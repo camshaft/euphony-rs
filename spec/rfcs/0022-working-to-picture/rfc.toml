@@ -1,0 +1,6 @@
+number = 22
+title = 'Working to picture'
+area = 'euphony'
+abstract = "How euphony imports a video and plays its picture in step with the session's sound on every screen, times positions by frames and timecode, keeps the sound safe from the picture, and gives a musician the tools to score, follow new cuts of the picture, design sound for it and deliver checked stems and exchange files."
+retired = []
+sources = []

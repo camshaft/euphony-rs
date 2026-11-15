@@ -1,0 +1,154 @@
+[section]
+anchor = 'import'
+title = 'Importing a video'
+problem = "A musician who works to picture receives videos from editors in many forms, and can't work against one until euphony holds the file unchanged, knows its timing exactly and can show any of its frames at once."
+motivation = "Keeping the file as it was delivered, recording its timing as exact numbers, and deriving once what playback and scrubbing need let every computer and every later step read the same video the same way."
+prose = """
+A video is a file that a film or video editor delivers, holding a picture stream and any number of
+audio streams. Importing it adds the file to the project's content store, as RFC 0008 states for
+every item, and adds a video record to the project. The video record holds the file's content
+identity, its container, and each stream's codec, profile, frame size and scan; its frame rate as
+an exact ratio, such as 24000/1001 for 23.976 frames per second; its starting timecode; its start
+offset, the project position of its first shown frame; and its audio streams, each with its channel
+layout. From the file, import derives a frame index, which holds the presentation time, the key
+frame flag and the byte position of each frame; thumbnails for the video's track at several zoom
+levels; a scrub copy, in which every frame is encoded on its own at a reduced size so that any frame
+decodes without its neighbors; and the analysis results that the scoring tools and post-production
+sections use. Each computer reads the formats its own decoders read. Euphony doesn't edit, color or
+re-encode a picture: its only change to a video is a copy with the mix's sound added."""
+
+[[requirement]]
+id = 'EU-0022-001'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to import a video in any container and codec that a decoder of the computer showing it reads."
+binds_to = 'system'
+rationale = "Editors deliver videos in many formats, and the musician works with the ones their computer can show."
+
+[[requirement]]
+id = 'EU-0022-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Import MUST NOT change or re-encode the video file it stores."
+binds_to = 'system'
+rationale = "The picture the musician works against is the picture the editor delivered."
+
+[[requirement]]
+id = 'EU-0022-003'
+level = 'MUST'
+polarity = 'required'
+statement = "The video record MUST hold the frame rate as an exact ratio of two whole numbers."
+binds_to = 'system'
+rationale = "A fractional rate such as 23.976 frames per second drifts when it is rounded."
+
+[[requirement]]
+id = 'EU-0022-004'
+level = 'MUST'
+polarity = 'required'
+statement = "The video record MUST hold the starting timecode that the file holds, or that the person enters where the file holds none."
+binds_to = 'system'
+rationale = "Positions read the same as the timecode printed in the picture."
+
+[[requirement]]
+id = 'EU-0022-005'
+level = 'MUST'
+polarity = 'required'
+statement = "The video record MUST hold its start offset, the project position of its first shown frame."
+binds_to = 'system'
+rationale = "Every frame's place on the timeline follows from it."
+
+[[requirement]]
+id = 'EU-0022-006'
+level = 'MUST'
+polarity = 'required'
+statement = "Each audio stream of an imported video MUST become a region on a track of its own, placed by the same timing as the picture."
+binds_to = 'system'
+rationale = "The musician hears the video's own sound, such as its guide track, in its place against the picture."
+
+[[requirement]]
+id = 'EU-0022-007'
+level = 'MUST'
+polarity = 'required'
+statement = "Audio decoded from a lossy compressed stream MUST be marked as coming from a lossy source."
+binds_to = 'system'
+rationale = "A delivery can say which stems came from a lossy source."
+
+[[requirement]]
+id = 'EU-0022-008'
+level = 'MUST'
+polarity = 'required'
+statement = "Import MUST refuse, with the reason, a stream whose presentation times are missing or go backward."
+binds_to = 'system'
+rationale = "Euphony never guesses the timing of a picture."
+
+[[requirement]]
+id = 'EU-0022-009'
+level = 'MUST'
+polarity = 'required'
+statement = "Each computer MUST report the video formats that its decoders read."
+binds_to = 'system'
+rationale = "The musician knows where each video can be shown."
+
+[[requirement]]
+id = 'EU-0022-010'
+level = 'MUST'
+polarity = 'required'
+statement = "A video in a format that no decoder of a computer reads MUST show as unavailable on that computer, with the reason."
+binds_to = 'system'
+rationale = "A missing decoder is visible, not a blank screen."
+
+[[requirement]]
+id = 'EU-0022-011'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to derive the scrub copy and the thumbnails of a video on a computer whose decoders read its format."
+binds_to = 'system'
+rationale = "A computer that can't decode the original still shows the picture from the scrub copy."
+
+[[requirement]]
+id = 'EU-0022-012'
+level = 'MUST'
+polarity = 'required'
+statement = "Import MUST derive the scrub copy of a video by default."
+binds_to = 'system'
+rationale = "Scrubbing, reverse play and jumps work from the first use of a video."
+
+[[requirement]]
+id = 'EU-0022-013'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST be able to show any frame of an imported video from its scrub copy without decoding any other frame."
+binds_to = 'system'
+rationale = "Formats that decode slowly backward or after a jump still scrub at once."
+
+[[requirement]]
+id = 'EU-0022-014'
+level = 'MUST'
+polarity = 'required'
+statement = "Import MUST derive thumbnails of the video at several zoom levels for its track."
+binds_to = 'system'
+rationale = "The musician sees the picture along the timeline at any zoom."
+
+[[requirement]]
+id = 'EU-0022-015'
+level = 'MUST'
+polarity = 'required'
+statement = "An item derived from a video MUST be computed again only where its inputs differ from those of an item already computed."
+binds_to = 'system'
+rationale = "A long video is indexed, copied and analyzed once."
+
+[[requirement]]
+id = 'EU-0022-016'
+level = 'MUST'
+polarity = 'required'
+statement = "The catalog MUST list each item derived from a video as derived from that video."
+binds_to = 'system'
+rationale = "The musician and every computer find a video's derived items from the video."
+
+[[requirement]]
+id = 'EU-0022-017'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Euphony MUST NOT edit, color or re-encode the picture of a video."
+binds_to = 'system'
+rationale = "Picture editing belongs to the editor, and every export keeps the delivered picture."
