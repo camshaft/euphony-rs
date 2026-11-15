@@ -1,0 +1,9 @@
+number = 1
+title = 'System overview: end state, shared requirements and trust model'
+area = 'euphony'
+abstract = """\
+  Where euphony is going as a whole: a music workstation whose engine runs on the owner's computers \
+  apart from every interface, the requirements every component shares, the rules for its public \
+  source, and the single-owner trust model with its boundaries and approvals."""
+retired = []
+sources = []
