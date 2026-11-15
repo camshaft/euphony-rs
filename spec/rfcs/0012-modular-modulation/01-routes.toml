@@ -72,6 +72,22 @@ binds_to = "system"
 rationale = "A route reads exactly the events the musician chose."
 
 [[requirement]]
+id = "EU-0012-165"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to use a low-frequency oscillator as the source of a route."
+binds_to = "system"
+rationale = "A generated control pattern drives a sound control without a track's audio or notes."
+
+[[requirement]]
+id = "EU-0012-166"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to use an envelope follower of an audio signal as the source of a route."
+binds_to = "system"
+rationale = "A track's level drives another track's sound control, as a sidechain does."
+
+[[requirement]]
 id = "EU-0012-008"
 level = "MUST"
 polarity = "required"
