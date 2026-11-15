@@ -1,0 +1,76 @@
+[section]
+anchor = 'journal'
+title = 'The journal and the history'
+problem = """\
+  A change that is reported as made and then isn't kept, or a history that doesn't say who made each \
+  change, leaves a musician unable to trust or check what their devices and assistants did."""
+motivation = """\
+  A journal that keeps each committed batch with its actor before the batch is reported, and that \
+  rebuilds the project after an outage, keeps every reported change and shows who made it to anyone \
+  who may read the project."""
+prose = """
+The journal of a copy holds every batch that copy committed, in order, with its revision, its actor
+and the changes it made. Where a change needed an approval, its entry holds the actor that proposed it
+and the person who approved it. When a copy opens after its computer or its program stopped, it
+rebuilds the project from its journal. Where a journal is lost, the owner restores it from a backup of
+that journal or from a revision of another copy that the owner chooses. Which changes need an
+approval, and who may read a project, are stated in the overview RFC."""
+
+[[requirement]]
+id = 'EU-0004-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'A copy MUST record a batch durably in its journal before the outcome of the batch reports it committed.'
+binds_to = 'system'
+rationale = 'A change reported as made survives a crash.'
+
+[[requirement]]
+id = 'EU-0004-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each journal entry MUST record the actor of its batch.'
+binds_to = 'system'
+rationale = 'The history shows which person, device or assistant made each change.'
+
+[[requirement]]
+id = 'EU-0004-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a change needed an approval, its journal entry MUST record its proposer and its approver as separate actors.'
+binds_to = 'system'
+rationale = 'The history shows who asked for a change apart from who allowed it.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-026' } ]
+
+[[requirement]]
+id = 'EU-0004-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'Anyone who may read a project MUST be able to read, for each of its revisions, the changes it made and its actor.'
+binds_to = 'system'
+rationale = 'A musician can inspect every change an assistant or a device made.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-026' } ]
+
+[[requirement]]
+id = 'EU-0004-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'A copy opened after an outage MUST hold every revision its journal recorded.'
+binds_to = 'system'
+rationale = "An outage of the computer or the program doesn't lose a committed change."
+relations = [ { kind = 'depends_on', target = 'EU-0004-025' } ]
+
+[[requirement]]
+id = 'EU-0004-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'A lost journal MUST be restorable from a backup of that journal or from a revision of another copy that the owner chooses.'
+binds_to = 'system'
+rationale = "Losing a journal doesn't lose the project."
+
+[[requirement]]
+id = 'EU-0004-031'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A restore MUST NOT take a revision from a copy that the owner did not choose.'
+binds_to = 'system'
+rationale = "A restore never brings in history the owner didn't pick."
