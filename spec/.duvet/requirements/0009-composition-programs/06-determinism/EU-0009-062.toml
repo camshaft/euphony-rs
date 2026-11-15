@@ -2,4 +2,4 @@ target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-062"
 
 [[spec]]
 level = "MUST"
-quote = "Two runs of a program with the same text, inputs, seed and runtime profile MUST produce the same musical events on compatible computers."
+quote = "Two runs of a program whose output identity, as EU-0009-066 defines it, is the same MUST produce the same musical events on compatible computers, which are the computers that run the same runtime and numerical profile."
