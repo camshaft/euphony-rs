@@ -177,7 +177,7 @@ rationale = "The musician learns why an edit wasn't applied."
 id = "EU-0012-159"
 level = "MUST"
 polarity = "forbidden"
-statement = "A failed batch MUST NOT interrupt unrelated recording."
+statement = "A failed edit MUST NOT interrupt unrelated recording."
 binds_to = "system"
 rationale = "A refused edit never costs a take."
 

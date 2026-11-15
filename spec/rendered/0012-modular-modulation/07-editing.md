@@ -91,7 +91,7 @@ A malformed batch, a stale revision, an unauthorized edit or an edit that needs 
 
 ### EU-0012-159 {#EU-0012-159}
 
-A failed batch MUST NOT interrupt unrelated recording.
+A failed edit MUST NOT interrupt unrelated recording.
 
 ### EU-0012-136 {#EU-0012-136}
 
