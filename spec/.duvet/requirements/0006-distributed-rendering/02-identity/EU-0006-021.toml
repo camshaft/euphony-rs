@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-021"
+
+[[spec]]
+level = "MUST"
+quote = "The manifest of a revision MUST pin exactly one validated result for each descriptor the revision needs."

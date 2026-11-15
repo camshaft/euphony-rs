@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-043"
+
+[[spec]]
+level = "MUST"
+quote = "Playback MUST be able to start at any sample position inside a prepared result."

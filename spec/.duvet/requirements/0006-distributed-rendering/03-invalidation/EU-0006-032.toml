@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-032"
+
+[[spec]]
+level = "MUST"
+quote = "A stateful processor MUST start each range from its initial state or from a verified checkpoint."

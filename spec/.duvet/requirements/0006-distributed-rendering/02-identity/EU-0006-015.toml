@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-015"
+
+[[spec]]
+level = "MUST"
+quote = "A request whose descriptor and render profile equal those of a held validated result MUST be served from that result without rendering again."

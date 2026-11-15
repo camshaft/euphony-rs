@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-003"
+
+[[spec]]
+level = "MUST"
+quote = "Playing a project whose audio is fully prepared MUST NOT calculate any of its instruments or effects during playback."

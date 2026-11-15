@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-023"
+
+[[spec]]
+level = "MUST"
+quote = "Where a project needs a new render profile, euphony MUST show the musician that it does."

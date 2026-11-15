@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-045"
+
+[[spec]]
+level = "SHOULD"
+quote = "The render cache SHOULD keep stems at the dependency boundaries of the mix."

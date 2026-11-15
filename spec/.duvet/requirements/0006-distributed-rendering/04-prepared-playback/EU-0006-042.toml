@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-042"
+
+[[spec]]
+level = "MUST"
+quote = "The player MUST NOT wait on a read of the render cache while it produces audio for the device."

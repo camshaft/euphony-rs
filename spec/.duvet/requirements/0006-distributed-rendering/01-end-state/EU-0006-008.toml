@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-008"
+
+[[spec]]
+level = "MUST"
+quote = "Render work that a lost worker left unfinished MUST be offered to another worker."

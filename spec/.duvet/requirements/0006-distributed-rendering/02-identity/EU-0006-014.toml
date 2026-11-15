@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-014"
+
+[[spec]]
+level = "MUST"
+quote = "Each result MUST be identified by a digest of its bytes."

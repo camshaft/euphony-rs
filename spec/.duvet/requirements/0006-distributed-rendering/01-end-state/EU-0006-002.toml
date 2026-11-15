@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-002"
+
+[[spec]]
+level = "MUST"
+quote = "Audio from an interrupted, late or superseded render MUST NOT be played or exported as the current revision of a project."

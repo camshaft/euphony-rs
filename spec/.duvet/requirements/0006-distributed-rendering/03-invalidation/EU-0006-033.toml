@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-033"
+
+[[spec]]
+level = "MUST"
+quote = "A checkpoint MUST hold the running state of each processor it covers."

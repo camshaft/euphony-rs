@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-005"
+
+[[spec]]
+level = "MUST"
+quote = "Prepared passages that an edit doesn't change MUST play from their saved results while the changed passages are rendered again."

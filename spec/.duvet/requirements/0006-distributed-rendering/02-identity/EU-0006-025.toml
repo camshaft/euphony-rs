@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-025"
+
+[[spec]]
+level = "MUST"
+quote = "A result MUST be accepted only once its descriptor, format, length and digest pass their checks."

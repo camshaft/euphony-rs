@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-031"
+
+[[spec]]
+level = "MUST"
+quote = "A time range MUST be rendered on its own only where its start state and its complete input history are known."
