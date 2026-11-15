@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-067"
+
+[[spec]]
+level = "MUST"
+quote = "The render cache MUST evict only results that no active playback or export manifest pins."

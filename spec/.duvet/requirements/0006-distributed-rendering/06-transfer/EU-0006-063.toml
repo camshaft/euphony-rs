@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-063"
+
+[[spec]]
+level = "MUST"
+quote = "A receiver MUST check each chunk against its digest before it counts the chunk as present."

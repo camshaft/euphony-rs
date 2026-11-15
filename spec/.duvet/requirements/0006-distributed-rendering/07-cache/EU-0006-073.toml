@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-073"
+
+[[spec]]
+level = "MUST"
+quote = "Verified chunks MUST be kept through a hold for storage pressure."

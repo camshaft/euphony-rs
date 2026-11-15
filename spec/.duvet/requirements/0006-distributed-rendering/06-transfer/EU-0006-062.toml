@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-062"
+
+[[spec]]
+level = "MUST"
+quote = "After a disconnect, a receiver MUST fetch only the chunks it still lacks."

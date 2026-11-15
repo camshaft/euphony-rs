@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-071"
+
+[[spec]]
+level = "MUST"
+quote = "When a volume is full, new fetches and preparation on that volume MUST hold until space returns."

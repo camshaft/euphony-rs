@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-057"
+
+[[spec]]
+level = "MUST"
+quote = "Every connection between a worker and a host MUST be authenticated and encrypted."
