@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/08-access.md#EU-0012-144"
+
+[[spec]]
+level = "MUST"
+quote = "Modulation MUST NOT add a permission of its own."

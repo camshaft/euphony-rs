@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-132"
+
+[[spec]]
+level = "MUST"
+quote = "Editors, scripts and assistant clients MUST receive the same committed, compiled, activated and failed events of a graph."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/08-access.md#EU-0012-152"
+
+[[spec]]
+level = "MUST"
+quote = "The behavior of routes, conversions, ranges and timing MUST come from project data, not from identities written into code."

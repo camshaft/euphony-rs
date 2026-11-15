@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-121"
+
+[[spec]]
+level = "MUST"
+quote = "The patch view MUST distinguish the saved graph from the graph that is playing."
