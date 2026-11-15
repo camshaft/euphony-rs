@@ -1,0 +1,10 @@
+number = 6
+title = 'Distributed rendering and workers'
+area = 'euphony'
+abstract = """\
+  How euphony prepares a project's audio ahead of playback on the owner's computers: the identity \
+  of each render request and result, invalidation through the project graph, the playback of \
+  prepared audio, render workers and their scheduling, resumable transfer of inputs and results, \
+  and the retention and recovery of the render cache."""
+retired = []
+sources = []
