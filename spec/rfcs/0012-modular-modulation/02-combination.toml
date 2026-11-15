@@ -85,7 +85,7 @@ relations = [ { kind = "depends_on", target = "EU-0012-028" } ]
 id = "EU-0012-031"
 level = "MUST"
 polarity = "required"
-statement = "In Replace mode, the normalized value of a target MUST be its stored replacement base plus its summed contribution."
+statement = "In Replace mode, while at least one of its routes is present and not bypassed, the normalized value of a target MUST be its stored replacement base plus its summed contribution."
 binds_to = "system"
 rationale = "Replace lets modulation drive a control away from its drawn curve."
 relations = [ { kind = "depends_on", target = "EU-0012-028" } ]

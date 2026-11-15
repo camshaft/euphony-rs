@@ -45,7 +45,7 @@ In Scale mode, the normalized value of a target MUST be its base times the sum o
 
 ### EU-0012-031 {#EU-0012-031}
 
-In Replace mode, the normalized value of a target MUST be its stored replacement base plus its summed contribution.
+In Replace mode, while at least one of its routes is present and not bypassed, the normalized value of a target MUST be its stored replacement base plus its summed contribution.
 
 ### EU-0012-032 {#EU-0012-032}
 
