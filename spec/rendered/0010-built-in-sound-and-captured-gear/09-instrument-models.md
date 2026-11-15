@@ -107,3 +107,11 @@ The acceptance of an instrument model MUST keep its tested coverage and limitati
 ### EU-0010-191 {#EU-0010-191}
 
 euphony MUST NOT call an instrument model complete while a promised parameter domain or voice behavior remains untested.
+
+### EU-0010-260 {#EU-0010-260}
+
+The manifest of an instrument model MUST state the continuous control regions and the discrete modes that the model supports.
+
+### EU-0010-261 {#EU-0010-261}
+
+euphony MUST show each setting of an instrument model as measured, validated by interpolation or unsupported.
