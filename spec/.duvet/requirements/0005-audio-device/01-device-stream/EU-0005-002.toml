@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-002"
+
+[[spec]]
+level = "MUST"
+quote = "The audio device process MUST report the capabilities of a device when asked."

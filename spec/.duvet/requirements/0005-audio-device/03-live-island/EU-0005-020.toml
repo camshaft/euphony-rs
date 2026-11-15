@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-020"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument played live from note input MUST render in the live render island of the computer the musician plays it on."

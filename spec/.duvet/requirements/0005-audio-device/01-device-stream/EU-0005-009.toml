@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-009"
+
+[[spec]]
+level = "MUST"
+quote = "Reporting an event of the device MUST NOT make the callback wait."

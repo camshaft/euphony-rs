@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/02-callback.md#EU-0005-016"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST deliver each compiled graph revision to the audio device process before the callback plays it."

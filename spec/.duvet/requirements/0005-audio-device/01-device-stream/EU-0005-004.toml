@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-004"
+
+[[spec]]
+level = "MUST"
+quote = "Preparing a stream MUST answer with the negotiated format or with exactly one typed failure of unsupported format, clock unlocked, device lost or transport failure."

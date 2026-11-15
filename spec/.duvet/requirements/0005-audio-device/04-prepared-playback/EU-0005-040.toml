@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-040"
+
+[[spec]]
+level = "MUST"
+quote = "Input capture MUST run in a native audio device process."

@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-034"
+
+[[spec]]
+level = "MUST"
+quote = "A switch between prepared audio and the live render island MUST happen at aligned sample positions."

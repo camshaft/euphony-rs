@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-007"
+
+[[spec]]
+level = "MUST"
+quote = "The audio device process MUST report each underrun to the session host as a typed event."
