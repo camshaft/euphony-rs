@@ -1,0 +1,130 @@
+[section]
+anchor = 'renderer-selection'
+title = 'Selecting the supported renderer'
+problem = """\
+  A change in how the music views are drawn on a supported desktop can break accessibility, text, \
+  timing or rights on one system, and a switch made on a design's approval alone releases what no \
+  build has proved."""
+motivation = """\
+  A selection that takes typed evidence for the exact build and every supported profile, and keeps \
+  the current renderer otherwise, lets the drawing change only once it is proved, and lets it be \
+  undone without touching a project."""
+prose = """
+A renderer draws the music views. The supported renderer is the one the desktop interface uses on
+its supported profiles, and a candidate renderer can run beside it behind a development selection.
+A profile is a combination of operating system, display and input device that euphony supports.
+The evidence for a renderer is its target conformance on each profile, its surface conformance, the
+recorded decision on replacing stock controls with drawn music controls, the provenance and license
+records of the build, and the musician's physical acceptance. A conformance record names the
+renderer and its version, the panel kind, the profile and the build. Each piece of evidence is a
+typed record from a configured publisher or decider. Expressive-control readiness is the claim that
+a profile is fast enough for live playing."""
+
+[[requirement]]
+id = 'EU-0018-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'Selecting the supported renderer MUST take the project, the renderer, the build identity, the supported profiles and the expected configuration revision.'
+binds_to = 'system'
+rationale = 'A selection states exactly what it clears, and never overwrites a newer one.'
+
+[[requirement]]
+id = 'EU-0018-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'The selection MUST require passing target conformance and surface conformance of the selected renderer for the exact build on every supported profile.'
+binds_to = 'system'
+rationale = 'A renderer is proved on each system it will run on.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
+
+[[requirement]]
+id = 'EU-0018-083'
+level = 'MUST'
+polarity = 'required'
+statement = "The selection MUST require the designated approver's recorded decision on replacing stock controls with drawn music controls."
+binds_to = 'system'
+rationale = 'Replacing native controls is a product decision, made once and recorded.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
+
+[[requirement]]
+id = 'EU-0018-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'The selection MUST require the provenance and license records of the build.'
+binds_to = 'system'
+rationale = 'A renderer is released only with assets and dependencies the release check cleared.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
+
+[[requirement]]
+id = 'EU-0018-085'
+level = 'MUST'
+polarity = 'required'
+statement = "The selection MUST require the musician's physical acceptance on every supported profile."
+binds_to = 'system'
+rationale = 'A musician who plays on the real device decides whether it feels right.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
+
+[[requirement]]
+id = 'EU-0018-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites and keep the current renderer.'
+binds_to = 'system'
+rationale = 'An unproved renderer never becomes the supported one, and the caller learns what is left to prove.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
+
+[[requirement]]
+id = 'EU-0018-087'
+level = 'MUST'
+polarity = 'required'
+statement = "The selection MUST check its evidence and the caller's authority again in the commit that changes the configuration."
+binds_to = 'system'
+rationale = 'Evidence or authority that changed during the selection never applies.'
+
+[[requirement]]
+id = 'EU-0018-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change of build, profile or asset MUST invalidate the evidence that applied before it.'
+binds_to = 'system'
+rationale = 'A new build earns its own clearance instead of inheriting an older one.'
+
+[[requirement]]
+id = 'EU-0018-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Evidence for one renderer MUST NOT authorize another renderer.'
+binds_to = 'system'
+rationale = 'Each renderer is proved by evidence about itself.'
+
+[[requirement]]
+id = 'EU-0018-090'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A conformance record without a renderer identity MUST NOT satisfy the selection.'
+binds_to = 'system'
+rationale = "An older record that doesn't say what it tested proves nothing about a renderer."
+
+[[requirement]]
+id = 'EU-0018-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'The evidence of the selection MUST be typed records from configured publishers and deciders.'
+binds_to = 'system'
+rationale = 'The selection reads facts, not prose, and its code doesn't name a person.'
+
+[[requirement]]
+id = 'EU-0018-092'
+level = 'MUST'
+polarity = 'required'
+statement = "A rollback of the renderer MUST leave the project's audio and command history unchanged."
+binds_to = 'system'
+rationale = 'Going back to the earlier renderer is safe at any time.'
+
+[[requirement]]
+id = 'EU-0018-093'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The desktop interface MUST NOT claim expressive-control readiness on a physical profile that hasn't met the timing criterion the musician selected."
+binds_to = 'system'
+rationale = 'A smooth display never stands in for fast sound control.'
