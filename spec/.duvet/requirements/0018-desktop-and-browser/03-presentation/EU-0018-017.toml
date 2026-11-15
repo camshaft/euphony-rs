@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-017"
+
+[[spec]]
+level = "MUST"
+quote = "Input on a view MUST reach the project only as a command sent to the session host."

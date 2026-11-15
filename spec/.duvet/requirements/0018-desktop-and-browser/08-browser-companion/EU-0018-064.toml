@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-064"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST NOT edit a project or run a composition program offline."

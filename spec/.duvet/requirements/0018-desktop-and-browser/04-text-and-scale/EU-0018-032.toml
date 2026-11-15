@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-032"
+
+[[spec]]
+level = "MUST"
+quote = "A font the product includes MUST NOT override the person's system text size or contrast preferences."

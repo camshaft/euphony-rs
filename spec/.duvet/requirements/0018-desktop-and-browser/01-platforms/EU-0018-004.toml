@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-004"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST use the operating system's own menus, file dialogs, clipboard, drag and drop, window management and accessibility services."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/07-second-screens.md#EU-0018-056"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant MUST NOT act on a view through pixels or injected pointer events."

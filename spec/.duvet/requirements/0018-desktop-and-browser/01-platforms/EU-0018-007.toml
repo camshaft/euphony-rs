@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-007"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST NOT hold the authority to accept a change to a project."

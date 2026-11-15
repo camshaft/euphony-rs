@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-080"
+
+[[spec]]
+level = "MUST"
+quote = "Visual conformance cases MUST compare views with the product's own reference images at a declared scale, font and renderer."

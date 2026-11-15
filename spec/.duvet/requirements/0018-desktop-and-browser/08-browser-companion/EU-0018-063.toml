@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-063"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST report each capability it lacks as unavailable."

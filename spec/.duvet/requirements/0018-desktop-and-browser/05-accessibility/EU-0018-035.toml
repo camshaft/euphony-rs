@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-035"
+
+[[spec]]
+level = "MUST"
+quote = "Each shortcut MUST be discoverable from the interface."

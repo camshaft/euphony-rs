@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-009"
+
+[[spec]]
+level = "MUST"
+quote = "The main views MUST follow the layout and navigation conventions of established professional music workstations."

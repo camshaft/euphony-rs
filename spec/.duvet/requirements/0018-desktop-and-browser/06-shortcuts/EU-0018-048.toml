@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-048"
+
+[[spec]]
+level = "MUST"
+quote = "A save for a platform whose binding data is missing MUST report that platform as unverified."

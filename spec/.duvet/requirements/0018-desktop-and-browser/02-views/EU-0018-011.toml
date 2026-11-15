@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-011"
+
+[[spec]]
+level = "MUST"
+quote = "A musician MUST be able to arrange tracks, edit notes and automation, mix, record and export from the desktop interface."

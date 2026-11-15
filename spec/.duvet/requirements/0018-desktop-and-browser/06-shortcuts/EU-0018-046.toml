@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-046"
+
+[[spec]]
+level = "MUST"
+quote = "A save with an unresolved collision MUST be refused with each collision and its platform."

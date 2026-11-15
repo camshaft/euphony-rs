@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-059"
+
+[[spec]]
+level = "MUST"
+quote = "Each command the browser companion sends MUST run on the authorized native host."
