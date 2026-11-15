@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-062"
+
+[[spec]]
+level = "MUST"
+quote = "Two runs of a program with the same text, inputs, seed and runtime profile MUST produce the same musical events on compatible computers."

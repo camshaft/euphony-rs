@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-078"
+
+[[spec]]
+level = "MUST"
+quote = "A new version of a definition MUST NOT change the meaning of a value that a saved project holds without an explicit migration."

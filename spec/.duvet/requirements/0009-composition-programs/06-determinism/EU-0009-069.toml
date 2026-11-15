@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-069"
+
+[[spec]]
+level = "MUST"
+quote = "A regeneration MUST load again only the passages whose output changed."
