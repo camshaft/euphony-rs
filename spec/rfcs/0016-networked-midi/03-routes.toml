@@ -112,7 +112,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "The command gateway MUST refuse a route that closes a routing cycle the route doesn't declare."
 binds_to = 'system'
-rationale = 'External MIDI doesn't carry a dependable loop marker, so an undeclared loop would feed back.'
+rationale = "External MIDI doesn't carry a dependable loop marker, so an undeclared loop would feed back."
 
 [[requirement]]
 id = 'EU-0016-038'
