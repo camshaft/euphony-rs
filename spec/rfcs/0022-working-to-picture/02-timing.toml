@@ -1,0 +1,215 @@
+[section]
+anchor = 'timing'
+title = 'Frames, timecode and picture-locked positions'
+problem = "Picture and sound drift apart where they are timed by different clocks, a position written as a frame label can mean different times at different rates, and music placed on a frame moves off it when the tempo changes."
+motivation = "One sample timeline, an exact mapping from each frame's presentation time to samples, timecode used only to read and enter positions, and a lock on each position keep every frame, label and hit where the musician put it."
+prose = """
+The project's sample timeline, which RFC 0004 states, is the clock of the project, and a video's
+timing comes from the presentation times of its own frames. Each frame's presentation time is a
+whole number in the stream's time base, after the container's edit list, which sets where
+presentation starts. Frame i starts at the project sample s0 + round((t_i - t_0) x R x b), where
+t_i is its presentation time, t_0 the presentation time of the first frame shown, b the time base in
+seconds, s0 the start offset in samples and R the project's sample rate, with the rounding that RFC
+0004 states for the timeline; the frame lasts until the next frame starts. A file of constant rate
+f/d gives the same positions as frame n at s0 + round(n x R x d / f). This is the frame mapping of
+the project.
+
+Timecode is hours, minutes, seconds and frames at the project's timecode rate. The timecode rates
+are 23.976, 24, 25, 29.97, 30, 50, 59.94 and 60 frames per second, the fractional ones being
+24000/1001, 30000/1001 and 60000/1001. At 29.97 and 59.94 a project labels frames either without
+dropping labels or with drop-frame labels. Drop-frame labeling at 29.97 skips the frame labels 00
+and 01, and at 59.94 the labels 00 to 03, at the start of each minute except the minutes whose
+number is a multiple of ten, so that the labels follow the time of day while every frame is still
+shown. Timecode is only a way to read and enter a position. Pull-up and pull-down change the rate
+at which the timeline plays against the audio device by a factor of 1001/1000, the change between
+24 and 23.976 frames per second.
+
+The position of a marker or a region has a lock. A musical lock keeps the position in bars and
+beats. A picture lock keeps it as a frame and a sample offset within that frame."""
+
+[[requirement]]
+id = 'EU-0022-018'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST place every frame of a video on the project's sample timeline by the frame mapping this section states."
+binds_to = 'system'
+rationale = "Every frame has one exact place, whatever the frame rate."
+
+[[requirement]]
+id = 'EU-0022-019'
+level = 'MUST'
+polarity = 'required'
+statement = "A sample of the timeline MUST show the frame whose interval holds it."
+binds_to = 'system'
+rationale = "Each sample belongs to exactly one frame."
+relations = [ { kind = 'depends_on', target = 'EU-0022-018' } ]
+
+[[requirement]]
+id = 'EU-0022-020'
+level = 'MUST'
+polarity = 'required'
+statement = "The audio streams, the scrub copy, the thumbnails and the picture-locked positions of a video MUST use the same frame mapping as its picture."
+binds_to = 'system'
+rationale = "The extracted sound, every derived item and every hit stay on the frames of the picture."
+
+[[requirement]]
+id = 'EU-0022-021'
+level = 'MUST'
+polarity = 'required'
+statement = "A video whose frame intervals vary MUST be placed by the presentation times of its frames."
+binds_to = 'system'
+rationale = "A recording of varying rate, such as one from a phone, keeps its picture in step with its sound."
+
+[[requirement]]
+id = 'EU-0022-022'
+level = 'MUST'
+polarity = 'required'
+statement = "The track of a video whose frame rate varies MUST show that the rate varies."
+binds_to = 'system'
+rationale = "The musician knows why its timecode labels follow the project's rate."
+
+[[requirement]]
+id = 'EU-0022-023'
+level = 'MUST'
+polarity = 'required'
+statement = "A project MUST offer every timecode rate this section lists."
+binds_to = 'system'
+rationale = "Film, broadcast and online video each use these rates."
+
+[[requirement]]
+id = 'EU-0022-024'
+level = 'MUST'
+polarity = 'required'
+statement = "At 29.97 and 59.94 frames per second, a project MUST offer both labeling without dropped labels and drop-frame labeling."
+binds_to = 'system'
+rationale = "Broadcast work uses drop-frame labels, and other work at these rates doesn't."
+
+[[requirement]]
+id = 'EU-0022-025'
+level = 'MUST'
+polarity = 'required'
+statement = "Drop-frame labeling MUST skip exactly the labels this section states."
+binds_to = 'system'
+rationale = "Every position reads the same label as the editor's programs show."
+
+[[requirement]]
+id = 'EU-0022-026'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Drop-frame labeling MUST NOT leave any frame of the picture unshown."
+binds_to = 'system'
+rationale = "Only the labels are dropped, never the frames."
+
+[[requirement]]
+id = 'EU-0022-027'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to read every position as timecode at the project's timecode rate."
+binds_to = 'system'
+rationale = "Picture work talks in timecode."
+
+[[requirement]]
+id = 'EU-0022-028'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to enter every position as timecode at the project's timecode rate."
+binds_to = 'system'
+rationale = "A musician types the timecode an editor or a cue list gives."
+
+[[requirement]]
+id = 'EU-0022-029'
+level = 'MUST'
+polarity = 'required'
+statement = "A stored position MUST keep its place on the timeline when the project's timecode rate or labeling changes."
+binds_to = 'system'
+rationale = "A label can't be misread across rates, since positions are never kept as labels."
+
+[[requirement]]
+id = 'EU-0022-030'
+level = 'MUST'
+polarity = 'required'
+statement = "A project with a video MUST take its timecode rate and labeling from that video by default."
+binds_to = 'system'
+rationale = "The project's timecode matches the timecode printed in the picture."
+
+[[requirement]]
+id = 'EU-0022-031'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to set the project's starting timecode."
+binds_to = 'system'
+rationale = "A program that starts at one hour after a countdown starts its project before that hour."
+
+[[requirement]]
+id = 'EU-0022-032'
+level = 'MUST'
+polarity = 'required'
+statement = "A video whose frame rate differs from the project's timecode rate MUST keep its own frame mapping."
+binds_to = 'system'
+rationale = "Its frames stay in step with their sound whatever rate the labels use."
+
+[[requirement]]
+id = 'EU-0022-033'
+level = 'MUST'
+polarity = 'required'
+statement = "The track of a video whose frame rate differs from the project's timecode rate MUST warn of the difference."
+binds_to = 'system'
+rationale = "The musician sees why a label doesn't fall on a frame boundary."
+
+[[requirement]]
+id = 'EU-0022-034'
+level = 'MUST'
+polarity = 'required'
+statement = "A project MUST offer pull-up and pull-down as a setting."
+binds_to = 'system'
+rationale = "Film work moves between 24 and 23.976 frames per second."
+
+[[requirement]]
+id = 'EU-0022-035'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Pull-up and pull-down MUST NOT change the stored sample rate of any audio."
+binds_to = 'system'
+rationale = "The change is one of playback rate, which can be undone without loss."
+
+[[requirement]]
+id = 'EU-0022-036'
+level = 'MUST'
+polarity = 'required'
+statement = "Each marker and each region MUST have a musical lock or a picture lock."
+binds_to = 'system'
+rationale = "Each position says whether it follows the music or the picture."
+
+[[requirement]]
+id = 'EU-0022-037'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A tempo change MUST NOT move a picture-locked position."
+binds_to = 'system'
+rationale = "A hit placed on a frame stays on that frame."
+relations = [ { kind = 'depends_on', target = 'EU-0022-036' } ]
+
+[[requirement]]
+id = 'EU-0022-038'
+level = 'MUST'
+polarity = 'required'
+statement = "A tempo change MUST move each musically locked position with the music."
+binds_to = 'system'
+rationale = "Musical material keeps its bars and beats."
+relations = [ { kind = 'depends_on', target = 'EU-0022-036' } ]
+
+[[requirement]]
+id = 'EU-0022-039'
+level = 'MUST'
+polarity = 'required'
+statement = "A marker placed on the picture MUST have a picture lock by default."
+binds_to = 'system'
+rationale = "A moment marked on the picture belongs to the picture."
+
+[[requirement]]
+id = 'EU-0022-040'
+level = 'MUST'
+polarity = 'required'
+statement = "A marker placed on the ruler of bars and beats MUST have a musical lock by default."
+binds_to = 'system'
+rationale = "A moment marked on the music belongs to the music."
