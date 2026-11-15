@@ -49,7 +49,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0007-009' } ]
 id = 'EU-0007-011'
 level = 'MUST'
 polarity = 'required'
-statement = "Registration of a processor MUST compute its identities again from the submitted definitions and refuse a definition whose identities don't match."
+statement = "Registration of a processor MUST refuse a definition whose identities, computed again from the submitted definitions, don't match the identities it declares."
 binds_to = 'system'
 rationale = 'An identity always describes the definition it was registered with.'
 
