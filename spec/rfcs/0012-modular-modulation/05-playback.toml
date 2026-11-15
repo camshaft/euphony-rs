@@ -119,9 +119,9 @@ rationale = "Two contradictory histories never play at once."
 id = "EU-0012-089"
 level = "MUST"
 polarity = "required"
-statement = "A seek MUST restore a verified checkpoint and replay the history it needs."
+statement = "A seek MUST restore a verified checkpoint."
 binds_to = "system"
-rationale = "Playback from any point sounds as it would after playing through."
+rationale = "Playback from any point starts from a known state."
 
 [[requirement]]
 id = "EU-0012-090"
@@ -135,9 +135,9 @@ rationale = "A lack of computing never changes the sound without the musician se
 id = "EU-0012-091"
 level = "MUST"
 polarity = "required"
-statement = "A missed live deadline MUST keep the previous revision playing or mark the preview unavailable, visibly."
+statement = "Where a previous revision covers the range being played, a missed live deadline MUST keep that revision playing."
 binds_to = "system"
-rationale = "The musician sees why a change isn't heard yet."
+rationale = "The project keeps sounding while a change isn't ready."
 
 [[requirement]]
 id = "EU-0012-092"
@@ -151,7 +151,7 @@ rationale = "A patch too large to play now is never lost."
 id = "EU-0012-093"
 level = "MUST"
 polarity = "required"
-statement = "Where a graph can't run, playback MUST keep the previous revision and say so."
+statement = "Where a graph can't run, playback MUST keep the previous revision."
 binds_to = "system"
 rationale = "The project keeps playing while the musician changes the patch."
 
@@ -170,3 +170,36 @@ polarity = "forbidden"
 statement = "Validating a graph MUST NOT wait on any project other than its own."
 binds_to = "system"
 rationale = "One project's patch never slows another project."
+
+[[requirement]]
+id = "EU-0012-157"
+level = "MUST"
+polarity = "required"
+statement = "After a seek restores a checkpoint, the system MUST replay the history between that checkpoint and the position of the seek."
+binds_to = "system"
+rationale = "Playback from any point sounds as it would after playing through."
+relations = [ { kind = "depends_on", target = "EU-0012-089" } ]
+
+[[requirement]]
+id = "EU-0012-158"
+level = "MUST"
+polarity = "required"
+statement = "Where a graph can't run, the system MUST tell the musician that it can't run."
+binds_to = "system"
+rationale = "The musician knows why a change isn't heard."
+
+[[requirement]]
+id = "EU-0012-160"
+level = "MUST"
+polarity = "required"
+statement = "Where no previous revision covers the range being played, a missed live deadline MUST mark the preview unavailable."
+binds_to = "system"
+rationale = "A change that isn't ready is never played half rendered."
+
+[[requirement]]
+id = "EU-0012-161"
+level = "MUST"
+polarity = "required"
+statement = "The interface MUST show the musician each missed live deadline."
+binds_to = "system"
+rationale = "The musician sees why a change isn't heard yet."
