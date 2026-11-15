@@ -1,0 +1,178 @@
+[section]
+anchor = 'lossless-storage'
+title = 'Lossless storage and raw exceptions'
+problem = """\
+  Uncompressed audio wastes disk space, memory and network transfer, while compression that rounds \
+  samples, guesses its format or runs where it misses a deadline breaks playback or changes the \
+  sound."""
+motivation = """\
+  Verified lossless encoding of stored and shared audio, raw chunks only where a recorded \
+  measurement justifies them, and decoding bounded and streamed save resources without changing \
+  a sample or missing a deadline."""
+prose = """
+Saved projects, prepared results in the cache and audio that peers sync are stored in a verified
+lossless byte-preserving encoding. A lossless codec for integer audio can't hold arbitrary
+floating-point samples, so working audio uses a byte-preserving compressor, without quantization or
+normalization. A byte rearrangement before compression, such as grouping the bytes of each
+significance, is an encoding of its own, with a version and tests that its inverse restores each
+bit. Audio with high-entropy mantissa bits can compress poorly: a chunk is stored raw only where a
+measurement shows that compression costs more than it saves, or misses a deadline, and the record
+of the object holds that measurement. Readers take the representation of each object from its
+record. Chunks are sized from measurement, not from a fixed number, and their boundaries allow
+seeking, partial transfer and recovery from a corrupt chunk. Uncompressed samples belong in
+processing and device buffers, in live network audio packets and in a capture journal while
+encoding can't keep up."""
+
+[[requirement]]
+id = 'EU-0007-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'Saved, cached and shared working audio MUST decode to exactly the samples that were encoded.'
+binds_to = 'system'
+rationale = 'Audio comes back exactly as it was processed.'
+
+[[requirement]]
+id = 'EU-0007-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'Saved, cached and synced working audio MUST be stored in a verified lossless encoding unless a measured raw exception covers it.'
+binds_to = 'system'
+rationale = 'Stored and shared audio costs less disk and transfer than raw samples.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-029' } ]
+
+[[requirement]]
+id = 'EU-0007-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'On the representative projects, saved, cached and shared working audio MUST use less disk space and network transfer than uncompressed audio.'
+binds_to = 'system'
+rationale = 'The encoding is kept for what it saves on real material, not assumed to save.'
+
+[[requirement]]
+id = 'EU-0007-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'The record of a stored object MUST state its representation, its codec and its codec version.'
+binds_to = 'system'
+rationale = 'The representation is recorded once and read by everyone.'
+
+[[requirement]]
+id = 'EU-0007-033'
+level = 'MUST'
+polarity = 'required'
+statement = "A reader MUST take an object's representation from its record."
+binds_to = 'system'
+rationale = 'No reader guesses an encoding from bytes or names.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-032' } ]
+
+[[requirement]]
+id = 'EU-0007-034'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The store MUST NOT publish a raw object whose record lacks the measurement that justified storing it raw.'
+binds_to = 'system'
+rationale = 'A raw chunk is a measured exception, never a default.'
+
+[[requirement]]
+id = 'EU-0007-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'The measurement of a raw object MUST hold the compressed size and the encoding cost on that chunk, or the deadline that encoding missed.'
+binds_to = 'system'
+rationale = 'A reader of the record sees why the chunk is raw.'
+
+[[requirement]]
+id = 'EU-0007-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Before it publishes an encoded object, the store MUST verify its decoded length and its semantic digest.'
+binds_to = 'system'
+rationale = 'A defective encoder never publishes changed audio.'
+
+[[requirement]]
+id = 'EU-0007-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'Working audio MUST be compressed before it is encrypted.'
+binds_to = 'system'
+rationale = 'Encrypted bytes do not compress.'
+
+[[requirement]]
+id = 'EU-0007-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A decoder MUST bound the memory it allocates by the sizes a verified manifest declares.'
+binds_to = 'system'
+rationale = 'A size an encoded object claims never makes a decoder allocate without bound.'
+
+[[requirement]]
+id = 'EU-0007-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'Chunk boundaries MUST allow seeking, partial transfer and recovery from a corrupt chunk.'
+binds_to = 'system'
+rationale = 'A reader seeks, resumes and recovers without reading a whole object.'
+
+[[requirement]]
+id = 'EU-0007-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'Chunk and read-ahead sizes MUST be chosen from decoder behavior, device deadlines, the measured workload and the actual resource limits.'
+binds_to = 'system'
+rationale = 'A fixed count or an invented byte budget never decides them.'
+
+[[requirement]]
+id = 'EU-0007-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'A byte rearrangement applied before compression MUST be recorded as a versioned encoding.'
+binds_to = 'system'
+rationale = 'A reader knows which inverse restores the bytes.'
+
+[[requirement]]
+id = 'EU-0007-042'
+level = 'MUST'
+polarity = 'required'
+statement = "Playback MUST stream decoded audio into reusable buffers instead of loading a project's audio into memory whole."
+binds_to = 'system'
+rationale = 'Memory use follows what plays, not the size of the project.'
+
+[[requirement]]
+id = 'EU-0007-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'Readers of immutable audio MUST share its buffers instead of copying them.'
+binds_to = 'system'
+rationale = 'Each copy costs memory and processor work that sharing avoids.'
+
+[[requirement]]
+id = 'EU-0007-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'The data a cache keeps resident MUST follow observed memory pressure and playback deadlines.'
+binds_to = 'system'
+rationale = 'The cache uses the memory the machine has, without missing deadlines.'
+
+[[requirement]]
+id = 'EU-0007-045'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Compression MUST NOT run in the real-time audio callback.'
+binds_to = 'system'
+rationale = 'Encoding never delays the samples a device waits for.'
+
+[[requirement]]
+id = 'EU-0007-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where compression or prefetch would miss a live deadline, the system MUST fall back to a path that meets the deadline.'
+binds_to = 'system'
+rationale = 'Correct live audio comes before resource savings.'
+
+[[requirement]]
+id = 'EU-0007-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, capture journals and objects with a measured raw exception.'
+binds_to = 'system'
+rationale = 'Raw samples exist only where a deadline or a measurement needs them.'
