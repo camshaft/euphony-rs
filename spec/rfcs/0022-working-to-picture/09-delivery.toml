@@ -207,7 +207,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to keep or replace the original audio tracks of the video in its copy."
 binds_to = 'system'
-rationale = "A client hears the new mix alone or beside the guide track."
+rationale = "A client listens to the new mix alone or beside the guide track."
 
 [[requirement]]
 id = 'EU-0022-163'
@@ -215,7 +215,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to export the stems and the mix as audio files whose metadata holds their starting timecode, so that a video editing program places each at its time."
 binds_to = 'system'
-rationale = "An editor drops the files in and they land in place."
+rationale = "An editor drops the files in and they sit in place."
 
 [[requirement]]
 id = 'EU-0022-164'
