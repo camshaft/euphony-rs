@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-156"
+
+[[spec]]
+level = "MUST"
+quote = "An output value that isn't finite MUST NOT reach the audio device."

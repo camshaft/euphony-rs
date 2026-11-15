@@ -2,4 +2,4 @@ target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-093"
 
 [[spec]]
 level = "MUST"
-quote = "Where a graph can't run, playback MUST keep the previous revision and say so."
+quote = "Where a graph can't run, playback MUST keep the previous revision."

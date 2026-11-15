@@ -2,4 +2,4 @@ target = "rendered/0012-modular-modulation/08-access.md#EU-0012-145"
 
 [[spec]]
 level = "MUST"
-quote = "A route in the owner's copy of a project MUST be created only by the owner's paired devices and connected assistants."
+quote = "The owner's paired devices and connected assistants MUST be able to create any route in the owner's copy of a project."

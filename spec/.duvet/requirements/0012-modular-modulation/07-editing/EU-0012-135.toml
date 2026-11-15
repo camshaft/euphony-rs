@@ -2,4 +2,4 @@ target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-135"
 
 [[spec]]
 level = "MUST"
-quote = "A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly, without interrupting unrelated recording."
+quote = "A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly."

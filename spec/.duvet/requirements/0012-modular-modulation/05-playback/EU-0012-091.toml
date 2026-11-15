@@ -2,4 +2,4 @@ target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-091"
 
 [[spec]]
 level = "MUST"
-quote = "A missed live deadline MUST keep the previous revision playing or mark the preview unavailable, visibly."
+quote = "Where a previous revision covers the range being played, a missed live deadline MUST keep that revision playing."

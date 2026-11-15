@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-159"
+
+[[spec]]
+level = "MUST"
+quote = "A failed batch MUST NOT interrupt unrelated recording."
