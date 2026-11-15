@@ -1,0 +1,126 @@
+[section]
+anchor = 'trust'
+title = 'Access, rights and trust'
+problem = """\
+  Analysis reads unreleased audio and produces lyrics, stems and embeddings that reveal it, loads \
+  decoders and model files that can be hostile, and depends on code, models and data whose rights \
+  differ, so it can leak a musician's work, run unsafe code or release something euphony has no \
+  right to release."""
+motivation = """\
+  Applying the existing owner trust and collaboration boundaries to every read and every derived \
+  result, isolating untrusted inputs, and refusing any method whose rights are not verified keep \
+  analysis as safe as the rest of the system, without a permission system of its own."""
+prose = """
+Analysis works under the owner's device trust and the collaboration boundaries the system overview
+states. It adds neither permissions on single notes nor an approval for each local analysis, which
+can be undone. The owner's paired devices can analyze the owner's material. A collaborator's
+boundary of listening, commenting or editing controls their reads of the source, their reads of
+results and their changes to the project, and a result derived from a source is withheld wherever
+the source is. The assets at risk are unreleased audio, inferred lyrics and tags, model files and
+project edits; the ways in are media decoders, model loaders, assistant requests, worker results and
+imported annotations. A malformed file or model can exhaust memory or run unsafe operations, and a
+hostile result can hold injected instructions or false note events. The rights of each method are
+recorded for its exact version, each category apart: the license of its code, the license of its
+model weights, the terms of its training data, the license of its evaluation data, its notices, its
+patent and codec questions, and any restriction on commercial use or redistribution. A permissive
+code license doesn't license downloaded weights, reference songs or generated stems, and the right
+to analyze a personal recording isn't a right to publish its source, transcription, lyrics or
+stems. Audio and results already disclosed to a collaborator can't be erased remotely; the consent
+the collaboration took covers that risk."""
+
+[[requirement]]
+id = 'EU-0020-079'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A derived result MUST NOT reveal material that the boundary of a reader withholds from that reader.'
+binds_to = 'system'
+rationale = 'Lyrics, stems and embeddings never become a way around the boundary that withholds their source.'
+
+[[requirement]]
+id = 'EU-0020-080'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST check the requester's boundary again before it dispatches a job and before it delivers a result."
+binds_to = 'system'
+rationale = 'A boundary narrowed while a job ran still holds when the result is ready.'
+
+[[requirement]]
+id = 'EU-0020-081'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT reveal to a reader whether a result exists that the reader cannot read.'
+binds_to = 'system'
+rationale = 'A probe for hidden results learns nothing about the material they describe.'
+
+[[requirement]]
+id = 'EU-0020-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'A worker MUST refuse an input or a model that carries an executable payload or an unsupported operation.'
+binds_to = 'system'
+rationale = "A hostile file never runs code on a musician's machine."
+
+[[requirement]]
+id = 'EU-0020-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST verify the identity of each method and model artifact before a worker loads it.'
+binds_to = 'system'
+rationale = 'A substituted or corrupted model never produces results under the name of the real one.'
+
+[[requirement]]
+id = 'EU-0020-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'Ordinary transfers and storage of audio and results MUST be encrypted.'
+binds_to = 'system'
+rationale = 'A worker or a link between machines cannot read material it only carries or stores.'
+
+[[requirement]]
+id = 'EU-0020-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST record the rights of the code, the model weights, the training data and the evaluation data of each method for its exact version.'
+binds_to = 'system'
+rationale = 'Each dependency category has its own terms, and a permissive license of one does not cover another.'
+
+[[requirement]]
+id = 'EU-0020-086'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A distributed build MUST NOT include a method whose rights record is missing, failed, unknown, incompatible or for another version.'
+binds_to = 'system'
+rationale = 'euphony never releases an analyzer it has no verified right to release.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-085' } ]
+
+[[requirement]]
+id = 'EU-0020-087'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The system MUST NOT download a model or send material to an outside provider without the person's explicit choice of that destination and that material."
+binds_to = 'system'
+rationale = 'Analysis is local unless the person decides otherwise for each destination and material.'
+
+[[requirement]]
+id = 'EU-0020-088'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A local analysis MUST NOT count as permission for telemetry or for training.'
+binds_to = 'system'
+rationale = 'Analyzing a recording never shares it or teaches a model with it.'
+
+[[requirement]]
+id = 'EU-0020-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A local analysis MUST NOT ask for an approval beyond the owner's existing device trust and collaboration boundaries."
+binds_to = 'system'
+rationale = 'Analysis that can be undone runs under the trust the session already has.'
+
+[[requirement]]
+id = 'EU-0020-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each public test of analysis MUST use synthetic or explicitly licensed audio.'
+binds_to = 'system'
+rationale = 'Published tests never carry audio that euphony has no right to publish.'

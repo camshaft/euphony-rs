@@ -1,0 +1,105 @@
+[section]
+anchor = 'consumers'
+title = 'Results in musical work'
+problem = """\
+  Other parts of euphony, such as composition programs, live note transforms, modulation, the \
+  comparison of captured gear and preference learning, can use analysis, but a consumer that turns \
+  an uncertain estimate into a fixed constraint, or follows a result that changes in the middle of \
+  a performance, changes the music without the musician knowing."""
+motivation = """\
+  Giving consumers explicit musical values with their units, keeping an ambiguous estimate a \
+  candidate until someone chooses, and binding live use to one fixed result version keep every use \
+  of analysis predictable."""
+prose = """
+Consumers receive accepted results as explicit musical values, converted with a stated unit system
+and vocabulary. An ambiguous key or meter stays a candidate until someone chooses one reading. Note
+events from transcription become editable events in a project only through preview and apply. A
+live transform that uses analysis binds to one accepted result version when it is activated. A
+prepared analysis curve can drive modulation with a declared sample alignment, lookahead, latency
+and smoothing, through the same validation of dependencies and cycles as any other modulation
+source. The comparison of captured hardware with its models can use measurements and estimates of
+pitch and timing, though audio alone doesn't establish the original effects chain or synthesizer
+settings. Preference learning receives corrections, acceptances and listening evidence, each linked
+to its exact result, and decides by its own rules whether that evidence proposes a preference; a
+tempo correction isn't evidence that the person likes that tempo. A catalog of samples can index
+analysis results without running an analysis of its own."""
+
+[[requirement]]
+id = 'EU-0020-053'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A consumer MUST NOT turn a candidate key or meter into a fixed constraint until someone chooses one candidate.'
+binds_to = 'system'
+rationale = 'An ambiguous estimate never silently becomes a rule the music follows.'
+
+[[requirement]]
+id = 'EU-0020-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each conversion of a result into a musical value MUST state the unit system and the vocabulary it converts between.'
+binds_to = 'system'
+rationale = 'A value never changes meaning between analysis and the work that uses it.'
+
+[[requirement]]
+id = 'EU-0020-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'A live transform MUST use the accepted result version that was selected when the transform was activated.'
+binds_to = 'system'
+rationale = 'A performance follows one fixed interpretation from its start.'
+
+[[requirement]]
+id = 'EU-0020-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'New analysis MUST NOT retune or remap notes that are held during a performance.'
+binds_to = 'system'
+rationale = 'A note already sounding never changes under the performer.'
+
+[[requirement]]
+id = 'EU-0020-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'A live transform whose analysis dependency is missing or stale MUST show itself as unavailable unless the musician selected an earlier result version for it.'
+binds_to = 'system'
+rationale = 'A transform never follows a changing guess, and the performer always knows which version it uses.'
+
+[[requirement]]
+id = 'EU-0020-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'An analysis curve used as a modulation source MUST declare its sample alignment, lookahead, latency and smoothing.'
+binds_to = 'system'
+rationale = 'The modulation it drives lines up with the audio in a way a reader can check.'
+
+[[requirement]]
+id = 'EU-0020-059'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A result that depends on audio after the current moment MUST NOT drive modulation in a live performance.'
+binds_to = 'system'
+rationale = 'A whole-song estimate cannot be known while the song is still being played.'
+
+[[requirement]]
+id = 'EU-0020-060'
+level = 'MUST'
+polarity = 'required'
+statement = 'An analysis curve used as a modulation source MUST pass the same validation of dependencies and cycles as any other modulation source.'
+binds_to = 'system'
+rationale = 'Analysis never adds a feedback loop that the modulation system would refuse elsewhere.'
+
+[[requirement]]
+id = 'EU-0020-061'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A correction or an acceptance of a result MUST NOT become a preference except through the rules of preference learning.'
+binds_to = 'system'
+rationale = 'Fixing a wrong estimate says what the music is, not what the person likes.'
+
+[[requirement]]
+id = 'EU-0020-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'Evidence that analysis sends to preference learning MUST link the exact result it concerns.'
+binds_to = 'system'
+rationale = 'Preference learning weighs each piece of evidence against the result it came from.'

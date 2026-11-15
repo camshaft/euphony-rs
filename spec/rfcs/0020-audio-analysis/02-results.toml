@@ -1,0 +1,157 @@
+[section]
+anchor = 'results'
+title = 'Results, uncertainty and provenance'
+problem = """\
+  An estimate shown without how sure it is, or without where it came from, reads as fact, so a \
+  musician acts on a wrong guess; and a result that cannot be traced to its input and its method \
+  cannot be checked, compared or reproduced."""
+motivation = """\
+  Results that carry a typed value, a confidence of a stated kind, their alternatives and their \
+  whole provenance let every reader judge each result, and let the system tell a result that still \
+  holds from one that doesn't."""
+prose = """
+A result holds the request it answers, a typed value or a set of candidates, the units and the
+vocabulary of that value with their version, the interval of the source it covers, its confidence,
+its alternatives, the method and its version, the digest of any model the method used, the
+execution profile, the identities of its inputs, its validation status, its warnings and a digest
+of the whole result. An interval of the source is a half-open range of whole sample frames at a
+stated sample rate; where a result sits in a project, and where it falls in musical time, are
+separate mappings from those frames. The confidence of a result is one of four kinds: a calibrated
+probability, with the calibration it comes from; an uncalibrated score of the method, with its
+scale; a measurement uncertainty, with the method that computes it; or unavailable, with its
+reason. Alternatives are other hypotheses the method found, kept apart from the confidence of the
+value. The kinds of value are tonal labels, chord intervals, tuning, tempo segments, beat and bar
+events, meter candidates, onset offsets, section and repeat links, pitch contours, note events,
+instrument and tag distributions, references to stem audio, timed text and measurement series. A
+digest identifies a result; it doesn't show that a musical inference is right."""
+
+[[requirement]]
+id = 'EU-0020-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST state the method and the method version that produced it.'
+binds_to = 'system'
+rationale = 'A reader knows which analyzer to trust or question for each result.'
+
+[[requirement]]
+id = 'EU-0020-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST state the identity of each input it was computed from.'
+binds_to = 'system'
+rationale = 'A result is traced back to the exact audio and context it describes.'
+
+[[requirement]]
+id = 'EU-0020-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST state the interval of its source audio that it covers.'
+binds_to = 'system'
+rationale = 'A reader sees which passage a result describes.'
+
+[[requirement]]
+id = 'EU-0020-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each interval of source audio MUST be a half-open range of whole sample frames at a stated sample rate.'
+binds_to = 'system'
+rationale = 'Intervals compare and join exactly, apart from the project placement and the musical time of the audio.'
+
+[[requirement]]
+id = 'EU-0020-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST carry a confidence of exactly one of the kinds calibrated probability, uncalibrated score, measurement uncertainty and unavailable.'
+binds_to = 'system'
+rationale = 'Every reader can tell a calibrated probability from a raw score, a measured error and an unknown.'
+
+[[requirement]]
+id = 'EU-0020-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'A calibrated probability MUST name the calibration record it comes from.'
+binds_to = 'system'
+rationale = 'A reader can check what the probability was calibrated against.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-011' } ]
+
+[[requirement]]
+id = 'EU-0020-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'An uncalibrated score MUST state its scale.'
+binds_to = 'system'
+rationale = 'A raw score is read only against the scale its method uses.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-011' } ]
+
+[[requirement]]
+id = 'EU-0020-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'An unavailable confidence MUST state its reason.'
+binds_to = 'system'
+rationale = 'A reader knows why a result has no confidence and what would supply one.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-011' } ]
+
+[[requirement]]
+id = 'EU-0020-015'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT treat an unavailable confidence as zero or as certainty.'
+binds_to = 'system'
+rationale = 'An unknown is neither a failure nor a guarantee.'
+
+[[requirement]]
+id = 'EU-0020-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A measurement MUST NOT carry a probability of being right.'
+binds_to = 'system'
+rationale = 'A measurement has an uncertainty, and a probability invented for it would mislead.'
+
+[[requirement]]
+id = 'EU-0020-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST keep the alternatives its method found apart from its confidence.'
+binds_to = 'system'
+rationale = 'A musician sees the other readings, such as the relative minor of a key, and how sure the method is of each.'
+
+[[requirement]]
+id = 'EU-0020-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST state the units and the versioned vocabulary of its value.'
+binds_to = 'system'
+rationale = 'An extended chord is never scored or read as exact under a coarser vocabulary.'
+
+[[requirement]]
+id = 'EU-0020-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse a result that holds a non-finite value, an invalid range, an unknown unit or a schema version that contradicts its own.'
+binds_to = 'system'
+rationale = 'A malformed result never reaches a reader or a project.'
+
+[[requirement]]
+id = 'EU-0020-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result MUST hold a digest of its whole content.'
+binds_to = 'system'
+rationale = 'A result is identified, pinned and reused by its content.'
+
+[[requirement]]
+id = 'EU-0020-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'An incomplete result MUST state which part of its requested interval it covers.'
+binds_to = 'system'
+rationale = 'An interrupted analysis never passes for a complete one.'
+
+[[requirement]]
+id = 'EU-0020-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'A failed analysis MUST end in a typed outcome that names its cause, such as a conflict, missing audio, an unsupported method or profile, a cancelled job, invalid output, an unavailable model or denied access.'
+binds_to = 'system'
+rationale = 'An empty success would hide a failure as an absence of musical content.'
