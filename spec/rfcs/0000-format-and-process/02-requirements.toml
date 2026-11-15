@@ -63,7 +63,6 @@ polarity = 'required'
 statement = 'An RFC MUST list in its retired list the identifier of each requirement it removes.'
 binds_to = 'process'
 rationale = 'The check finds every identifier ever removed, and refuses to use it for another requirement; a requirement that moves keeps its identifier and is not retired.'
-relations = [ { kind = 'refines', target = 'EU-0000-016' } ]
 
 [[requirement]]
 id = 'EU-0000-018'

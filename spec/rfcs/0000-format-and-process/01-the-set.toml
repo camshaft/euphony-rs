@@ -22,8 +22,8 @@ holds its number.
 The configuration file is the file spec.toml at the root of the set. It states the prefix of every
 requirement identifier, the levels, the implementation terms on which the check warns, the location
 of the sources and of each kind of generated file, and each group. The index is the file index.toml
-in the source directory, and lists every RFC by number, title, area and state, planned or written.
-An RFC is written where the set holds its directory, named of its four-digit number, a hyphen and its
+in the source directory, and lists every RFC by number, title and area. An RFC is planned until
+it is written, and it is written where the set holds its directory, named of its four-digit number, a hyphen and its
 slug. That directory holds the metadata file rfc.toml and one section file for each section, named
 of a two-digit number, a hyphen and a slug; the number orders the sections. The fields of a metadata
 file are number, title, area, abstract, retired and sources. The registry file lists each kind of

@@ -5,7 +5,7 @@ component of euphony as requirements with stable identifiers. RFC 0000 states th
 and how it changes; each other RFC covers one component.
 
 - `spec.toml`: the configuration of the set: the identifier prefix, the levels, the locations and the RFC number groups.
-- `rfcs/index.toml`: every RFC by number, title, area and state.
+- `rfcs/index.toml`: every RFC by number, title and area.
 - `rfcs/<nnnn>-<slug>/`: a written RFC, its metadata in `rfc.toml` and one file for each section.
 - `rendered/`: the text of each section, generated from the sources.
 - `.duvet/requirements/`: one requirement file for each requirement, generated from the sources, which duvet reads.

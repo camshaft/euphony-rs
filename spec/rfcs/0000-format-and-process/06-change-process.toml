@@ -38,7 +38,7 @@ level = 'MUST'
 polarity = 'required'
 statement = 'A change MUST be reviewed by a reviewer other than its writer before it merges.'
 binds_to = 'process'
-rationale = 'A second reader finds what the check doesn't decide.'
+rationale = "A second reader finds what the check doesn't decide."
 
 [[requirement]]
 id = 'EU-0000-050'
@@ -71,7 +71,7 @@ level = 'MAY'
 polarity = 'required'
 statement = 'The writer of a reviewed change whose check passed MAY merge it.'
 binds_to = 'process'
-rationale = 'A reviewed change doesn't wait on anyone else to merge it.'
+rationale = "A reviewed change doesn't wait on anyone else to merge it."
 relations = [ { kind = 'depends_on', target = 'EU-0000-051' }, { kind = 'depends_on', target = 'EU-0000-052' } ]
 
 [[requirement]]
