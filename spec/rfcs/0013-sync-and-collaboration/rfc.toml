@@ -1,0 +1,7 @@
+number = 13
+title = 'Sync and collaboration'
+area = 'euphony'
+abstract = """\
+  The end state of sync and collaboration in euphony: each collaborator's own copy of a project with its signed history, merges that keep every conflict visible until a person resolves it, connections between peers across the internet, membership and revocation, retiring old audio without losing retained history, continuing a session between rooms, sharing a project by link, shared listening on one timeline with its alignment shown, the delivery and quality of the listening audio, and speech during a session."""
+retired = []
+sources = []
