@@ -120,7 +120,7 @@ binds_to = 'system'
 rationale = 'Programs run in one kind of runner, whose output is the same on every compatible computer.'
 
 [[requirement]]
-id = 'EU-0009-080'
+id = 'EU-0009-083'
 level = 'MUST'
 polarity = 'required'
 statement = 'A composition command MUST pass the authorization of the caller that sends it before the runner starts a program for it or the authority applies the output of that program.'

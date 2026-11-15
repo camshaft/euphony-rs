@@ -61,6 +61,6 @@ The cancel of a program MUST NOT discard an accepted edit of the project.
 
 The browser companion MUST NOT run a composition program itself.
 
-### EU-0009-080 {#EU-0009-080}
+### EU-0009-083 {#EU-0009-083}
 
 A composition command MUST pass the authorization of the caller that sends it before the runner starts a program for it or the authority applies the output of that program.
