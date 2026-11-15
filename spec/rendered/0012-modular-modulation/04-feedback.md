@@ -73,7 +73,11 @@ A musician MUST be able to bypass any route at once.
 
 ### EU-0012-072 {#EU-0012-072}
 
-An output that isn't finite MUST fault the rendering of the part of the project that produced it and protect the output.
+An output that isn't finite MUST fault the rendering of the part of the project that produced it.
+
+### EU-0012-156 {#EU-0012-156}
+
+An output value that isn't finite MUST NOT reach the audio device.
 
 ### EU-0012-073 {#EU-0012-073}
 
