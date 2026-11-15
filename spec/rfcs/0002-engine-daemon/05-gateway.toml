@@ -17,8 +17,9 @@ the owner, a paired device, an assistant the owner connected, a script of the ow
 link participant whose level allows the action, and checks the expected revision. A caller reads the
 session through revisioned queries, sends several commands as one transaction, retries a command
 with its idempotency key, cancels an operation it started, and follows changes through an event
-subscription that resumes from a cursor. A collaborator's peer receives only the objects of the
-projects its links reach. The approval list holds the actions whose effect the owner approves
+subscription that resumes from a cursor. Each query answers one page, and the caller reads the
+rest through the paged reads of the RFC of the project model. A collaborator's peer receives only
+the objects of the projects its links reach. The approval list holds the actions whose effect the owner approves
 before it applies, where anyone other than the owner starts them: pairing, a share link or an edit
 admission, an export outside the owner's computers, pruning or purge, private data sent to a
 provider, plain network audio, a capture session, and telemetry sending or a problem report. For
