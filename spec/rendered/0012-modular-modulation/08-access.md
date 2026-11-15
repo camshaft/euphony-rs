@@ -12,7 +12,7 @@ Modulation MUST NOT add a permission of its own.
 
 ### EU-0012-145 {#EU-0012-145}
 
-A route in the owner's copy of a project MUST be created only by the owner's paired devices and connected assistants.
+The owner's paired devices and connected assistants MUST be able to create any route in the owner's copy of a project.
 
 ### EU-0012-146 {#EU-0012-146}
 
