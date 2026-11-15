@@ -1,0 +1,291 @@
+[section]
+anchor = 'gestures'
+title = 'Commands, gestures and ownership'
+problem = "Several people on several surfaces move the same controls at once, so without ordered, owned gestures one person's fader fights another's by whoever wrote last, a delayed message undoes a newer value, and a lost device leaves automation in an unknown state."
+motivation = "Commands that carry their expected state and identity, gestures that reserve their targets and own them until release, and recorded touch, release and loss events keep every value and every take deterministic while unrelated controls move freely."
+prose = '''
+A gesture is a continuous input on one or more targets, such as a fader drag, a knob turn, an XY
+pad move or a macro. Beginning a gesture names the surface, the session, the control epoch, the
+map revision, the target set with each target's expected version, and the gesture's identity; the
+session host reserves the target set in one stable order and returns a gesture token, or busy,
+stale, denied or unsupported. Each update carries the token, a sequence number, values in the
+target's declared domain and its capture time with the clock's quality. Ending a gesture commits
+its last accepted value; cancelling it, or losing its surface, closes it. The first accepted begin
+on a target owns it until release, cancellation, explicit takeover or detected loss of the
+connection. A relative encoder turn adds to a value, while an absolute fader sets it. Knob gestures
+follow the parameter's mapping, with fine adjustment as an explicit mode. Touch-down and release
+are recorded for automation, and the project's automation recording mode decides what a lane does
+at release. Live control sources follow the converters, rates and cache identities of RFC 0012,
+and creating or changing a modulation route uses its preview and atomic apply.'''
+
+[[requirement]]
+id = 'EU-0017-069'
+level = 'MUST'
+polarity = 'required'
+statement = "Every command a surface sends MUST carry its expected state, the control epoch and an idempotency identity."
+binds_to = 'system'
+rationale = "The host applies each command once, and only to the state it was made against."
+
+[[requirement]]
+id = 'EU-0017-070'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST acknowledge each surface command with the state that actually resulted."
+binds_to = 'system'
+rationale = "A surface shows what happened, not what it asked for."
+
+[[requirement]]
+id = 'EU-0017-071'
+level = 'MUST'
+polarity = 'required'
+statement = "Beginning a gesture MUST reserve its whole target set atomically or return busy, stale, denied or unsupported."
+binds_to = 'system'
+rationale = "A gesture owns all of its targets or none of them."
+
+[[requirement]]
+id = 'EU-0017-072'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST validate the control epoch, the map and the pairing at every update of a gesture."
+binds_to = 'system'
+rationale = "A change of controller, map or pairing mid-gesture stops the gesture's next update."
+
+[[requirement]]
+id = 'EU-0017-073'
+level = 'MUST'
+polarity = 'required'
+statement = "A repeated gesture update MUST receive the same result as its first delivery."
+binds_to = 'system'
+rationale = "A retried message never applies twice."
+
+[[requirement]]
+id = 'EU-0017-074'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A gesture update with an older sequence number MUST NOT overwrite a newer one."
+binds_to = 'system'
+rationale = "A delayed message never undoes a later value."
+
+[[requirement]]
+id = 'EU-0017-075'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST journal each accepted control event with its gesture's undo grouping."
+binds_to = 'system'
+rationale = "A gesture is recovered after a crash and undone as one step."
+
+[[requirement]]
+id = 'EU-0017-076'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Recovery after a crash MUST NOT restore a reservation held by a connection that has ended."
+binds_to = 'system'
+rationale = "A dead surface never keeps a target locked."
+
+[[requirement]]
+id = 'EU-0017-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Cancelling a gesture or losing its surface MUST NOT invent a value for its targets."
+binds_to = 'system'
+rationale = "Only values a person made reach the session."
+
+[[requirement]]
+id = 'EU-0017-078'
+level = 'MUST'
+polarity = 'required'
+statement = "Where two surfaces move absolute controls on the same target, the first accepted begin MUST own the gesture until it ends, is cancelled, is taken over or its connection is lost."
+binds_to = 'system'
+rationale = "Two people never fight over one fader by whoever wrote last."
+
+[[requirement]]
+id = 'EU-0017-079'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface that doesn't own the gesture on a target MUST show who owns it and the acknowledged value."
+binds_to = 'system'
+rationale = "A person sees why their control isn't moving the target."
+
+[[requirement]]
+id = 'EU-0017-080'
+level = 'MUST'
+polarity = 'required'
+statement = "A takeover MUST invalidate the earlier owner's gesture token and report the change to both surfaces."
+binds_to = 'system'
+rationale = "Taking over a control is explicit, and both people see it."
+
+[[requirement]]
+id = 'EU-0017-081'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A gesture MUST NOT hold a lock on any parameter or session outside its target set."
+binds_to = 'system'
+rationale = "Unrelated controls and sessions move independently."
+
+[[requirement]]
+id = 'EU-0017-082'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST revalidate only the versions of a gesture's own targets."
+binds_to = 'system'
+rationale = "An unrelated fader never makes a gesture stale."
+
+[[requirement]]
+id = 'EU-0017-083'
+level = 'MUST'
+polarity = 'required'
+statement = "Relative encoder turns MUST add up in the session host's order, each counted once."
+binds_to = 'system'
+rationale = "Turns from several stations combine predictably."
+
+[[requirement]]
+id = 'EU-0017-084'
+level = 'MUST'
+polarity = 'required'
+statement = "A relative turn on a target that an absolute gesture owns MUST receive busy."
+binds_to = 'system'
+rationale = "Turns never pile up to apply by surprise once the owner releases."
+
+[[requirement]]
+id = 'EU-0017-085'
+level = 'MUST'
+polarity = 'required'
+statement = "A nonmotorized absolute fader MUST pick up at the acknowledged value before it moves its target."
+binds_to = 'system'
+rationale = "A fader that sits elsewhere never jumps the value when touched."
+
+[[requirement]]
+id = 'EU-0017-086'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Feedback sent to a hardware controller MUST NOT come back as a new command from a person."
+binds_to = 'system'
+rationale = "A motorized fader following the session never loops into a command."
+
+[[requirement]]
+id = 'EU-0017-087'
+level = 'MUST'
+polarity = 'required'
+statement = "Motor output to a controller MUST respect its touch detection and its verified device profile."
+binds_to = 'system'
+rationale = "A motor never pulls a fader out of a person's hand."
+
+[[requirement]]
+id = 'EU-0017-088'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST track each touch contact separately."
+binds_to = 'system'
+rationale = "Several faders move together under several fingers."
+
+[[requirement]]
+id = 'EU-0017-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A touch contact MUST NOT take another contact's target by crossing widgets."
+binds_to = 'system'
+rationale = "A finger sliding across the screen never grabs a second control."
+
+[[requirement]]
+id = 'EU-0017-090'
+level = 'MUST'
+polarity = 'required'
+statement = "An XY pad MUST send one paired update for both of its axes."
+binds_to = 'system'
+rationale = "Both parameters of a pad move together, or neither does."
+
+[[requirement]]
+id = 'EU-0017-091'
+level = 'MUST'
+polarity = 'required'
+statement = "A two-contact gesture such as zoom or pan MUST act on the view unless the layout maps it to sound."
+binds_to = 'system'
+rationale = "Navigating a surface never changes the audio by accident."
+
+[[requirement]]
+id = 'EU-0017-092'
+level = 'MUST'
+polarity = 'required'
+statement = "Pointer cancellation, suspending the app, locking the device, replacing the map and changing the orientation MUST end each gesture they affect."
+binds_to = 'system'
+rationale = "A gesture never continues under conditions its person didn't see."
+
+[[requirement]]
+id = 'EU-0017-093'
+level = 'MUST'
+polarity = 'required'
+statement = "A layout edit that affects an active target MUST wait visibly for the gesture's release or cancel the gesture before it commits."
+binds_to = 'system'
+rationale = "Input is never reinterpreted under a new mapping."
+
+[[requirement]]
+id = 'EU-0017-094'
+level = 'MUST'
+polarity = 'required'
+statement = "Touch-down and release on an automated parameter MUST be recorded as distinct events."
+binds_to = 'system'
+rationale = "Automation recording knows exactly when a person held a control."
+
+[[requirement]]
+id = 'EU-0017-095'
+level = 'MUST'
+polarity = 'required'
+statement = "The project's automation recording mode MUST decide whether a lane returns to its existing automation or keeps the accepted value at release."
+binds_to = 'system'
+rationale = "Touch and latch behavior follows the project's choice, whatever surface is used."
+
+[[requirement]]
+id = 'EU-0017-096'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Moving a finger over a widget MUST NOT arm automation."
+binds_to = 'system'
+rationale = "Automation is armed only by an explicit choice."
+
+[[requirement]]
+id = 'EU-0017-097'
+level = 'MUST'
+polarity = 'required'
+statement = "Cancelling or losing a gesture during automation recording MUST record a forced end at the last accepted sample, with the reason it ended."
+binds_to = 'system'
+rationale = "A take records where and why a gesture stopped."
+
+[[requirement]]
+id = 'EU-0017-098'
+level = 'MUST'
+polarity = 'required'
+statement = "An ordinary manual value MUST hold its last accepted state when its gesture ends by loss."
+binds_to = 'system'
+rationale = "A dropped device never resets a level a person set."
+
+[[requirement]]
+id = 'EU-0017-099'
+level = 'MUST'
+polarity = 'required'
+statement = "A momentary control MUST release when its gesture ends by loss."
+binds_to = 'system'
+rationale = "A held button never stays held after its device is gone."
+
+[[requirement]]
+id = 'EU-0017-100'
+level = 'MUST'
+polarity = 'required'
+statement = "On the loss of its surface, an external control source MUST fall to its neutral contribution unless its stored route chooses to hold its last value."
+binds_to = 'system'
+rationale = "A lost live source returns the sound to its base unless the route says otherwise."
+
+[[requirement]]
+id = 'EU-0017-101'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST persist the loss transition of a control source with its captured performance."
+binds_to = 'system'
+rationale = "A later bounce reproduces what the loss did."
+
+[[requirement]]
+id = 'EU-0017-102'
+level = 'MUST'
+polarity = 'required'
+statement = "Accepted performance records, converter state and their timing MUST be inputs to later bounces."
+binds_to = 'system'
+rationale = "A bounce of a take played from a surface sounds as it played."
