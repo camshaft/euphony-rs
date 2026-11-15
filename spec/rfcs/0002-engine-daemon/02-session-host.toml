@@ -41,7 +41,7 @@ rationale = 'Every client sees one state, and no two writers disagree.'
 id = 'EU-0002-016'
 level = 'MUST'
 polarity = 'required'
-statement = 'The session host MUST own the journal, the revision graph, the branch references and the render manifest of its copy of the project.'
+statement = 'The session host MUST own the journal, the signed revision graph, the branch references and the render manifest of its copy of the project.'
 binds_to = 'system'
 rationale = 'The history of a copy has one keeper.'
 

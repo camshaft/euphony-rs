@@ -3,23 +3,40 @@ anchor = 'gateway'
 title = 'The command gateway'
 problem = """\
   Each way into a session could check a different set of rules, an edit made against an old view \
-  could overwrite newer work, and an assistant could send the owner's material away, unless one \
-  gateway checks every action the same way."""
+  could overwrite newer work, a retried command could apply twice, and an assistant could send the \
+  owner's material away, unless one gateway checks every action the same way."""
 motivation = """\
-  One gateway in the session host checks the origin and the expected revision of every command, and \
-  holds each action that waits for the owner until the owner approves its exact effect, so that \
-  every client and every assistant meets the same checks."""
+  One gateway in the session host checks the origin and the expected revision of every command, \
+  applies each command once, answers with the revision it committed, and holds each action that \
+  waits for the owner until the owner approves its exact effect, so that every client and every \
+  assistant meets the same checks."""
 prose = """
 Every persistent action on a session is a typed command, and every command reaches the gateway of
 the session host, whichever client sent it. On every action the gateway checks that the caller is
-the owner, a paired device, an assistant the owner connected or a link participant whose level
-allows the action, and checks the expected revision. The approval list holds the actions whose
-effect the owner approves before it applies, where anyone other than the owner starts them: pairing,
-a share link or an edit admission, an export outside the owner's computers, pruning or purge,
-private data sent to a provider, plain network audio, a capture session, and telemetry sending or a
-problem report. For such an action the gateway records an approval proposal of its exact effect. An
-edit that can be undone doesn't wait for an approval. The commands themselves are specified in the
-RFC of the project model."""
+the owner, a paired device, an assistant the owner connected, a script of the owner's account or a
+link participant whose level allows the action, and checks the expected revision. A caller reads the
+session through revisioned queries, sends several commands as one transaction, retries a command
+with its idempotency key, cancels an operation it started, and follows changes through an event
+subscription that resumes from a cursor. A collaborator's peer receives only the objects of the
+projects its links reach. The approval list holds the actions whose effect the owner approves
+before it applies, where anyone other than the owner starts them: pairing, a share link or an edit
+admission, an export outside the owner's computers, pruning or purge, private data sent to a
+provider, plain network audio, a capture session, and telemetry sending or a problem report. For
+such an action the gateway records an approval proposal of its exact effect. An edit that can be
+undone doesn't wait for an approval. The commands themselves are specified in the RFC of the project
+model; the generation of the assistants' tools and the interface bindings from the command
+definitions, the discovery of supported schema versions and the session-view interface in the RFC of
+the client protocol; the parity of an assistant with the owner in the overview RFC; and the
+permission prompts a browser asks a person for in the RFC of the desktop interface and the browser
+companion."""
+
+[[requirement]]
+id = 'EU-0002-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every persistent action on a session MUST be a typed command.'
+binds_to = 'system'
+rationale = 'Every client and every assistant takes the same actions, and each action has one definition.'
 
 [[requirement]]
 id = 'EU-0002-057'
@@ -33,7 +50,7 @@ rationale = 'Every way into a session meets the same checks.'
 id = 'EU-0002-058'
 level = 'MUST'
 polarity = 'required'
-statement = 'The gateway MUST refuse a command whose origin is not the owner, a paired device, an assistant the owner connected, or a link participant whose level allows the command.'
+statement = "The gateway MUST refuse a command whose origin is not the owner, a paired device, an assistant the owner connected, a script of the owner's account, or a link participant whose level allows the command."
 binds_to = 'system'
 rationale = 'Each action is taken only by a party the owner admitted, at the level the owner chose.'
 
@@ -49,9 +66,17 @@ rationale = 'An edit made against an old view never overwrites newer work.'
 id = 'EU-0002-060'
 level = 'MUST'
 polarity = 'required'
-statement = "Where a command's expected revision is not current, the gateway MUST answer with a conflict and a current view the caller may see."
+statement = "Where a command's expected revision is not current, the gateway MUST answer with a conflict that names the current head revision."
 binds_to = 'system'
-rationale = 'The caller sees what changed and decides again.'
+rationale = 'The caller sees that the session moved, and to which revision.'
+
+[[requirement]]
+id = 'EU-0002-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conflict answer MUST hold the current view, as far as the caller may see it, of only the parts of the project the command touches.'
+binds_to = 'system'
+rationale = 'The caller decides again from what changed, and the answer stays the same size whatever the size of the project.'
 
 [[requirement]]
 id = 'EU-0002-061'
@@ -76,6 +101,78 @@ polarity = 'forbidden'
 statement = 'The gateway MUST NOT report a pending render as a completed export.'
 binds_to = 'system'
 rationale = 'An export is reported done only once its result exists.'
+
+[[requirement]]
+id = 'EU-0002-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST answer each query with the revision the answer reflects.'
+binds_to = 'system'
+rationale = 'A caller knows which state it read, and states that revision as the expected revision of its next command.'
+
+[[requirement]]
+id = 'EU-0002-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST apply a batch of commands as one transaction against one expected revision.'
+binds_to = 'system'
+rationale = 'A change of several steps applies whole or not at all.'
+
+[[requirement]]
+id = 'EU-0002-087'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT apply a command again when it arrives with an idempotency key the session host already applied.'
+binds_to = 'system'
+rationale = 'A caller retries a command whose answer it lost without applying it twice.'
+
+[[requirement]]
+id = 'EU-0002-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each transaction the session host commits MUST be undoable as one step.'
+binds_to = 'system'
+rationale = 'An undo reverses what the person did as they did it, never half of it.'
+
+[[requirement]]
+id = 'EU-0002-089'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST let the caller that started an operation cancel it.'
+binds_to = 'system'
+rationale = 'Work that is no longer wanted stops instead of using the computer.'
+
+[[requirement]]
+id = 'EU-0002-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'An event subscription MUST resume from its durable cursor after a disconnection.'
+binds_to = 'system'
+rationale = "A client that reconnects doesn't miss a change and doesn't need a new snapshot."
+
+[[requirement]]
+id = 'EU-0002-091'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST serve a collaborator's peer the objects of only the projects that peer's links reach."
+binds_to = 'system'
+rationale = "A collaborator receives only the material the owner shared with them."
+
+[[requirement]]
+id = 'EU-0002-092'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The session host MUST NOT serve a peer the bytes of an object from a project its links don't reach, whatever digest the peer presents."
+binds_to = 'system'
+rationale = 'Knowing a digest is not access to the bytes behind it.'
+
+[[requirement]]
+id = 'EU-0002-093'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The session host MUST NOT reveal to a peer whether a project its links don't reach exists."
+binds_to = 'system'
+rationale = "A collaborator can't learn of the owner's other projects."
 
 [[requirement]]
 id = 'EU-0002-064'

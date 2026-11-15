@@ -22,7 +22,7 @@ The session host MUST be the only writer of its session's project state.
 
 ### EU-0002-016 {#EU-0002-016}
 
-The session host MUST own the journal, the revision graph, the branch references and the render manifest of its copy of the project.
+The session host MUST own the journal, the signed revision graph, the branch references and the render manifest of its copy of the project.
 
 ### EU-0002-017 {#EU-0002-017}
 

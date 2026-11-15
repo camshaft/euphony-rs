@@ -24,6 +24,10 @@ The session host MUST NOT close a session on a timer.
 
 Where the person quits the last client attached to a session, the session MUST stay open while it records, plays, or is marked by the person to keep running.
 
+### EU-0002-080 {#EU-0002-080}
+
+When the person quits the last client attached to a session that is neither recording nor playing and that the person didn't mark to keep running, the session host MUST close the session.
+
 ### EU-0002-033 {#EU-0002-033}
 
 A client's failure MUST NOT close a session.

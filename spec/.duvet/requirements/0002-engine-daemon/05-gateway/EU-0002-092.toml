@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-092"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST NOT serve a peer the bytes of an object from a project its links don't reach, whatever digest the peer presents."

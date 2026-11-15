@@ -64,6 +64,22 @@ binds_to = 'system'
 rationale = "A process can't become the owner's interface by claiming to be it."
 
 [[requirement]]
+id = 'EU-0002-081'
+level = 'MUST'
+polarity = 'required'
+statement = "The host service MUST assign a local client that doesn't authenticate with the paired-device key of its computer an assistant or a script origin, whatever the client claims."
+binds_to = 'system'
+rationale = 'Every local client receives an origin, and only the native client receives the owner origin.'
+
+[[requirement]]
+id = 'EU-0002-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST assign a paired-device or link-participant origin only to a connection that authenticated as that paired device or that link.'
+binds_to = 'system'
+rationale = "A process of the owner's account can't claim to be another device or a link participant."
+
+[[requirement]]
 id = 'EU-0002-050'
 level = 'MUST'
 polarity = 'required'
@@ -75,7 +91,7 @@ rationale = 'Passing a command on never changes who started it.'
 id = 'EU-0002-051'
 level = 'MUST'
 polarity = 'required'
-statement = "The session host MUST accept an owner-interaction record only from the owner's native client, signed with the paired-device key of its computer."
+statement = "The session host MUST accept an owner-interaction record only from the owner's native client, made from the owner's own input on its interface and signed with the paired-device key of its computer."
 binds_to = 'system'
 rationale = "Only the owner's own input on their own interface counts as the owner acting."
 

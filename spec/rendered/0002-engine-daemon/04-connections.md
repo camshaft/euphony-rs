@@ -31,13 +31,21 @@ The session host MUST read the origin of each command from the client session th
 
 The host service MUST assign the origin of the owner's native client only to a client that authenticates with the paired-device key of its computer.
 
+### EU-0002-081 {#EU-0002-081}
+
+The host service MUST assign a local client that doesn't authenticate with the paired-device key of its computer an assistant or a script origin, whatever the client claims.
+
+### EU-0002-082 {#EU-0002-082}
+
+The host service MUST assign a paired-device or link-participant origin only to a connection that authenticated as that paired device or that link.
+
 ### EU-0002-050 {#EU-0002-050}
 
 A command that a client forwards, queues or replays MUST keep the origin of the client session that first sent it.
 
 ### EU-0002-051 {#EU-0002-051}
 
-The session host MUST accept an owner-interaction record only from the owner's native client, signed with the paired-device key of its computer.
+The session host MUST accept an owner-interaction record only from the owner's native client, made from the owner's own input on its interface and signed with the paired-device key of its computer.
 
 ### EU-0002-052 {#EU-0002-052}
 
