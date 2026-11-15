@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-013"
+
+[[spec]]
+level = "MUST"
+quote = "Each constructor of a musical value MUST reject a value that breaks the rules of its kind with a typed error."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/05-execution.md#EU-0009-060"
+
+[[spec]]
+level = "MUST"
+quote = "The cancel of a program MUST NOT discard an accepted edit of the project."

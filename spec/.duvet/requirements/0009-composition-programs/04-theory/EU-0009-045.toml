@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-045"
+
+[[spec]]
+level = "MUST"
+quote = "A duration in whole notes MUST NOT be read as a count of tempo beats without the beat unit of the meter."

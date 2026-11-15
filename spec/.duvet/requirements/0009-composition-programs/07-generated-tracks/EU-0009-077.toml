@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-077"
+
+[[spec]]
+level = "MUST"
+quote = "A project made only of notes and composition programs MUST keep every input needed to rebuild its musical content."

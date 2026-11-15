@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/01-programs.md#EU-0009-005"
+
+[[spec]]
+level = "MUST"
+quote = "The output of a composition program MUST be musical events and arrangement proposals."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-017"
+
+[[spec]]
+level = "MUST"
+quote = "An arithmetic operation on musical values MUST return its exact result or a typed error."

@@ -1,0 +1,94 @@
+[section]
+anchor = 'programs'
+title = 'Composition programs'
+problem = """\
+  A musician who generates music with a program can't trust or rebuild the result unless the \
+  program, everything it reads and the runtime that ran it are kept together, and can't work with \
+  the result unless it is music to edit rather than sound."""
+motivation = """\
+  A program kept as a versioned asset of the project, with its inputs and its seed declared, whose \
+  output is ordinary editable material, lets a musician and an agent generate tracks, edit them like \
+  any other track, and get the same notes again later."""
+prose = """
+A composition program is a short typed program that a musician or an agent writes to generate
+notes, rhythms and arrangements. It is an asset of the project, kept in versions. Each version holds
+the text of the program, the version of the musical type library it is written against, the version
+of the runtime that runs it, the assets it imports and the musical inputs it reads, and each run
+uses an explicit random seed. A program runs offline, when a musician or an agent asks. Its output
+is a set of musical events and arrangement proposals, which become ordinary editable tracks once the
+project accepts them; a program doesn't make sound during playback. The live transform of incoming
+events, which uses the same musical types, belongs to RFC 0016, and the conversion of musical values
+to modulation controls belongs to RFC 0012."""
+
+[[requirement]]
+id = 'EU-0009-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'A composition program MUST be an asset of its project, kept in versions.'
+binds_to = 'system'
+rationale = 'A program and each of its earlier versions stay with the music they made.'
+
+[[requirement]]
+id = 'EU-0009-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each version of a composition program MUST record its text, the version of the musical type library it is written against and the version of the runtime that runs it.'
+binds_to = 'system'
+rationale = 'The same version of a program is checked and run the same way later.'
+
+[[requirement]]
+id = 'EU-0009-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each version of a composition program MUST declare every asset it imports and every musical input it reads.'
+binds_to = 'system'
+rationale = 'Everything a program depends on is known, kept and checked.'
+
+[[requirement]]
+id = 'EU-0009-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each run of a composition program MUST use an explicit random seed.'
+binds_to = 'system'
+rationale = 'A run that uses randomness can be repeated.'
+
+[[requirement]]
+id = 'EU-0009-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'The output of a composition program MUST be musical events and arrangement proposals.'
+binds_to = 'system'
+rationale = 'A musician edits what a program generates like any other material.'
+
+[[requirement]]
+id = 'EU-0009-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A composition program MUST NOT make sound during playback.'
+binds_to = 'system'
+rationale = 'Playback renders the accepted events, so a program never sits on the path to the speakers.'
+
+[[requirement]]
+id = 'EU-0009-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'The accepted output of a composition program MUST become editable tracks of the project.'
+binds_to = 'system'
+rationale = 'Generated music is edited, mixed and saved like music played in by hand.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-005' } ]
+
+[[requirement]]
+id = 'EU-0009-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'A musician MUST be able to write, type-check, preview and apply a composition program.'
+binds_to = 'system'
+rationale = 'A musician sees what a program generates before the project changes.'
+
+[[requirement]]
+id = 'EU-0009-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'An agent MUST be able to write, type-check, preview and apply a composition program through the same interface as the editor.'
+binds_to = 'system'
+rationale = 'An agent and a musician meet the same checks and the same diagnostics.'

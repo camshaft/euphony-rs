@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/03-key-constraints.md#EU-0009-025"
+
+[[spec]]
+level = "MUST"
+quote = "In a phrase that declares a key, an ordinary note MUST be built from a scale degree of that key."

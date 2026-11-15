@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-063"
+
+[[spec]]
+level = "MUST"
+quote = "Every random source of the composition runtime MUST be a specified algorithm with an explicit seed and a version."

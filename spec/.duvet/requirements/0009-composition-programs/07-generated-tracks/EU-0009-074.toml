@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-074"
+
+[[spec]]
+level = "MUST"
+quote = "The edits a musician makes to a generated track MUST be kept in a layer apart from the generated events."

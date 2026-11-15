@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/05-execution.md#EU-0009-056"
+
+[[spec]]
+level = "MUST"
+quote = "Independent composition units whose dependencies are explicit MUST be able to run as separate jobs on different computers of the owner."

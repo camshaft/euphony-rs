@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-021"
+
+[[spec]]
+level = "MUST"
+quote = "Scales and tunings MUST be versioned data of the project."
