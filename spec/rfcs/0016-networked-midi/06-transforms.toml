@@ -1,0 +1,190 @@
+[section]
+anchor = 'transforms'
+title = 'Live transforms'
+problem = """\
+  A musician wants to harmonize, remap or otherwise change what they play on its way to an \
+  instrument, but a program that fails, runs slowly or never ends can stop playback, and a program \
+  run on every small host spreads musicians' programs across the network."""
+motivation = """\
+  A live entry point of the composition language with a restricted profile, checked before it runs \
+  and run apart from audio playback on the session host, lets a musician or an assistant transform \
+  what is played and keeps playback and recording going when a transform fails."""
+prose = """
+A transform is a version of a program in the composition language, which the composition RFC
+specifies, written for its live entry point. It accepts one timestamped event, its declared typed
+parameters and bounded state, and returns validated events or a typed diagnostic. The live profile
+leaves out ambient input and output, unbounded loops, recursive expansion and undeclared timers. A
+transform's compile result holds the digests of its source, library and runtime, its parameters,
+the event classes it supports, its greatest output expansion, inferred from the validated program,
+and its resource needs. A person attaches a transform in the route editor: they type-check it,
+preview it against recorded input, inspect its destinations and measured readiness, and then commit
+the route. A host execution profile runs a route's transforms on its MIDI host instead of the
+session host, and the owner selects it for that host.
+
+For example, a transform projects chromatic input onto C major by nearest note, with a note equally
+far from two scale notes going to the lower one, keeps the scale degree and octave, and maps the
+result onto D Dorian. MIDI notes 60 through 71 become 62, 62, 64, 64, 65, 67, 67, 69, 69, 71, 71
+and 72. The projection, the change of tonic and the change of mode are separate typed operations,
+and the interface shows the projection rule and the source and target tonic and mode. A musician
+can choose another explicit projection rule instead of nearest note."""
+
+[[requirement]]
+id = 'EU-0016-098'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transform MUST be a program in the composition language, written for its live entry point.'
+binds_to = 'system'
+rationale = 'Live and offline music share one language, one type library and one validation.'
+
+[[requirement]]
+id = 'EU-0016-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transform MUST be type-checked and compiled before it is activated.'
+binds_to = 'system'
+rationale = 'A program error is found before the program meets a live note.'
+
+[[requirement]]
+id = 'EU-0016-100'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST reject a program that uses a feature outside the live profile, with a diagnostic that points at its source.'
+binds_to = 'system'
+rationale = 'An invalid program is explained to the musician or assistant that attached it, and never run live.'
+
+[[requirement]]
+id = 'EU-0016-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST validate the pitch, channel and range of each event a transform outputs as it runs.'
+binds_to = 'system'
+rationale = 'A value out of range at run time never reaches an instrument.'
+
+[[requirement]]
+id = 'EU-0016-102'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transform MUST run apart from audio playback, so that its failure or delay leaves playback and recording running.'
+binds_to = 'system'
+rationale = 'A crashing or slow transform never stops the session.'
+
+[[requirement]]
+id = 'EU-0016-103'
+level = 'MUST'
+polarity = 'required'
+statement = "A route's transforms MUST run on the session host unless the owner selects a host execution profile that has passed the same output, isolation and timing tests on that host's hardware."
+binds_to = 'system'
+rationale = "Small hosts stay free of musicians' programs until their hardware is shown to run them as well."
+
+[[requirement]]
+id = 'EU-0016-104'
+level = 'MUST'
+polarity = 'required'
+statement = 'Audio playback MUST receive only validated, timestamped events from a transform.'
+binds_to = 'system'
+rationale = 'Playback never has to check what a program produced.'
+
+[[requirement]]
+id = 'EU-0016-105'
+level = 'MUST'
+polarity = 'required'
+statement = 'A route MUST record exactly one execution site and generation for its transforms.'
+binds_to = 'system'
+rationale = 'It is always known where a route is transformed.'
+
+[[requirement]]
+id = 'EU-0016-106'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A reconnection or a move of execution site MUST NOT apply a transform to an event twice.'
+binds_to = 'system'
+rationale = 'An event is transformed once, whatever happens to the connection.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-105' } ]
+
+[[requirement]]
+id = 'EU-0016-107'
+level = 'MUST'
+polarity = 'required'
+statement = "Moving a route's transforms to another execution site MUST release the notes they own and start them with clean state."
+binds_to = 'system'
+rationale = 'A move is a clean restart, not a transfer of a held performance.'
+
+[[requirement]]
+id = 'EU-0016-108'
+level = 'MUST'
+polarity = 'required'
+statement = "Bypassing a route's transforms MUST be an explicit revision of the route."
+binds_to = 'system'
+rationale = 'A musician always knows whether what they hear is transformed.'
+
+[[requirement]]
+id = 'EU-0016-109'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A failure MUST NOT bypass a route's transforms."
+binds_to = 'system'
+rationale = 'A failing transform stops its route rather than letting untransformed notes through.'
+
+[[requirement]]
+id = 'EU-0016-110'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of a transform's source MUST create a new immutable version."
+binds_to = 'system'
+rationale = 'A route and a recording always name the exact program they used.'
+
+[[requirement]]
+id = 'EU-0016-111'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST reserve a transform's state and output allocation before it activates the transform."
+binds_to = 'system'
+rationale = 'A live transform never runs out of room partway through a performance.'
+
+[[requirement]]
+id = 'EU-0016-112'
+level = 'MUST'
+polarity = 'required'
+statement = "Admission MUST compare a transform's resource needs with the runtime and device capacity measured on the target hardware."
+binds_to = 'system'
+rationale = 'Capacity comes from the hardware in use, not from a number set in advance.'
+
+[[requirement]]
+id = 'EU-0016-113'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A program whose live resource bound can't be established MUST NOT be admitted live."
+binds_to = 'system'
+rationale = 'Only a program that is known to fit can play live.'
+
+[[requirement]]
+id = 'EU-0016-114'
+level = 'MUST'
+polarity = 'required'
+statement = "A program that isn't admitted live MUST stay usable for offline composition."
+binds_to = 'system'
+rationale = 'A program too heavy to play live still makes music.'
+
+[[requirement]]
+id = 'EU-0016-115'
+level = 'MUST'
+polarity = 'required'
+statement = 'A missed transform deadline or exhausted event capacity MUST suspend the affected route and release the notes it owns.'
+binds_to = 'system'
+rationale = 'An overloaded transform stops cleanly instead of blocking playback.'
+
+[[requirement]]
+id = 'EU-0016-116'
+level = 'MUST'
+polarity = 'required'
+statement = 'Raw input and transformed output MUST be recordable as distinct streams.'
+binds_to = 'system'
+rationale = 'A musician can keep what was played and what was heard, and change the transform later.'
+
+[[requirement]]
+id = 'EU-0016-117'
+level = 'MUST'
+polarity = 'required'
+statement = "A recording of transformed output MUST hold the transform's identity, parameters, seed, route generation and timing mapping."
+binds_to = 'system'
+rationale = 'An offline replay reproduces the recorded output.'
