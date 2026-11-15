@@ -16,7 +16,7 @@ Euphony MUST keep one learning store for each owner, holding that owner's eviden
 
 ### EU-0019-002 {#EU-0019-002}
 
-Euphony MUST NOT run an assistant, an inference model for an assistant or a reasoning loop of its own.
+Euphony MUST NOT run an assistant, an inference model for an assistant, a connection to a model provider or a reasoning loop of its own.
 
 ### EU-0019-003 {#EU-0019-003}
 

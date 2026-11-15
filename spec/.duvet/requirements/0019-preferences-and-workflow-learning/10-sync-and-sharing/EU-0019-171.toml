@@ -2,4 +2,4 @@ target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md
 
 [[spec]]
 level = "MUST"
-quote = "An offline device MUST NOT create a new activation or reconcile conflicting approvals by itself."
+quote = "An offline device MUST NOT create a new global activation or reconcile conflicting approvals by itself."

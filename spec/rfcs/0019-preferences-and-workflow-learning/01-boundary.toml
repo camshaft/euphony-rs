@@ -28,7 +28,7 @@ rationale = 'One record holds what each owner approved, whichever assistant the 
 id = 'EU-0019-002'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'Euphony MUST NOT run an assistant, an inference model for an assistant or a reasoning loop of its own.'
+statement = 'Euphony MUST NOT run an assistant, an inference model for an assistant, a connection to a model provider or a reasoning loop of its own.'
 binds_to = 'system'
 rationale = 'The person keeps the choice of assistant, and every step of reasoning stays with it.'
 

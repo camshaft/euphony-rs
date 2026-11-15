@@ -66,7 +66,7 @@ rationale = 'Each addition is shown to work before anyone relies on it.'
 id = 'EU-0019-193'
 level = 'MUST'
 polarity = 'required'
-statement = 'A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail.'
+statement = "A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail or don't match that profile."
 binds_to = 'system'
 rationale = 'Every supported profile is verified on the build that releases it.'
 

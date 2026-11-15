@@ -2,4 +2,4 @@ target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019
 
 [[spec]]
 level = "MUST"
-quote = "Euphony MUST NOT run an assistant, an inference model for an assistant or a reasoning loop of its own."
+quote = "Euphony MUST NOT run an assistant, an inference model for an assistant, a connection to a model provider or a reasoning loop of its own."

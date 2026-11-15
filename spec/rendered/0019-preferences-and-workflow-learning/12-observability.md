@@ -34,7 +34,7 @@ A new preference domain, protocol capability or execution profile MUST have vers
 
 ### EU-0019-193 {#EU-0019-193}
 
-A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail.
+A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail or don't match that profile.
 
 ### EU-0019-194 {#EU-0019-194}
 

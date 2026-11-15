@@ -39,7 +39,7 @@ Where the existence of evidence would reveal another person's private work, euph
 
 ### EU-0019-171 {#EU-0019-171}
 
-An offline device MUST NOT create a new activation or reconcile conflicting approvals by itself.
+An offline device MUST NOT create a new global activation or reconcile conflicting approvals by itself.
 
 ### EU-0019-172 {#EU-0019-172}
 

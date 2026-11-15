@@ -75,7 +75,7 @@ rationale = 'A count can leak what the content would.'
 id = 'EU-0019-171'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'An offline device MUST NOT create a new activation or reconcile conflicting approvals by itself.'
+statement = 'An offline device MUST NOT create a new global activation or reconcile conflicting approvals by itself.'
 binds_to = 'system'
 rationale = "Lasting decisions are ordered by the owner's authority, not by whichever device reconnects first."
 

@@ -15,7 +15,7 @@ itself.
 
 ### EU-0019-028 {#EU-0019-028}
 
-Each evidence record MUST hold its subject person, its author or source kind, its project, session and branch revision, its observation time, its cause, its revisions before and after, its visibility policy and its consent provenance.
+Each evidence record MUST hold its stable identity, its schema version, its subject person, its author or source kind, its project, session and branch revision, its event cursor, its observation time, its cause, its revisions before and after, its authorized asset references, its visibility policy and its consent provenance.
 
 ### EU-0019-029 {#EU-0019-029}
 
