@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-164"
+
+[[spec]]
+level = "MUST"
+quote = "A control value MUST be unchanged, bit for bit, after a save, a transfer to another computer and a rebuild from the cache under the same numerical profile."

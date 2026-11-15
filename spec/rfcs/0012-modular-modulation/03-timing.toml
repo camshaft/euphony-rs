@@ -134,3 +134,11 @@ polarity = "forbidden"
 statement = "A change of the device's buffer size MUST NOT change what a stored route does."
 binds_to = "system"
 rationale = "The sound of a project doesn't depend on the computer that plays it."
+
+[[requirement]]
+id = "EU-0012-164"
+level = "MUST"
+polarity = "required"
+statement = "A control value MUST be unchanged, bit for bit, after a save, a transfer to another computer and a rebuild from the cache under the same numerical profile."
+binds_to = "system"
+rationale = "A saved, shared or cached project plays back the values it was made with."

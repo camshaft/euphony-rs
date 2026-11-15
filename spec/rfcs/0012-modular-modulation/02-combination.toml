@@ -186,3 +186,11 @@ polarity = "required"
 statement = "Two collaborative changes of one target's combination mode MUST conflict when they merge."
 binds_to = "system"
 rationale = "A merge never picks one musician's mode silently."
+
+[[requirement]]
+id = "EU-0012-163"
+level = "MUST"
+polarity = "required"
+statement = "Moving a region or editing the tempo map MUST change only the automation lanes that the region holds or that resolve their positions through the tempo map."
+binds_to = "system"
+rationale = "An edit never moves or reshapes the modulation of a lane it doesn't touch."

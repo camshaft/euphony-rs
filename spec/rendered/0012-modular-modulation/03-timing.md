@@ -68,3 +68,7 @@ A discrete control MUST apply a change at its declared safe boundary.
 ### EU-0012-056 {#EU-0012-056}
 
 A change of the device's buffer size MUST NOT change what a stored route does.
+
+### EU-0012-164 {#EU-0012-164}
+
+A control value MUST be unchanged, bit for bit, after a save, a transfer to another computer and a rebuild from the cache under the same numerical profile.

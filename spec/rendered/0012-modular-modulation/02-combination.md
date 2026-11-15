@@ -94,3 +94,7 @@ A route MUST NOT replace another route's contribution to the same target.
 ### EU-0012-043 {#EU-0012-043}
 
 Two collaborative changes of one target's combination mode MUST conflict when they merge.
+
+### EU-0012-163 {#EU-0012-163}
+
+Moving a region or editing the tempo map MUST change only the automation lanes that the region holds or that resolve their positions through the tempo map.
