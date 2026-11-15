@@ -54,10 +54,10 @@ rationale = 'The store checks both the integrity of the encoded bytes and the id
 id = 'EU-0007-125'
 level = 'MUST'
 polarity = 'required'
-statement = "A reader MUST verify an encoded object's encoded digest before it decodes the object."
+statement = 'A reader MUST verify the encoded digest of each chunk before it decodes that chunk.'
 binds_to = 'system'
-rationale = 'A corrupt or altered object is refused before any of it is decoded.'
-relations = [ { kind = 'depends_on', target = 'EU-0007-022' } ]
+rationale = 'A corrupt or altered chunk is refused before any of it is decoded, and a seek, a partial read or streamed playback hashes only the chunks it decodes.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-022' }, { kind = 'depends_on', target = 'EU-0007-039' }, { kind = 'depends_on', target = 'EU-0007-129' }, { kind = 'depends_on', target = 'EU-0007-131' } ]
 
 [[requirement]]
 id = 'EU-0007-023'
