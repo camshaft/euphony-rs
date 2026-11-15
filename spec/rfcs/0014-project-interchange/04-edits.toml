@@ -1,0 +1,198 @@
+[section]
+anchor = 'edits'
+title = 'Automation inside regions, edits, comps and loop grids'
+problem = """\
+  Automation inside regions, timing and pitch edits inside recordings, comps and loop grids hold much \
+  of a musician's detailed work, and an import that drops them leaves the project far from what the \
+  musician made."""
+motivation = """\
+  Converting each of them into euphony's own editable records at its original position, and showing \
+  how close each converted edit sounds to the source, brings that work over and lets the musician \
+  judge it."""
+prose = """
+Automation inside a region, the timing and pitch edits inside a recording, comps assembled from
+parts of several takes, and the loop grid of cells started live come over as euphony's own records,
+edited through the same typed commands as the rest of the project, so that the desktop and the
+assistants edit them the same way. A scene of a loop grid is a row of cells that start together. A
+timing edit plays through a built-in timing processor and a pitch edit through a built-in pitch
+processor; the source workstation's processing isn't published, so a converted edit sounds close to
+the source, by a difference the import measures and shows, rather than identical. A comp and
+automation inside a region whose sections, crossfades and curves are read exactly differ only by the
+processors they pass through."""
+
+[[requirement]]
+id = 'EU-0014-029'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert automation recorded inside a region as automation anchored to that region, at positions relative to the region's start."
+binds_to = 'system'
+rationale = 'The automation keeps its timing inside the region wherever the region goes.'
+
+[[requirement]]
+id = 'EU-0014-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'Automation anchored to a region MUST move, copy and loop with its region.'
+binds_to = 'system'
+rationale = 'Moving a region keeps its automation with it, as it did in the source workstation.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-029' } ]
+
+[[requirement]]
+id = 'EU-0014-031'
+level = 'MUST'
+polarity = 'required'
+statement = "Automation anchored to a region MUST stay separate from its track's automation."
+binds_to = 'system'
+rationale = "A region's automation and the track's automation stay editable apart."
+relations = [ { kind = 'depends_on', target = 'EU-0014-029' } ]
+
+[[requirement]]
+id = 'EU-0014-032'
+level = 'MUST'
+polarity = 'required'
+statement = "Where automation inside a region and track automation act on one control, the import MUST combine them as the source project does, with one of euphony's modulation combination modes."
+binds_to = 'system'
+rationale = 'The control sounds as it did where both kinds of automation act on it.'
+
+[[requirement]]
+id = 'EU-0014-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST report a combination of automation inside a region and track automation that no modulation combination mode expresses.'
+binds_to = 'system'
+rationale = 'The musician knows where a control can sound different.'
+
+[[requirement]]
+id = 'EU-0014-034'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert the timing edits inside a recording as the region's time map, of pairs of a position in the recording and its position on the timeline."
+binds_to = 'system'
+rationale = 'The timing of a recording plays as the musician edited it.'
+
+[[requirement]]
+id = 'EU-0014-035'
+level = 'MUST'
+polarity = 'required'
+statement = "A converted time map MUST record the source workstation's timing mode as the region's source mode."
+binds_to = 'system'
+rationale = 'A later import or a change of mapping reads which timing mode the musician chose.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-034' } ]
+
+[[requirement]]
+id = 'EU-0014-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST map each timing mode of the source workstation to the closest built-in timing mode.'
+binds_to = 'system'
+rationale = "The source workstation's timing processing isn't published, and the closest mode keeps the edit rather than losing it."
+
+[[requirement]]
+id = 'EU-0014-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'The conversion report MUST list the built-in mode each source timing mode maps to.'
+binds_to = 'system'
+rationale = 'The musician sees which built-in mode plays each edit.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-036' } ]
+
+[[requirement]]
+id = 'EU-0014-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A region with a time map MUST record the version of the built-in timing processor that plays it.'
+binds_to = 'system'
+rationale = 'A render of the region is the same on every run and every computer.'
+
+[[requirement]]
+id = 'EU-0014-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert the pitch edits of a region as edits of each detected note: its position, length, pitch offset, pitch drift, vibrato, formant shift and gain.'
+binds_to = 'system'
+rationale = 'Each pitch correction plays on the note it was made for.'
+
+[[requirement]]
+id = 'EU-0014-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST keep the notes the source workstation detected in a recording, rather than detect them again.'
+binds_to = 'system'
+rationale = 'Each edit applies to the same note it was made on.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-039' } ]
+
+[[requirement]]
+id = 'EU-0014-041'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert a folder of takes as the region's takes, keeping every take."
+binds_to = 'system'
+rationale = 'The musician can change the comp from every take they recorded.'
+
+[[requirement]]
+id = 'EU-0014-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert each comp as an ordered list of sections, each with the take it uses, its start, its end, and its crossfade lengths and shapes.'
+binds_to = 'system'
+rationale = 'The comp plays the same parts of the same takes with the same transitions.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-041' } ]
+
+[[requirement]]
+id = 'EU-0014-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert the other saved comps of a folder of takes as alternative comps.'
+binds_to = 'system'
+rationale = 'No comp the musician saved is lost.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-042' } ]
+
+[[requirement]]
+id = 'EU-0014-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert a loop grid as a loop grid whose cells each hold their region, loop length, start quantization and play settings.'
+binds_to = 'system'
+rationale = 'The loop grid comes over as the musician built it.'
+
+[[requirement]]
+id = 'EU-0014-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'The cells of one scene of a converted loop grid MUST start together.'
+binds_to = 'system'
+rationale = 'A scene starts its loops together, as it did in the source workstation.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-044' } ]
+
+[[requirement]]
+id = 'EU-0014-046'
+level = 'MUST'
+polarity = 'required'
+statement = "A converted loop grid MUST play live, with each start quantized to the session's tempo map."
+binds_to = 'system'
+rationale = 'The musician can perform with the grid, in time with the session.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-044' } ]
+
+[[requirement]]
+id = 'EU-0014-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert a performance recorded from a loop grid into the arrangement as ordinary regions, keeping the grid beside them.'
+binds_to = 'system'
+rationale = 'The recorded performance plays as it did, and the grid stays ready to perform again.'
+
+[[requirement]]
+id = 'EU-0014-048'
+level = 'MUST'
+polarity = 'required'
+statement = "The conversion report MUST show, for each converted timing edit, pitch edit and comp, the measured difference between euphony's playback of its passage and the musician's own render of that passage from the source workstation."
+binds_to = 'system'
+rationale = 'The musician judges each converted edit by its measured difference from the source, not by a promise.'
+
+[[requirement]]
+id = 'EU-0014-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each automation event inside a region, timing or pitch edit, comp section and loop cell of a source project MUST be converted at its original position or reported as not converted with its track, region and position.'
+binds_to = 'system'
+rationale = 'No part of these features is left without an outcome.'
