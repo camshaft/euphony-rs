@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-018"
+
+[[spec]]
+level = "MUST"
+quote = "A proposed structure MUST NOT hold code."

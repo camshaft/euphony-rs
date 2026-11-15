@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-043"
+
+[[spec]]
+level = "MUST"
+quote = "Acceptance MUST refuse a candidate that has no recorded blind result of the musician's own, whoever asks for it."

@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-037"
+
+[[spec]]
+level = "MUST"
+quote = "The blind comparison of a candidate MUST play the original passage and the candidate's render of the same notes at matched levels and in random order."

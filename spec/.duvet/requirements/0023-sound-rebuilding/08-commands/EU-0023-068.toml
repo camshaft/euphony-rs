@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-068"
+
+[[spec]]
+level = "MUST"
+quote = "Fitting MUST run on the workers of distributed rendering through its scheduler."

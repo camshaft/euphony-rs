@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-052"
+
+[[spec]]
+level = "MUST"
+quote = "Each candidate MUST be addressed by the digest of its content."

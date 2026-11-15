@@ -1,0 +1,49 @@
+[section]
+anchor = 'owned-gear'
+title = 'Rebuilding owned gear'
+problem = """\
+  A musician who owns an instrument or an effect loses its sound when the gear fails or leaves the \
+  studio, and a rebuilt sound with learned parts couldn't be read or adjusted like the built-in \
+  processors."""
+motivation = """\
+  Fitting built-in processors alone to the captures of the gear, and comparing the result with the \
+  models that capture made of the same gear, offers the musician a readable sound and an honest \
+  comparison."""
+prose = """
+For an effect, capture records the gear's input and its output; for a synthesizer, capture plays
+notes and controls and records its sound. A rebuild from gear reads those captures by their
+identity and fits built-in processors to them. The learned and hybrid models that capture makes of
+the gear stay results of capture, beside the rebuilt sound, and the musician compares the three. A
+rebuilt synthesizer voice maps the synthesizer's controls to built-in controls where it can."""
+
+[[requirement]]
+id = 'EU-0023-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild from gear MUST fit built-in processors alone to the captures of the gear, without learned parts.'
+binds_to = 'system'
+rationale = 'The project holds built-in processors and settings alone.'
+
+[[requirement]]
+id = 'EU-0023-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild from gear MUST compare its result with the models that capture made of the same gear, by the same measures and the same blind comparison.'
+binds_to = 'system'
+rationale = "The musician compares the rebuilt sound with capture's own models."
+
+[[requirement]]
+id = 'EU-0023-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuilt synthesizer voice MUST map each measured control of the synthesizer to a built-in control where its structure holds one.'
+binds_to = 'system'
+rationale = "The musician plays the rebuilt voice with the synthesizer's own controls."
+
+[[requirement]]
+id = 'EU-0023-048'
+level = 'MUST'
+polarity = 'required'
+statement = "A rebuilt synthesizer voice MUST list each measured control of the synthesizer that it doesn't reproduce."
+binds_to = 'system'
+rationale = "The musician knows which controls the rebuilt voice doesn't follow."

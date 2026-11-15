@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-055"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted sound MUST play without the recording, the plug-in or the gear it was rebuilt from."

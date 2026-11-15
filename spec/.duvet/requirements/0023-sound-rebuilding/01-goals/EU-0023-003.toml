@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/01-goals.md#EU-0023-003"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuilt sound MUST be made only of built-in instruments and effects with their settings."

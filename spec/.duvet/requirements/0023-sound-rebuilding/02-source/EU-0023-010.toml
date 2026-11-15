@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/02-source.md#EU-0023-010"
+
+[[spec]]
+level = "MUST"
+quote = "The request of a rebuild from a passage MUST record the digest of the source item and the interval of its samples."

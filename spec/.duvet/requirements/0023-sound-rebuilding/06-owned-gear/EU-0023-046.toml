@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/06-owned-gear.md#EU-0023-046"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild from gear MUST compare its result with the models that capture made of the same gear, by the same measures and the same blind comparison."
