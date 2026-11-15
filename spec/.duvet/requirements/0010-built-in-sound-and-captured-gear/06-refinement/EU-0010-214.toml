@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-214"
+
+[[spec]]
+level = "MUST"
+quote = "The result of a job that finishes after its run stopped MUST NOT resume the run."
