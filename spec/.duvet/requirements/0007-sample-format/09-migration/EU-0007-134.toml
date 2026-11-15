@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-134"
+
+[[spec]]
+level = "MUST"
+quote = "A ready item MUST stay recorded as ready until it is published or fails verification."

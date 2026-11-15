@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-137"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST read the ready items a page at a time."
