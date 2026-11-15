@@ -9,6 +9,14 @@ name: spec
 permissions:
   contents: read
 
+concurrency:
+  group: spec-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  PARTIMENTO_REV: 1616d94960a1426fed9c5c4d660d0e5ec31f7c39 # partimento v0.6.0
+  DUVET_VERSION: 0.4.3
+
 jobs:
   spec:
     runs-on: ubuntu-latest
@@ -19,14 +27,25 @@ jobs:
           persist-credentials: false
 
       # The steps below run wherever the branch holds any file under spec/; a branch from before the specification skips them.
-      # partimento v0.6.0
-      - name: Install partimento
+      # The two tools are cached by their pinned versions, so a run builds them only on a cache miss.
+      # actions/cache v6.1.0
+      - name: Cache the spec tools
+        id: tools
         if: hashFiles('spec/**') != ''
-        run: cargo install --locked --git https://github.com/camshaft/partimento --rev 1616d94960a1426fed9c5c4d660d0e5ec31f7c39 partimento
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: |
+            ~/.cargo/bin/partimento
+            ~/.cargo/bin/duvet
+          key: spec-tools-${{ runner.os }}-partimento-${{ env.PARTIMENTO_REV }}-duvet-${{ env.DUVET_VERSION }}
+
+      - name: Install partimento
+        if: hashFiles('spec/**') != '' && steps.tools.outputs.cache-hit != 'true'
+        run: cargo install --locked --git https://github.com/camshaft/partimento --rev "$PARTIMENTO_REV" partimento
 
       - name: Install duvet
-        if: hashFiles('spec/**') != ''
-        run: cargo install --locked duvet --version 0.4.3
+        if: hashFiles('spec/**') != '' && steps.tools.outputs.cache-hit != 'true'
+        run: cargo install --locked duvet --version "$DUVET_VERSION"
 
       - name: partimento check
         if: hashFiles('spec/**') != ''
