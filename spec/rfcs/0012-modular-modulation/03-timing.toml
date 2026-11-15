@@ -1,0 +1,120 @@
+[section]
+anchor = "timing"
+title = "Rate, resolution and timing"
+problem = "A control that changes only at a coarse value resolution, or only once a device block, smears fast modulation and makes the sound depend on the device's buffer size, so the same project sounds different on two computers."
+motivation = "Keeping the resolution of values apart from the timing of updates, placing every update at an exact sample, and stating how a target that accepts updates once a block converts a faster source keep the sound independent of the device and of the computer."
+prose = """
+Resolution of values and timing of updates are separate properties. A control stream carries
+values at the resolution of the project's numerical profile, while note and controller events keep
+their original integer values until a conversion maps them. Positions are integer numbers of project
+samples, and curves in musical time and oscillators synced to tempo resolve through the project's
+tempo map. A processor that accepts updates at any sample receives spans of values or events at
+sample offsets, so a source at audio rate can drive a compatible filter or oscillator. A processor
+that accepts updates once a block declares that interval in its processor profile, and the route's
+conversion to it states how it filters, samples and holds or interpolates the source."""
+
+[[requirement]]
+id = "EU-0012-044"
+level = "MUST"
+polarity = "required"
+statement = "A control stream MUST carry its values at the resolution of the project's numerical profile."
+binds_to = "system"
+rationale = "Fine modulation isn't stepped to a controller's coarse range."
+
+[[requirement]]
+id = "EU-0012-045"
+level = "MUST"
+polarity = "required"
+statement = "A note or controller value MUST keep its original integer value until its conversion maps it."
+binds_to = "system"
+rationale = "No rounding happens before the conversion the musician chose."
+
+[[requirement]]
+id = "EU-0012-046"
+level = "MUST"
+polarity = "required"
+statement = "Each position of a modulation update MUST be an integer number of project samples."
+binds_to = "system"
+rationale = "Every renderer places an update at the same sample."
+
+[[requirement]]
+id = "EU-0012-047"
+level = "MUST"
+polarity = "required"
+statement = "A curve in musical time or an oscillator synced to tempo MUST resolve its positions through the project's tempo map."
+binds_to = "system"
+rationale = "Tempo edits move modulation synced to tempo with the music."
+
+[[requirement]]
+id = "EU-0012-048"
+level = "MUST"
+polarity = "required"
+statement = "The project MUST store the seed, phase and reset policy of each oscillator."
+binds_to = "system"
+rationale = "A random or free-running oscillator plays the same way on every render."
+
+[[requirement]]
+id = "EU-0012-049"
+level = "MUST"
+polarity = "required"
+statement = "A processor that accepts updates at any sample MUST apply each update at the sample it is given."
+binds_to = "system"
+rationale = "An impulse reaches the target at its exact offset at any device block size."
+
+[[requirement]]
+id = "EU-0012-050"
+level = "MUST"
+polarity = "required"
+statement = "A processor that accepts updates only once a block MUST declare the interval at which it accepts them."
+binds_to = "system"
+rationale = "A route knows how coarse its target is before it plays."
+
+[[requirement]]
+id = "EU-0012-051"
+level = "MUST"
+polarity = "required"
+statement = "The interface MUST show the update interval of a target that accepts updates once a block, with its duration at the project's sample rate."
+binds_to = "system"
+rationale = "Coarse updates never surprise the musician."
+
+[[requirement]]
+id = "EU-0012-052"
+level = "MUST"
+polarity = "required"
+statement = "A route to a target that accepts updates once a block MUST state how its conversion filters, samples and holds or interpolates the source."
+binds_to = "system"
+rationale = "The coarse result is defined, not left to the device."
+relations = [ { kind = "depends_on", target = "EU-0012-050" } ]
+
+[[requirement]]
+id = "EU-0012-053"
+level = "MUST"
+polarity = "required"
+statement = "A route that asks for sample accuracy to a target that accepts updates once a block MUST be refused unless the musician explicitly selects a conversion."
+binds_to = "system"
+rationale = "A loss of timing is never silent."
+relations = [ { kind = "depends_on", target = "EU-0012-050" } ]
+
+[[requirement]]
+id = "EU-0012-054"
+level = "MUST"
+polarity = "required"
+statement = "Reducing the rate of a control MUST filter it against aliasing and record the latency the filter adds."
+binds_to = "system"
+rationale = "A slower update doesn't fold fast modulation into false tones, and its delay is known."
+
+[[requirement]]
+id = "EU-0012-055"
+level = "MUST"
+polarity = "required"
+statement = "A discrete control MUST apply a change at its declared safe boundary."
+binds_to = "system"
+rationale = "A switch never clicks in the middle of a cycle."
+
+[[requirement]]
+id = "EU-0012-056"
+level = "MUST"
+polarity = "forbidden"
+statement = "A change of the device's buffer size MUST NOT change what a stored route does."
+binds_to = "system"
+rationale = "The sound of a project doesn't depend on the computer that plays it."
