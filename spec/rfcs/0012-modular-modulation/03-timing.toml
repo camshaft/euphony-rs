@@ -115,9 +115,18 @@ relations = [ { kind = "depends_on", target = "EU-0012-050" } ]
 id = "EU-0012-054"
 level = "MUST"
 polarity = "required"
-statement = "Reducing the rate of a control MUST filter it against aliasing and record the latency the filter adds."
+statement = "Reducing the rate of a control MUST filter it against aliasing."
 binds_to = "system"
-rationale = "A slower update doesn't fold fast modulation into false tones, and its delay is known."
+rationale = "A slower update doesn't fold fast modulation into false tones."
+
+[[requirement]]
+id = "EU-0012-155"
+level = "MUST"
+polarity = "required"
+statement = "Reducing the rate of a control MUST record the latency its anti-alias filter adds."
+binds_to = "system"
+rationale = "The delay of a slower update is known to every consumer."
+relations = [ { kind = "depends_on", target = "EU-0012-054" } ]
 
 [[requirement]]
 id = "EU-0012-055"
