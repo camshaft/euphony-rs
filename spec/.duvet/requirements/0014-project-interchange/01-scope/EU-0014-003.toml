@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/01-scope.md#EU-0014-003"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST NOT write a project in the format of a source workstation."
