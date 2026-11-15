@@ -1,0 +1,86 @@
+[section]
+anchor = 'accessibility'
+title = 'Accessibility and the keyboard'
+problem = """\
+  A musician who uses a screen reader, works from the keyboard alone or can't drag precisely can't \
+  work in a music interface whose controls are only shapes that respond to a pointer."""
+motivation = """\
+  Exposing every control to the assistive technology of the operating system, with keyboard and \
+  numeric ways to do everything a drag does, lets every musician reach every action."""
+prose = """
+An interactive element is any control a person can focus or act on, such as a fader, a clip, a
+note or a patch point. Its semantics are its role, label, unit, range, base value, effective value,
+focus and permitted actions. A long project holds more tracks and clips than a screen shows, and
+the ones off screen still exist for navigation and for assistive technology."""
+
+[[requirement]]
+id = 'EU-0018-033'
+level = 'MUST'
+polarity = 'required'
+statement = "The desktop interface MUST expose the role, label, unit, range, base value, effective value, focus and permitted actions of each interactive element to the operating system's assistive technology."
+binds_to = 'system'
+rationale = 'A screen reader describes each control fully and offers what it can do.'
+
+[[requirement]]
+id = 'EU-0018-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every action of the desktop interface MUST be reachable from the keyboard.'
+binds_to = 'system'
+rationale = "A musician who doesn't use a pointer can still do everything."
+
+[[requirement]]
+id = 'EU-0018-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each shortcut MUST be discoverable from the interface.'
+binds_to = 'system'
+rationale = 'A musician learns a shortcut without leaving the interface.'
+
+[[requirement]]
+id = 'EU-0018-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each continuous control MUST offer fine adjustment, coarse adjustment and numeric entry.'
+binds_to = 'system'
+rationale = 'A musician sets an exact value without a precise drag.'
+
+[[requirement]]
+id = 'EU-0018-037'
+level = 'MUST'
+polarity = 'required'
+statement = "Patching MUST have a way that doesn't need dragging."
+binds_to = 'system'
+rationale = "A musician who can't drag can still connect modules and routes."
+
+[[requirement]]
+id = 'EU-0018-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A track or clip that is off screen MUST keep a stable identity for assistive technology.'
+binds_to = 'system'
+rationale = 'Assistive technology keeps its place in a long project as the view scrolls.'
+
+[[requirement]]
+id = 'EU-0018-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'A track or clip that is off screen MUST stay reachable by navigation.'
+binds_to = 'system'
+rationale = 'Every part of a project is reachable, not only the part the screen shows.'
+
+[[requirement]]
+id = 'EU-0018-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'An action reached through assistive technology MUST use the same action identifier and current selection as the same action reached by pointer.'
+binds_to = 'system'
+rationale = 'An action does the same thing however a person reaches it.'
+
+[[requirement]]
+id = 'EU-0018-041'
+level = 'MUST'
+polarity = 'required'
+statement = "The accessibility of the desktop interface MUST be verified with each supported operating system's screen reader on an actual build."
+binds_to = 'system'
+rationale = 'A toolkit that claims accessibility support is not evidence that a musician can use the product.'
