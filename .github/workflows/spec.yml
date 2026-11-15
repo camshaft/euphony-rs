@@ -3,6 +3,13 @@ on:
     paths:
       - "spec/**"
       - ".github/workflows/spec.yml"
+  # A run on master saves the tools cache in master's scope, which every pull request's run can restore.
+  push:
+    branches:
+      - master
+    paths:
+      - "spec/**"
+      - ".github/workflows/spec.yml"
 
 name: spec
 
@@ -10,7 +17,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: spec-${{ github.event.pull_request.number }}
+  group: spec-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -28,11 +35,11 @@ jobs:
 
       # The steps below run wherever the branch holds any file under spec/; a branch from before the specification skips them.
       # The two tools are cached by their pinned versions, so a run builds them only on a cache miss.
-      # actions/cache v6.1.0
-      - name: Cache the spec tools
+      # actions/cache/restore v6.1.0
+      - name: Restore the spec tools
         id: tools
         if: hashFiles('spec/**') != ''
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: |
             ~/.cargo/bin/partimento
@@ -46,6 +53,17 @@ jobs:
       - name: Install duvet
         if: hashFiles('spec/**') != '' && steps.tools.outputs.cache-hit != 'true'
         run: cargo install --locked duvet --version "$DUVET_VERSION"
+
+      # Saved right after the installs, so a run whose check fails, or that a newer push cancels later, still keeps the tools.
+      # actions/cache/save v6.1.0
+      - name: Save the spec tools
+        if: hashFiles('spec/**') != '' && steps.tools.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: |
+            ~/.cargo/bin/partimento
+            ~/.cargo/bin/duvet
+          key: spec-tools-${{ runner.os }}-partimento-${{ env.PARTIMENTO_REV }}-duvet-${{ env.DUVET_VERSION }}
 
       - name: partimento check
         if: hashFiles('spec/**') != ''
