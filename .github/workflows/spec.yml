@@ -18,22 +18,22 @@ jobs:
         with:
           persist-credentials: false
 
-      # The steps below run once the branch holds the specification; a branch from before it was added skips them.
+      # The steps below run wherever the branch holds any file under spec/; a branch from before the specification skips them.
       # partimento v0.6.0
       - name: Install partimento
-        if: hashFiles('spec/spec.toml') != ''
+        if: hashFiles('spec/**') != ''
         run: cargo install --locked --git https://github.com/camshaft/partimento --rev 1616d94960a1426fed9c5c4d660d0e5ec31f7c39 partimento
 
       - name: Install duvet
-        if: hashFiles('spec/spec.toml') != ''
+        if: hashFiles('spec/**') != ''
         run: cargo install --locked duvet --version 0.4.3
 
       - name: partimento check
-        if: hashFiles('spec/spec.toml') != ''
+        if: hashFiles('spec/**') != ''
         working-directory: spec
         run: partimento check
 
       - name: duvet report
-        if: hashFiles('spec/spec.toml') != ''
+        if: hashFiles('spec/**') != ''
         working-directory: spec
         run: duvet report
