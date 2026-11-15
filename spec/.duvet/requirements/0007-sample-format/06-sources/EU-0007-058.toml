@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-058"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST read a packed or padded integer source by its valid bits, not by its container width."

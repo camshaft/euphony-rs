@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-108"
+
+[[spec]]
+level = "MUST"
+quote = "A held item that fails verification MUST stay held, with its bytes kept and its failure recorded."

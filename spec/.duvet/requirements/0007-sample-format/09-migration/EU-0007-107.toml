@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-107"
+
+[[spec]]
+level = "MUST"
+quote = "A held item that passes verification after a registration MUST be published."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/01-working-samples.md#EU-0007-001"
+
+[[spec]]
+level = "MUST"
+quote = "Working audio MUST carry each sample amplitude as an IEEE 754 binary32 value."

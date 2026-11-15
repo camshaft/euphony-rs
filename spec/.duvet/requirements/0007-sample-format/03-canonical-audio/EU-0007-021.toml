@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-021"
+
+[[spec]]
+level = "MUST"
+quote = "The semantic digest of working audio MUST cover its canonical header and its samples."

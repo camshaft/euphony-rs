@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/05-negotiation.md#EU-0007-050"
+
+[[spec]]
+level = "MUST"
+quote = "A peer MUST NOT receive a raw representation of working audio unless a measured raw exception covers it."

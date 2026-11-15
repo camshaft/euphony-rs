@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/08-verification.md#EU-0007-093"
+
+[[spec]]
+level = "MUST"
+quote = "The export preview MUST list, from the adapter's record, each format the delivery needs that the record doesn't declare."

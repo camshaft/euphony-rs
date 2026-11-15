@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/01-working-samples.md#EU-0007-003"
+
+[[spec]]
+level = "MUST"
+quote = "A processor MUST return binary32 samples at its declared interface, whatever precision it uses inside."

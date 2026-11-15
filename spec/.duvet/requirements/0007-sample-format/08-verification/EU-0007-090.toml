@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/08-verification.md#EU-0007-090"
+
+[[spec]]
+level = "MUST"
+quote = "A verification record for one version of a dependency MUST NOT satisfy another version."

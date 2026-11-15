@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-039"
+
+[[spec]]
+level = "MUST"
+quote = "Chunk boundaries MUST allow seeking, partial transfer and recovery from a corrupt chunk."

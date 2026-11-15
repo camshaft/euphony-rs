@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-026"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST deduplicate working audio by its semantic digest."

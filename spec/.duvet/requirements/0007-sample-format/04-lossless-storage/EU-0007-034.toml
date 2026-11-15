@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-034"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST NOT publish a raw object whose record lacks the measurement that justified storing it raw."

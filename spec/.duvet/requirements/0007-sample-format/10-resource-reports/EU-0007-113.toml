@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-113"
+
+[[spec]]
+level = "MUST"
+quote = "A resource report MUST state only measured values."

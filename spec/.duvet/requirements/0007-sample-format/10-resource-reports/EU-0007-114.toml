@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-114"
+
+[[spec]]
+level = "MUST"
+quote = "Each optimization's change record MUST state its targeted resource, one of memory, processor work, disk and transfer."

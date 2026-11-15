@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-014"
+
+[[spec]]
+level = "MUST"
+quote = "A change of a processor's identity MUST invalidate each cached result that depends on it."

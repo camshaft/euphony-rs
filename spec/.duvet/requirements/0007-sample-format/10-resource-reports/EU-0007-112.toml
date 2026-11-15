@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-112"
+
+[[spec]]
+level = "MUST"
+quote = "The workloads of a resource report MUST include cold and warm playback, edits, many listeners, spatial outputs, resumed wide-area sync and high-entropy audio."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-085"
+
+[[spec]]
+level = "MUST"
+quote = "An export MUST leave the floating-point render and the source originals in place."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-028"
+
+[[spec]]
+level = "MUST"
+quote = "The encoding of a stored result MUST NOT change the identity of the render calculation that made it."

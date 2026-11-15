@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-022"
+
+[[spec]]
+level = "MUST"
+quote = "An encoded object MUST have a digest of its encoded bytes that is separate from the semantic digest of the audio it holds."

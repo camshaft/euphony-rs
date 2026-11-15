@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/05-negotiation.md#EU-0007-049"
+
+[[spec]]
+level = "MUST"
+quote = "A peer that lacks a codec MUST negotiate another supported lossless encoding of the same samples."

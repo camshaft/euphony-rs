@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-070"
+
+[[spec]]
+level = "MUST"
+quote = "Incoming integer samples MUST convert to working audio once, at the engine's device or network adapter."
