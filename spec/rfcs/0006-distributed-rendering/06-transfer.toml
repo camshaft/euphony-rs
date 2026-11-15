@@ -1,0 +1,75 @@
+[section]
+anchor = 'transfer'
+title = 'Resumable transfer'
+problem = """\
+  A dropped connection that restarts a large transfer from the beginning wastes the link, and a \
+  receiver that counts a partly written or unchecked piece as present plays corrupt audio after a \
+  crash."""
+motivation = """\
+  Moving every input and result as immutable pieces named by their digests lets a receiver fetch \
+  only what it lacks after a disconnect, check each piece before it counts, and survive a crash \
+  without trusting a partial write."""
+prose = """
+Every render input and every result moves between computers as fixed-size immutable chunks. Each
+chunk is named by a cryptographic digest of its stored bytes, and a signed manifest lists the chunks
+of each object. After a disconnect, the receiver asks which chunks it still lacks and fetches only
+those. The transfer runs apart from the job queue, and the owner's device discovery service
+advertises and configures it without carrying its traffic. A result is written apart from the
+results the cache shows, checked, and only then shown."""
+
+[[requirement]]
+id = 'EU-0006-060'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every render input and every result MUST move between computers as immutable chunks, each named by a cryptographic digest of its bytes.'
+binds_to = 'system'
+rationale = 'A receiver checks each piece and fetches each piece once.'
+
+[[requirement]]
+id = 'EU-0006-061'
+level = 'MUST'
+polarity = 'required'
+statement = 'The chunks of each object MUST be listed in a signed manifest.'
+binds_to = 'system'
+rationale = 'A receiver knows every chunk an object needs, and that the list came from a paired computer.'
+
+[[requirement]]
+id = 'EU-0006-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'After a disconnect, a receiver MUST fetch only the chunks it still lacks.'
+binds_to = 'system'
+rationale = 'A dropped connection costs only the chunks it interrupted.'
+
+[[requirement]]
+id = 'EU-0006-063'
+level = 'MUST'
+polarity = 'required'
+statement = 'A receiver MUST check each chunk against its digest before it counts the chunk as present.'
+binds_to = 'system'
+rationale = 'A corrupt chunk is fetched again instead of played.'
+relations = [ { kind = 'depends_on', target = 'EU-0006-060' } ]
+
+[[requirement]]
+id = 'EU-0006-064'
+level = 'MUST'
+polarity = 'required'
+statement = 'A receiver MUST record a chunk as present only after its data is durable.'
+binds_to = 'system'
+rationale = 'A crash never marks an incomplete chunk present.'
+
+[[requirement]]
+id = 'EU-0006-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'A result MUST become visible in the render cache only once it is complete and checked.'
+binds_to = 'system'
+rationale = 'A half-written result never counts as cached.'
+
+[[requirement]]
+id = 'EU-0006-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transfer MUST run at the priority level of the work it serves.'
+binds_to = 'system'
+rationale = 'The chunks of interactive preparation come ahead of the chunks of speculative preparation.'
