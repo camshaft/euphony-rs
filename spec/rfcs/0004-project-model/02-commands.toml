@@ -1,0 +1,154 @@
+[section]
+anchor = 'commands'
+title = 'Commands and their outcomes'
+problem = """\
+  Where each interface, script and assistant changes a project in a way of its own, they apply \
+  different checks, a retried request is applied twice, and an edit made against an old state \
+  overwrites a newer one without anyone seeing it."""
+motivation = """\
+  One typed command for each change, checked the same way whoever sends it and applied whole or not \
+  at all against the revision its sender read, lets every way into euphony reach the same results."""
+prose = """
+Every change a person or an assistant makes to a project is a command. Commands are sent in batches.
+A batch names the project, the revision its sender expects to change, a key that identifies the batch
+across retries, and the actor that sends it. euphony checks each batch against the project schema and
+the access rules that the overview RFC states, and then commits it whole as a new revision, or
+refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
+gesture in an interface, a line of a script, the result of a composition program and the call of an
+assistant all reach the project as such batches. A change of presentation that leaves the project as
+it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
+subject of the client protocol RFC."""
+
+[[requirement]]
+id = 'EU-0004-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each persistent change to a project MUST be made by a command.'
+binds_to = 'system'
+rationale = 'Every change is checked, recorded and reachable from every way into euphony.'
+
+[[requirement]]
+id = 'EU-0004-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each command MUST have a type that the command schema of euphony defines.'
+binds_to = 'system'
+rationale = 'Every interface, script and assistant reads the same definition of each command.'
+
+[[requirement]]
+id = 'EU-0004-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'A batch MUST name its project, its expected revision, its idempotency key and its actor.'
+binds_to = 'system'
+rationale = 'euphony knows what the batch changes, against which state, across retries and for whom.'
+
+[[requirement]]
+id = 'EU-0004-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST check every command of a batch against the project schema before it commits the batch.'
+binds_to = 'system'
+rationale = 'An invalid change never reaches a revision.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-010' } ]
+
+[[requirement]]
+id = 'EU-0004-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'A batch MUST commit whole or not at all.'
+binds_to = 'system'
+rationale = 'A project never holds half of a change.'
+
+[[requirement]]
+id = 'EU-0004-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'A committed batch MUST produce exactly one new revision.'
+binds_to = 'system'
+rationale = 'Each change can be named, read and undone as one revision.'
+
+[[requirement]]
+id = 'EU-0004-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of a committed batch MUST identify the revision it committed and the changes it made.'
+binds_to = 'system'
+rationale = 'A sender that reports success can point at what it changed.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-014' } ]
+
+[[requirement]]
+id = 'EU-0004-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of a refused batch MUST be one of conflict, denied, invalid input or unavailable storage.'
+binds_to = 'system'
+rationale = 'A sender acts on a typed reason, not on the words of a message.'
+
+[[requirement]]
+id = 'EU-0004-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the expected revision of a batch is not the head of its branch, euphony MUST refuse the batch as a conflict.'
+binds_to = 'system'
+rationale = 'An edit made against an old state never overwrites a newer one.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
+
+[[requirement]]
+id = 'EU-0004-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conflict MUST include the current view of the project that the actor of the batch may read.'
+binds_to = 'system'
+rationale = 'The sender chooses whether to compute its change again from the current state.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-017' } ]
+
+[[requirement]]
+id = 'EU-0004-019'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A batch with the idempotency key of a committed batch MUST NOT be applied again.'
+binds_to = 'system'
+rationale = 'A retry after a lost answer, or after a reconnection, never repeats an edit.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
+
+[[requirement]]
+id = 'EU-0004-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'A batch sent again with the idempotency key of a committed batch MUST receive the outcome of that committed batch.'
+binds_to = 'system'
+rationale = 'A sender whose answer was lost learns what happened.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-019' } ]
+
+[[requirement]]
+id = 'EU-0004-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change MUST pass the same checks whichever interface, command line, script, composition program or assistant sends it.'
+binds_to = 'system'
+rationale = 'Every way into euphony has the same results.'
+
+[[requirement]]
+id = 'EU-0004-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each committed batch MUST be undoable by a later batch.'
+binds_to = 'system'
+rationale = 'A musician or an assistant takes back any change and keeps the history.'
+
+[[requirement]]
+id = 'EU-0004-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A change of presentation that leaves the project as it was MUST NOT produce a revision.'
+binds_to = 'system'
+rationale = 'Scrolling and focus never fill the history or change the sound.'
+
+[[requirement]]
+id = 'EU-0004-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a command starts work that ends after its batch commits, the outcome of the batch MUST identify that work apart from the revision.'
+binds_to = 'system'
+rationale = 'A pending render is never reported as a finished export.'
