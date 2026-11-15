@@ -1,0 +1,133 @@
+[section]
+anchor = 'isolation'
+title = 'Client failure and several clients'
+problem = """\
+  When the program a person works in crashes or is closed during a take, the take is lost if the \
+  engine stops with it, and when several interfaces attach to one session they can disagree about \
+  its state."""
+motivation = """\
+  Clients that run apart from the engine, whose failure ends only their own attachment, and one \
+  session state that every attached client shares, keep playback and recording running through the \
+  failure of any interface and keep every interface consistent."""
+prose = """
+A client runs in its own process, apart from the session host and the audio process, so its failure,
+a hang or the closing of its window ends only its attachment. The gestures it held end with a
+recorded forced end, its momentary controls release, and the device stream, the take and every other
+output go on. A client that comes back attaches again with a new generation and a fresh snapshot,
+and doesn't repeat input from before. Several clients attach to one session at once, each with its
+own layout, and they share one session state: one selected branch, one transport and one history.
+No client becomes a second authority, and adding a kind of client doesn't add a rule to that state.
+The session host admits clients and their display traffic by the measured cost of each, and under
+pressure drops only display frames that a newer frame replaces."""
+
+[[requirement]]
+id = 'EU-0003-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The failure, hang or closing of a client MUST NOT stop playback.'
+binds_to = 'system'
+rationale = 'Closing or losing any interface leaves the music playing.'
+
+[[requirement]]
+id = 'EU-0003-078'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The failure, hang or closing of a client MUST NOT stop or interrupt recording.'
+binds_to = 'system'
+rationale = 'A take is never cut short by a crashed window.'
+
+[[requirement]]
+id = 'EU-0003-079'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The failure, hang or closing of a client MUST NOT lose any recorded sample.'
+binds_to = 'system'
+rationale = 'Everything the person played before and during the failure is in the take.'
+
+[[requirement]]
+id = 'EU-0003-080'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The failure, hang or closing of a client MUST NOT change any other output of the session.'
+binds_to = 'system'
+rationale = 'Everyone else keeps hearing and seeing the session as before.'
+
+[[requirement]]
+id = 'EU-0003-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'The failure of a client MUST end only the attachment of that client.'
+binds_to = 'system'
+rationale = 'Every other client keeps its attachment, its gestures and its view.'
+
+[[requirement]]
+id = 'EU-0003-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where an attachment ends, each gesture that it held MUST end with a recorded forced end.'
+binds_to = 'system'
+rationale = 'A fader drag of a client that is gone neither stays open nor ends as if the person let go.'
+
+[[requirement]]
+id = 'EU-0003-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where an attachment ends, each momentary control that it held MUST release.'
+binds_to = 'system'
+rationale = 'A held button never stays held by a client that is gone.'
+
+[[requirement]]
+id = 'EU-0003-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client that attaches again MUST receive a new generation and a fresh snapshot.'
+binds_to = 'system'
+rationale = 'A relaunched interface shows the session as it stands.'
+
+[[requirement]]
+id = 'EU-0003-085'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client that attaches again MUST NOT replay input from before its earlier attachment ended.'
+binds_to = 'system'
+rationale = 'A relaunched window never repeats what the person did before the crash.'
+
+[[requirement]]
+id = 'EU-0003-086'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A message of an ended generation MUST NOT change the session.'
+binds_to = 'system'
+rationale = 'A client that comes back cannot act through its old attachment.'
+
+[[requirement]]
+id = 'EU-0003-087'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The number of clients attached to a session MUST NOT be bounded by a fixed number.'
+binds_to = 'system'
+rationale = 'Two screens, a terminal, a script, an assistant, a phone and a controller can all attach at once.'
+
+[[requirement]]
+id = 'EU-0003-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every client attached to a session MUST share its one selected branch and its one transport.'
+binds_to = 'system'
+rationale = 'Every interface shows and plays the same thing.'
+
+[[requirement]]
+id = 'EU-0003-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT hold state of the session that overrides the state the session host holds.'
+binds_to = 'system'
+rationale = 'Adding a client never adds a second authority over the session.'
+
+[[requirement]]
+id = 'EU-0003-090'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Under load, the session host MUST NOT drop any traffic to a client other than display frames that a newer frame replaces.'
+binds_to = 'system'
+rationale = 'Pressure costs only values that nobody would see.'

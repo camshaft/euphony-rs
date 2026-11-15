@@ -1,0 +1,118 @@
+[section]
+anchor = 'versions'
+title = 'Versions and compatibility'
+problem = """\
+  Clients and engines from different releases meet across the computers of the person, phones and \
+  scripts, and without one rule for versions either side can misread the state or the commands of \
+  the other, or fail without saying why."""
+motivation = """\
+  Versions whose minor steps only add, a negotiation at connection, and typed refusals that list what \
+  each side serves let every pair of releases either work together or say which release is needed."""
+prose = """
+The client protocol has a major and a minor version. A minor version only adds: commands, optional
+fields with defaults, capabilities and kinds of projection. Anything that removes something or
+changes what it means is a new major version. At connection each side states the versions and
+capabilities it supports, and the two use the newest version both support. Clients and engines from
+different releases meet: computers of the person that run different releases, phone controllers
+installed from an application store, and scripts. Each project configures the oldest client release
+it still supports, and each release of the engine serves every minor version of its major version
+from that release on."""
+
+[[requirement]]
+id = 'EU-0003-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'The client protocol MUST have a major version and a minor version.'
+binds_to = 'system'
+rationale = 'Each side can tell an addition from a change that breaks a client.'
+
+[[requirement]]
+id = 'EU-0003-066'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A new minor version MUST NOT remove or change the meaning of anything that an earlier minor version of the same major version holds.'
+binds_to = 'system'
+rationale = 'A client of an older minor version keeps working with a newer engine.'
+
+[[requirement]]
+id = 'EU-0003-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'A field that a minor version adds MUST be optional, with a default.'
+binds_to = 'system'
+rationale = 'A side that does not know the field reads the message as before.'
+
+[[requirement]]
+id = 'EU-0003-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change that removes or changes the meaning of a command, a field, a capability or a kind of projection MUST carry a new major version.'
+binds_to = 'system'
+rationale = 'Every change that breaks a client shows in the version.'
+
+[[requirement]]
+id = 'EU-0003-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'At connection, each side MUST state the protocol versions and the capabilities it supports.'
+binds_to = 'system'
+rationale = 'Each side knows what the other serves before it sends anything.'
+
+[[requirement]]
+id = 'EU-0003-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'The two sides of a connection MUST use the newest version that both support.'
+binds_to = 'system'
+rationale = 'A newer client and a newer engine use what they both offer.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-069' } ]
+
+[[requirement]]
+id = 'EU-0003-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client MUST hide each action that the engine does not serve, with the reason.'
+binds_to = 'system'
+rationale = 'The person never tries an action that would be refused for the version alone.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-069' } ]
+
+[[requirement]]
+id = 'EU-0003-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'The engine MUST refuse a major version it does not speak with a typed error that lists the versions it serves.'
+binds_to = 'system'
+rationale = 'A client that is too old or too new learns what the engine serves.'
+
+[[requirement]]
+id = 'EU-0003-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client that cannot work with the release of an engine MUST state which release it needs.'
+binds_to = 'system'
+rationale = 'The person learns what to update, not only that something failed.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-072' } ]
+
+[[requirement]]
+id = 'EU-0003-074'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A side MUST NOT interpret a field or a command that its agreed version does not define.'
+binds_to = 'system'
+rationale = 'Neither side misreads the state or the commands of the other.'
+
+[[requirement]]
+id = 'EU-0003-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each release of the engine MUST serve every minor version of its major version back to the oldest client release that the project configures as supported.'
+binds_to = 'system'
+rationale = 'Phones installed from stores, scripts and other computers keep working across releases.'
+
+[[requirement]]
+id = 'EU-0003-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'An engine release that introduces a new major version MUST also serve the previous major version for at least one release.'
+binds_to = 'system'
+rationale = 'Clients move to the new major version without a release in which they cannot connect.'
