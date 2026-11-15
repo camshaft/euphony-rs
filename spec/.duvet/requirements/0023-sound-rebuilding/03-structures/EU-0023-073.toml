@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-073"
+
+[[spec]]
+level = "MUST"
+quote = "A run's measures MUST count as stopped improving once they haven't improved beyond their intervals for as many consecutive rounds as the musician's stopping-rule setting sets."
