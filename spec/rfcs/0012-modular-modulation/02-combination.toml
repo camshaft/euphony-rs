@@ -1,0 +1,188 @@
+[section]
+anchor = "combination"
+title = "Combining routes with automation"
+problem = "Where several sources and drawn automation reach one control, a musician can't predict the result unless every source is scaled, curved, summed and applied to the control in one defined way."
+motivation = "One equation from source to contribution, one order of summing, one combination mode for each target and one clamp let a musician, an editor and every renderer compute the same value, and keep drawn automation as an editable base."
+prose = """
+Each source conversion produces a dimensionless value x in its declared unipolar or bipolar domain.
+A route turns x into a contribution c, its offset plus its depth times its curve of x, and clips c
+to its output range. A curve is a versioned piecewise mapping with a stored interpolation and
+defined end points. The contributions to one target are summed into m. The base a of a target is
+its evaluated track or region automation, or its manual value where it has none. In Add mode the
+normalized value is a plus m; in Scale mode, a times the sum of one and m; in Replace mode, b plus
+m, where b is a stored replacement base. The result is clamped once to the target's domain and
+then mapped to physical units, so a route to a frequency with a logarithmic mapping moves it in
+proportion rather than by a fixed number of hertz. Recording automation writes the base, and a
+bake writes the effective value into the base and disables the routes it covers."""
+
+[[requirement]]
+id = "EU-0012-023"
+level = "MUST"
+polarity = "required"
+statement = "Each source conversion MUST produce a dimensionless value in its declared unipolar or bipolar domain."
+binds_to = "system"
+rationale = "Routes from every kind of source combine on one scale."
+
+[[requirement]]
+id = "EU-0012-024"
+level = "MUST"
+polarity = "required"
+statement = "A route's contribution MUST be its offset plus its depth times its curve applied to the source's value."
+binds_to = "system"
+rationale = "A musician predicts a route's effect from its fields."
+
+[[requirement]]
+id = "EU-0012-025"
+level = "MUST"
+polarity = "required"
+statement = "A route's output range MUST clip its contribution."
+binds_to = "system"
+rationale = "A route never moves a control further than the musician allowed."
+
+[[requirement]]
+id = "EU-0012-026"
+level = "MUST"
+polarity = "required"
+statement = "A route's curve MUST be a versioned piecewise mapping with a stored interpolation and defined end points."
+binds_to = "system"
+rationale = "A curve returns the same output on every computer and in every later version."
+
+[[requirement]]
+id = "EU-0012-027"
+level = "MUST"
+polarity = "required"
+statement = "The contributions to one target MUST be summed in the order of their route identifiers, with the accumulator the project's numerical profile declares."
+binds_to = "system"
+rationale = "Every renderer sums in the same order and computes the same value."
+
+[[requirement]]
+id = "EU-0012-028"
+level = "MUST"
+polarity = "required"
+statement = "Each target MUST apply exactly one combination mode, Add, Scale or Replace, to its summed contribution."
+binds_to = "system"
+rationale = "Several sources never fight over one control."
+
+[[requirement]]
+id = "EU-0012-029"
+level = "MUST"
+polarity = "required"
+statement = "In Add mode, the normalized value of a target MUST be its base plus its summed contribution."
+binds_to = "system"
+rationale = "Add moves a control around its drawn curve."
+relations = [ { kind = "depends_on", target = "EU-0012-028" } ]
+
+[[requirement]]
+id = "EU-0012-030"
+level = "MUST"
+polarity = "required"
+statement = "In Scale mode, the normalized value of a target MUST be its base times the sum of one and its summed contribution."
+binds_to = "system"
+rationale = "Scale moves a control in proportion to its drawn curve."
+relations = [ { kind = "depends_on", target = "EU-0012-028" } ]
+
+[[requirement]]
+id = "EU-0012-031"
+level = "MUST"
+polarity = "required"
+statement = "In Replace mode, the normalized value of a target MUST be its stored replacement base plus its summed contribution."
+binds_to = "system"
+rationale = "Replace lets modulation drive a control away from its drawn curve."
+relations = [ { kind = "depends_on", target = "EU-0012-028" } ]
+
+[[requirement]]
+id = "EU-0012-032"
+level = "MUST"
+polarity = "required"
+statement = "When a target's mode is set to Replace, its replacement base MUST start at the target's unmodulated value."
+binds_to = "system"
+rationale = "Choosing Replace doesn't make the control jump."
+relations = [ { kind = "depends_on", target = "EU-0012-031" } ]
+
+[[requirement]]
+id = "EU-0012-033"
+level = "MUST"
+polarity = "required"
+statement = "The combined value MUST be clamped once to the target's domain, before it is mapped to physical units."
+binds_to = "system"
+rationale = "Clamping in normalized terms keeps logarithmic and linear mappings correct."
+
+[[requirement]]
+id = "EU-0012-034"
+level = "MUST"
+polarity = "required"
+statement = "A target whose routes are all absent or bypassed MUST take its unmodulated base in every mode."
+binds_to = "system"
+rationale = "Removing modulation always restores the drawn sound."
+
+[[requirement]]
+id = "EU-0012-035"
+level = "MUST"
+polarity = "forbidden"
+statement = "A value that isn't finite MUST NOT reach the renderer."
+binds_to = "system"
+rationale = "A bad curve or source never produces a burst of noise."
+
+[[requirement]]
+id = "EU-0012-036"
+level = "MUST"
+polarity = "required"
+statement = "The base of a target MUST be its evaluated track or region automation, or its manual value where it has no automation."
+binds_to = "system"
+rationale = "Drawn automation stays the editable base of every modulated control."
+
+[[requirement]]
+id = "EU-0012-037"
+level = "MUST"
+polarity = "required"
+statement = "Recording automation on a target MUST write its base lane, not its modulated value."
+binds_to = "system"
+rationale = "Modulation is never applied twice on playback."
+
+[[requirement]]
+id = "EU-0012-038"
+level = "MUST"
+polarity = "required"
+statement = "A bake MUST write a target's effective value into its automation and disable the routes it covers in the same change."
+binds_to = "system"
+rationale = "A baked result is never modulated a second time by the same routes."
+
+[[requirement]]
+id = "EU-0012-039"
+level = "MUST"
+polarity = "required"
+statement = "A target MUST combine in Add mode until the musician chooses another mode."
+binds_to = "system"
+rationale = "The default mode is the one a depth of zero undoes."
+
+[[requirement]]
+id = "EU-0012-040"
+level = "MUST"
+polarity = "required"
+statement = "A newly connected route MUST start at a depth of zero."
+binds_to = "system"
+rationale = "Connecting a route doesn't change the sound until the musician turns it up."
+
+[[requirement]]
+id = "EU-0012-041"
+level = "MUST"
+polarity = "required"
+statement = "Each change of a combination mode, an offset, a depth or a curve MUST make a new revision of the project that can be undone."
+binds_to = "system"
+rationale = "Every modulation edit can be compared and reverted."
+
+[[requirement]]
+id = "EU-0012-042"
+level = "MUST"
+polarity = "forbidden"
+statement = "A route MUST NOT replace another route's contribution to the same target."
+binds_to = "system"
+rationale = "Several sources share a target, rather than the last one written winning."
+
+[[requirement]]
+id = "EU-0012-043"
+level = "MUST"
+polarity = "required"
+statement = "Two collaborative changes of one target's combination mode MUST conflict when they merge."
+binds_to = "system"
+rationale = "A merge never picks one musician's mode silently."
