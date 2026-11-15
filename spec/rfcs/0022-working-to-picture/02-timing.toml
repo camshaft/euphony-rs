@@ -1,7 +1,7 @@
 [section]
 anchor = 'timing'
 title = 'Frames, timecode and picture-locked positions'
-problem = "Picture and sound drift apart where they are timed by different clocks, a position written as a frame label can mean different times at different rates, and music placed on a frame moves off it when the tempo changes."
+problem = "Picture and sound fall out of step where they are timed by different clocks, a position written as a frame label can mean different times at different rates, and music placed on a frame moves off it when the tempo changes."
 motivation = "One sample timeline, an exact mapping from each frame's presentation time to samples, timecode used only to read and enter positions, and a lock on each position keep every frame, label and hit where the musician put it."
 prose = """
 The project's sample timeline, which RFC 0004 states, is the clock of the project, and a video's
@@ -11,8 +11,8 @@ presentation starts. Frame i starts at the project sample s0 + round((t_i - t_0)
 t_i is its presentation time, t_0 the presentation time of the first frame shown, b the time base in
 seconds, s0 the start offset in samples and R the project's sample rate, with the rounding that RFC
 0004 states for the timeline; the frame lasts until the next frame starts. A file of constant rate
-f/d gives the same positions as frame n at s0 + round(n x R x d / f). This is the frame mapping of
-the project.
+f/d places frame n at s0 + round(n x R x d / f), the same position as its presentation time. This
+is the frame mapping of the project.
 
 Timecode is hours, minutes, seconds and frames at the project's timecode rate. The timecode rates
 are 23.976, 24, 25, 29.97, 30, 50, 59.94 and 60 frames per second, the fractional ones being
@@ -114,7 +114,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "A person MUST be able to enter every position as timecode at the project's timecode rate."
 binds_to = 'system'
-rationale = "A musician types the timecode an editor or a cue list gives."
+rationale = "A musician types the timecode an editor or a cue list states."
 
 [[requirement]]
 id = 'EU-0022-029'
