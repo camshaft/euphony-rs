@@ -22,9 +22,9 @@ rationale = "A listener can't learn more through a route than through the audio 
 id = "EU-0012-145"
 level = "MUST"
 polarity = "required"
-statement = "A route in the owner's copy of a project MUST be created only by the owner's paired devices and connected assistants."
+statement = "The owner's paired devices and connected assistants MUST be able to create any route in the owner's copy of a project."
 binds_to = "system"
-rationale = "Only the owner changes the owner's patch."
+rationale = "Every client of the owner can patch the owner's project."
 
 [[requirement]]
 id = "EU-0012-146"
