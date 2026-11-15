@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-073"
+
+[[spec]]
+level = "MUST"
+quote = "A conversion to an external format MUST check that each value is finite and within the destination's range."

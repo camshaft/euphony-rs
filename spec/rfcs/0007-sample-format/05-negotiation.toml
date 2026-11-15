@@ -1,0 +1,73 @@
+[section]
+anchor = 'negotiation'
+title = 'Decoders at peers and browsers'
+problem = """\
+  A peer or a browser that reports itself ready without a decoder for the audio it receives fails \
+  during playback, and a peer that asks for integer audio to avoid a decoder quantizes the music \
+  without anyone deciding to."""
+motivation = """\
+  Readiness that waits on a negotiated decoder, a lossless fallback, and a refusal of quantized \
+  exchange keep every listener and every peer on the same samples."""
+prose = """
+A peer or a browser becomes ready to play or sync only once it holds a decoder for each encoding it
+will read. A peer that lacks a codec negotiates another supported lossless encoding, or the same
+sample bits raw where a measured raw exception covers them, and otherwise reports that it lacks a
+decoder. Peers exchange audio only in schema and profile versions both support, and work that one
+of them can't read yet is held where the musician sees it. No peer asks for integer audio instead
+of working audio."""
+
+[[requirement]]
+id = 'EU-0007-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer or a browser MUST hold a decoder for each encoding it reads before it reports itself ready.'
+binds_to = 'system'
+rationale = 'Readiness means the audio will play.'
+
+[[requirement]]
+id = 'EU-0007-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer or a browser that lacks a codec MUST negotiate another supported lossless encoding of the same samples.'
+binds_to = 'system'
+rationale = 'A missing codec changes the bytes exchanged, never the samples.'
+
+[[requirement]]
+id = 'EU-0007-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A peer or a browser MUST NOT receive a raw representation of working audio unless a measured raw exception covers it.'
+binds_to = 'system'
+rationale = 'A missing codec is not a reason to send raw audio.'
+
+[[requirement]]
+id = 'EU-0007-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where no supported lossless encoding is left and no measured raw exception covers a raw representation, readiness MUST report the unsupported decoder.'
+binds_to = 'system'
+rationale = 'The musician learns why a peer or a browser is not ready.'
+
+[[requirement]]
+id = 'EU-0007-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A peer MUST NOT request integer quantization of working audio.'
+binds_to = 'system'
+rationale = 'Sync never quantizes the music silently.'
+
+[[requirement]]
+id = 'EU-0007-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'Peers MUST exchange working audio only in schema and profile versions that both support.'
+binds_to = 'system'
+rationale = 'A peer never reads audio in a form it misreads.'
+
+[[requirement]]
+id = 'EU-0007-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'Work that a peer cannot read for want of a supported version MUST be held where the musician sees it.'
+binds_to = 'system'
+rationale = 'Incompatible work waits visibly instead of disappearing.'

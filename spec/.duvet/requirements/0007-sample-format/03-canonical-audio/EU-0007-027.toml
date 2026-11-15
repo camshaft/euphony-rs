@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-027"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST keep an additional encoded representation of the same canonical content only while an active reader needs it."

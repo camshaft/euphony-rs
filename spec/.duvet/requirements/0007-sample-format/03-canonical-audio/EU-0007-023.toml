@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-023"
+
+[[spec]]
+level = "MUST"
+quote = "Every interface that exchanges working audio MUST exchange it in the canonical form."

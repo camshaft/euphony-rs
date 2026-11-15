@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-013"
+
+[[spec]]
+level = "MUST"
+quote = "A checkpoint MUST keep a processor's state at the precision the processor holds it."

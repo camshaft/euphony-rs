@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-024"
+
+[[spec]]
+level = "MUST"
+quote = "Encoding, decoding, byte-order conversion and layout conversion MUST keep the bits of each sample, signed zero and subnormal values included."

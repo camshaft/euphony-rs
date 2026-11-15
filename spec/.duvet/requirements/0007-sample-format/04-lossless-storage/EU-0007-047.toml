@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-047"
+
+[[spec]]
+level = "MUST"
+quote = "Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, export deliveries, capture journals and objects with a measured raw exception."

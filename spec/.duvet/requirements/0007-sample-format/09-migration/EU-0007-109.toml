@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-109"
+
+[[spec]]
+level = "MUST"
+quote = "A release that removes a decoder MUST NOT be published without passing migration, interruption, rollback and old-revision tests for that exact commit."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/01-working-samples.md#EU-0007-005"
+
+[[spec]]
+level = "MUST"
+quote = "A render MUST NOT be published while it holds a non-finite sample."

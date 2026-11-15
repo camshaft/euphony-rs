@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-078"
+
+[[spec]]
+level = "MUST"
+quote = "The default rendered-file export MUST be an uncompressed floating-point file at the working precision where the destination supports it."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-068"
+
+[[spec]]
+level = "MUST"
+quote = "A source original MUST NOT be deleted because an approximate working copy of it exists."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-020"
+
+[[spec]]
+level = "MUST"
+quote = "After its header, canonical working audio MUST hold its samples interleaved by frame, each in little-endian byte order."

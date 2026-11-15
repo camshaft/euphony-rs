@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-029"
+
+[[spec]]
+level = "MUST"
+quote = "Saved, cached and shared working audio MUST decode to exactly the samples that were encoded."

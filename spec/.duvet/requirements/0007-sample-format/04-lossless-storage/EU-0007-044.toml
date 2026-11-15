@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-044"
+
+[[spec]]
+level = "MUST"
+quote = "The data a cache keeps resident MUST follow observed memory pressure and playback deadlines."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-041"
+
+[[spec]]
+level = "MUST"
+quote = "A byte rearrangement applied before compression MUST be recorded as a versioned encoding."

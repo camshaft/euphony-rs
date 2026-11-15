@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-097"
+
+[[spec]]
+level = "MUST"
+quote = "An earlier quantized prepared result MUST be rendered again from its original inputs where they exist, instead of being converted."

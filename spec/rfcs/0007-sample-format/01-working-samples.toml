@@ -1,0 +1,78 @@
+[section]
+anchor = 'working-samples'
+title = 'Working sample format'
+problem = """\
+  A musician's audio loses detail when it is rounded or converted at each step of processing, \
+  preparation, saving and sharing, and a format that clips or quantizes between steps can't give \
+  back what was processed."""
+motivation = """\
+  One floating-point format for every sample euphony processes, prepares, saves and shares holds \
+  each 24-bit integer sample exactly, keeps temporary over-level signals, and never rounds to an \
+  integer between steps, so audio comes back exactly as it was processed."""
+prose = """
+Working audio is the audio euphony processes, prepares, saves and shares: the samples at each
+processor interface, each prepared result in the render cache, the audio objects of a project and
+the audio that peers sync. Each of its samples is an IEEE 754 binary32 value. That format holds
+every signed 24-bit integer sample exactly, keeps a value above full scale until a later stage
+attenuates it, and doesn't round to an integer at each processing step. Floating-point amplitude is
+about sample values alone: sample positions, musical time, note identities, counters and protocol
+timestamps keep their exact forms. Lossy copies of audio made for listening, such as compressed
+previews for collaborators, are outside this RFC. Audio that was clipped, rounded or reduced in
+detail before it reached euphony stays as it arrived, and audio devices and network audio
+equipment keep the sample formats they expect."""
+
+[[requirement]]
+id = 'EU-0007-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Working audio MUST carry each sample amplitude as an IEEE 754 binary32 value.'
+binds_to = 'system'
+rationale = 'Processing, caching, saving and sharing never round audio to integers between steps.'
+
+[[requirement]]
+id = 'EU-0007-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The floating-point amplitude format MUST NOT change how sample positions, musical time, note identities, counters or protocol timestamps are represented.'
+binds_to = 'system'
+rationale = 'Musical positions stay exact whatever the amplitude format is.'
+
+[[requirement]]
+id = 'EU-0007-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'A processor MUST return binary32 samples at its declared interface, whatever precision it uses inside.'
+binds_to = 'system'
+rationale = 'Each processor rounds to the working format at one stated boundary.'
+
+[[requirement]]
+id = 'EU-0007-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'A sample above full scale MUST pass from one processor to the next unchanged.'
+binds_to = 'system'
+rationale = 'A temporary over-level signal survives until a later stage attenuates it.'
+
+[[requirement]]
+id = 'EU-0007-005'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A render MUST NOT be published while it holds a non-finite sample.'
+binds_to = 'system'
+rationale = 'Stored and shared audio holds only values that are sound.'
+
+[[requirement]]
+id = 'EU-0007-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'A live processor result that holds a non-finite sample MUST mute the outputs it feeds.'
+binds_to = 'system'
+rationale = 'A non-finite value never reaches a device.'
+
+[[requirement]]
+id = 'EU-0007-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'A live processor result that holds a non-finite sample MUST be reported as a failure that names the processor.'
+binds_to = 'system'
+rationale = 'The musician learns which processor failed, instead of hearing silence without a reason.'

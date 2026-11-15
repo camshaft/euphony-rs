@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-110"
+
+[[spec]]
+level = "MUST"
+quote = "Each release MUST hold a resource report of processor time for rendering, encoding and decoding, peak and steady resident memory, allocation and copy counts, persistent and temporary disk bytes, transferred bytes, cache reuse and playback underruns."

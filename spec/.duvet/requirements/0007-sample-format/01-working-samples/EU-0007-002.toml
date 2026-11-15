@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/01-working-samples.md#EU-0007-002"
+
+[[spec]]
+level = "MUST"
+quote = "The floating-point amplitude format MUST NOT change how sample positions, musical time, note identities, counters or protocol timestamps are represented."

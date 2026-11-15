@@ -1,0 +1,134 @@
+[section]
+anchor = 'sources'
+title = 'Source originals, import and capture'
+problem = """\
+  Audio converted on import or capture can lose precision without anyone knowing, and once the \
+  original is gone, no later conversion can restore what the first one lost."""
+motivation = """\
+  Source originals kept apart from working audio, exact conversion where it is possible, a \
+  reported and accepted loss where it isn't, and a verified capture journal keep the archive \
+  faithful while euphony processes in one format."""
+prose = """
+A source original is audio as it was imported or captured. Euphony keeps it apart from working
+audio, in its original bytes or in a verified lossless representation of them, such as a lossless
+integer codec, so that every later conversion starts from it and never from an earlier
+conversion. A signed integer source of up to 24 valid bits converts to working audio exactly,
+divided by 2 to the power of one less than its valid bits. A wider integer source or a 64-bit
+floating-point source doesn't convert exactly in general, so its import reports the precision the
+working copy loses and waits for the musician to accept it. A capture that can't encode within its
+deadline first writes an uncompressed journal, which stays recoverable source data until its
+encoded object is verified and published."""
+
+[[requirement]]
+id = 'EU-0007-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'Imported and captured source originals MUST be kept apart from working audio.'
+binds_to = 'system'
+rationale = 'Every later conversion starts from the original.'
+
+[[requirement]]
+id = 'EU-0007-056'
+level = 'MUST'
+polarity = 'required'
+statement = 'A source original MUST be kept as its original bytes or as a verified lossless representation of them.'
+binds_to = 'system'
+rationale = 'The archive stays faithful to what arrived.'
+
+[[requirement]]
+id = 'EU-0007-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'A signed integer source of up to 24 valid bits MUST convert to working audio by division by 2 to the power of one less than its valid bits.'
+binds_to = 'system'
+rationale = 'Every such sample converts exactly, and every implementation converts it the same way.'
+
+[[requirement]]
+id = 'EU-0007-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'Import MUST read a packed or padded integer source by its valid bits, not by its container width.'
+binds_to = 'system'
+rationale = 'Padding bits never change a sample value.'
+
+[[requirement]]
+id = 'EU-0007-059'
+level = 'MUST'
+polarity = 'required'
+statement = "Import MUST keep a source's bit depth, alignment and channel metadata."
+binds_to = 'system'
+rationale = 'A later export or conversion knows what the source was.'
+
+[[requirement]]
+id = 'EU-0007-060'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a source can't convert to working audio exactly, its import or capture profile MUST report the precision the working copy loses."
+binds_to = 'system'
+rationale = 'A loss of precision is never silent.'
+
+[[requirement]]
+id = 'EU-0007-061'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A working copy with reduced precision MUST NOT be used before the musician accepts the reduction.'
+binds_to = 'system'
+rationale = 'The musician decides whether the loss is acceptable.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-060' } ]
+
+[[requirement]]
+id = 'EU-0007-062'
+level = 'MUST'
+polarity = 'required'
+statement = "An import whose conversion isn't supported MUST leave the source original intact."
+binds_to = 'system'
+rationale = 'An unsupported source can still be converted by a later version.'
+
+[[requirement]]
+id = 'EU-0007-063'
+level = 'MUST'
+polarity = 'required'
+statement = 'An imported original that holds a non-finite sample MUST be kept for diagnosis.'
+binds_to = 'system'
+rationale = 'The musician can find out what was wrong with the file.'
+
+[[requirement]]
+id = 'EU-0007-064'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An imported original that holds a non-finite sample MUST NOT be admitted to playback.'
+binds_to = 'system'
+rationale = 'A non-finite value never reaches processing or a device.'
+
+[[requirement]]
+id = 'EU-0007-065'
+level = 'MAY'
+polarity = 'required'
+statement = "Capture MAY write an uncompressed journal first where encoding can't meet its deadline."
+binds_to = 'system'
+rationale = 'A recording is never lost because encoding is slow.'
+
+[[requirement]]
+id = 'EU-0007-066'
+level = 'MUST'
+polarity = 'required'
+statement = "Before it publishes a capture journal's encoded object, capture MUST verify that the object decodes to exactly the journal's samples."
+binds_to = 'system'
+rationale = 'The journal is reclaimed only for a bit-exact copy.'
+
+[[requirement]]
+id = 'EU-0007-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'A capture journal MUST be reclaimed only after its encoded object is published atomically.'
+binds_to = 'system'
+rationale = 'A crash between the two steps never loses the recording.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-066' } ]
+
+[[requirement]]
+id = 'EU-0007-068'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A source original MUST NOT be deleted because an approximate working copy of it exists.'
+binds_to = 'system'
+rationale = 'An approximate copy never stands in for the original.'

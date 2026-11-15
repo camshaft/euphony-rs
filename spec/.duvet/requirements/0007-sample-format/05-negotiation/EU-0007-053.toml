@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/05-negotiation.md#EU-0007-053"
+
+[[spec]]
+level = "MUST"
+quote = "Peers MUST exchange working audio only in schema and profile versions that both support."

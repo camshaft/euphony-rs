@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/08-verification.md#EU-0007-089"
+
+[[spec]]
+level = "MUST"
+quote = "The build MUST NOT adopt a dependency whose verification record is missing, failed or doesn't match it."

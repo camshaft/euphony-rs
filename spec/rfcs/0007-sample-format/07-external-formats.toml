@@ -1,0 +1,166 @@
+[section]
+anchor = 'external-formats'
+title = 'Devices, network audio and export'
+problem = """\
+  Devices, network audio endpoints and delivery files expect formats other than euphony's working \
+  audio, and a conversion made at the wrong place, without a stated policy, or described as lossless \
+  when it quantizes, changes the music without the musician knowing."""
+motivation = """\
+  Conversions made once at each boundary under a declared policy, an export preview that states \
+  what each delivery keeps and loses, and renders kept for later deliveries let euphony meet every \
+  destination without accumulating conversions."""
+prose = """
+Audio devices and network audio endpoints use the sample formats they negotiate, and euphony
+doesn't require them to accept floating-point audio. Incoming integer samples convert to working
+audio once, at the engine's adapter; outgoing working audio converts after the final gain, any
+resampling and output protection, under a declared rounding, saturation and dither policy. Dither
+belongs at a lossy reduction to integer precision, where the delivery calls for it, never in cache
+compression or peer sync. Live safety stays with the local output protection, and the range of
+floating-point samples doesn't allow unsafe output levels. An export is a delivery of a render to
+a destination: the native lossless bundle, an uncompressed floating-point file, an integer file or
+another verified target, such as an immersive-audio adapter. A delivery to integer audio is
+quantized on purpose, and is lossless only relative to its integer samples."""
+
+[[requirement]]
+id = 'EU-0007-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'An audio device or a network audio endpoint MUST receive samples in the external format it negotiated.'
+binds_to = 'system'
+rationale = 'Equipment that expects integer samples never receives floating-point ones.'
+
+[[requirement]]
+id = 'EU-0007-070'
+level = 'MUST'
+polarity = 'required'
+statement = "Incoming integer samples MUST convert to working audio once, at the engine's device or network adapter."
+binds_to = 'system'
+rationale = 'Every stage after the adapter reads working audio, converted one time.'
+
+[[requirement]]
+id = 'EU-0007-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'Outgoing working audio MUST convert to an external format only after the final sink gain, any resampling and output protection.'
+binds_to = 'system'
+rationale = 'Quantization happens once, at the last step.'
+
+[[requirement]]
+id = 'EU-0007-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conversion to an external integer format MUST follow a declared rounding, saturation and dither policy.'
+binds_to = 'system'
+rationale = 'Every conversion is reproducible and its loss is stated.'
+
+[[requirement]]
+id = 'EU-0007-073'
+level = 'MUST'
+polarity = 'required'
+statement = "A conversion to an external format MUST check that each value is finite and within the destination's range."
+binds_to = 'system'
+rationale = 'A destination never receives a value it cannot hold.'
+
+[[requirement]]
+id = 'EU-0007-074'
+level = 'MUST'
+polarity = 'required'
+statement = "A conversion to an external format MUST report each overload of the destination's range."
+binds_to = 'system'
+rationale = 'The musician learns of clipping instead of discovering it later.'
+
+[[requirement]]
+id = 'EU-0007-075'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Dither MUST NOT be applied in cache compression or peer sync.'
+binds_to = 'system'
+rationale = 'Dither belongs to a lossy delivery, never to a lossless copy.'
+
+[[requirement]]
+id = 'EU-0007-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'An offline export profile MUST hold its dither algorithm and seed.'
+binds_to = 'system'
+rationale = 'The same export made twice produces the same bytes.'
+
+[[requirement]]
+id = 'EU-0007-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The range of floating-point samples MUST NOT raise the output level the local output protection allows.'
+binds_to = 'system'
+rationale = 'Values above full scale never reach a listener at an unsafe level.'
+
+[[requirement]]
+id = 'EU-0007-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'The default rendered-file export MUST be an uncompressed floating-point file at the working precision where the destination supports it.'
+binds_to = 'system'
+rationale = 'A delivery keeps the render as it is unless the destination needs otherwise.'
+
+[[requirement]]
+id = 'EU-0007-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'A floating-point file export MUST keep the bits of each finite sample at the selected rate and layout, without normalization.'
+binds_to = 'system'
+rationale = 'The exported file holds the samples the musician heard.'
+
+[[requirement]]
+id = 'EU-0007-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'The export preview MUST disclose each change of rate, layout or gain the export makes.'
+binds_to = 'system'
+rationale = 'A render transformation is never hidden in an export.'
+
+[[requirement]]
+id = 'EU-0007-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'The export preview MUST distinguish the native lossless bundle, floating-point files, integer files and each other verified target.'
+binds_to = 'system'
+rationale = 'The musician sees what each choice keeps and loses before the export runs.'
+
+[[requirement]]
+id = 'EU-0007-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'An integer export MUST state its bit depth and its conversion policy.'
+binds_to = 'system'
+rationale = 'An integer delivery is chosen, never assumed.'
+
+[[requirement]]
+id = 'EU-0007-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'An integer export MUST warn of out-of-range values before it completes.'
+binds_to = 'system'
+rationale = 'The musician can fix clipping before delivering the file.'
+
+[[requirement]]
+id = 'EU-0007-084'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An export to integer audio MUST NOT be described as lossless relative to the floating-point render.'
+binds_to = 'system'
+rationale = 'A quantized delivery is described as what it is.'
+
+[[requirement]]
+id = 'EU-0007-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'An export MUST leave the floating-point render and the source originals in place.'
+binds_to = 'system'
+rationale = 'Another delivery starts from them, without accumulating conversions.'
+
+[[requirement]]
+id = 'EU-0007-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'A raw copy of an export kept in the project store MUST hold the measurement a raw exception needs.'
+binds_to = 'system'
+rationale = 'A compatibility delivery is not a way around the raw exception.'

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/08-verification.md#EU-0007-091"
+
+[[spec]]
+level = "MUST"
+quote = "Each export adapter target MUST have a verification record keyed by the adapter's exact version that declares the sample formats, rates and layouts it accepts."

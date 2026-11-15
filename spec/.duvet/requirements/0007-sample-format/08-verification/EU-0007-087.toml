@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/08-verification.md#EU-0007-087"
+
+[[spec]]
+level = "MUST"
+quote = "Each adopted codec, file-format and network audio dependency MUST have a typed verification record keyed by its exact locked version, its source digest and its target and features."

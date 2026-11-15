@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-043"
+
+[[spec]]
+level = "MUST"
+quote = "Readers of immutable audio MUST share its buffers instead of copying them."

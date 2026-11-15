@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-046"
+
+[[spec]]
+level = "MUST"
+quote = "Where compression or prefetch would miss a live deadline, the system MUST fall back to a path that meets the deadline."

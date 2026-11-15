@@ -1,0 +1,109 @@
+[section]
+anchor = 'canonical-audio'
+title = 'Canonical working audio and its identity'
+problem = """\
+  Audio that two components lay out differently, or that changes a bit when it is encoded, stored \
+  or moved between machines, can't be compared, deduplicated or cached by what it holds."""
+motivation = """\
+  One canonical byte form, a semantic digest of it that no encoding changes, and conversions that \
+  keep every bit let every component name, compare and cache audio by its content."""
+prose = """
+Canonical working audio is a versioned header, which declares the sample format, the sample rate,
+the channel order and the frame count, followed by the samples interleaved by frame, the bits of
+each sample in little-endian byte order. Its semantic digest covers the header and the samples, and
+names the audio whatever encoding stores it; an encoded object has a digest of its encoded bytes
+beside it. A processor can hold samples in planar buffers inside, but every interface that
+exchanges working audio exchanges the canonical form. Encoding, decoding, a change of byte order
+and a change of layout keep each sample's bits, signed zero and subnormal values included. The
+store keeps one canonical content once, whatever number of projects and listeners read it."""
+
+[[requirement]]
+id = 'EU-0007-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'Canonical working audio MUST begin with a versioned header that declares the sample format, the sample rate, the channel order and the frame count.'
+binds_to = 'system'
+rationale = 'A reader decodes any working audio from its own bytes.'
+
+[[requirement]]
+id = 'EU-0007-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'After its header, canonical working audio MUST hold its samples interleaved by frame, each in little-endian byte order.'
+binds_to = 'system'
+rationale = 'Every machine produces the same bytes for the same samples.'
+
+[[requirement]]
+id = 'EU-0007-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'The semantic digest of working audio MUST cover its canonical header and its samples.'
+binds_to = 'system'
+rationale = 'Equal digests mean equal audio, whatever stores it.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-019' }, { kind = 'depends_on', target = 'EU-0007-020' } ]
+
+[[requirement]]
+id = 'EU-0007-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'An encoded object MUST have a digest of its encoded bytes that is separate from the semantic digest of the audio it holds.'
+binds_to = 'system'
+rationale = 'The store checks both the integrity of the encoded bytes and the identity of the decoded samples.'
+
+[[requirement]]
+id = 'EU-0007-125'
+level = 'MUST'
+polarity = 'required'
+statement = "A reader MUST verify an encoded object's encoded digest before it decodes the object."
+binds_to = 'system'
+rationale = 'A corrupt or altered object is refused before any of it is decoded.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-022' } ]
+
+[[requirement]]
+id = 'EU-0007-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every interface that exchanges working audio MUST exchange it in the canonical form.'
+binds_to = 'system'
+rationale = 'Components never disagree about layout or byte order.'
+
+[[requirement]]
+id = 'EU-0007-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'Encoding, decoding, byte-order conversion and layout conversion MUST keep the bits of each sample, signed zero and subnormal values included.'
+binds_to = 'system'
+rationale = 'No step between processing and playback changes what was processed.'
+
+[[requirement]]
+id = 'EU-0007-025'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Storage, caching and sync MUST NOT change the value of any sample of working audio.'
+binds_to = 'system'
+rationale = 'Neither gain normalization nor quantization happens out of sight of the musician.'
+
+[[requirement]]
+id = 'EU-0007-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST deduplicate working audio by its semantic digest.'
+binds_to = 'system'
+rationale = 'Shared stems and repeated renders cost their bytes once.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-021' } ]
+
+[[requirement]]
+id = 'EU-0007-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST keep an additional encoded representation of the same canonical content only while an active reader needs it.'
+binds_to = 'system'
+rationale = 'Extra representations of the same content cost disk only while they serve someone.'
+
+[[requirement]]
+id = 'EU-0007-028'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The encoding of a stored result MUST NOT change the identity of the render calculation that made it.'
+binds_to = 'system'
+rationale = 'Another encoding of the same samples still answers the same cache entry.'

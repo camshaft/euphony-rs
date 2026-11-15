@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-042"
+
+[[spec]]
+level = "MUST"
+quote = "Playback MUST stream decoded audio into reusable buffers instead of loading a project's audio into memory whole."

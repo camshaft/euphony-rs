@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-081"
+
+[[spec]]
+level = "MUST"
+quote = "The export preview MUST distinguish the native lossless bundle, floating-point files, integer files and each other verified target."

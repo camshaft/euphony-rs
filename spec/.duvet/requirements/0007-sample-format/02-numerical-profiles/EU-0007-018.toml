@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-018"
+
+[[spec]]
+level = "MUST"
+quote = "The release step MUST NOT release a commit that holds an unregistered processor identity."

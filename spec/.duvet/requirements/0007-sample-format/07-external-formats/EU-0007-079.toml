@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-079"
+
+[[spec]]
+level = "MUST"
+quote = "A floating-point file export MUST keep the bits of each finite sample at the selected rate and layout, without normalization."

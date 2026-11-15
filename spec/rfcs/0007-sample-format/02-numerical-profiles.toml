@@ -1,0 +1,112 @@
+[section]
+anchor = 'numerical-profiles'
+title = 'Numerical profiles and processor accuracy'
+problem = """\
+  The precision of the working format doesn't show that an algorithm is accurate, and a cached result \
+  stays wrong when a processor's arithmetic changes without a change of its identity."""
+motivation = """\
+  Identities derived from what each processor computes, and a refusal of any processor without a \
+  passing accuracy test, keep cached results true to the code and make accuracy a checked obligation \
+  of each algorithm."""
+prose = """
+A processor can compute in a wider precision inside, such as for long sums or numerically sensitive
+filters, and returns working samples at its interface. Its numerical profile states the rules its
+arithmetic follows: internal precision, rounding, fused operations, vector behavior and subnormal
+handling. The identity of the profile and the identity of the processor are digests of their
+definitions, so a change of either changes the identity, and every cached result that depends on
+the processor follows it, without a version label anyone chooses. The binding checks the declared
+rules; conformance tests establish that an implementation follows them. The precision of the
+working format never stands in for checking an algorithm: each processor shows, against a
+higher-precision reference, that its error stays within the bound its test allows, and it can't
+render until it has."""
+
+[[requirement]]
+id = 'EU-0007-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each processor MUST declare a numerical profile that states its internal precision, rounding, fused operations, vector behavior and subnormal handling.'
+binds_to = 'system'
+rationale = 'Every rule that decides a processor result is stated, and part of its identity.'
+
+[[requirement]]
+id = 'EU-0007-009'
+level = 'MUST'
+polarity = 'required'
+statement = "The identity of a numerical profile MUST be a domain-separated digest of the profile's versioned canonical fields."
+binds_to = 'system'
+rationale = 'A change of any rule changes the identity, without a label anyone chooses.'
+
+[[requirement]]
+id = 'EU-0007-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'The identity of a processor MUST cover its numerical profile identity, the digest of its implementation and the versions of its parameters and schema.'
+binds_to = 'system'
+rationale = 'Two algorithms with equal numerical settings never share an identity.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-009' } ]
+
+[[requirement]]
+id = 'EU-0007-011'
+level = 'MUST'
+polarity = 'required'
+statement = "Registration of a processor MUST refuse a definition whose identities, computed again from the submitted definitions, don't match the identities it declares."
+binds_to = 'system'
+rationale = 'An identity always describes the definition it was registered with.'
+
+[[requirement]]
+id = 'EU-0007-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'Render descriptors and checkpoints MUST keep the processor and profile identities they were made with.'
+binds_to = 'system'
+rationale = 'A reader of a result or a checkpoint knows which arithmetic produced it.'
+
+[[requirement]]
+id = 'EU-0007-013'
+level = 'MUST'
+polarity = 'required'
+statement = "A checkpoint MUST keep a processor's state at the precision the processor holds it."
+binds_to = 'system'
+rationale = 'Restoring a checkpoint never rounds state into the working format.'
+
+[[requirement]]
+id = 'EU-0007-014'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of a processor's identity MUST invalidate each cached result that depends on it."
+binds_to = 'system'
+rationale = 'A cached result never outlives the arithmetic that made it.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-010' } ]
+
+[[requirement]]
+id = 'EU-0007-015'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Registration MUST NOT accept a processor identity whose record lacks a passing higher-precision reference test for that exact identity.'
+binds_to = 'system'
+rationale = "A processor without passing accuracy tests can't render, and a test of another identity doesn't count."
+
+[[requirement]]
+id = 'EU-0007-016'
+level = 'MUST'
+polarity = 'required'
+statement = "A processor's accuracy record MUST hold its identity, the reference precision, the error bound its test allows and the result."
+binds_to = 'system'
+rationale = 'Registration and release read whether the test passed for this exact identity.'
+
+[[requirement]]
+id = 'EU-0007-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'The higher-precision reference test of a processor MUST cover cancellation, long sums, low-level decays, filters and nonlinear processing.'
+binds_to = 'system'
+rationale = 'These are the cases where single precision arithmetic loses accuracy first.'
+
+[[requirement]]
+id = 'EU-0007-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The release step MUST NOT release a commit that holds an unregistered processor identity.'
+binds_to = 'system'
+rationale = "A release never carries a processor whose accuracy wasn't shown."
+relations = [ { kind = 'depends_on', target = 'EU-0007-015' } ]

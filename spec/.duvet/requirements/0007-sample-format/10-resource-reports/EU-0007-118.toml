@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-118"
+
+[[spec]]
+level = "MUST"
+quote = "The release step MUST NOT publish a commit that has no resource report for that exact commit."

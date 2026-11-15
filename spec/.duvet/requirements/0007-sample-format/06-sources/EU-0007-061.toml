@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-061"
+
+[[spec]]
+level = "MUST"
+quote = "A working copy with reduced precision MUST NOT be used before the musician accepts the reduction."

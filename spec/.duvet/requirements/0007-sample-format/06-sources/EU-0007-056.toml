@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-056"
+
+[[spec]]
+level = "MUST"
+quote = "A source original MUST be kept as its original bytes or as a verified lossless representation of them."

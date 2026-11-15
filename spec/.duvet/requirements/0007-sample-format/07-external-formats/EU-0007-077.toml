@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-077"
+
+[[spec]]
+level = "MUST"
+quote = "The range of floating-point samples MUST NOT raise the output level the local output protection allows."

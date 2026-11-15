@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-104"
+
+[[spec]]
+level = "MUST"
+quote = "An import or a restored archive without a verified decoder MUST stay unavailable with its bytes kept."

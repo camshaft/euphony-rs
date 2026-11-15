@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-019"
+
+[[spec]]
+level = "MUST"
+quote = "Canonical working audio MUST begin with a versioned header that declares the sample format, the sample rate, the channel order and the frame count."
