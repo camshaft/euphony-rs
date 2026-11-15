@@ -51,6 +51,15 @@ binds_to = 'system'
 rationale = 'The store checks both the integrity of the encoded bytes and the identity of the decoded samples.'
 
 [[requirement]]
+id = 'EU-0007-125'
+level = 'MUST'
+polarity = 'required'
+statement = "A reader MUST verify an encoded object's encoded digest before it decodes the object."
+binds_to = 'system'
+rationale = 'A corrupt or altered object is refused before any of it is decoded.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-022' } ]
+
+[[requirement]]
 id = 'EU-0007-023'
 level = 'MUST'
 polarity = 'required'
@@ -87,7 +96,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0007-021' } ]
 id = 'EU-0007-027'
 level = 'MUST'
 polarity = 'required'
-statement = 'The store MUST keep an encoded representation of working audio only while an active reader needs it.'
+statement = 'The store MUST keep an additional encoded representation of the same canonical content only while an active reader needs it.'
 binds_to = 'system'
 rationale = 'Extra representations of the same content cost disk only while they serve someone.'
 
