@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-176"
+
+[[spec]]
+level = "MUST"
+quote = "The approval of a share MUST state that a recipient's copy can't be recalled and that an offline device can't be revoked at once."

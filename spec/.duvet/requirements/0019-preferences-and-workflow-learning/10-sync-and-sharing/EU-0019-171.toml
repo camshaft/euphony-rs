@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-171"
+
+[[spec]]
+level = "MUST"
+quote = "An offline device MUST NOT create a new activation or reconcile conflicting approvals by itself."

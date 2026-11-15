@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-179"
+
+[[spec]]
+level = "MUST"
+quote = "A project-scope write that depends on an owner-wide preference MUST be refused as stale where the owner-wide revision it read has moved."
