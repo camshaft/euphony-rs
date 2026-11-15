@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-183"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST admit an instrument model for live playback only where its deadline, memory and underrun tests pass at its advertised polyphony and control rates on that computer."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-057"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST show whether the passes of its capture come from one steady state."

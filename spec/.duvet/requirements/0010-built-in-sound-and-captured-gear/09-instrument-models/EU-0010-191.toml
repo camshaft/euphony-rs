@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-191"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST NOT call an instrument model complete while a promised parameter domain or voice behavior remains untested."

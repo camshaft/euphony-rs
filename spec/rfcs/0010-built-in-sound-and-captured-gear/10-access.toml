@@ -1,0 +1,105 @@
+[section]
+anchor = 'access'
+title = 'Access, sharing and rights'
+problem = "Captures, dumps and models can hold sound that others own, and a model shared or named carelessly can disclose a proprietary asset or claim an endorsement that doesn't exist."
+motivation = "Captures and models that stay with their owner by default, that are shared only on the owner's approval with a statement of rights, and that keep their provenance protect the owner and the makers of their gear, while every capability stays equally available to the interface and to assistants."
+prose = """
+Captures, instrument maps and dumps stay on the owner's paired computers, and a model stays in its
+project until a recorded legal review and an export decision allow sharing it. Sharing a model
+with a collaborator needs the owner's approval and a statement of the rights claimed, and approval
+to record doesn't authorize sharing. Owning a device doesn't establish a right to copy or publish
+the sound assets it holds, and euphony doesn't decide what is lawful: a qualified legal review does.
+A model is named by the musician, without the branding of a manufacturer. The identity of a model
+establishes which object it is, not that it can be trusted or that its use is permitted. Every
+capture, cancellation, fit, report and attachment is a typed command, available alike to the
+interface and to assistants, and a browser companion controls the computer the gear is wired to
+rather than capturing on its own."""
+
+[[requirement]]
+id = 'EU-0010-192'
+level = 'MUST'
+polarity = 'required'
+statement = "Captures, instrument maps and dumps MUST stay on the owner's paired computers."
+binds_to = 'system'
+rationale = "Proprietary sound never leaves the owner's computers."
+
+[[requirement]]
+id = 'EU-0010-193'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST refuse a capture or a model to a computer that is not paired with its owner."
+binds_to = 'system'
+rationale = "An unpaired computer never receives a capture or a model."
+
+[[requirement]]
+id = 'EU-0010-194'
+level = 'MUST'
+polarity = 'required'
+statement = "Sharing a model with a collaborator MUST need the owner's approval and a statement of the rights claimed."
+binds_to = 'system'
+rationale = "Every release of a model is a recorded decision of its owner."
+relations = [ { kind = 'depends_on', target = 'EU-0010-212' } ]
+
+[[requirement]]
+id = 'EU-0010-195'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The approval of a capture session MUST NOT authorize sharing what it records."
+binds_to = 'system'
+rationale = "Consent to measure is not consent to share."
+
+[[requirement]]
+id = 'EU-0010-196'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "euphony MUST NOT name a model with the product name or trademark of a manufacturer."
+binds_to = 'system'
+rationale = "A model never claims an endorsement it doesn't have."
+
+[[requirement]]
+id = 'EU-0010-197'
+level = 'MUST'
+polarity = 'required'
+statement = "A model MUST keep the provenance and the restrictions of the captures it was derived from."
+binds_to = 'system'
+rationale = "The rights of the source follow every model made from it."
+
+[[requirement]]
+id = 'EU-0010-198'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An imported instrument map MUST NOT authorize a persistent write to a device."
+binds_to = 'system'
+rationale = "A map from elsewhere can't erase the musician's patches."
+
+[[requirement]]
+id = 'EU-0010-199'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of device identity or of map digest MUST need revalidation before a capture emits again."
+binds_to = 'system'
+rationale = "A capture never runs on a device or map other than the one approved."
+
+[[requirement]]
+id = 'EU-0010-200'
+level = 'MUST'
+polarity = 'required'
+statement = "Each capture, cancellation, fit, report and attachment of a model MUST be a typed command available alike to the interface and to assistants."
+binds_to = 'system'
+rationale = "A person and an assistant can do the same things, under the same checks."
+
+[[requirement]]
+id = 'EU-0010-201'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A browser companion MUST NOT capture from a device or run model inference on its own."
+binds_to = 'system'
+rationale = "Capture stays on the computer the gear is wired to, under its checks."
+
+[[requirement]]
+id = 'EU-0010-212'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "euphony MUST NOT share a model beyond its project before a recorded legal review and an export decision allow it."
+binds_to = 'system'
+rationale = "A model can hold sound that others own, and only a legal review settles whether it may leave the project."

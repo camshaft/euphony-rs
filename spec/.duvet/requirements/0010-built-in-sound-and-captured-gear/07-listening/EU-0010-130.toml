@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-130"
+
+[[spec]]
+level = "MUST"
+quote = "Level matching MUST apply one constant gain over the whole clip, measured by integrated loudness."

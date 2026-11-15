@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-113"
+
+[[spec]]
+level = "MUST"
+quote = "The final evaluation MUST take from the musician, before it starts, its scope, its tolerated error rate, its tolerated proportion of correct answers, its listeners and the chance they want of meeting the criterion."

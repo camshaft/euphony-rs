@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-081"
+
+[[spec]]
+level = "MUST"
+quote = "A model played at a sample rate other than the one it was trained at MUST be resampled or refused."

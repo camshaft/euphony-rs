@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-170"
+
+[[spec]]
+level = "MUST"
+quote = "A structured instrument model MUST hold its voices and their state in euphony's own voice allocator and envelopes."

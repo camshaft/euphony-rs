@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-203"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST report each sample rate change it makes to play a model, and each model it refuses for its sample rate."

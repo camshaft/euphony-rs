@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-122"
+
+[[spec]]
+level = "MUST"
+quote = "The final evaluation MUST NOT tell a listener the result of a trial before the end of the test."

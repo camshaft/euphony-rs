@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-118"
+
+[[spec]]
+level = "MUST"
+quote = "A final evaluation MUST NOT make a statistical claim after the attempts of its budget are spent."

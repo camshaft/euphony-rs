@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-077"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST refuse a candidate model whose measured total delay differs from its declared modeled delay plus its declared added delay."

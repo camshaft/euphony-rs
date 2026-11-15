@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-084"
+
+[[spec]]
+level = "MUST"
+quote = "Two renders of a region with one seed MUST be identical."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-127"
+
+[[spec]]
+level = "MUST"
+quote = "The final evaluation MUST run its trials in sessions of at most 25 trials."

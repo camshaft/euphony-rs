@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-190"
+
+[[spec]]
+level = "MUST"
+quote = "The acceptance of an instrument model MUST keep its tested coverage and limitations with the model."

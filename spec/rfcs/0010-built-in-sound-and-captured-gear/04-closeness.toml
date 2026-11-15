@@ -1,0 +1,118 @@
+[section]
+anchor = 'closeness'
+title = 'How closely a model matches its hardware'
+problem = "The output of gear has a random part that differs on every pass, so a model that copies one pass can look closer than the gear is to itself, and a single error figure hides whether a model reproduces both the average behavior of the gear and its variation."
+motivation = "Separate estimates of the variance of the hardware, of the error of a model against the hardware average, of the distribution of the random part and of drift, each with an interval, show how close a model is as far as the capture can tell, and keep a statistical result apart from the musician's own judgment."
+prose = """
+The output of gear for an input is its conditional mean, the output averaged over many passes of
+the same input from the same starting state, plus a random part that differs on every pass. The
+hardware variance is estimated from the deviations of the K passes about their average. The
+conditional-mean error is the mean squared difference between the conditional mean of a model and
+the hardware average, less the share that the finite number of passes and renders adds, so that an
+exact independent random replica of the hardware has an expected error of zero. The conditional
+mean of a model is rendered exactly only where its expected output is proven, such as zero-mean
+noise added after all nonlinear processing; elsewhere it is the average of M renders with
+independent seeds. The random part is compared in its level, its spectrum, its dependence on the
+input level, and the spectrum and depth of its pitch modulation, with the deviations of the model
+formed from K renders as those of the hardware are formed from K passes. Each estimate is made for
+each segment and frequency band, with an interval from a resampling of whole segments. A report
+also holds a null test of the conditional mean against the hardware average, error measures on
+held-out material, and the results of blind listening, each apart from the others."""
+
+[[requirement]]
+id = 'EU-0010-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST estimate the hardware variance for each test segment and frequency band."
+binds_to = 'system'
+rationale = "The noise of the gear is known where it depends on the signal."
+
+[[requirement]]
+id = 'EU-0010-052'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST estimate its conditional-mean error so that an exact independent random replica of the hardware has an expected estimate of zero."
+binds_to = 'system'
+rationale = "The random part of the gear never counts as an error of the model."
+
+[[requirement]]
+id = 'EU-0010-053'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the expected output of a model is not proven, its report MUST estimate the conditional mean of the model as the average of renders with independent seeds."
+binds_to = 'system'
+rationale = "Setting a random control to its mean does not in general give the mean output."
+
+[[requirement]]
+id = 'EU-0010-054'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST compare the random part of the model with that of the hardware in level, spectrum, dependence on input level, and spectrum and depth of pitch modulation."
+binds_to = 'system'
+rationale = "Noise and pitch wobble are judged by their distribution, not by one pass."
+
+[[requirement]]
+id = 'EU-0010-055'
+level = 'MUST'
+polarity = 'required'
+statement = "The comparison of random parts MUST fail a model whose random part is absent or replays one recorded pass whatever its seed."
+binds_to = 'system'
+rationale = "A model that copies one pass never passes for one that varies as the hardware does."
+relations = [ { kind = 'depends_on', target = 'EU-0010-054' } ]
+
+[[requirement]]
+id = 'EU-0010-056'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST state an interval for each estimate it holds."
+binds_to = 'system'
+rationale = "The musician sees how much the capture can tell."
+
+[[requirement]]
+id = 'EU-0010-057'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST show whether the passes of its capture come from one steady state."
+binds_to = 'system'
+rationale = "Drift is never read as noise of the gear."
+
+[[requirement]]
+id = 'EU-0010-058'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST hold a null test, error measures on held-out material and the results of blind listening, each apart from the others."
+binds_to = 'system'
+rationale = "No one kind of evidence stands in for another."
+
+[[requirement]]
+id = 'EU-0010-059'
+level = 'MUST'
+polarity = 'required'
+statement = "The error measures in the report of a model MUST be computed on material that fitting and selection did not use."
+binds_to = 'system'
+rationale = "A model is never measured on what it was fitted to."
+
+[[requirement]]
+id = 'EU-0010-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The report of a model MUST NOT call the model close enough before the musician declares tolerances."
+binds_to = 'system'
+rationale = "Closeness is judged against the musician's own needs."
+
+[[requirement]]
+id = 'EU-0010-061'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST call the model as close as the capture can show only once the interval of its conditional-mean error and the intervals of its random-part comparisons lie within the tolerances the musician declares."
+binds_to = 'system'
+rationale = "A claim of closeness depends on its uncertainty as well as its estimate."
+relations = [ { kind = 'depends_on', target = 'EU-0010-052' }, { kind = 'depends_on', target = 'EU-0010-054' }, { kind = 'depends_on', target = 'EU-0010-056' } ]
+
+[[requirement]]
+id = 'EU-0010-062'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST record whether the musician accepted the model, apart from its statistical results."
+binds_to = 'system'
+rationale = "A musician may accept a model they can tell apart from the hardware, and the record says which happened."

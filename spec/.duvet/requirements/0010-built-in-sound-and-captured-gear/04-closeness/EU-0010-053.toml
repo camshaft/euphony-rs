@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-053"
+
+[[spec]]
+level = "MUST"
+quote = "Where the expected output of a model is not proven, its report MUST estimate the conditional mean of the model as the average of renders with independent seeds."

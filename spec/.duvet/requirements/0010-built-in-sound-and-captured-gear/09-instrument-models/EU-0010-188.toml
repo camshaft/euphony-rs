@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-188"
+
+[[spec]]
+level = "MUST"
+quote = "The final listening test of an instrument model MUST compare independently captured hardware performances with model renders of identical event and control sequences."

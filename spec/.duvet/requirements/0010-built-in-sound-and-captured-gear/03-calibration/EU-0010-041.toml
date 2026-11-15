@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-041"
+
+[[spec]]
+level = "MUST"
+quote = "Where the reference segments of a capture differ by more than the spread among its repeated passes, the capture rig MUST ask the musician to let the gear warm up and capture again."

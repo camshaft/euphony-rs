@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-033"
+
+[[spec]]
+level = "MUST"
+quote = "Calibration MUST measure the round trip delay, the frequency response and the noise of the audio interface on its own, before a measurement of the gear."

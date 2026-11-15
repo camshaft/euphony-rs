@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-056"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST state an interval for each estimate it holds."

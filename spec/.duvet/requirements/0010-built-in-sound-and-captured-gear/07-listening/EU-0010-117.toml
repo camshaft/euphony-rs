@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-117"
+
+[[spec]]
+level = "MUST"
+quote = "Each attempt of a final evaluation with a budget of attempts MUST test at the tolerated error rate divided by the number of attempts in the budget."

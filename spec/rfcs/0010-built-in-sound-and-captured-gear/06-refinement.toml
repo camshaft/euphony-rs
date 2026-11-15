@@ -1,0 +1,143 @@
+[section]
+anchor = 'refinement'
+title = 'Refinement by an assistant'
+problem = "Finding a model that matches gear takes many rounds of structure proposals and fits, and an assistant left to run them can spend capacity without end, read material that the final test needs sealed, or play signals through gear without the owner's approval."
+motivation = "A refinement run whose state, stop rules and results are typed project data, and whose stop euphony enforces where work is admitted, lets an assistant work through the rounds while the musician keeps the decisions that only a person can make."
+prose = """
+A refinement run is project data: its identity, its declared stop rules and the result of each of
+its evaluations. Each round the assistant reads, as typed data, the measurements of the gear, the
+error and random-part comparisons of each candidate on validation material with their intervals,
+the spectrum and envelope of the residual over time, the measured cost, added delay and missed
+deadlines of each candidate, and the results of development listening with the clips the listener
+identified. It changes the structure of a structured model, the initial values and fit settings,
+the model family and size, and the capture plan. A run stops when the interval of the
+conditional-mean error lies within the musician's tolerance for each signal kind and the
+random-part comparisons pass, when the best candidate stops improving beyond its intervals over the
+number of rounds the musician sets, or when no candidate that reduces the error fits the processor
+cost the musician accepts. The assistant can't listen: its measures are evidence for the musician,
+not a verdict. The musician connects the gear, approves each capture session, declares the final
+test, accepts a model, and decides whether a model is shared."""
+
+[[requirement]]
+id = 'EU-0010-094'
+level = 'MUST'
+polarity = 'required'
+statement = "A refinement run MUST be project data that holds its identity, its declared stop rules and the result of each of its evaluations."
+binds_to = 'system'
+rationale = "The state of a run survives any assistant or computer."
+
+[[requirement]]
+id = 'EU-0010-095'
+level = 'MUST'
+polarity = 'required'
+statement = "Each refinement round MUST offer the assistant the measurements, the validation errors with their intervals, the residual over time, the measured cost and delay of each candidate, and the development listening results, as typed data."
+binds_to = 'system'
+rationale = "The assistant decides from structured evidence rather than from text."
+
+[[requirement]]
+id = 'EU-0010-096'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The assistant MUST NOT read the final partition or the trials of the final evaluation before the musician records that evaluation."
+binds_to = 'system'
+rationale = "The final test stays independent of the work it judges."
+relations = [ { kind = 'depends_on', target = 'EU-0010-046' } ]
+
+[[requirement]]
+id = 'EU-0010-097'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture that a refinement run plans MUST wait for the owner's approval of its capture session before it plays a signal through the gear."
+binds_to = 'system'
+rationale = "An assistant never plays signals through gear on its own authority."
+relations = [ { kind = 'depends_on', target = 'EU-0010-018' } ]
+
+[[requirement]]
+id = 'EU-0010-098'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "euphony MUST NOT admit a submission or a job of a run once an evaluation result that establishes one of the run's stop rules is recorded."
+binds_to = 'system'
+rationale = "No submission can slip between the result and the stop."
+
+[[requirement]]
+id = 'EU-0010-099'
+level = 'MUST'
+polarity = 'required'
+statement = "The stagnation rule of a refinement run MUST default to three rounds without an improvement beyond the intervals."
+binds_to = 'system'
+rationale = "A run that stops improving ends unless the musician asks for more rounds."
+
+[[requirement]]
+id = 'EU-0010-100'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST refuse a fit, evaluation or capture plan submitted for a stopped run, with the stop rule that holds and the report of the best candidates."
+binds_to = 'system'
+rationale = "The stop holds whatever the assistant does next."
+relations = [ { kind = 'depends_on', target = 'EU-0010-098' } ]
+
+[[requirement]]
+id = 'EU-0010-101'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST refuse a job of a stopped run at admission, a job queued before the stop included."
+binds_to = 'system'
+rationale = "Work queued before the stop does not run after it."
+relations = [ { kind = 'depends_on', target = 'EU-0010-098' } ]
+
+[[requirement]]
+id = 'EU-0010-102'
+level = 'MUST'
+polarity = 'required'
+statement = "A submission to a refinement run MUST carry the run revision it read, so that a submission that races the result that stopped the run is refused."
+binds_to = 'system'
+rationale = "A race with the stopping result never admits more work."
+
+[[requirement]]
+id = 'EU-0010-103'
+level = 'MUST'
+polarity = 'required'
+statement = "A job of a run that was already running when the run stopped MUST finish and have its result recorded without resuming the run."
+binds_to = 'system'
+rationale = "Finished work is kept, and the stop still holds."
+
+[[requirement]]
+id = 'EU-0010-104'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The stop of a refinement run MUST NOT affect accepted models, completed jobs or other runs."
+binds_to = 'system'
+rationale = "A stop limits only its own run."
+
+[[requirement]]
+id = 'EU-0010-105'
+level = 'MUST'
+polarity = 'required'
+statement = "A stopped run MUST resume only when the musician resumes it."
+binds_to = 'system'
+rationale = "The musician decides whether more rounds are worth their cost."
+
+[[requirement]]
+id = 'EU-0010-106'
+level = 'MUST'
+polarity = 'required'
+statement = "The resume of a run MUST record who resumed it and each stop rule they changed."
+binds_to = 'system'
+rationale = "The history of a run shows why it went on."
+
+[[requirement]]
+id = 'EU-0010-107'
+level = 'MUST'
+polarity = 'required'
+statement = "Every refinement run of euphony, of an external chain or of an instrument, MUST stop under the same rules, read from that run's own metrics, tolerances, stagnation rule and resume authority."
+binds_to = 'system'
+rationale = "Every refinement run, of chains and instruments alike, stops on the same terms."
+
+[[requirement]]
+id = 'EU-0010-108'
+level = 'MUST'
+polarity = 'required'
+statement = "A stopped run MUST report its best candidates with their error and their cost."
+binds_to = 'system'
+rationale = "The musician listens to the best of what the run found."

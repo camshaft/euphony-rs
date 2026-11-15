@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-134"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a final evaluation MUST state shown close for a listener only where their upper bound is below the tolerated proportion and they passed the positive control."

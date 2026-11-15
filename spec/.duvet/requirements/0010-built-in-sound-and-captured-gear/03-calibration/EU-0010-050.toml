@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-050"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST keep the description of the control settings of the gear that the musician provides with its capture."

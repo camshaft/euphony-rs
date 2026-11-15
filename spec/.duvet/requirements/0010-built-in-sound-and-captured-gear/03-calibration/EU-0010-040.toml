@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-040"
+
+[[spec]]
+level = "MUST"
+quote = "A capture MUST compare a reference segment played at its start with one played at its end."

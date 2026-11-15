@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-088"
+
+[[spec]]
+level = "MUST"
+quote = "A saved project MUST keep playing the model version it names after a refined version exists."

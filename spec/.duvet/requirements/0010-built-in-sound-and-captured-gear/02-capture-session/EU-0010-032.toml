@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-032"
+
+[[spec]]
+level = "MUST"
+quote = "After a stop for a change of its conditions, a capture session MUST have a new calibration and a new approval before it emits again."

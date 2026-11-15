@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-195"
+
+[[spec]]
+level = "MUST"
+quote = "The approval of a capture session MUST NOT authorize sharing what it records."

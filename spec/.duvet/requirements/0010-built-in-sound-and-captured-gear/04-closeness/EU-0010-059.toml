@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-059"
+
+[[spec]]
+level = "MUST"
+quote = "The error measures in the report of a model MUST be computed on material that fitting and selection did not use."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-186"
+
+[[spec]]
+level = "MUST"
+quote = "The report of an instrument model MUST give its results by pitch, velocity, articulation, duration and release, and by control region, chord, pedal sequence and automation path."
