@@ -55,8 +55,8 @@ relations = [ { kind = 'depends_on', target = 'EU-0010-018' } ]
 [[requirement]]
 id = 'EU-0010-098'
 level = 'MUST'
-polarity = 'required'
-statement = "When an evaluation result establishes a stop rule of a run, euphony MUST record the run as stopped in the same transaction as that result."
+polarity = 'forbidden'
+statement = "euphony MUST NOT admit a submission or a job of a run once an evaluation result that establishes one of the run's stop rules is recorded."
 binds_to = 'system'
 rationale = "No submission can slip between the result and the stop."
 
@@ -130,9 +130,9 @@ rationale = "The history of a run shows why it went on."
 id = 'EU-0010-107'
 level = 'MUST'
 polarity = 'required'
-statement = "The stop check MUST take the metrics, tolerances, stagnation rule and resume authority of any refinement run, so that every refinement loop of euphony uses it."
+statement = "Every refinement run of euphony, of an external chain or of an instrument, MUST stop under the same rules, read from that run's own metrics, tolerances, stagnation rule and resume authority."
 binds_to = 'system'
-rationale = "One mechanism bounds every refinement loop, of chains and instruments alike."
+rationale = "Every refinement run, of chains and instruments alike, stops on the same terms."
 
 [[requirement]]
 id = 'EU-0010-108'

@@ -2,4 +2,4 @@ target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-001
 
 [[spec]]
 level = "MUST"
-quote = "When an evaluation result establishes a stop rule of a run, euphony MUST record the run as stopped in the same transaction as that result."
+quote = "euphony MUST NOT admit a submission or a job of a run once an evaluation result that establishes one of the run's stop rules is recorded."

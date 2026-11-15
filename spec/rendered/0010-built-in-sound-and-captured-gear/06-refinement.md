@@ -32,7 +32,7 @@ A capture that a refinement run plans MUST wait for the owner's approval of its 
 
 ### EU-0010-098 {#EU-0010-098}
 
-When an evaluation result establishes a stop rule of a run, euphony MUST record the run as stopped in the same transaction as that result.
+euphony MUST NOT admit a submission or a job of a run once an evaluation result that establishes one of the run's stop rules is recorded.
 
 ### EU-0010-099 {#EU-0010-099}
 
@@ -68,7 +68,7 @@ The resume of a run MUST record who resumed it and each stop rule they changed.
 
 ### EU-0010-107 {#EU-0010-107}
 
-The stop check MUST take the metrics, tolerances, stagnation rule and resume authority of any refinement run, so that every refinement loop of euphony uses it.
+Every refinement run of euphony, of an external chain or of an instrument, MUST stop under the same rules, read from that run's own metrics, tolerances, stagnation rule and resume authority.
 
 ### EU-0010-108 {#EU-0010-108}
 

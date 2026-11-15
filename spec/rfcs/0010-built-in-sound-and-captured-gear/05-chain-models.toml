@@ -105,9 +105,18 @@ rationale = "Loading a model never interrupts playback or recording."
 id = 'EU-0010-073'
 level = 'MUST'
 polarity = 'required'
-statement = "A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade, and reported."
+statement = "A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade."
 binds_to = 'system'
 rationale = "A faulty model falls silent gracefully rather than producing noise."
+
+[[requirement]]
+id = 'EU-0010-202'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST report each model whose output became non-finite while it played."
+binds_to = 'system'
+rationale = "The musician learns which model failed and when."
+relations = [ { kind = 'depends_on', target = 'EU-0010-073' } ]
 
 [[requirement]]
 id = 'EU-0010-074'
@@ -171,9 +180,18 @@ rationale = "The musician sets how much of the chain they hear, as with a parall
 id = 'EU-0010-081'
 level = 'MUST'
 polarity = 'required'
-statement = "A model played at a sample rate other than the one it was trained at MUST be resampled or refused, and the change reported."
+statement = "A model played at a sample rate other than the one it was trained at MUST be resampled or refused."
 binds_to = 'system'
 rationale = "A model never plays silently at a rate it was not fitted for."
+
+[[requirement]]
+id = 'EU-0010-203'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST report each sample rate change it makes to play a model, and each model it refuses for its sample rate."
+binds_to = 'system'
+rationale = "The musician knows when a model plays at a rate it was not fitted for."
+relations = [ { kind = 'depends_on', target = 'EU-0010-081' } ]
 
 [[requirement]]
 id = 'EU-0010-082'

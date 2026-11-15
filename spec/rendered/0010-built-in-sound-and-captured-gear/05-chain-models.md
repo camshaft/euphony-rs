@@ -58,7 +58,11 @@ The validation of a model MUST run outside the real-time audio processing.
 
 ### EU-0010-073 {#EU-0010-073}
 
-A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade, and reported.
+A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade.
+
+### EU-0010-202 {#EU-0010-202}
+
+euphony MUST report each model whose output became non-finite while it played.
 
 ### EU-0010-074 {#EU-0010-074}
 
@@ -90,7 +94,11 @@ A model of an external chain MUST offer a control that blends the unprocessed an
 
 ### EU-0010-081 {#EU-0010-081}
 
-A model played at a sample rate other than the one it was trained at MUST be resampled or refused, and the change reported.
+A model played at a sample rate other than the one it was trained at MUST be resampled or refused.
+
+### EU-0010-203 {#EU-0010-203}
+
+euphony MUST report each sample rate change it makes to play a model, and each model it refuses for its sample rate.
 
 ### EU-0010-082 {#EU-0010-082}
 
