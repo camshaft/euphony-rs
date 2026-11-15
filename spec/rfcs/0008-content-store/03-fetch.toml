@@ -1,0 +1,144 @@
+[section]
+anchor = 'fetch'
+title = 'Fetching content for playback and recording'
+problem = """\
+  A session that needs an item held only on a storage computer can stall the audio output, play \
+  silence where audio belongs, or present an export with audio missing as complete."""
+motivation = """\
+  Fetching ahead of playback, starting playback only where every range it reads arrives in time, \
+  and marking each passage that hasn't arrived keep recording, monitoring and the audio output \
+  running, and never pass missing audio off as present."""
+prose = """
+The audio output reads only buffers that are already local, so a fetch never runs where audio is
+produced. When a project opens, the items its revision refers to that are held only on storage
+computers are fetched in the order in which playback from the current position reaches them, and
+then the rest of the arrangement. Before playback starts, the session plans together the fetches of
+every region the playback range reads whose content isn't all local. For each region it takes the
+bytes still to fetch and the time playback reaches each of them, from the region's own sample rate,
+channel count and position, and plans them against the measured capacity of each disk, network path
+and decoder they share, after the capacity live playback already uses. Playback starts where the
+plan delivers every range before playback reaches it, with the local buffers as the margin. When a
+measured capacity falls during playback, the session plans again. Before playing, the person
+chooses what happens where a region will miss its time: wait, holding playback before the region
+until the plan admits it, or play on, keeping the audio output, monitoring and recording running
+and marking the region's place in the arrangement as a missing passage. Recording doesn't depend on
+a fetch: captured input is written locally whatever the store holds, and a region that becomes not
+ready during a take keeps the take recording and marks the gap in the monitoring mix. Prefetch
+covers the common cases: an open project's items fetch at once, an archived project the owner opens
+is recalled to the working tier as a whole, an item placed from the catalog fetches while its
+preview shows, and the policy can keep a working copy of each item whose project is open on another
+of the owner's computers."""
+
+[[requirement]]
+id = 'EU-0008-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio output MUST read only content that is already held locally.'
+binds_to = 'system'
+rationale = 'A fetch never stalls the production of audio.'
+
+[[requirement]]
+id = 'EU-0008-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a project opens, the store MUST fetch each item the project refers to that is not held locally, in the order in which playback from the current position reaches it.'
+binds_to = 'system'
+rationale = 'The content needed first arrives first.'
+
+[[requirement]]
+id = 'EU-0008-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Before playback starts, the session MUST plan the fetches of every region the playback range reads together, against the measured capacity of each disk, network path and decoder they share.'
+binds_to = 'system'
+rationale = 'Many tracks that share one path are planned as the load they make together.'
+
+[[requirement]]
+id = 'EU-0008-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback MUST start only where the plan delivers every range it reads before playback reaches that range.'
+binds_to = 'system'
+rationale = 'Playback never starts toward content that will arrive late.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-049' } ]
+
+[[requirement]]
+id = 'EU-0008-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a measured capacity falls during playback, the session MUST plan the fetches again.'
+binds_to = 'system'
+rationale = 'A slower disk or network is seen before a region misses its time.'
+
+[[requirement]]
+id = 'EU-0008-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a region will miss its time, the session MUST do what the person chose before playing: wait before the region, or play on.'
+binds_to = 'system'
+rationale = 'The person decides whether a late item holds playback.'
+
+[[requirement]]
+id = 'EU-0008-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'A session that plays on MUST mark each passage whose content has not arrived as missing.'
+binds_to = 'system'
+rationale = 'The person sees where content is absent.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-052' } ]
+
+[[requirement]]
+id = 'EU-0008-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A session MUST NOT play silence in place of content that has not arrived as though the content were present.'
+binds_to = 'system'
+rationale = 'Missing audio is never mistaken for a quiet passage.'
+
+[[requirement]]
+id = 'EU-0008-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A playback or an export that holds a missing passage MUST NOT be presented as complete.'
+binds_to = 'system'
+rationale = 'An incomplete render is never delivered as a finished one.'
+
+[[requirement]]
+id = 'EU-0008-056'
+level = 'MUST'
+polarity = 'required'
+statement = 'Recording, live monitoring and the audio output MUST continue without interruption while content is fetched.'
+binds_to = 'system'
+rationale = 'A slow fetch never costs a performance.'
+
+[[requirement]]
+id = 'EU-0008-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'Captured input MUST be written to local durable storage whatever the state of the store.'
+binds_to = 'system'
+rationale = 'A recording never depends on another computer.'
+
+[[requirement]]
+id = 'EU-0008-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'Arming a track to record MUST show which regions of the punch range are not ready before recording starts.'
+binds_to = 'system'
+rationale = 'The performer knows what will be missing from the backing before playing.'
+
+[[requirement]]
+id = 'EU-0008-059'
+level = 'MUST'
+polarity = 'required'
+statement = 'An archived project that the owner opens MUST be recalled to the working tier as a whole, with its progress shown before playback.'
+binds_to = 'system'
+rationale = 'Work on an archived project starts from local content, and the owner sees when it is ready.'
+
+[[requirement]]
+id = 'EU-0008-060'
+level = 'SHOULD'
+polarity = 'forbidden'
+statement = 'Opening a project held only on storage computers and playing it SHOULD NOT cause a missed audio deadline from waiting for its content.'
+binds_to = 'system'
+rationale = 'Cold storage costs time before playback, and never a glitch during it.'
