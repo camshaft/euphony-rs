@@ -25,6 +25,14 @@ binds_to = 'system'
 rationale = 'Every assistant reads a preference the same way.'
 
 [[requirement]]
+id = 'EU-0019-206'
+level = 'MUST'
+polarity = 'required'
+statement = 'A preference version MUST hold its context predicates for project, genre, client and session, its proposed confidence with its stated basis, its proposer and the approval that adopted it.'
+binds_to = 'system'
+rationale = 'Scope, overlap and adoption are read from the record itself.'
+
+[[requirement]]
 id = 'EU-0019-046'
 level = 'MUST'
 polarity = 'required'
@@ -89,6 +97,14 @@ binds_to = 'system'
 rationale = "An invalid proposal never reaches the owner's review."
 
 [[requirement]]
+id = 'EU-0019-198'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A typed relation MUST NOT grant access.'
+binds_to = 'system'
+rationale = 'Linking records never widens who can read them.'
+
+[[requirement]]
 id = 'EU-0019-054'
 level = 'MUST'
 polarity = 'forbidden'
@@ -147,10 +163,18 @@ rationale = "A guess never stands in for the owner's decision."
 [[requirement]]
 id = 'EU-0019-061'
 level = 'MUST'
-polarity = 'required'
-statement = 'While a conflict between preferences is unresolved, euphony MUST keep the last approved behavior that still applies.'
+polarity = 'forbidden'
+statement = 'While a conflict between preferences is unresolved, euphony MUST NOT apply a behavior other than the last approved behavior that still applies.'
 binds_to = 'system'
 rationale = "A new conflict doesn't change what the owner already approved."
+
+[[requirement]]
+id = 'EU-0019-196'
+level = 'MAY'
+polarity = 'required'
+statement = 'While a conflict between preferences is unresolved, euphony MAY present the alternatives to the owner.'
+binds_to = 'system'
+rationale = 'The owner can resolve the conflict with the choices in view.'
 
 [[requirement]]
 id = 'EU-0019-062'

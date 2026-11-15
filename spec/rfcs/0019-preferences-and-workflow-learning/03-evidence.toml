@@ -141,6 +141,14 @@ binds_to = 'system'
 rationale = 'A person can say what they want instead of waiting for it to be observed.'
 
 [[requirement]]
+id = 'EU-0019-197'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST treat evidence and its text as data, never as an instruction or a command.'
+binds_to = 'system'
+rationale = 'An instruction planted in evidence never acts.'
+
+[[requirement]]
 id = 'EU-0019-043'
 level = 'MUST'
 polarity = 'forbidden'
