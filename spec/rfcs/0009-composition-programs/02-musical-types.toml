@@ -1,0 +1,133 @@
+[section]
+anchor = 'musical-types'
+title = 'Musical types'
+problem = """\
+  Pitches, intervals, keys, chords, meters and durations follow rules that ordinary numbers don't, \
+  so a program that mixes them, such as one that adds an interval to a duration, or that loses \
+  precision in a duration, writes wrong music without any error."""
+motivation = """\
+  A type for each kind of musical value, exact rational time, and an encoding that every client \
+  reads without loss let a program state musical intent that the system checks, and keep the \
+  same meaning wherever the value travels."""
+prose = """
+The musical model of the project defines each kind of musical value as a type of its own: pitch
+spelling, sounding pitch, interval with its quality and direction, scale degree with the identity of
+its scale, key, chord, meter, tempo, musical position, duration in whole notes, a count of tempo
+beats with its beat unit, frequency in hertz, frequency ratio and duration in samples. A program is
+checked against types that define the same kinds and rules as that model, and builds each value
+through a constructor that validates it. Musical positions and durations are exact rational
+numbers, each held reduced with its sign on the numerator. Scales and tunings, the built-in ones and
+those a user defines, are versioned data of the project. Each value is encoded with a tag of its
+kind, and each rational member as an integer of any size."""
+
+[[requirement]]
+id = 'EU-0009-010'
+level = 'MUST'
+polarity = 'required'
+statement = 'The musical model MUST define each kind of musical value that this section lists as a distinct type.'
+binds_to = 'system'
+rationale = 'A value of one kind is never read as a value of another.'
+
+[[requirement]]
+id = 'EU-0009-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An operation MUST NOT accept a musical value of a kind it is not defined for, such as an interval added to a duration.'
+binds_to = 'system'
+rationale = 'A program that mixes kinds is told so instead of writing wrong music.'
+
+[[requirement]]
+id = 'EU-0009-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'The types a program is checked against MUST define the same kinds of value and the same rules as the musical model of the project.'
+binds_to = 'system'
+rationale = 'A program that passes its checks means what the project reads it to mean.'
+
+[[requirement]]
+id = 'EU-0009-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each constructor of a musical value MUST reject a value that breaks the rules of its kind with a typed error.'
+binds_to = 'system'
+rationale = 'An invalid value never enters a program or a project.'
+
+[[requirement]]
+id = 'EU-0009-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'Musical positions and durations MUST be exact rational numbers.'
+binds_to = 'system'
+rationale = 'Triplets and other durations that a binary fraction cannot hold keep their exact length.'
+
+[[requirement]]
+id = 'EU-0009-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rational musical value MUST be held reduced, with its sign on the numerator.'
+binds_to = 'system'
+rationale = 'Equal values have one form, so they compare and identify the same way.'
+
+[[requirement]]
+id = 'EU-0009-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A rational musical value MUST NOT have a denominator of zero.'
+binds_to = 'system'
+rationale = 'Every musical value names a number.'
+
+[[requirement]]
+id = 'EU-0009-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'An arithmetic operation on musical values MUST return its exact result or a typed error.'
+binds_to = 'system'
+rationale = 'An operation never returns a value that has silently overflowed or been rounded.'
+
+[[requirement]]
+id = 'EU-0009-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'An arithmetic operation on musical values MUST apply its operands in the order the program writes them.'
+binds_to = 'system'
+rationale = 'A subtraction, a division or a remainder means what the program says.'
+
+[[requirement]]
+id = 'EU-0009-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'The encoding of a musical value MUST carry a tag of its kind.'
+binds_to = 'system'
+rationale = 'A stored or sent value is read as the kind it was written as.'
+
+[[requirement]]
+id = 'EU-0009-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'The encoding of a rational musical value MUST hold its numerator and denominator as integers of any size that every client reads without loss.'
+binds_to = 'system'
+rationale = 'A client whose numbers are floating point still reads each value exactly.'
+
+[[requirement]]
+id = 'EU-0009-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'Scales and tunings MUST be versioned data of the project.'
+binds_to = 'system'
+rationale = 'A change of a scale or a tuning never changes music that was written against an earlier version.'
+
+[[requirement]]
+id = 'EU-0009-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'A user MUST be able to define a scale or a tuning of their own.'
+binds_to = 'system'
+rationale = 'Music outside the built-in scales and tunings can be written and checked.'
+
+[[requirement]]
+id = 'EU-0009-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'Pitch spelling and interval quality MUST be kept apart from sounding pitch.'
+binds_to = 'system'
+rationale = 'Two notes that sound the same and are spelled differently stay different notes.'

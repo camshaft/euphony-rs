@@ -1,0 +1,127 @@
+[section]
+anchor = 'key-constraints'
+title = 'Key constraints and diagnostics'
+problem = """\
+  A musician who means a phrase to stay in a key isn't told when a program writes a note outside \
+  it, and a program that fails isn't useful unless the musician learns where it failed and why, \
+  before anything in the project changes."""
+motivation = """\
+  A key that a phrase declares, an explicit way to write outside it, checks before a program runs \
+  and before its output is accepted, and diagnostics that point at the text let a musician write \
+  constrained music and fix a program quickly."""
+prose = """
+A phrase can declare a key. In such a phrase an ordinary note is written by its scale degree in that
+key, and a note outside the key is written through an explicit chromatic constructor, which marks it
+as intended. A note outside a key is an error only where a phrase declared that key; an accidental
+is not wrong by itself. Checks run at three points: the type check before a program runs, which
+also reports each invalid literal value; the constructors while it runs, for the values it computes
+or reads; and the validation of its output by the project before the output is accepted. The type
+check alone is never the trust boundary. A diagnostic names the span of the program text where the
+problem is, the musical value at fault and the relationship the program was expected to keep."""
+
+[[requirement]]
+id = 'EU-0009-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'A phrase MUST be able to declare a key that it is constrained to.'
+binds_to = 'system'
+rationale = 'A musician states the harmonic intent the system checks.'
+
+[[requirement]]
+id = 'EU-0009-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'In a phrase that declares a key, an ordinary note MUST be built from a scale degree of that key.'
+binds_to = 'system'
+rationale = 'A note in a constrained phrase is in its key by construction.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-024' } ]
+
+[[requirement]]
+id = 'EU-0009-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'An explicit chromatic constructor MUST let a program write a note outside the declared key of its phrase.'
+binds_to = 'system'
+rationale = 'A note outside the key is written on purpose and reads as intended.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-024' } ]
+
+[[requirement]]
+id = 'EU-0009-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'An ordinary note that breaks the declared key of its phrase MUST fail validation.'
+binds_to = 'system'
+rationale = 'A broken key constraint is reported instead of reaching the music.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-024' } ]
+
+[[requirement]]
+id = 'EU-0009-028'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A note MUST NOT be reported as outside a key unless its phrase declares that key.'
+binds_to = 'system'
+rationale = 'An accidental is not treated as a mistake where the musician asked for no constraint.'
+
+[[requirement]]
+id = 'EU-0009-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'A composition program MUST be type-checked before it runs.'
+binds_to = 'system'
+rationale = 'A program that mixes kinds of value is told so before it runs.'
+
+[[requirement]]
+id = 'EU-0009-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'The type check of a program MUST report each invalid literal musical value it holds.'
+binds_to = 'system'
+rationale = 'A mistake written into the text is found before the program runs.'
+
+[[requirement]]
+id = 'EU-0009-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'A constructor called while a program runs MUST validate the value it builds.'
+binds_to = 'system'
+rationale = 'A value a program computes or reads is checked as a literal is.'
+
+[[requirement]]
+id = 'EU-0009-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'The project MUST validate each musical value of the output of a program before it accepts the output.'
+binds_to = 'system'
+rationale = 'A program that evades its type check still cannot write an invalid value into the project.'
+
+[[requirement]]
+id = 'EU-0009-033'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A program whose output fails validation MUST NOT change the project.'
+binds_to = 'system'
+rationale = 'A failed program leaves the music as it was.'
+
+[[requirement]]
+id = 'EU-0009-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'A diagnostic of a program MUST name the span of the program text where the problem is.'
+binds_to = 'system'
+rationale = 'A musician or an agent goes straight to the line to fix.'
+
+[[requirement]]
+id = 'EU-0009-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'A diagnostic of a program MUST name the musical value at fault.'
+binds_to = 'system'
+rationale = 'The reader sees which value broke the rule.'
+
+[[requirement]]
+id = 'EU-0009-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'A diagnostic of a program MUST name the musical relationship the program was expected to keep.'
+binds_to = 'system'
+rationale = 'The reader sees what a correct value would satisfy.'

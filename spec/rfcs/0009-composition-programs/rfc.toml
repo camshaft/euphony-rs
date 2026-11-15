@@ -1,0 +1,10 @@
+number = 9
+title = 'Composition programs'
+area = 'euphony'
+abstract = """\
+  The composition programs of euphony: programs kept as versioned assets of a project, the musical \
+  types they are written in, key constraints and their diagnostics, the musical theory operations, \
+  the restricted running of a program, how its output is reproduced and reused, and how generated \
+  tracks are regenerated beside a musician's own edits."""
+retired = []
+sources = []
