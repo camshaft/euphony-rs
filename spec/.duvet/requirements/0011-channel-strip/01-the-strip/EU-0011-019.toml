@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-019"
+
+[[spec]]
+level = "MUST"
+quote = "The strip of the output channel MUST hold an equalizer, a compressor, a color stage and a limiter."

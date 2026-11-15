@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-020"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to switch each stage on or off with one action."

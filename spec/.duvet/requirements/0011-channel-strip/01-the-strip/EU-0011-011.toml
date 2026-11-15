@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-011"
+
+[[spec]]
+level = "MUST"
+quote = "The color stage MUST add saturation, from the strip's character or from a model of gear the musician captured."

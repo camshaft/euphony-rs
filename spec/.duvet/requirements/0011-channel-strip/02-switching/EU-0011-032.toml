@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-032"
+
+[[spec]]
+level = "MUST"
+quote = "On a track armed for live monitoring, a stage mode whose delay exceeds the musician's live-latency setting MUST NOT be available."

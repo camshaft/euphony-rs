@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-002"
+
+[[spec]]
+level = "MUST"
+quote = "The channel strip of an audio or instrument track MUST hold these stages in this order: input, filters, gate, equalizer, compressor, de-esser, color, free slots, sends, and pan with the fader."

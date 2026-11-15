@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-026"
+
+[[spec]]
+level = "MUST"
+quote = "Each switched-on stage MUST declare the delay it adds."

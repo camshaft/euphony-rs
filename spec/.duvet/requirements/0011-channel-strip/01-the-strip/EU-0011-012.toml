@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-012"
+
+[[spec]]
+level = "MUST"
+quote = "The free slots MUST hold any number of built-in effects and captured models, in the order the musician chooses."
