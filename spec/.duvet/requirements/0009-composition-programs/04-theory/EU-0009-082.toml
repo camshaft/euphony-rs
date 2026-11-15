@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-082"
+
+[[spec]]
+level = "MUST"
+quote = "A typed error of a theory operation reached through a command MUST identify the field of the command at fault."
