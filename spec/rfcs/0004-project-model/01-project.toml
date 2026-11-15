@@ -1,0 +1,86 @@
+[section]
+anchor = 'project'
+title = 'The project and its timeline'
+problem = """\
+  A project whose times follow the clock of the computer that plays it, or whose parts refer to each \
+  other by their labels, plays differently on each computer and can be changed by anyone who writes a \
+  matching label."""
+motivation = """\
+  A timeline counted in samples at the rate of the project, and links between parts that are typed \
+  fields, let every copy, worker and interface read the same project the same way."""
+prose = """
+A project is a piece of music as euphony holds it: its tracks, regions, events, automation, routing
+and processors with their settings, and the links between them. Each project has an identity and a
+sample rate. Every time in a project is a whole number of samples at that rate from the start of its
+timeline, whatever the clock of the computer that edits, plays or renders it. Each link from one part
+of a project to another is a typed field: a region refers to the audio it plays by the content
+identity of that audio, and a processor refers to the definition it runs by the identity and version
+of that definition. A copy of a project is the project as one computer holds it. Rendering, content
+identities and the processors themselves are the subjects of other RFCs."""
+
+[[requirement]]
+id = 'EU-0004-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each project MUST have an identity that no other project has.'
+binds_to = 'system'
+rationale = 'Every command, revision and copy names the project it belongs to without doubt.'
+
+[[requirement]]
+id = 'EU-0004-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each project MUST have exactly one sample rate.'
+binds_to = 'system'
+rationale = 'Every time in the project is counted at one rate.'
+
+[[requirement]]
+id = 'EU-0004-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every time in a project MUST be a whole number of samples at the sample rate of the project.'
+binds_to = 'system'
+rationale = 'Two copies place every event at the same sample.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-002' } ]
+
+[[requirement]]
+id = 'EU-0004-004'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The times of a project MUST NOT depend on the clock of any computer that holds, plays or renders it.'
+binds_to = 'system'
+rationale = 'A worker renders any range at any speed, and the result is the same.'
+
+[[requirement]]
+id = 'EU-0004-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each link from one part of a project to another MUST be a typed field of the project.'
+binds_to = 'system'
+rationale = 'Every reader finds a link the same way, and a check validates it.'
+
+[[requirement]]
+id = 'EU-0004-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'A region MUST refer to the audio it plays by the content identity of that audio.'
+binds_to = 'system'
+rationale = 'A region plays the same bytes on every computer, and a change of the audio is a change of the link.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-005' } ]
+
+[[requirement]]
+id = 'EU-0004-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'A processor MUST refer to the definition it runs by the identity and version of that definition.'
+binds_to = 'system'
+rationale = 'A project plays with the processor version it was made with.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-005' } ]
+
+[[requirement]]
+id = 'EU-0004-008'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A decision of euphony MUST NOT rest on the text of a label, a description or a message in a project.'
+binds_to = 'system'
+rationale = 'Text planted in a project cannot grant access or change what euphony does.'
