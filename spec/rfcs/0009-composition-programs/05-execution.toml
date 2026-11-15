@@ -19,8 +19,9 @@ asks, and never on the audio path. Independent composition units, such as separa
 tracks whose dependencies are explicit, run as separate jobs across the owner's computers, while a
 sequential program stays one job. A worker reports the resources it has, and where they run out,
 the authority keeps the paused work and its diagnostics. The owner can cancel a program that runs
-away. The browser companion sends composition commands to a native host and doesn't run programs
-itself."""
+away. Every composition command passes the authorization of the caller that sends it before the
+runner starts a program for it or the authority applies the program's output. The browser companion
+sends authorized composition commands to a native host and doesn't run programs itself."""
 
 [[requirement]]
 id = 'EU-0009-050'
@@ -117,3 +118,11 @@ polarity = 'forbidden'
 statement = 'The browser companion MUST NOT run a composition program itself.'
 binds_to = 'system'
 rationale = 'Programs run in one kind of runner, whose output is the same on every compatible computer.'
+
+[[requirement]]
+id = 'EU-0009-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'A composition command MUST pass the authorization of the caller that sends it before the runner starts a program for it or the authority applies the output of that program.'
+binds_to = 'system'
+rationale = 'Only a caller allowed to change the project can start a program on it or have its output applied, whichever device sends the command.'
