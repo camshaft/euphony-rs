@@ -1,0 +1,219 @@
+[section]
+anchor = 'transport'
+title = 'Transport, timing and loss'
+problem = """\
+  A network loses, reorders and delays packets and its computers' clocks drift, so events forwarded \
+  on arrival lose their timing, a lost note-off leaves a note sounding, and a transport anyone can \
+  join lets any computer on the network play into a project."""
+motivation = """\
+  Events that keep their capture time, a recovery journal that rebuilds what was lost, a visible gap \
+  where it can't, and a transport that is encrypted by default and verified before use keep playing \
+  in time and safe, and say what was lost."""
+prose = """
+Each event carries the time its host captured it and the generation of that host's clock mapping.
+A host computes each peer's clock offset from every clock exchange, keeps a history of its drift,
+and starts a new clock generation where the offset jumps or a peer's session restarts. The session
+host maps each event's capture time onto the session's sample timeline through the engine's clock
+mapping. Hosts, and the other workstations euphony plays with, carry events over an interoperable
+network MIDI session protocol with its loss recovery journal. A gap is a typed event that marks
+events lost or dropped. The owner marks which networks are theirs, and the system overview RFC
+holds that rule. A transport verification record holds the results of peer and session binding
+tests for one implementation digest, version and transport profile. Live performance is played
+once: an accepted project edit and offline preparation are durable, and a late live event isn't
+kept to play later."""
+
+[[requirement]]
+id = 'EU-0016-074'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each event MUST carry its capture time and the clock generation of the host that captured it to the session host.'
+binds_to = 'system'
+rationale = 'The session host never reads an event without its time.'
+
+[[requirement]]
+id = 'EU-0016-075'
+level = 'MUST'
+polarity = 'required'
+statement = "A host MUST compute each peer's clock offset from every clock exchange with that peer."
+binds_to = 'system'
+rationale = 'Event times from two computers can be placed on one timeline.'
+
+[[requirement]]
+id = 'EU-0016-076'
+level = 'MUST'
+polarity = 'required'
+statement = "A host MUST start a new clock generation when a peer's clock offset jumps or the peer's session restarts."
+binds_to = 'system'
+rationale = 'Times from before and after a clock jump are never mixed.'
+
+[[requirement]]
+id = 'EU-0016-077'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST map each event's capture time onto the session's sample timeline."
+binds_to = 'system'
+rationale = 'An event plays at the time it was played, not the time it arrived.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-074' } ]
+
+[[requirement]]
+id = 'EU-0016-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST order events by capture time within the admitted timing window.'
+binds_to = 'system'
+rationale = 'Packets reordered by the network play in the order they were played.'
+
+[[requirement]]
+id = 'EU-0016-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST adapt its receive buffering to the measured jitter, within the accepted monitoring delay.'
+binds_to = 'system'
+rationale = 'Buffering absorbs jitter without delaying notes past what the musician accepts.'
+
+[[requirement]]
+id = 'EU-0016-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'A clock discontinuity MUST suspend scheduled admission until the new clock mapping is verified.'
+binds_to = 'system'
+rationale = 'Events are never scheduled against a clock mapping that no longer holds.'
+
+[[requirement]]
+id = 'EU-0016-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'A host MUST send and read the loss recovery journal of the network MIDI session protocol.'
+binds_to = 'system'
+rationale = 'A note lost on the network is recovered where the other end can resend it.'
+
+[[requirement]]
+id = 'EU-0016-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a peer sends a recovery journal, the receiving host MUST rebuild a lost note-off from it.'
+binds_to = 'system'
+rationale = 'A lost release never leaves a note sounding when the journal holds it.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-081' } ]
+
+[[requirement]]
+id = 'EU-0016-083'
+level = 'MUST'
+polarity = 'required'
+statement = "A sequence gap the recovery journal doesn't cover MUST reach the route as a gap event."
+binds_to = 'system'
+rationale = 'A loss that cannot be recovered is never hidden.'
+
+[[requirement]]
+id = 'EU-0016-084'
+level = 'MUST'
+polarity = 'required'
+statement = "On a gap the recovery journal doesn't cover, the session host MUST reset the state the affected route owns."
+binds_to = 'system'
+rationale = 'A note-off lost in the gap never leaves a note sounding.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-083' } ]
+
+[[requirement]]
+id = 'EU-0016-085'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A transport without verified loss recovery MUST NOT claim an uninterrupted performance.'
+binds_to = 'system'
+rationale = 'A musician is told the truth about what the network may have lost.'
+
+[[requirement]]
+id = 'EU-0016-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'In the default live profile, a late note-on MUST be dropped with a gap event.'
+binds_to = 'system'
+rationale = 'A note that arrives too late to play in time is not played out of time.'
+
+[[requirement]]
+id = 'EU-0016-087'
+level = 'MUST'
+polarity = 'required'
+statement = 'A late release MUST still clear the sounding note it owns.'
+binds_to = 'system'
+rationale = 'Lateness never leaves a note stuck on.'
+
+[[requirement]]
+id = 'EU-0016-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST keep raw captured events, with a visible gap where events were lost.'
+binds_to = 'system'
+rationale = 'A recording shows what was played and where the network lost part of it.'
+
+[[requirement]]
+id = 'EU-0016-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT keep a late live event to play later.'
+binds_to = 'system'
+rationale = 'Live performance is played once, in time, or not at all.'
+
+[[requirement]]
+id = 'EU-0016-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'Network MIDI MUST use an authenticated encrypted transport by default.'
+binds_to = 'system'
+rationale = 'A device on an open network cannot be read or impersonated by default.'
+
+[[requirement]]
+id = 'EU-0016-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'An unencrypted interoperable transport MUST run only on an interface whose network the owner marks as theirs.'
+binds_to = 'system'
+rationale = 'Gear that speaks only the plain protocol works at home and stays off every other network.'
+
+[[requirement]]
+id = 'EU-0016-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'The transport boundary MUST be enforced where events enter and leave euphony, not only in the user interface.'
+binds_to = 'system'
+rationale = 'A client that skips the interface cannot cross the boundary.'
+
+[[requirement]]
+id = 'EU-0016-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST refuse to activate a transport unless a verification record holds passing peer and session binding tests for its exact implementation digest, version and transport profile.'
+binds_to = 'system'
+rationale = 'A transport is trusted to bind packets to their peer only once a test of that exact build shows it.'
+
+[[requirement]]
+id = 'EU-0016-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'A missing, failed or mismatched verification record MUST produce an unverified transport result and an event.'
+binds_to = 'system'
+rationale = 'An owner sees why a transport stays off.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-093' } ]
+
+[[requirement]]
+id = 'EU-0016-095'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A pairing or a saved route MUST NOT bypass the transport verification.'
+binds_to = 'system'
+rationale = 'Trust in a host never replaces evidence about the transport.'
+
+[[requirement]]
+id = 'EU-0016-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST check each packet it accepts against the current peer and session generation.'
+binds_to = 'system'
+rationale = 'A packet with a mismatched address or session identity never enters the project.'
+
+[[requirement]]
+id = 'EU-0016-097'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A passing verification record MUST NOT grant access.'
+binds_to = 'system'
+rationale = 'Evidence about a transport is never a permission.'
