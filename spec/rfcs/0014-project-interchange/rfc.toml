@@ -1,0 +1,10 @@
+number = 14
+title = 'Project interchange with other workstations'
+area = 'euphony'
+abstract = """\
+  How euphony brings in a project saved by another music workstation: euphony's own project format \
+  as the authoritative copy, the staged and bounded reading of a source project, the conversion of \
+  its arrangement, mixer, automation, edits, comps, loop grids and effect settings, and the report of \
+  every part that doesn't convert."""
+retired = []
+sources = []
