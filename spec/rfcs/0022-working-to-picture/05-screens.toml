@@ -12,7 +12,7 @@ session's transport through the session timeline, maps each transport change to 
 the session's clock synchronization, and shows each frame at its presentation time. A link has a
 picture option, which carries the picture to its participant. A link participant's client shows
 each frame at the time its own output plays that frame's sound, with each delay applied once: in
-aligned mode at the time the link's shared playout gives for the frame's samples, and in host-live
+aligned mode at the time the link's shared playout sets for the frame's samples, and in host-live
 mode at that time plus the participant's own measured delay. Revoking a link ends its delivery and
 can't recall frames that a participant already received."""
 
@@ -52,7 +52,7 @@ rationale = "A screen never waits on a copy during playback."
 id = 'EU-0022-066'
 level = 'MUST'
 polarity = 'required'
-statement = "Another computer that shows the picture MUST show each frame at the presentation time that the session's clock synchronization gives for its samples."
+statement = "Another computer that shows the picture MUST show each frame at the presentation time that the session's clock synchronization maps for its samples."
 binds_to = 'system'
 rationale = "Every screen of the owner shows the frame whose sound is heard."
 
@@ -166,7 +166,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "Revoking a link MUST end the delivery of its frames."
 binds_to = 'system'
-rationale = "A revoked participant receives no more picture."
+rationale = "A revoked participant doesn't receive any more picture."
 
 [[requirement]]
 id = 'EU-0022-081'
