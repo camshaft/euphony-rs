@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-063"
+
+[[spec]]
+level = "MUST"
+quote = "The age of a preference MUST NOT change an approved preference."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-133"
+
+[[spec]]
+level = "MUST"
+quote = "Each event a mechanism generates MUST carry its causal chain."

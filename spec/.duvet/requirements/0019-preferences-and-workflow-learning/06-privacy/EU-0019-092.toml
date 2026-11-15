@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-092"
+
+[[spec]]
+level = "MUST"
+quote = "Personal notes MUST be kept apart from project media and from collaborators' context."

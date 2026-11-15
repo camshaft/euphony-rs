@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-010"
+
+[[spec]]
+level = "MUST"
+quote = "Beginning a learning context MUST return the snapshot identity, the context revision, the active preference and mechanism references, the unresolved conflicts, the pending work the principal can read and a cursor for each kind of record."

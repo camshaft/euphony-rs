@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-170"
+
+[[spec]]
+level = "MUST"
+quote = "Where the existence of evidence would reveal another person's private work, euphony MUST hide its identity and its count as well as its content."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-143"
+
+[[spec]]
+level = "MUST"
+quote = "An effect report MUST show its uncertainty and the owner's assessment."

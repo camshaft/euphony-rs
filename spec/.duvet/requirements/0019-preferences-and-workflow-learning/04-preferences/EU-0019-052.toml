@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-052"
+
+[[spec]]
+level = "MUST"
+quote = "Proposing a preference MUST return the proposal and a reviewable diff, or a typed refusal of denied, missing authorized evidence, invalid domain, conflict or unavailable storage."

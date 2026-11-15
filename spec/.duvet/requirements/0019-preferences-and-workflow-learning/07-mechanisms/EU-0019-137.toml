@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-137"
+
+[[spec]]
+level = "MUST"
+quote = "Ordinary editing MUST stay available after a mechanism invocation fails."

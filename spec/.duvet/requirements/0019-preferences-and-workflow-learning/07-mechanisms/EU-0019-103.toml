@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-103"
+
+[[spec]]
+level = "MUST"
+quote = "Learning work MUST record its problem, evidence, proposer, status, assigned assistant and typed dependencies."

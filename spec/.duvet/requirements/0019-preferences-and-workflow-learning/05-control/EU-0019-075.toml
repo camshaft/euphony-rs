@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-075"
+
+[[spec]]
+level = "MUST"
+quote = "A retrospective or another model's review MUST NOT take the place of the owner's approval."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-032"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST derive the evidence of a person's actions in the application from its journal of authorized commands."

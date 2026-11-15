@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-089"
+
+[[spec]]
+level = "MUST"
+quote = "An import MUST NOT carry an approval or an access grant."

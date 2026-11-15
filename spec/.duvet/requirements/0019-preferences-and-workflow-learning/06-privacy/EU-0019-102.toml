@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-102"
+
+[[spec]]
+level = "MUST"
+quote = "A changed or unknown version of the terms MUST suspend the grant until a matching verification and a renewed approval exist."

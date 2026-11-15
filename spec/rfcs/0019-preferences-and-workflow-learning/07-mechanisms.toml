@@ -1,0 +1,336 @@
+[section]
+anchor = 'mechanisms'
+title = 'Learning work and workflow mechanisms'
+problem = """\
+  A repeated manual step or a repeated correction stays repeated unless it becomes a mechanism, and a learned mechanism that runs untested, approves itself or reaches past its declared effects can damage music, devices or private data."""
+motivation = """\
+  Durable learning work for each problem, typed mechanisms that use only the commands every client uses, a deterministic test of the exact version, and activation by the owner alone let repeated work improve without giving learned behavior any authority of its own."""
+prose = """
+Learning work records a scoped problem: its evidence, its proposer, its status, the external
+assistant it is assigned to and its typed dependencies on decisions, tests or other work. Repeated
+manual steps, repeated corrections and forgotten checks become findings of learning work. Euphony
+keeps this work and serves it whenever an assistant attaches; while no assistant is attached, the
+work waits where the owner sees it. A mechanism version has a kind: template, default, macro,
+composition program, validation check or event rule. It holds its input and output schema, its
+applicability predicates, its trigger event types, the digest of its definition, the capabilities
+it needs, a preview of its effects, its test specification and results, its baseline metrics, its
+proposer, its approval, its prior version and its rollback operation. A template or a default
+changes newly requested work and leaves earlier music as it was. A mechanism is tested on a pinned
+copy of the project and activated by the owner's accept command, and each of its invocations is
+authorized again as it runs. The executor runs active mechanisms through the command gateway; it
+isn't a scheduler of assistants or a model runtime."""
+
+[[requirement]]
+id = 'EU-0019-103'
+level = 'MUST'
+polarity = 'required'
+statement = 'Learning work MUST record its problem, evidence, proposer, status, assigned assistant and typed dependencies.'
+binds_to = 'system'
+rationale = 'Each problem is tracked until it is solved.'
+
+[[requirement]]
+id = 'EU-0019-104'
+level = 'MUST'
+polarity = 'required'
+statement = 'Duplicate findings MUST join the same learning work by an explicit key and the affected workflow or domain.'
+binds_to = 'system'
+rationale = 'One problem is worked once.'
+
+[[requirement]]
+id = 'EU-0019-105'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Similar prose alone MUST NOT join two findings.'
+binds_to = 'system'
+rationale = 'Two problems that read alike stay apart unless their structure matches.'
+
+[[requirement]]
+id = 'EU-0019-106'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A finding MUST NOT be an executable command or an approval.'
+binds_to = 'system'
+rationale = 'A finding describes a problem; only the owner adopts a solution.'
+
+[[requirement]]
+id = 'EU-0019-107'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST serve pending learning work to an assistant when the assistant attaches.'
+binds_to = 'system'
+rationale = "Work waits for the person's assistant instead of being lost."
+
+[[requirement]]
+id = 'EU-0019-108'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT start an assistant to work on learning work.'
+binds_to = 'system'
+rationale = 'The person decides when an assistant runs.'
+
+[[requirement]]
+id = 'EU-0019-109'
+level = 'MUST'
+polarity = 'required'
+statement = 'Pending learning work MUST stay visible to the owner while no assistant is attached.'
+binds_to = 'system'
+rationale = 'The owner sees what waits for an assistant.'
+
+[[requirement]]
+id = 'EU-0019-110'
+level = 'MUST'
+polarity = 'required'
+statement = 'A mechanism version MUST hold its kind, its schemas, its predicates, its trigger event types, its definition digest, its required capabilities, its effect preview, its tests and results, its baseline metrics, its proposer, its approval, its prior version and its rollback operation.'
+binds_to = 'system'
+rationale = 'Each mechanism can be reviewed, tested, measured and rolled back from its own record.'
+
+[[requirement]]
+id = 'EU-0019-111'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A template or default mechanism MUST NOT rewrite existing music.'
+binds_to = 'system'
+rationale = 'A new default changes new work, never the music already made.'
+
+[[requirement]]
+id = 'EU-0019-112'
+level = 'MUST'
+polarity = 'required'
+statement = 'A macro or a composition program MUST use the same typed commands and the same restricted runner as every other client.'
+binds_to = 'system'
+rationale = 'A mechanism has no path around the checks every client meets.'
+
+[[requirement]]
+id = 'EU-0019-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'A validation check MUST return a structured refusal with an explanation the caller can read.'
+binds_to = 'system'
+rationale = 'A refused change says why, in a form a client can act on.'
+
+[[requirement]]
+id = 'EU-0019-114'
+level = 'MUST'
+polarity = 'required'
+statement = 'An event rule MUST invoke only the commands it declares.'
+binds_to = 'system'
+rationale = 'An event rule never does more than its review showed.'
+
+[[requirement]]
+id = 'EU-0019-115'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A mechanism proposal MUST NOT change the command gateway, the approval operations or its own authority.'
+binds_to = 'system'
+rationale = 'Learned behavior never rewrites the rules that contain it.'
+
+[[requirement]]
+id = 'EU-0019-116'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A mechanism MUST NOT carry new native code.'
+binds_to = 'system'
+rationale = 'New native code goes through the ordinary review and release of euphony, never through learning.'
+
+[[requirement]]
+id = 'EU-0019-117'
+level = 'MUST'
+polarity = 'required'
+statement = 'A mechanism proposal MUST reference learning work of its subject and project scope that the caller can read.'
+binds_to = 'system'
+rationale = 'Each mechanism answers a recorded problem.'
+
+[[requirement]]
+id = 'EU-0019-118'
+level = 'MUST'
+polarity = 'required'
+statement = 'A mechanism proposal whose learning work reference is missing, inaccessible or of another scope MUST be refused without being stored.'
+binds_to = 'system'
+rationale = "A mechanism never depends on a problem that isn't there."
+relations = [ { kind = 'depends_on', target = 'EU-0019-117' } ]
+
+[[requirement]]
+id = 'EU-0019-119'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A refusal for an inaccessible learning work reference MUST NOT reveal whether that work exists.'
+binds_to = 'system'
+rationale = "A refusal never leaks another person's work."
+
+[[requirement]]
+id = 'EU-0019-120'
+level = 'MUST'
+polarity = 'required'
+statement = 'Testing a mechanism MUST run its exact digest on a pinned copy of the project with deterministic inputs and simulated dependencies.'
+binds_to = 'system'
+rationale = 'A test result belongs to the exact version tested and can be repeated.'
+
+[[requirement]]
+id = 'EU-0019-121'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A mechanism test MUST NOT use real devices, write outside its pinned copy or export anything.'
+binds_to = 'system'
+rationale = 'Testing a mechanism never changes anything real.'
+
+[[requirement]]
+id = 'EU-0019-122'
+level = 'MUST'
+polarity = 'required'
+statement = 'A test result MUST hold the command diff, an audio comparison where audio changes, the failures, the resource use and a replay of the rollback.'
+binds_to = 'system'
+rationale = 'The owner sees what the mechanism would do and that it can be undone.'
+
+[[requirement]]
+id = 'EU-0019-123'
+level = 'MUST'
+polarity = 'required'
+statement = "Activating a mechanism MUST be the owner's accept command."
+binds_to = 'system'
+rationale = 'The owner adopts each mechanism as they adopt a preference.'
+
+[[requirement]]
+id = 'EU-0019-124'
+level = 'MUST'
+polarity = 'required'
+statement = 'Activation MUST be refused unless the exact version digest, the current scope, the test profile and a passing result match the preview the owner accepted.'
+binds_to = 'system'
+rationale = 'The owner activates exactly the version they saw pass.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-120' } ]
+
+[[requirement]]
+id = 'EU-0019-125'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant, a script or a mechanism MUST NOT activate a mechanism.'
+binds_to = 'system'
+rationale = 'Proposing and testing are open to an assistant; accepting stays with the owner.'
+
+[[requirement]]
+id = 'EU-0019-126'
+level = 'MUST'
+polarity = 'required'
+statement = 'An import, an update or a rollback of a mechanism MUST repeat the activation checks against the current runtime.'
+binds_to = 'system'
+rationale = 'A mechanism that passed elsewhere or earlier is checked again where it runs now.'
+
+[[requirement]]
+id = 'EU-0019-127'
+level = 'MUST'
+polarity = 'required'
+statement = "A change to a mechanism's definition MUST invalidate its tests and its acceptance."
+binds_to = 'system'
+rationale = 'A changed mechanism is a new mechanism to test and accept.'
+
+[[requirement]]
+id = 'EU-0019-128'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST authorize each invocation of a mechanism again as it runs.'
+binds_to = 'system'
+rationale = 'A mechanism never acts on access that has since been withdrawn.'
+
+[[requirement]]
+id = 'EU-0019-129'
+level = 'MUST'
+polarity = 'required'
+statement = "An invocation whose effect needs the owner's approval of the exact effect MUST wait for that approval of that invocation."
+binds_to = 'system'
+rationale = "A mechanism never exports or purges without the owner's approval of that act."
+
+[[requirement]]
+id = 'EU-0019-130'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Activating a mechanism MUST NOT approve an effect of a later invocation in advance.'
+binds_to = 'system'
+rationale = 'Approval of an exact effect is given for the effect, when it happens.'
+
+[[requirement]]
+id = 'EU-0019-131'
+level = 'MUST'
+polarity = 'required'
+statement = 'A macro whose combined steps hold an effect that needs approval MUST receive that approval for its combined preview before any effect commits.'
+binds_to = 'system'
+rationale = 'Steps that are each allowed never combine into an effect no one approved.'
+
+[[requirement]]
+id = 'EU-0019-132'
+level = 'MUST'
+polarity = 'required'
+statement = 'The executor MUST deduplicate invocations by mechanism version, trigger event and operation identity.'
+binds_to = 'system'
+rationale = 'One trigger runs a mechanism once.'
+
+[[requirement]]
+id = 'EU-0019-133'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each event a mechanism generates MUST carry its causal chain.'
+binds_to = 'system'
+rationale = 'Every generated change can be traced to what started it.'
+
+[[requirement]]
+id = 'EU-0019-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST reject a cycle of triggers and effects that lacks a validated finite execution plan.'
+binds_to = 'system'
+rationale = 'A mechanism never triggers itself without end, under any name.'
+
+[[requirement]]
+id = 'EU-0019-135'
+level = 'MUST'
+polarity = 'required'
+statement = 'A failed invocation MUST roll back its command transaction.'
+binds_to = 'system'
+rationale = 'A failure leaves the project as it was.'
+
+[[requirement]]
+id = 'EU-0019-136'
+level = 'MUST'
+polarity = 'required'
+statement = 'A failed invocation MUST suspend the mechanism that failed.'
+binds_to = 'system'
+rationale = "A failing mechanism doesn't fail again on the next trigger."
+
+[[requirement]]
+id = 'EU-0019-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'Ordinary editing MUST stay available after a mechanism invocation fails.'
+binds_to = 'system'
+rationale = 'The person can keep working whatever a mechanism does.'
+
+[[requirement]]
+id = 'EU-0019-200'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST derive the rate and concurrency of learning work and of transfers from the answers of the resources they use.'
+binds_to = 'system'
+rationale = 'Limits are discovered, never invented.'
+
+[[requirement]]
+id = 'EU-0019-201'
+level = 'MUST'
+polarity = 'required'
+statement = 'Accepted learning work past the rate its resources answer MUST stay queued.'
+binds_to = 'system'
+rationale = 'Work past the limit waits instead of being dropped.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-200' } ]
+
+[[requirement]]
+id = 'EU-0019-138'
+level = 'MUST'
+polarity = 'required'
+statement = 'The protection of recording and audible output MUST take precedence over any mechanism.'
+binds_to = 'system'
+rationale = 'A learned rule never interrupts a take or harms the audio the person listens to.'
+
+[[requirement]]
+id = 'EU-0019-139'
+level = 'MUST'
+polarity = 'required'
+statement = 'A storage or capacity failure MUST keep accepted learning work, visible to the owner.'
+binds_to = 'system'
+rationale = 'Accepted work is never lost to a failure, and the owner sees it waiting.'

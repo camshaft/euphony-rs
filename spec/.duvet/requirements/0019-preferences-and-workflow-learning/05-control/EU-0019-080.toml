@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-080"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to inspect the history of each preference and mechanism."

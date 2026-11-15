@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-013"
+
+[[spec]]
+level = "MUST"
+quote = "An acknowledgement of a learning context MUST record that the snapshot it names was delivered to its principal."

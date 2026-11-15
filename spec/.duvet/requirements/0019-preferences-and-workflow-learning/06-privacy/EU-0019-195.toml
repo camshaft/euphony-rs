@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-195"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant's access to private data MUST wait for the owner's approval of the exact effect."

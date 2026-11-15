@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-009"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST define the assistants it supports by the protocol capabilities they declare, not by their vendor or product."

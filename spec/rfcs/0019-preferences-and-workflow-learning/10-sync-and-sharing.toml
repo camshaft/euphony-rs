@@ -1,0 +1,144 @@
+[section]
+anchor = 'sync-and-sharing'
+title = 'Synchronization, sharing and ordering'
+problem = """\
+  Private learning that travels with a shared project, or that a stale device restores after a reset, reaches people the owner never chose, and one lock across every write of an owner would make two projects wait on each other."""
+motivation = """\
+  A personal history apart from project branches, synchronized only to the owner's paired devices, shared only as reviewed copies and ordered within each learning scope, keeps learning private by default and lets independent work go on at once."""
+prose = """
+Each owner's learning has a version history of its own, apart from the branches of any project. The
+owner's paired devices synchronize it over authenticated, encrypted transfer. The owner can publish
+a reviewed copy of a project-specific preference or mechanism with selected evidence removed, and
+its recipient sees it as an attributed proposal. An offline device keeps the snapshots it can read
+and can make proposals. The owner's subject authority orders the owner's acceptances, withdrawals,
+resets, activations, suspensions and retirements within each learning scope: one scope for the
+owner-wide preferences, and one for each project, which holds that project's preferences,
+mechanisms and learning work. Reads use immutable versions and don't take the authority."""
+
+[[requirement]]
+id = 'EU-0019-164'
+level = 'MUST'
+polarity = 'required'
+statement = "Each owner's learning MUST have a version history apart from the branches of every project."
+binds_to = 'system'
+rationale = 'Project history and personal learning move independently.'
+
+[[requirement]]
+id = 'EU-0019-165'
+level = 'MUST'
+polarity = 'required'
+statement = "The owner's paired devices MUST synchronize that history over an authenticated, encrypted transfer."
+binds_to = 'system'
+rationale = "The owner's learning follows them without exposing it on the way."
+
+[[requirement]]
+id = 'EU-0019-166'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Sharing a project, a link to it or a digest of its audio MUST NOT include the owner's learning."
+binds_to = 'system'
+rationale = "Sharing music never shares the owner's taste."
+
+[[requirement]]
+id = 'EU-0019-167'
+level = 'MUST'
+polarity = 'required'
+statement = 'A published copy of a preference or mechanism MUST reach its recipient as an attributed proposal.'
+binds_to = 'system'
+rationale = 'The recipient decides whether to adopt it.'
+
+[[requirement]]
+id = 'EU-0019-168'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A published copy MUST NOT become the recipient's own taste or carry an approval."
+binds_to = 'system'
+rationale = "One person's approval never transfers to another."
+
+[[requirement]]
+id = 'EU-0019-169'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST authorize every learning record and evidence view at each read and at each delivery to a subscription.'
+binds_to = 'system'
+rationale = "A later collaborator or a changed assignment never sees what they can't read."
+
+[[requirement]]
+id = 'EU-0019-170'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the existence of evidence would reveal another person's private work, euphony MUST hide its identity and its count as well as its content."
+binds_to = 'system'
+rationale = 'A count can leak what the content would.'
+
+[[requirement]]
+id = 'EU-0019-171'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An offline device MUST NOT create a new global activation or reconcile conflicting approvals by itself.'
+binds_to = 'system'
+rationale = "Lasting decisions are ordered by the owner's authority, not by whichever device reconnects first."
+
+[[requirement]]
+id = 'EU-0019-172'
+level = 'MUST'
+polarity = 'required'
+statement = 'Synchronization MUST preserve concurrent heads, explicit conflict resolutions, signed withdrawals and scope tombstones.'
+binds_to = 'system'
+rationale = "No device's history is lost in a merge."
+
+[[requirement]]
+id = 'EU-0019-173'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A stale device MUST NOT restore a version the owner reset.'
+binds_to = 'system'
+rationale = 'A reset holds on every device.'
+
+[[requirement]]
+id = 'EU-0019-174'
+level = 'MUST'
+polarity = 'required'
+statement = "A device's unpairing MUST apply before euphony serves that device any new context or proposal on its reconnection."
+binds_to = 'system'
+rationale = 'An unpaired device receives nothing new.'
+
+[[requirement]]
+id = 'EU-0019-175'
+level = 'MUST'
+polarity = 'required'
+statement = "The pairing screen MUST state that unpairing can't erase copies a device already received or reach a disconnected device at once."
+binds_to = 'system'
+rationale = 'The owner knows the limit of unpairing before relying on it.'
+
+[[requirement]]
+id = 'EU-0019-176'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of a share MUST state that a recipient's copy can't be recalled and that an offline device can't be revoked at once."
+binds_to = 'system'
+rationale = 'The owner accepts these risks knowingly.'
+
+[[requirement]]
+id = 'EU-0019-177'
+level = 'MUST'
+polarity = 'required'
+statement = "The owner's subject authority MUST order the owner's acceptance, withdrawal, reset, activation, suspension and retirement changes within each learning scope."
+binds_to = 'system'
+rationale = "Every device agrees on the order of the owner's decisions."
+
+[[requirement]]
+id = 'EU-0019-178'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Writes in two projects of the same owner MUST NOT wait on each other.'
+binds_to = 'system'
+rationale = 'Independent work goes on at once.'
+
+[[requirement]]
+id = 'EU-0019-179'
+level = 'MUST'
+polarity = 'required'
+statement = 'A project-scope write that depends on an owner-wide preference MUST be refused as stale where the owner-wide revision it read has moved.'
+binds_to = 'system'
+rationale = 'The owner reads the change and decides again instead of overriding it unseen.'

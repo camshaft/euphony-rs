@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-146"
+
+[[spec]]
+level = "MUST"
+quote = "Each trial MUST state the acceptance predicates the owner accepted with it."

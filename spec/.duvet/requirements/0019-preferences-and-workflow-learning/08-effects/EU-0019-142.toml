@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-142"
+
+[[spec]]
+level = "MUST"
+quote = "An effect report MUST record its event definitions, eligible counts, observation coverage, mechanism and runtime versions and concurrent changes."

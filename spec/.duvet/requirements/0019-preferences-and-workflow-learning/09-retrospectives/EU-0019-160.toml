@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-160"
+
+[[spec]]
+level = "MUST"
+quote = "Retrospective work MUST NOT depend on polling or on a calendar wake."
