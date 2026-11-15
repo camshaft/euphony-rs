@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-062"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST verify all audio a manifest requires before it reports playback as ready."

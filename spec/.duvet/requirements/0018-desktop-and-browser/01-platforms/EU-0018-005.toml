@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-005"
+
+[[spec]]
+level = "MUST"
+quote = "Every main view, navigation path and editing command MUST pass the same conformance cases on each supported desktop operating system."

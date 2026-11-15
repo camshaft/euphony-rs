@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-044"
+
+[[spec]]
+level = "MUST"
+quote = "Saving a shortcut mapping MUST check it, at its expected revision, against the reserved and existing bindings of each supported platform profile."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-027"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST lay out each view in logical units converted with the actual scale of its window."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-043"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST display the effective binding of each shortcut."

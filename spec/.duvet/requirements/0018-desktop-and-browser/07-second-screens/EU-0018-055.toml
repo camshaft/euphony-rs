@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/07-second-screens.md#EU-0018-055"
+
+[[spec]]
+level = "MUST"
+quote = "A layout MUST adapt its density, safe areas, orientation and touch targets to the actual device."

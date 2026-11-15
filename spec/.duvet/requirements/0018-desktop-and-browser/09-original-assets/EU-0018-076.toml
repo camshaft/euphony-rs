@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-076"
+
+[[spec]]
+level = "MUST"
+quote = "Each interface framework dependency of a release MUST have a passing license check."

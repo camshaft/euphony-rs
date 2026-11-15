@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-071"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST NOT claim direct access to local network discovery, multicast audio or network clock synchronization."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-028"
+
+[[spec]]
+level = "MUST"
+quote = "A view MUST stay correct when its window moves to a monitor of another scale, is resized, or its display changes."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-050"
+
+[[spec]]
+level = "MUST"
+quote = "A binding that a changed platform profile leaves unresolved MUST NOT become active."

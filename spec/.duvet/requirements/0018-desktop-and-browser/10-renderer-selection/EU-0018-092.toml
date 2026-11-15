@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-092"
+
+[[spec]]
+level = "MUST"
+quote = "A rollback of the renderer MUST leave the project's audio and command history unchanged."

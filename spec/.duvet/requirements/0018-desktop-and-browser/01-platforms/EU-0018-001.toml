@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-001"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST run on each desktop operating system euphony supports."

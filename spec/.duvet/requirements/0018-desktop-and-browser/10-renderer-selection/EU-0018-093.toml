@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-093"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST NOT claim expressive-control readiness on a physical profile that hasn't met the timing criterion the musician selected."

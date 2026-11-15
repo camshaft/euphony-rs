@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-036"
+
+[[spec]]
+level = "MUST"
+quote = "Each continuous control MUST offer fine adjustment, coarse adjustment and numeric entry."

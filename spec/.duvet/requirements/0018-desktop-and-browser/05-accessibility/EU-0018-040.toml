@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-040"
+
+[[spec]]
+level = "MUST"
+quote = "An action reached through assistive technology MUST use the same action identifier and current selection as the same action reached by pointer."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/08-browser-companion.md#EU-0018-068"
+
+[[spec]]
+level = "MUST"
+quote = "When the host is lost, the browser companion MUST show remote commands as unavailable."

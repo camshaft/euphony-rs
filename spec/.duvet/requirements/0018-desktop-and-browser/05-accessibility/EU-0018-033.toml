@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-033"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST expose the role, label, unit, range, base value, effective value, focus and permitted actions of each interactive element to the operating system's assistive technology."

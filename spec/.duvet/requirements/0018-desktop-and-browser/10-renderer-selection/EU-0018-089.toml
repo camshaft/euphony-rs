@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-089"
+
+[[spec]]
+level = "MUST"
+quote = "Evidence for one renderer MUST NOT authorize another renderer."

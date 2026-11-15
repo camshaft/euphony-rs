@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-091"
+
+[[spec]]
+level = "MUST"
+quote = "The evidence of the selection MUST be typed records from configured publishers and deciders."

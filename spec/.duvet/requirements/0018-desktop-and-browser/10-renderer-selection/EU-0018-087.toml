@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-087"
+
+[[spec]]
+level = "MUST"
+quote = "The selection MUST check its evidence and the caller's authority again in the commit that changes the configuration."

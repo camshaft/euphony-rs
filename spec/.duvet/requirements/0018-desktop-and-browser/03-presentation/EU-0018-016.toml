@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-016"
+
+[[spec]]
+level = "MUST"
+quote = "Windows, drawing state and graphics resources MUST NOT be part of project state, sound definitions or render cache keys."
