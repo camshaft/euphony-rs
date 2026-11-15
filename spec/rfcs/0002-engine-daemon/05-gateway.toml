@@ -122,7 +122,7 @@ rationale = 'A change of several steps applies whole or not at all.'
 id = 'EU-0002-087'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'The session host MUST NOT apply a command again when it arrives with an idempotency key the session host already applied.'
+statement = 'The session host MUST NOT apply a command again when it arrives with an idempotency key that the session host already applied for the same origin.'
 binds_to = 'system'
 rationale = 'A caller retries a command whose answer it lost without applying it twice.'
 
@@ -130,7 +130,7 @@ rationale = 'A caller retries a command whose answer it lost without applying it
 id = 'EU-0002-088'
 level = 'MUST'
 polarity = 'required'
-statement = 'Each transaction the session host commits MUST be undoable as one step.'
+statement = 'An undo MUST revert a committed transaction as one step.'
 binds_to = 'system'
 rationale = 'An undo reverses what the person did as they did it, never half of it.'
 

@@ -65,11 +65,11 @@ The session host MUST apply a batch of commands as one transaction against one e
 
 ### EU-0002-087 {#EU-0002-087}
 
-The session host MUST NOT apply a command again when it arrives with an idempotency key the session host already applied.
+The session host MUST NOT apply a command again when it arrives with an idempotency key that the session host already applied for the same origin.
 
 ### EU-0002-088 {#EU-0002-088}
 
-Each transaction the session host commits MUST be undoable as one step.
+An undo MUST revert a committed transaction as one step.
 
 ### EU-0002-089 {#EU-0002-089}
 

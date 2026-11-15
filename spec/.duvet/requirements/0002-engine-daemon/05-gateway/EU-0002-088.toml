@@ -2,4 +2,4 @@ target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-088"
 
 [[spec]]
 level = "MUST"
-quote = "Each transaction the session host commits MUST be undoable as one step."
+quote = "An undo MUST revert a committed transaction as one step."

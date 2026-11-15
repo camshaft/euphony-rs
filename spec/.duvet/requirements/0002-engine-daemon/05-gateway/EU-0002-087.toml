@@ -2,4 +2,4 @@ target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-087"
 
 [[spec]]
 level = "MUST"
-quote = "The session host MUST NOT apply a command again when it arrives with an idempotency key the session host already applied."
+quote = "The session host MUST NOT apply a command again when it arrives with an idempotency key that the session host already applied for the same origin."
