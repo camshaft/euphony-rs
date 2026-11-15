@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/05-versions.md#EU-0003-075"
+
+[[spec]]
+level = "MUST"
+quote = "Each release of the engine MUST serve every minor version of its major version back to the oldest client release that the project configures as supported."

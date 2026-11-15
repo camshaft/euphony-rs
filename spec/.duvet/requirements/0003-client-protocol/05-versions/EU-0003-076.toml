@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/05-versions.md#EU-0003-076"
+
+[[spec]]
+level = "MUST"
+quote = "An engine release that introduces a new major version MUST also serve the previous major version for at least one release."
