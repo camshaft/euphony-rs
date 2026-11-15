@@ -2,4 +2,4 @@ target = "rendered/0007-sample-format/09-migration.md#EU-0007-133"
 
 [[spec]]
 level = "MUST"
-quote = "The store MUST negotiate and verify each ready item as durable work of its own."
+quote = "The store MUST negotiate and verify each ready item as durable work of its own, started by the registration that marks it ready."

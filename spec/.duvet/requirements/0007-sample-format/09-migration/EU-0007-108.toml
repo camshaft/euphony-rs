@@ -2,4 +2,4 @@ target = "rendered/0007-sample-format/09-migration.md#EU-0007-108"
 
 [[spec]]
 level = "MUST"
-quote = "A ready item that fails verification MUST stay held, with its bytes kept and its failure recorded, until the next registration of what it waits for marks it ready again."
+quote = "A ready item that fails verification MUST stay held, with its bytes kept and its failure recorded against that registration, until the next registration of what it waits for marks it ready again."
