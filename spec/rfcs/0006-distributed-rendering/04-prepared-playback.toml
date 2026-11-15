@@ -1,0 +1,73 @@
+[section]
+anchor = 'prepared-playback'
+title = 'Playing prepared audio'
+problem = """\
+  Prepared audio that mixes revisions or render profiles plays a sound the project never had, and \
+  prepared audio that reaches the player late interrupts what the musician listens to."""
+motivation = """\
+  Playing each segment from one revision and one profile, reading results ahead of the audio \
+  deadline, and checking every segment of an export keep what the musician listens to and exports true \
+  to one revision."""
+prose = """
+Stable passages are prepared as full-mix segments, and stems are kept at useful dependency
+boundaries, so that an edit of one track plays the stems it doesn't affect while its affected island
+and the buses that depend on it are prepared again. The player streams prepared results from the
+render cache, can start partway through a result, and reads and frees memory away from the deadline
+of the audio device. How the player switches between prepared and live sources, and what the
+musician listens to while an edited passage is prepared, belong to RFC 0005."""
+
+[[requirement]]
+id = 'EU-0006-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each playback segment MUST come from a single revision of the graph.'
+binds_to = 'system'
+rationale = 'Stems with conflicting automation or routing never play together.'
+
+[[requirement]]
+id = 'EU-0006-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each playback segment MUST come from a single render profile.'
+binds_to = 'system'
+rationale = 'A segment never joins audio of two numerical behaviors.'
+
+[[requirement]]
+id = 'EU-0006-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'A completed export MUST check that every segment belongs to its selected revision and render profile.'
+binds_to = 'system'
+rationale = 'An exported file holds the revision the musician chose and nothing else.'
+
+[[requirement]]
+id = 'EU-0006-042'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The player MUST NOT wait on a read of the render cache while it produces audio for the device.'
+binds_to = 'system'
+rationale = 'A slow read never interrupts what the musician listens to.'
+
+[[requirement]]
+id = 'EU-0006-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback MUST be able to start at any sample position inside a prepared result.'
+binds_to = 'system'
+rationale = 'The musician starts playback anywhere in the project without waiting for a render.'
+
+[[requirement]]
+id = 'EU-0006-044'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'Stable passages SHOULD be prepared as full-mix segments.'
+binds_to = 'system'
+rationale = 'Playing a stable passage reads one result.'
+
+[[requirement]]
+id = 'EU-0006-045'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'The render cache SHOULD keep stems at the dependency boundaries of the mix.'
+binds_to = 'system'
+rationale = 'An edit of one track renders only its affected island and the buses that depend on it.'
