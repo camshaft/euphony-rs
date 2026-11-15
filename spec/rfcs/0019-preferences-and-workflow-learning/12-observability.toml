@@ -23,6 +23,14 @@ binds_to = 'system'
 rationale = 'Each step of learning can be observed.'
 
 [[requirement]]
+id = 'EU-0019-203'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST measure the size and time of context reads, queue delay, correction outcomes and resource cost as demand grows.'
+binds_to = 'system'
+rationale = 'The limits learning discovers come from measured demand.'
+
+[[requirement]]
 id = 'EU-0019-188'
 level = 'MUST'
 polarity = 'required'
