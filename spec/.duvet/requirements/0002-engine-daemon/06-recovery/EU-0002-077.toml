@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-077"
+
+[[spec]]
+level = "MUST"
+quote = "A command that was not journaled before the failure MUST NOT be part of the restored state."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-072"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted session host MUST start the audio device process in a new generation."

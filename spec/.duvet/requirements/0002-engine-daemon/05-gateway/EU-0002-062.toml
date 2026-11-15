@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-062"
+
+[[spec]]
+level = "MUST"
+quote = "A successful answer to a command MUST identify the committed revision or the asynchronous job the command started."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-054"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST NOT admit a remote attachment from a computer that isn't paired."

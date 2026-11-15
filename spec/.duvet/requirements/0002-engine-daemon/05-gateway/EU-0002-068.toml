@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-068"
+
+[[spec]]
+level = "MUST"
+quote = "The session's history MUST record the proposer and the approver of each approved action separately."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-069"
+
+[[spec]]
+level = "MUST"
+quote = "After a session host fails, the host service MUST start the session host again."

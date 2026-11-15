@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-060"
+
+[[spec]]
+level = "MUST"
+quote = "Where a command's expected revision is not current, the gateway MUST answer with a conflict and a current view the caller may see."

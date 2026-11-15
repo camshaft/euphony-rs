@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-066"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST apply an approved action only where its effect still matches the effect the proposal described."

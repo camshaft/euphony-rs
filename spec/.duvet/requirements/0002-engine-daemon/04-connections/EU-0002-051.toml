@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-051"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST accept an owner-interaction record only from the owner's native client, signed with the paired-device key of its computer."
