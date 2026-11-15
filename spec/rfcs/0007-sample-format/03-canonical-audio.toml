@@ -56,8 +56,8 @@ level = 'MUST'
 polarity = 'required'
 statement = 'A reader MUST verify the encoded digest of each chunk before it decodes that chunk.'
 binds_to = 'system'
-rationale = 'A corrupt or altered chunk is refused before any of it is decoded, and a reader seeks, streams or reads part of an object without hashing the whole object first; the chunk digests are held in the verified manifest that a decoder reads.'
-relations = [ { kind = 'depends_on', target = 'EU-0007-022' }, { kind = 'depends_on', target = 'EU-0007-038' }, { kind = 'depends_on', target = 'EU-0007-039' } ]
+rationale = 'A corrupt or altered chunk is refused before any of it is decoded, and a seek, a partial read or streamed playback hashes only the chunks it decodes.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-022' }, { kind = 'depends_on', target = 'EU-0007-039' }, { kind = 'depends_on', target = 'EU-0007-129' }, { kind = 'depends_on', target = 'EU-0007-131' } ]
 
 [[requirement]]
 id = 'EU-0007-023'

@@ -114,6 +114,33 @@ binds_to = 'system'
 rationale = 'A size an encoded object claims never makes a decoder allocate without bound.'
 
 [[requirement]]
+id = 'EU-0007-129'
+level = 'MUST'
+polarity = 'required'
+statement = 'The manifest of an encoded object MUST hold the position and the encoded digest of each of its chunks.'
+binds_to = 'system'
+rationale = 'A reader finds and checks any chunk from the manifest without reading the rest of the object.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-039' } ]
+
+[[requirement]]
+id = 'EU-0007-130'
+level = 'MUST'
+polarity = 'required'
+statement = 'The encoded digest of an encoded object MUST cover its manifest.'
+binds_to = 'system'
+rationale = "The object's encoded digest binds each chunk digest the manifest holds, so a sender can't replace a chunk together with its digest."
+relations = [ { kind = 'depends_on', target = 'EU-0007-022' }, { kind = 'depends_on', target = 'EU-0007-129' } ]
+
+[[requirement]]
+id = 'EU-0007-131'
+level = 'MUST'
+polarity = 'required'
+statement = "A reader MUST verify an encoded object's manifest against the object's encoded digest before it trusts any chunk digest the manifest holds."
+binds_to = 'system'
+rationale = 'A chunk digest is trusted only once the manifest that holds it is verified.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-130' } ]
+
+[[requirement]]
 id = 'EU-0007-039'
 level = 'MUST'
 polarity = 'required'

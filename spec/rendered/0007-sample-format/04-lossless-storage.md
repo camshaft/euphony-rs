@@ -57,6 +57,18 @@ Stored, cached and synced objects of working audio MUST move between machines on
 
 A decoder MUST bound the memory it allocates by the sizes a verified manifest declares.
 
+### EU-0007-129 {#EU-0007-129}
+
+The manifest of an encoded object MUST hold the position and the encoded digest of each of its chunks.
+
+### EU-0007-130 {#EU-0007-130}
+
+The encoded digest of an encoded object MUST cover its manifest.
+
+### EU-0007-131 {#EU-0007-131}
+
+A reader MUST verify an encoded object's manifest against the object's encoded digest before it trusts any chunk digest the manifest holds.
+
 ### EU-0007-039 {#EU-0007-039}
 
 Chunk boundaries MUST allow seeking, partial transfer and recovery from a corrupt chunk.
