@@ -45,7 +45,11 @@ Publication of an object or a pin and retirement of a decoder MUST be decided at
 
 ### EU-0007-102 {#EU-0007-102}
 
-Migration MUST verify the replacement bytes and update the manifests atomically before it releases an old dependency.
+Migration MUST verify the replacement bytes before it releases an old dependency.
+
+### EU-0007-127 {#EU-0007-127}
+
+Migration MUST update the manifests atomically before it releases an old dependency.
 
 ### EU-0007-103 {#EU-0007-103}
 

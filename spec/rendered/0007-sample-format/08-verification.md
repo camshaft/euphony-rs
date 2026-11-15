@@ -36,3 +36,11 @@ Export MUST NOT deliver to an adapter target whose record is missing, failed or 
 ### EU-0007-093 {#EU-0007-093}
 
 The export preview MUST list, from the adapter's record, each format the delivery needs that the record doesn't declare.
+
+### EU-0007-122 {#EU-0007-122}
+
+The evidence of a verification record MUST be recorded by an authorized maintainer.
+
+### EU-0007-123 {#EU-0007-123}
+
+The build MUST NOT accept a verification record whose evidence was recorded by a principal that is not an authorized maintainer.

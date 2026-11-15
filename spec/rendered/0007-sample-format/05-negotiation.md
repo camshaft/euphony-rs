@@ -13,15 +13,15 @@ A peer or a browser MUST hold a decoder for each encoding it reads before it rep
 
 ### EU-0007-049 {#EU-0007-049}
 
-A peer that lacks a codec MUST negotiate another supported lossless encoding of the same samples.
+A peer or a browser that lacks a codec MUST negotiate another supported lossless encoding of the same samples.
 
 ### EU-0007-050 {#EU-0007-050}
 
-A peer MUST NOT receive a raw representation of working audio unless a measured raw exception covers it.
+A peer or a browser MUST NOT receive a raw representation of working audio unless a measured raw exception covers it.
 
 ### EU-0007-051 {#EU-0007-051}
 
-Where no supported lossless encoding is left, readiness MUST report the unsupported decoder.
+Where no supported lossless encoding is left and no measured raw exception covers a raw representation, readiness MUST report the unsupported decoder.
 
 ### EU-0007-052 {#EU-0007-052}
 

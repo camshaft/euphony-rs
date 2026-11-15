@@ -25,6 +25,10 @@ The semantic digest of working audio MUST cover its canonical header and its sam
 
 An encoded object MUST have a digest of its encoded bytes that is separate from the semantic digest of the audio it holds.
 
+### EU-0007-125 {#EU-0007-125}
+
+A reader MUST verify an encoded object's encoded digest before it decodes the object.
+
 ### EU-0007-023 {#EU-0007-023}
 
 Every interface that exchanges working audio MUST exchange it in the canonical form.
@@ -43,7 +47,7 @@ The store MUST deduplicate working audio by its semantic digest.
 
 ### EU-0007-027 {#EU-0007-027}
 
-The store MUST keep an encoded representation of working audio only while an active reader needs it.
+The store MUST keep an additional encoded representation of the same canonical content only while an active reader needs it.
 
 ### EU-0007-028 {#EU-0007-028}
 

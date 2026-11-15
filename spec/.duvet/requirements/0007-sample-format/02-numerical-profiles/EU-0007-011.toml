@@ -2,4 +2,4 @@ target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-011"
 
 [[spec]]
 level = "MUST"
-quote = "Registration of a processor MUST compute its identities again from the submitted definitions and refuse a definition whose identities don't match."
+quote = "Registration of a processor MUST refuse a definition whose identities, computed again from the submitted definitions, don't match the identities it declares."

@@ -25,7 +25,7 @@ The identity of a processor MUST cover its numerical profile identity, the diges
 
 ### EU-0007-011 {#EU-0007-011}
 
-Registration of a processor MUST compute its identities again from the submitted definitions and refuse a definition whose identities don't match.
+Registration of a processor MUST refuse a definition whose identities, computed again from the submitted definitions, don't match the identities it declares.
 
 ### EU-0007-012 {#EU-0007-012}
 

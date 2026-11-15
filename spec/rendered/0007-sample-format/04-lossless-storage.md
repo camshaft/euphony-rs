@@ -49,6 +49,10 @@ Before it publishes an encoded object, the store MUST verify its decoded length 
 
 Working audio MUST be compressed before it is encrypted.
 
+### EU-0007-124 {#EU-0007-124}
+
+Stored, cached and synced objects of working audio MUST move between machines only on authenticated, encrypted transfers.
+
 ### EU-0007-038 {#EU-0007-038}
 
 A decoder MUST bound the memory it allocates by the sizes a verified manifest declares.
@@ -64,6 +68,10 @@ Chunk and read-ahead sizes MUST be chosen from decoder behavior, device deadline
 ### EU-0007-041 {#EU-0007-041}
 
 A byte rearrangement applied before compression MUST be recorded as a versioned encoding.
+
+### EU-0007-128 {#EU-0007-128}
+
+The inverse of a byte rearrangement applied before compression MUST restore each bit of every chunk the rearrangement encodes.
 
 ### EU-0007-042 {#EU-0007-042}
 
@@ -85,6 +93,10 @@ Compression MUST NOT run in the real-time audio callback.
 
 Where compression or prefetch would miss a live deadline, the system MUST fall back to a path that meets the deadline.
 
+### EU-0007-126 {#EU-0007-126}
+
+Accepted encoding, capture and migration work MUST stay durable while the resources to run it are unavailable.
+
 ### EU-0007-047 {#EU-0007-047}
 
-Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, capture journals and objects with a measured raw exception.
+Uncompressed working audio MUST NOT be kept outside processing and device buffers, live network audio packets, export deliveries, capture journals and objects with a measured raw exception.
