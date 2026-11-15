@@ -4,7 +4,8 @@ title = 'Access, sharing and rights'
 problem = "Captures, dumps and models can hold sound that others own, and a model shared or named carelessly can disclose a proprietary asset or claim an endorsement that doesn't exist."
 motivation = "Captures and models that stay with their owner by default, that are shared only on the owner's approval with a statement of rights, and that keep their provenance protect the owner and the makers of their gear, while every capability stays equally available to the interface and to assistants."
 prose = """
-Captures, instrument maps, dumps and models stay on the owner's paired computers. Sharing a model
+Captures, instrument maps and dumps stay on the owner's paired computers, and a model stays in its
+project until a recorded legal review and an export decision allow sharing it. Sharing a model
 with a collaborator needs the owner's approval and a statement of the rights claimed, and approval
 to record doesn't authorize sharing. Owning a device doesn't establish a right to copy or publish
 the sound assets it holds, and euphony doesn't decide what is lawful: a qualified legal review does.
@@ -18,9 +19,9 @@ rather than capturing on its own."""
 id = 'EU-0010-192'
 level = 'MUST'
 polarity = 'required'
-statement = "Captures, instrument maps, dumps and models MUST stay on the owner's paired computers unless the owner shares them."
+statement = "Captures, instrument maps and dumps MUST stay on the owner's paired computers."
 binds_to = 'system'
-rationale = "Proprietary sound never leaves the owner's computers by default."
+rationale = "Proprietary sound never leaves the owner's computers."
 
 [[requirement]]
 id = 'EU-0010-193'
@@ -37,7 +38,7 @@ polarity = 'required'
 statement = "Sharing a model with a collaborator MUST need the owner's approval and a statement of the rights claimed."
 binds_to = 'system'
 rationale = "Every release of a model is a recorded decision of its owner."
-relations = [ { kind = 'depends_on', target = 'EU-0010-192' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0010-212' } ]
 
 [[requirement]]
 id = 'EU-0010-195'
@@ -94,3 +95,11 @@ polarity = 'forbidden'
 statement = "A browser companion MUST NOT capture from a device or run model inference on its own."
 binds_to = 'system'
 rationale = "Capture stays on the computer the gear is wired to, under its checks."
+
+[[requirement]]
+id = 'EU-0010-212'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "euphony MUST NOT share a model beyond its project before a recorded legal review and an export decision allow it."
+binds_to = 'system'
+rationale = "A model can hold sound that others own, and only a legal review settles whether it may leave the project."

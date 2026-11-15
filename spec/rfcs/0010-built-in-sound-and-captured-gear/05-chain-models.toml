@@ -325,11 +325,11 @@ rationale = "Captures stay with their owner, and the work survives the loss of a
 
 [[requirement]]
 id = 'EU-0010-092'
-level = 'MAY'
+level = 'MUST'
 polarity = 'required'
-statement = "Each paired computer that offers the capacity MAY run training, fitting and evaluation jobs."
+statement = "euphony MUST admit the training, fitting and evaluation jobs of a model on every paired computer that the scheduler admits."
 binds_to = 'system'
-rationale = "Many fits run at once, on whichever computers can take them."
+rationale = "Many fits run at once, on every paired computer the scheduler admits."
 relations = [ { kind = 'depends_on', target = 'EU-0010-091' } ]
 
 [[requirement]]

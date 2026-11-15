@@ -2,4 +2,4 @@ target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-19
 
 [[spec]]
 level = "MUST"
-quote = "Captures, instrument maps, dumps and models MUST stay on the owner's paired computers unless the owner shares them."
+quote = "Captures, instrument maps and dumps MUST stay on the owner's paired computers."

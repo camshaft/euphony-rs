@@ -141,3 +141,15 @@ A synthesizer capture MUST lower its message rate when the device overruns or dr
 ### EU-0010-167 {#EU-0010-167}
 
 The report of a synthesizer capture MUST state its unmet coverage.
+
+### EU-0010-207 {#EU-0010-207}
+
+The approval of a synthesizer capture session MUST name the classes of instrument control message and the domain of each control that the capture may send.
+
+### EU-0010-208 {#EU-0010-208}
+
+A synthesizer capture MUST NOT send a message of a class, or a control value outside a domain, that its session's approval doesn't name.
+
+### EU-0010-210 {#EU-0010-210}
+
+A synthesizer capture MUST stop emission when another session takes the device, ports or channels it reserved.

@@ -1,6 +1,7 @@
 ## Access, sharing and rights {#access}
 
-Captures, instrument maps, dumps and models stay on the owner's paired computers. Sharing a model
+Captures, instrument maps and dumps stay on the owner's paired computers, and a model stays in its
+project until a recorded legal review and an export decision allow sharing it. Sharing a model
 with a collaborator needs the owner's approval and a statement of the rights claimed, and approval
 to record doesn't authorize sharing. Owning a device doesn't establish a right to copy or publish
 the sound assets it holds, and euphony doesn't decide what is lawful: a qualified legal review does.
@@ -12,7 +13,7 @@ rather than capturing on its own.
 
 ### EU-0010-192 {#EU-0010-192}
 
-Captures, instrument maps, dumps and models MUST stay on the owner's paired computers unless the owner shares them.
+Captures, instrument maps and dumps MUST stay on the owner's paired computers.
 
 ### EU-0010-193 {#EU-0010-193}
 
@@ -49,3 +50,7 @@ Each capture, cancellation, fit, report and attachment of a model MUST be a type
 ### EU-0010-201 {#EU-0010-201}
 
 A browser companion MUST NOT capture from a device or run model inference on its own.
+
+### EU-0010-212 {#EU-0010-212}
+
+euphony MUST NOT share a model beyond its project before a recorded legal review and an export decision allow it.

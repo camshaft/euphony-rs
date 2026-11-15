@@ -165,7 +165,7 @@ Training, fitting and evaluation of a model MUST run as durable jobs on the owne
 
 ### EU-0010-092 {#EU-0010-092}
 
-Each paired computer that offers the capacity MAY run training, fitting and evaluation jobs.
+euphony MUST admit the training, fitting and evaluation jobs of a model on every paired computer that the scheduler admits.
 
 ### EU-0010-093 {#EU-0010-093}
 

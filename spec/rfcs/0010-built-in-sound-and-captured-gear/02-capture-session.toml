@@ -147,3 +147,20 @@ statement = "After a stop for a change of its conditions, a capture session MUST
 binds_to = 'system'
 rationale = "The owner approves the conditions a resumed capture runs under."
 relations = [ { kind = 'depends_on', target = 'EU-0010-026' } ]
+
+[[requirement]]
+id = 'EU-0010-209'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop emission when the owner unpairs its computer during a take."
+binds_to = 'system'
+rationale = "A computer the owner unpaired stops driving the gear at once."
+
+[[requirement]]
+id = 'EU-0010-211'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST mark a take incomplete when it stops emission for an unpairing or a reservation conflict."
+binds_to = 'system'
+rationale = "A take cut short is never fitted as if it were whole."
+relations = [ { kind = 'depends_on', target = 'EU-0010-209' }, { kind = 'depends_on', target = 'EU-0010-210' } ]

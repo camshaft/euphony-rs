@@ -73,3 +73,11 @@ A capture session MUST stop on the loss of the client that controls it.
 ### EU-0010-032 {#EU-0010-032}
 
 After a stop for a change of its conditions, a capture session MUST have a new calibration and a new approval before it emits again.
+
+### EU-0010-209 {#EU-0010-209}
+
+A capture session MUST stop emission when the owner unpairs its computer during a take.
+
+### EU-0010-211 {#EU-0010-211}
+
+A capture session MUST mark a take incomplete when it stops emission for an unpairing or a reservation conflict.

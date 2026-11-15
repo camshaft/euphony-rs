@@ -276,3 +276,30 @@ polarity = 'required'
 statement = "The report of a synthesizer capture MUST state its unmet coverage."
 binds_to = 'system'
 rationale = "An incomplete capture is never advertised as a complete instrument."
+
+[[requirement]]
+id = 'EU-0010-207'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of a synthesizer capture session MUST name the classes of instrument control message and the domain of each control that the capture may send."
+binds_to = 'system'
+rationale = "The owner decides what the capture may change on the device."
+relations = [ { kind = 'depends_on', target = 'EU-0010-019' } ]
+
+[[requirement]]
+id = 'EU-0010-208'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A synthesizer capture MUST NOT send a message of a class, or a control value outside a domain, that its session's approval doesn't name."
+binds_to = 'system'
+rationale = "A capture never drives the device beyond what its owner approved."
+relations = [ { kind = 'depends_on', target = 'EU-0010-207' } ]
+
+[[requirement]]
+id = 'EU-0010-210'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST stop emission when another session takes the device, ports or channels it reserved."
+binds_to = 'system'
+rationale = "Two sessions never drive one device at once."
+relations = [ { kind = 'depends_on', target = 'EU-0010-138' } ]
