@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-068"
+
+[[spec]]
+level = "MUST"
+quote = "A render or an export of an imported project MUST identify each replacement that is still unresolved."
