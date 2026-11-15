@@ -162,6 +162,10 @@ Euphony MUST derive the rate and concurrency of learning work and of transfers f
 
 Accepted learning work past the rate its resources answer MUST stay queued.
 
+### EU-0019-211 {#EU-0019-211}
+
+Transfers past the rate their resources answer MUST stay queued.
+
 ### EU-0019-138 {#EU-0019-138}
 
 The protection of recording and audible output MUST take precedence over any mechanism.

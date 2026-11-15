@@ -320,6 +320,15 @@ rationale = 'Work past the limit waits instead of being dropped.'
 relations = [ { kind = 'depends_on', target = 'EU-0019-200' } ]
 
 [[requirement]]
+id = 'EU-0019-211'
+level = 'MUST'
+polarity = 'required'
+statement = 'Transfers past the rate their resources answer MUST stay queued.'
+binds_to = 'system'
+rationale = 'Transfers past the limit wait instead of being dropped.'
+relations = [ { kind = 'depends_on', target = 'EU-0019-200' } ]
+
+[[requirement]]
 id = 'EU-0019-138'
 level = 'MUST'
 polarity = 'required'
