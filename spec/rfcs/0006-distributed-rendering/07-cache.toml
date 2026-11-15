@@ -1,0 +1,115 @@
+[section]
+anchor = 'cache'
+title = 'Cache retention and recovery'
+problem = """\
+  A cache that evicts to stay under a fixed size can delete audio that playback still needs, a full \
+  disk that drops work loses jobs the musician asked for, and a host that restarts without a record \
+  of its queue loses accepted work."""
+motivation = """\
+  Results that can be rendered again, originals and accepted commands that can't, eviction only \
+  under real storage pressure, and a queue rebuilt from its journal let the cache grow to what each \
+  computer holds without losing anything that can't be rendered again."""
+prose = """
+A cached result can be rendered again, while an original recording or an accepted command can't.
+Original material is kept durable and backed up under the owner's policy. Active playback and
+export manifests pin the results they use. A full volume holds new fetches and preparation on that
+volume, frees only unpinned results that can be rendered again, keeps its verified chunks, and
+resumes once space returns, while playback goes on reading the audio already on the computer. A
+deprecated revision keeps a small history, as RFC 0013 states for the retention of revisions."""
+
+[[requirement]]
+id = 'EU-0006-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'The render cache MUST evict only results that no active playback or export manifest pins.'
+binds_to = 'system'
+rationale = 'Eviction never removes audio that is playing or being exported.'
+
+[[requirement]]
+id = 'EU-0006-068'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The render cache MUST NOT evict a result to stay under a fixed size.'
+binds_to = 'system'
+rationale = 'The cache holds as much as the computer has room for.'
+
+[[requirement]]
+id = 'EU-0006-069'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Storage pressure MUST NOT cause the deletion of an original recording or an accepted command.'
+binds_to = 'system'
+rationale = 'What can be rendered again is the only thing a full disk frees.'
+
+[[requirement]]
+id = 'EU-0006-070'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Storage pressure MUST NOT cause an accepted render job to be dropped.'
+binds_to = 'system'
+rationale = 'A full disk delays work and never loses it.'
+
+[[requirement]]
+id = 'EU-0006-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a volume is full, new fetches and preparation on that volume MUST hold until space returns.'
+binds_to = 'system'
+rationale = 'Work on a full volume waits instead of failing.'
+
+[[requirement]]
+id = 'EU-0006-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'A hold for storage pressure MUST be shown to the musician.'
+binds_to = 'system'
+rationale = 'The musician knows why preparation has stopped and what frees it.'
+
+[[requirement]]
+id = 'EU-0006-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'Verified chunks MUST be kept through a hold for storage pressure.'
+binds_to = 'system'
+rationale = 'Work resumes from where it stopped once space returns.'
+
+[[requirement]]
+id = 'EU-0006-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Playback MUST go on reading the prepared audio already on a computer while that computer's storage is full."
+binds_to = 'system'
+rationale = 'A full disk never stops what the musician listens to.'
+
+[[requirement]]
+id = 'EU-0006-075'
+level = 'MUST'
+polarity = 'required'
+statement = "Each accepted render job MUST be recorded in the host's journal before it is acknowledged."
+binds_to = 'system'
+rationale = 'A job the musician was told is accepted survives a crash.'
+
+[[requirement]]
+id = 'EU-0006-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restarted host MUST rebuild its queued render work from its journal and its manifests.'
+binds_to = 'system'
+rationale = 'A restart never loses queued work and never needs a person to queue it again.'
+relations = [ { kind = 'depends_on', target = 'EU-0006-075' } ]
+
+[[requirement]]
+id = 'EU-0006-077'
+level = 'MUST'
+polarity = 'required'
+statement = "Pruning a unique original MUST wait for the owner's explicit approval of its exact effect."
+binds_to = 'system'
+rationale = 'Nothing that cannot be rendered again is deleted without the owner choosing it.'
+
+[[requirement]]
+id = 'EU-0006-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every local pin MUST be checked again before the results of a deprecated revision are collected.'
+binds_to = 'system'
+rationale = 'A result that a newer manifest pins is never collected with an old revision.'
