@@ -1,0 +1,110 @@
+[section]
+anchor = 'spatial'
+title = 'Spatial mixing'
+problem = """\
+  A musician who places sounds around and above the listener loses that placement when the project \
+  plays on another speaker layout or on headphones, unless the placement is kept apart from any one \
+  layout."""
+motivation = """\
+  Sound objects and speaker beds kept once in the project, and rendered to each sink's layout \
+  without changing them, let one spatial mix play on any layout and survive collaboration and \
+  history."""
+prose = """
+A speaker bed is a set of channels meant for fixed speaker positions. A sound object is a sound with
+its own identity, source, position, trajectory, spread, gain and spatial automation, placed on the
+project's sample timeline. The project declares the coordinate system, the units and the
+interpolation of its spatial data. A spatial renderer maps the beds and the objects to an explicit
+speaker layout or to a headphone rendering profile; the layout a listener plays is a property of
+their sink, and rendering for it leaves the objects as they are. A headphone render and a speaker
+render are different profiles, and neither is a bit-exact copy of the other. Prepared playback holds
+the spatial render its sink selects, and a live object plays on the local live path with its measured
+latency. Source material rendered once serves stereo, spatial and listener outputs alike, and a
+change of layout prepares again only the audio that depends on that layout."""
+
+[[requirement]]
+id = 'EU-0015-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'The project MUST hold speaker beds and independently positioned sound objects.'
+binds_to = 'system'
+rationale = 'A musician places each sound around and above the listener, apart from any speaker layout.'
+
+[[requirement]]
+id = 'EU-0015-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'The identity, source, position, trajectory, spread, gain and spatial automation of each sound object MUST be versioned data of the project, placed on its sample timeline.'
+binds_to = 'system'
+rationale = 'Spatial placement is edited, undone and shared like every other part of the project.'
+
+[[requirement]]
+id = 'EU-0015-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'The project MUST declare the coordinate system, the units and the interpolation of its spatial data.'
+binds_to = 'system'
+rationale = 'Every renderer reads a position and a movement the same way.'
+
+[[requirement]]
+id = 'EU-0015-025'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Rendering a spatial mix to a speaker layout or a headphone profile MUST NOT change its beds or objects.'
+binds_to = 'system'
+rationale = 'Playing a mix on one layout never loses the placement another layout needs.'
+
+[[requirement]]
+id = 'EU-0015-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The playback layout of a spatial mix MUST be a property of the sink that plays it.'
+binds_to = 'system'
+rationale = 'Each listener plays the same spatial mix on their own speakers or headphones.'
+
+[[requirement]]
+id = 'EU-0015-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The metadata of each sound object MUST be preserved through collaboration, history and the preparation of source material.'
+binds_to = 'system'
+rationale = 'A spatial mix survives sharing, undo and rendering whole.'
+
+[[requirement]]
+id = 'EU-0015-028'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A change of a sink's layout MUST NOT cause a new rendering of audio that doesn't depend on that layout."
+binds_to = 'system'
+rationale = 'Switching between speakers and headphones costs only the layout-specific work.'
+
+[[requirement]]
+id = 'EU-0015-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'A spatial render MUST keep the motion of each sound object continuous.'
+binds_to = 'system'
+rationale = 'A moving sound never jumps on any layout.'
+
+[[requirement]]
+id = 'EU-0015-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'A spatial render MUST apply spatial automation at the sample time the project holds for it.'
+binds_to = 'system'
+rationale = 'A movement happens on the beat the musician placed it on, on every layout.'
+
+[[requirement]]
+id = 'EU-0015-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'A spatial render MUST map each output channel to the speaker its layout declares for that channel.'
+binds_to = 'system'
+rationale = 'Each sound comes from the speaker the layout says it does.'
+
+[[requirement]]
+id = 'EU-0015-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'A live sound object MUST play on the local live path.'
+binds_to = 'system'
+rationale = 'A sound played live is heard without the delay of prepared rendering.'

@@ -1,0 +1,84 @@
+[section]
+anchor = 'station-audio'
+title = 'Station audio, clock and delay'
+problem = """\
+  The audio clock of a station usually isn't locked to the clock of the session, and its network path \
+  adds delay, so without clock correction and measurement a listener gets drift or misaligned audio \
+  and can't tell how late their mix is."""
+motivation = """\
+  Timestamps, a negotiated packet time, a jitter buffer, resampling with reported drift, and a delay \
+  measured by loopback let a station play in time and tell the listener the delay they actually have, \
+  without a promised number."""
+prose = """
+The live audio of a station uses the session's real-time transport: each stream carries media
+timestamps and the session's clock mapping, its packet time is negotiated by both ends, and the
+station holds a jitter buffer. Where the board of a station can discipline its audio clock in
+hardware, it does; otherwise the station resamples the stream to its device clock. The monitoring
+delay of a station is the sum of the host's output buffer, the packet time, the network transit, the
+jitter buffer, the resampling and the period of the station's device. A loopback test measures it,
+and the specification doesn't promise a number: the musician accepts a monitoring mode after the
+measurement."""
+
+[[requirement]]
+id = 'EU-0015-076'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's audio stream MUST carry media timestamps and the session's clock mapping."
+binds_to = 'system'
+rationale = 'A station plays each sample at the time the session means it.'
+
+[[requirement]]
+id = 'EU-0015-077'
+level = 'MUST'
+polarity = 'required'
+statement = "The packet time of a station's stream MUST be negotiated by both ends."
+binds_to = 'system'
+rationale = 'Each end works with a packet size it can keep up with.'
+
+[[requirement]]
+id = 'EU-0015-078'
+level = 'MUST'
+polarity = 'required'
+statement = "A station whose audio clock isn't disciplined in hardware MUST resample the stream to its device clock."
+binds_to = 'system'
+rationale = 'A free-running station clock never slips against the session.'
+
+[[requirement]]
+id = 'EU-0015-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST report its clock drift and lock quality to the host.'
+binds_to = 'system'
+rationale = 'The owner sees how well each station keeps time.'
+
+[[requirement]]
+id = 'EU-0015-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station that loses its clock MUST mute its output rather than play misaligned audio.'
+binds_to = 'system'
+rationale = 'A listener never plays along to audio that is out of time.'
+
+[[requirement]]
+id = 'EU-0015-081'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's monitoring delay MUST be measured by a loopback test at pairing and on each reconnection."
+binds_to = 'system'
+rationale = 'The reported delay is a measurement of the path in use, not an estimate.'
+
+[[requirement]]
+id = 'EU-0015-082'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's sink MUST report its measured monitoring delay as its latency."
+binds_to = 'system'
+rationale = 'The host aligns the station and shows its delay from the measured figure.'
+
+[[requirement]]
+id = 'EU-0015-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'The readiness view MUST show the measured monitoring delay of each station.'
+binds_to = 'system'
+rationale = 'The owner and each listener see how late each station plays.'
