@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-274"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST show each control that a synthesizer capture held at a recorded value as fixed."

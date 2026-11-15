@@ -2,4 +2,4 @@ target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-
 
 [[spec]]
 level = "MUST"
-quote = "A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence, and record which state the sequence restores."
+quote = "A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence."

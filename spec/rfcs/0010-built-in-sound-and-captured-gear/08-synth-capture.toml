@@ -86,9 +86,17 @@ rationale = "A direct audio cable can't measure the delay of the synthesizer its
 id = 'EU-0010-146'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty and keep the raw timing."
+statement = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty."
 binds_to = 'system'
 rationale = "An unknown split of delay is reported, not guessed."
+
+[[requirement]]
+id = 'EU-0010-270'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST keep the raw timing."
+binds_to = 'system'
+rationale = "Raw timing lets a later calibration separate the delays."
 
 [[requirement]]
 id = 'EU-0010-147'
@@ -118,9 +126,17 @@ rationale = "The distortion of a converter is never learned as the synthesizer's
 id = 'EU-0010-150'
 level = 'MUST'
 polarity = 'required'
-statement = "A level excursion MUST stop a synthesizer capture and keep the partial take as invalid for fitting."
+statement = "A level excursion MUST stop a synthesizer capture."
 binds_to = 'system'
-rationale = "An unsafe level stops at once, and its take never trains a model."
+rationale = "An unsafe level stops at once."
+
+[[requirement]]
+id = 'EU-0010-271'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture that a level excursion stopped MUST keep its partial take as invalid for fitting."
+binds_to = 'system'
+rationale = "A take recorded at an unsafe level never trains a model."
 
 [[requirement]]
 id = 'EU-0010-151'
@@ -134,15 +150,31 @@ rationale = "A capture never resumes on a different or changed device."
 id = 'EU-0010-152'
 level = 'MUST'
 polarity = 'required'
-statement = "A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence, and record which state the sequence restores."
+statement = "A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence."
 binds_to = 'system'
-rationale = "Each take starts from a known state, and what is unknown is recorded."
+rationale = "Each take starts from a known state."
+
+[[requirement]]
+id = 'EU-0010-272'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST record which state its reset sequence restores."
+binds_to = 'system'
+rationale = "What a reset doesn't restore is recorded as unknown."
 
 [[requirement]]
 id = 'EU-0010-153'
 level = 'MUST'
 polarity = 'required'
-statement = "Where a reset can't restore the hidden state of a device, the capture MUST mark that uncertainty and validate the model statistically rather than claim waveform identity."
+statement = "Where a reset can't restore the hidden state of a device, the capture MUST mark that uncertainty."
+binds_to = 'system'
+rationale = "The musician sees which takes rest on a state that can't be reproduced."
+
+[[requirement]]
+id = 'EU-0010-273'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a reset can't restore the hidden state of a device, the capture MUST validate the model statistically rather than claim waveform identity."
 binds_to = 'system'
 rationale = "A claim is never based on a state that can't be reproduced."
 
@@ -215,7 +247,15 @@ rationale = "The capture measures what the musician needs."
 id = 'EU-0010-162'
 level = 'MUST'
 polarity = 'required'
-statement = "A synthesizer capture MUST hold each control the musician did not select at a recorded value, and show it as fixed."
+statement = "A synthesizer capture MUST hold each control the musician did not select at a recorded value."
+binds_to = 'system'
+rationale = "A control the musician didn't select stays the same across takes."
+
+[[requirement]]
+id = 'EU-0010-274'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST show each control that a synthesizer capture held at a recorded value as fixed."
 binds_to = 'system'
 rationale = "An unmeasured control is never offered as a working knob."
 
