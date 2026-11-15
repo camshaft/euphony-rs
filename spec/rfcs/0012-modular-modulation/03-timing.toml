@@ -54,7 +54,7 @@ binds_to = "system"
 rationale = "A random or free-running oscillator plays the same way on every render."
 
 [[requirement]]
-id = "EU-0012-153"
+id = "EU-0012-167"
 level = "MUST"
 polarity = "required"
 statement = "The project MUST store the state of each envelope."
@@ -62,7 +62,7 @@ binds_to = "system"
 rationale = "A rendering that starts in the middle of an envelope continues it from the same point on every computer."
 
 [[requirement]]
-id = "EU-0012-154"
+id = "EU-0012-168"
 level = "MUST"
 polarity = "required"
 statement = "The project MUST store the state of each control's smoothing."
