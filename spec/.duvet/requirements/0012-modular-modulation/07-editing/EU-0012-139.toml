@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-139"
+
+[[spec]]
+level = "MUST"
+quote = "Imported track and region automation MUST become the base of its target."

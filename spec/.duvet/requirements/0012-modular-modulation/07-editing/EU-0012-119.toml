@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-119"
+
+[[spec]]
+level = "MUST"
+quote = "The patch view MUST show the physical range a modulated target reaches."

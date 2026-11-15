@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-116"
+
+[[spec]]
+level = "MUST"
+quote = "Connecting a source to a control MUST open a preview that shows the tap, conversion, units, effective range, depth, offset, curve, combination mode, timing capability and any cycle delay."

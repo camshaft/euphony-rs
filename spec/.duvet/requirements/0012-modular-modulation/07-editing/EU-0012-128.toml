@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-128"
+
+[[spec]]
+level = "MUST"
+quote = "A batch MUST answer with the new revision and the graph's diagnostics, or with a refusal that states its cause: denied, stale revision, missing endpoint, incompatible units or rate, invalid cycle or unavailable resources."
