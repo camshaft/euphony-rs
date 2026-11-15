@@ -130,7 +130,7 @@ A synthesizer capture plan MUST show its estimated physical capture time and the
 
 A synthesizer capture MUST pace its messages by the documented limits of the device and the measured acknowledgments and settling.
 
-### EU-0010-204 {#EU-0010-204}
+### EU-0010-206 {#EU-0010-206}
 
 A synthesizer capture MUST keep each queued experiment when the device overruns or drops an update.
 

@@ -252,7 +252,7 @@ binds_to = 'system'
 rationale = "No message is lost to an overloaded device."
 
 [[requirement]]
-id = 'EU-0010-204'
+id = 'EU-0010-206'
 level = 'MUST'
 polarity = 'required'
 statement = "A synthesizer capture MUST keep each queued experiment when the device overruns or drops an update."
