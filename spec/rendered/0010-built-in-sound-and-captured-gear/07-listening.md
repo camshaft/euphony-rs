@@ -64,7 +64,11 @@ A final evaluation MUST NOT make a statistical claim after the attempts of its b
 
 ### EU-0010-119 {#EU-0010-119}
 
-The trial count of each listener MUST be fixed before the test and computed exactly from the binomial distribution for the declared values.
+The trial count of each listener MUST be fixed before the test.
+
+### EU-0010-260 {#EU-0010-260}
+
+The trial count of each listener MUST be computed exactly from the binomial distribution for the declared values.
 
 ### EU-0010-120 {#EU-0010-120}
 
@@ -116,7 +120,11 @@ Level matching MUST report the level difference that remains after its gain.
 
 ### EU-0010-132 {#EU-0010-132}
 
-The clips of the hardware and of the model MUST be aligned to the sample, and trimmed and faded the same way.
+The clips of the hardware and of the model MUST be aligned to the sample.
+
+### EU-0010-261 {#EU-0010-261}
+
+The clips of the hardware and of the model MUST be trimmed and faded the same way.
 
 ### EU-0010-133 {#EU-0010-133}
 
