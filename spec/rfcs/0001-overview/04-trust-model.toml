@@ -1,0 +1,280 @@
+[section]
+anchor = 'trust-model'
+title = 'Parties and boundaries'
+problem = """\
+  A workstation has one owner, and a permission model copied from a service that many tenants share \
+  would put a permission step in front of the owner's own devices and assistants, while the real \
+  boundaries, other people, the network and material that can come from outside, would still need \
+  guarding."""
+motivation = """\
+  Treating the owner, their paired devices and the assistants they connect as one trusted party, and \
+  checking access only at pairing, at a share link's level, at the network and at the owner's \
+  approvals, keeps the owner's work direct and keeps every outsider out."""
+prose = """
+The model has three kinds of party. The owner is the one person whose workstation it is. A device
+becomes the owner's by pairing, and is then either an owner device or a sink endpoint. An owner
+device, such as a desktop computer, a worker, a phone, a tablet, a browser or the host of a control
+surface or of networked instruments, acts as the owner, and so does an assistant the owner connects.
+A sink endpoint, such as a headphone station, is bound to one listener output, its sink: it receives
+that sink's stream and meters, sends that sink's mix commands and reads that sink's control map.
+
+A collaborator is a person other than the owner, who reaches a project through a share link at one
+of three levels. Listen receives the mix of the sink the owner assigns and the transport state, and
+adjusts that sink's mix where the sink is the collaborator's. Comment adds annotations. Edit receives
+a copy of the project and writes the collaborator's own branches. A collaborator's own devices and
+assistants act within that level on the collaborator's side. Everyone else, an unpaired device, a
+discovery advertisement, the operators of a signaling or relay service and the network, receives
+only the public connection information.
+
+A pairing starts on an owner device or on the local console of the owner's first computer, which
+creates a fresh attempt that can be used once; the new device sends its public key into it. The
+trusted device shows the new key's fingerprint and a short code derived from the attempt and the key,
+the new device shows the same code, and the owner compares them and approves on the trusted device.
+Copies a device or a participant already received can't be erased from a distance. The safety
+limits on levels are settings that hold for the owner's devices too, not permissions. A real-time
+stream is a stream of live audio or MIDI between computers, in an interoperable network format."""
+
+[[requirement]]
+id = 'EU-0001-029'
+level = 'MUST'
+polarity = 'required'
+statement = "A device MUST become the owner's only through a pairing the owner approves on a device the engine already trusts."
+binds_to = 'system'
+rationale = "A device on the same network, or one that copied an address, doesn't become the owner's."
+
+[[requirement]]
+id = 'EU-0001-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Discovering a device MUST NOT pair it.'
+binds_to = 'system'
+rationale = 'An impostor that advertises itself on the network gains nothing.'
+
+[[requirement]]
+id = 'EU-0001-031'
+level = 'MUST'
+polarity = 'required'
+statement = "A pairing approval MUST cover the pairing attempt, the new device's key, its class and, for a sink endpoint, its sink."
+binds_to = 'system'
+rationale = 'An approval cannot be moved to another attempt, another key or another class.'
+
+[[requirement]]
+id = 'EU-0001-032'
+level = 'MUST'
+polarity = 'required'
+statement = "A pairing MUST take the device's class and sink from the owner's approval alone."
+binds_to = 'system'
+rationale = 'A caller cannot raise a sink endpoint to an owner device by what it sends.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-031' } ]
+
+[[requirement]]
+id = 'EU-0001-033'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of a paired device's class or sink MUST need a new pairing that the owner approves."
+binds_to = 'system'
+rationale = 'A station never becomes an owner device without the owner deciding it.'
+
+[[requirement]]
+id = 'EU-0001-034'
+level = 'MUST'
+polarity = 'required'
+statement = "The owner's first computer MUST create the owner's identity on its local console before it accepts a pairing attempt."
+binds_to = 'system'
+rationale = 'Every later pairing traces back to the owner, and nothing pairs before an owner exists.'
+
+[[requirement]]
+id = 'EU-0001-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'A paired owner device MUST be able to take every action the owner can take, on every project of the owner.'
+binds_to = 'system'
+rationale = "The owner's devices are the owner, without a scope or a grant for each of them."
+
+[[requirement]]
+id = 'EU-0001-036'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST accept an action from a paired owner device or a connected assistant as it accepts the same action from the owner, except an action that waits for the owner's approval."
+binds_to = 'system'
+rationale = "The owner's devices and assistants have no permission step of their own."
+
+[[requirement]]
+id = 'EU-0001-037'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A sink endpoint's key MUST NOT reach any command or object other than its own sink's stream, meters, mix commands and control map."
+binds_to = 'system'
+rationale = 'A lost or stolen station exposes one listener output and nothing of the projects.'
+
+[[requirement]]
+id = 'EU-0001-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A person other than the owner MUST reach a project only through a share link.'
+binds_to = 'system'
+rationale = 'The owner decides each person who reaches their material.'
+
+[[requirement]]
+id = 'EU-0001-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'A share link MUST have exactly one level of listen, comment or edit.'
+binds_to = 'system'
+rationale = "The level is a collaborator's one permission, and the owner reads it at a glance."
+
+[[requirement]]
+id = 'EU-0001-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A collaborator MUST NOT take an action that the level of the collaborator's link doesn't allow."
+binds_to = 'system'
+rationale = 'A listener cannot edit, and a commenter cannot change the project.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
+
+[[requirement]]
+id = 'EU-0001-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each share link MUST have an expiry.'
+binds_to = 'system'
+rationale = 'A forgotten or forwarded link stops working on its own.'
+
+[[requirement]]
+id = 'EU-0001-042'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A collaborator's peer MUST NOT receive an object of a project that none of its links reaches."
+binds_to = 'system'
+rationale = "A collaborator on one project learns nothing of the owner's other projects."
+
+[[requirement]]
+id = 'EU-0001-043'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An unpaired device, a discovery advertisement, a signaling or relay operator and the network MUST NOT be able to send a command to a session.'
+binds_to = 'system'
+rationale = 'Only the owner, their devices and their assistants, and collaborators within their links, change a session.'
+
+[[requirement]]
+id = 'EU-0001-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to unpair any device at any time.'
+binds_to = 'system'
+rationale = 'A lost or stolen device stops acting as the owner as soon as the owner says so.'
+
+[[requirement]]
+id = 'EU-0001-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to revoke any share link at any time.'
+binds_to = 'system'
+rationale = 'The owner ends a collaboration whenever they choose.'
+
+[[requirement]]
+id = 'EU-0001-046'
+level = 'MUST'
+polarity = 'required'
+statement = "Unpairing a device MUST end that device's connections and commands immediately."
+binds_to = 'system'
+rationale = 'An unpaired device cannot finish a command it started.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-044' } ]
+
+[[requirement]]
+id = 'EU-0001-047'
+level = 'MUST'
+polarity = 'required'
+statement = "Revoking a share link MUST end its participants' connections immediately."
+binds_to = 'system'
+rationale = 'A revoked participant stops listening and stops sending as soon as the link is revoked.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-045' } ]
+
+[[requirement]]
+id = 'EU-0001-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'Unpairing a device or revoking a share link MUST change the keys that protect every later object.'
+binds_to = 'system'
+rationale = 'An old key never reads what the owner writes after the unpairing or the revocation.'
+
+[[requirement]]
+id = 'EU-0001-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every connection between computers MUST be authenticated and encrypted, except a real-time stream on a network the owner marked as theirs.'
+binds_to = 'system'
+rationale = "Nothing on the network reads or changes the owner's traffic, and interoperable live streams still work on the owner's own network."
+
+[[requirement]]
+id = 'EU-0001-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A real-time stream MUST NOT run unencrypted on a network the owner hasn't marked as theirs."
+binds_to = 'system'
+rationale = "Unprotected live audio and MIDI stay on networks the owner chose to trust."
+
+[[requirement]]
+id = 'EU-0001-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST stop an unencrypted real-time stream when the computer's network attachment no longer matches the network the owner marked."
+binds_to = 'system'
+rationale = 'Moving a computer to another network never carries an unprotected stream with it.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-050' } ]
+
+[[requirement]]
+id = 'EU-0001-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The engine MUST NOT open an inbound network port.'
+binds_to = 'system'
+rationale = "Nothing on the network finds a listening port on the owner's computers to attack."
+
+[[requirement]]
+id = 'EU-0001-053'
+level = 'MUST'
+polarity = 'required'
+statement = "A device MUST hold its keys in the platform's secure storage where the platform offers it."
+binds_to = 'system'
+rationale = "A copy of a device's files doesn't carry its keys."
+
+[[requirement]]
+id = 'EU-0001-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST treat project text, metadata, imported files, scripts and tool results as data, and never as instructions.'
+binds_to = 'system'
+rationale = 'Text planted in a project or a file cannot make an assistant export, delete or change material.'
+
+[[requirement]]
+id = 'EU-0001-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'Scripts and the parsers of imported material MUST run isolated from the audio device process.'
+binds_to = 'system'
+rationale = 'A hostile or broken script or file cannot stop a take.'
+
+[[requirement]]
+id = 'EU-0001-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A script or a parser of imported material MUST NOT reach the network, a file or a device beyond what its task needs.'
+binds_to = 'system'
+rationale = "Material that comes from outside cannot reach the rest of the owner's computers."
+
+[[requirement]]
+id = 'EU-0001-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'The output level of each sink MUST stay within the gain limit the owner sets for it, whichever party changes its mix.'
+binds_to = 'system'
+rationale = "No change of a mix harms a listener's hearing or the gear on that output."
+
+[[requirement]]
+id = 'EU-0001-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'A new connection of a sink endpoint MUST start muted.'
+binds_to = 'system'
+rationale = 'A station that connects never plays at a level nobody chose.'
