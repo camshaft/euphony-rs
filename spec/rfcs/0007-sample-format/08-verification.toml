@@ -75,3 +75,20 @@ polarity = 'required'
 statement = "The export preview MUST list, from the adapter's record, each format the delivery needs that the record doesn't declare."
 binds_to = 'system'
 rationale = 'The musician sees why a target refuses a delivery before choosing it.'
+
+[[requirement]]
+id = 'EU-0007-122'
+level = 'MUST'
+polarity = 'required'
+statement = 'The evidence of a verification record MUST be recorded by an authorized maintainer.'
+binds_to = 'system'
+rationale = 'Only the people the project trusts can mark a dependency as verified.'
+
+[[requirement]]
+id = 'EU-0007-123'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The build MUST NOT accept a verification record whose evidence was recorded by a principal that is not an authorized maintainer.'
+binds_to = 'system'
+rationale = 'A project member or a syncing peer cannot open the verification gate by writing a record.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-122' } ]
