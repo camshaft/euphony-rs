@@ -1,0 +1,200 @@
+[section]
+anchor = 'sent-records'
+title = "What a sent record holds"
+problem = "A sent record could carry the person's music, names or identity through a field that looked harmless, or single out their computer through precise values."
+motivation = "A public submission schema whose every field has a privacy class, values generalized before they go, and an identity that is random and deletable keep what is sent useful for finding problems and useless for finding people."
+prose = """
+A submission record is a record of a batch. The submission schema is public and separate from the
+schema of the local journal, and every field it holds has a privacy class: a closed value, a
+bucketed number, a release or build identity, or a frame of euphony's own public code. The client
+generalizes values that could single out a computer, and replaces each crash frame outside
+euphony's own code with one frame that stands for other code. Records are pseudonymous: each
+installation holds a random submission identity and a deletion key pair, both made on the computer.
+The identity lets the receiving service count distinct submission identities, which aren't verified
+computers since one sender can make many, and lets a person delete what they sent."""
+
+[[requirement]]
+id = 'EU-0021-065'
+level = 'MUST'
+polarity = 'required'
+statement = "A sent record MUST hold only fields of the submission schema."
+binds_to = 'system'
+rationale = "What can be sent is fixed by a public schema anyone can read."
+
+[[requirement]]
+id = 'EU-0021-066'
+level = 'MUST'
+polarity = 'required'
+statement = "Each field of the submission schema MUST have a privacy class."
+binds_to = 'system'
+rationale = "Each field says why it can't carry music or names."
+
+[[requirement]]
+id = 'EU-0021-067'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The submission schema MUST NOT hold a free-text field."
+binds_to = 'system'
+rationale = "Free text can carry anything."
+
+[[requirement]]
+id = 'EU-0021-068'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A sent record MUST NOT hold audio, notes or MIDI content, project, track, region or file names, paths, processor parameter values or state, the learning store, link, collaborator or device names, network addresses or the person's account, outside an attachment that the person adds to one problem report."
+binds_to = 'system'
+rationale = "What is sent never carries the person's music or identity unless they attach it."
+
+[[requirement]]
+id = 'EU-0021-069'
+level = 'MUST'
+polarity = 'required'
+statement = "The client MUST describe the computer only by its processor family, a range of core counts, a range of memory, the operating system's family and major version, and an audio interface model from a closed list of known models."
+binds_to = 'system'
+rationale = "Precise hardware values could single out one computer."
+
+[[requirement]]
+id = 'EU-0021-070'
+level = 'MUST'
+polarity = 'required'
+statement = "An audio interface model outside the closed list of known models MUST be sent as other."
+binds_to = 'system'
+rationale = "A rare model never identifies its owner."
+
+[[requirement]]
+id = 'EU-0021-071'
+level = 'MUST'
+polarity = 'required'
+statement = "Each time in a batch MUST be an offset within the batch."
+binds_to = 'system'
+rationale = "A batch doesn't say when the person was working."
+
+[[requirement]]
+id = 'EU-0021-072'
+level = 'MUST'
+polarity = 'required'
+statement = "The client MUST remove the local project and session references from every sent record."
+binds_to = 'system'
+rationale = "Those references stay on the computer."
+
+[[requirement]]
+id = 'EU-0021-073'
+level = 'MUST'
+polarity = 'required'
+statement = "Each crash frame outside euphony's own code MUST be sent as a single frame that stands for other code."
+binds_to = 'system'
+rationale = "A crash report doesn't reveal what else runs on the computer."
+
+[[requirement]]
+id = 'EU-0021-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Each batch MUST carry its exposure intervals and the counts of batches the client built, sent and deleted since its previous batch."
+binds_to = 'system'
+rationale = "The service tells a computer without failures from one whose record or sending is incomplete."
+
+[[requirement]]
+id = 'EU-0021-075'
+level = 'MUST'
+polarity = 'required'
+statement = "Each installation MUST hold a random submission identity made on the computer."
+binds_to = 'system'
+rationale = "Batches of one installation can be counted and deleted together."
+
+[[requirement]]
+id = 'EU-0021-076'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The submission identity MUST NOT be derived from the hardware or from an account."
+binds_to = 'system'
+rationale = "The identity doesn't lead back to a computer or a person."
+
+[[requirement]]
+id = 'EU-0021-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A sent record MUST NOT hold any link between the batches of one installation other than the submission identity."
+binds_to = 'system'
+rationale = "Resetting the identity breaks every link to earlier batches."
+
+[[requirement]]
+id = 'EU-0021-078'
+level = 'MUST'
+polarity = 'required'
+statement = "Each installation MUST hold a deletion key pair made on the computer."
+binds_to = 'system'
+rationale = "Only the installation that sent a batch can ask for its deletion."
+
+[[requirement]]
+id = 'EU-0021-079'
+level = 'MUST'
+polarity = 'required'
+statement = "The first batch of a submission identity MUST register the identity with its public key."
+binds_to = 'system'
+rationale = "The service learns which key speaks for the identity."
+relations = [ { kind = 'depends_on', target = 'EU-0021-078' } ]
+
+[[requirement]]
+id = 'EU-0021-080'
+level = 'MUST'
+polarity = 'required'
+statement = "Every batch after the first and every deletion request MUST be signed with the installation's private key."
+binds_to = 'system'
+rationale = "No one else can add to or delete an identity's data."
+relations = [ { kind = 'depends_on', target = 'EU-0021-078' } ]
+
+[[requirement]]
+id = 'EU-0021-081'
+level = 'MUST'
+polarity = 'required'
+statement = "The signature of a batch MUST cover its batch identity and the digest of its contents."
+binds_to = 'system'
+rationale = "A signed batch can't be altered or passed off as another."
+
+[[requirement]]
+id = 'EU-0021-082'
+level = 'MUST'
+polarity = 'required'
+statement = "A batch MUST travel over an encrypted connection that authenticates the receiving service."
+binds_to = 'system'
+rationale = "No one on the path reads a batch, and an impostor can't receive one."
+
+[[requirement]]
+id = 'EU-0021-083'
+level = 'MUST'
+polarity = 'required'
+statement = "A batch MUST go only to the destination that the release's public configuration sets."
+binds_to = 'system'
+rationale = "The destination the outbox shows is the one the batch reaches."
+
+[[requirement]]
+id = 'EU-0021-084'
+level = 'MUST'
+polarity = 'required'
+statement = "Resetting the submission identity MUST start a new one."
+binds_to = 'system'
+rationale = "The person can break the link between earlier and later batches."
+
+[[requirement]]
+id = 'EU-0021-085'
+level = 'MUST'
+polarity = 'required'
+statement = "After a reset, the client MUST keep the old key until the person deletes the old identity's data or chooses to forget the key."
+binds_to = 'system'
+rationale = "A reset doesn't take away the person's way to delete what they sent."
+
+[[requirement]]
+id = 'EU-0021-086'
+level = 'MUST'
+polarity = 'required'
+statement = "Before the person forgets a key, the client MUST say that a forgotten key can't delete that identity's data later."
+binds_to = 'system'
+rationale = "The person knows what forgetting costs."
+
+[[requirement]]
+id = 'EU-0021-087'
+level = 'MUST'
+polarity = 'required'
+statement = "Before the first send, the outbox MUST say which data a deletion removes and which remains, that a public tracker issue holds only counts that passed the publication policy, and that copies others make of a published issue can't be deleted."
+binds_to = 'system'
+rationale = "The person knows the limits of deletion before anything goes."
