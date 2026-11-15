@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-005"
+
+[[spec]]
+level = "MUST"
+quote = "The number ranges of two groups MUST NOT overlap."

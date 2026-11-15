@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-038"
+
+[[spec]]
+level = "MUST"
+quote = "The renderer MUST write, for each requirement, one requirement file that targets the anchor of the requirement in the rendered text."

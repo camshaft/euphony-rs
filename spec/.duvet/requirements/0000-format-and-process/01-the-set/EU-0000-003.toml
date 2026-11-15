@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-003"
+
+[[spec]]
+level = "MUST"
+quote = "The configuration file MUST state the location of the sources and of each kind of generated file."

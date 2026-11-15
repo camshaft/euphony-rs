@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-020"
+
+[[spec]]
+level = "MUST"
+quote = "A requirement's statement MUST state exactly one obligation."

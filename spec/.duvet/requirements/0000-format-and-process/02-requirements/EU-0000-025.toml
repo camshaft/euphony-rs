@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-025"
+
+[[spec]]
+level = "MUST"
+quote = "Each RFC of the system group MUST state the end state of its component, whether or not an implementation has reached it."

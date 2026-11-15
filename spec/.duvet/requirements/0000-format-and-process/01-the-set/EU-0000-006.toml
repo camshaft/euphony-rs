@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-006"
+
+[[spec]]
+level = "MUST"
+quote = "A tool of the set MUST take every name, location, prefix and number range from the configuration file."

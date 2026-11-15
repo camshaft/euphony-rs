@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-009"
+
+[[spec]]
+level = "MUST"
+quote = "Each written RFC MUST have one metadata file that states its number, title, area and abstract."

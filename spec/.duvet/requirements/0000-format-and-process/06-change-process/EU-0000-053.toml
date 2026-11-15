@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-053"
+
+[[spec]]
+level = "MAY"
+quote = "The writer of a reviewed change whose check passed MAY merge it."

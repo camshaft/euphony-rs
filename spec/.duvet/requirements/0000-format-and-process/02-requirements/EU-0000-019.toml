@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-019"
+
+[[spec]]
+level = "MUST"
+quote = "The key word of a statement MUST match the requirement's level and polarity."

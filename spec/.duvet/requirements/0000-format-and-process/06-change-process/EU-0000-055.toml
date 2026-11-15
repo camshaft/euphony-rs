@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-055"
+
+[[spec]]
+level = "MUST"
+quote = "A change to the set MUST NOT wait on a build of the code of any implementation."

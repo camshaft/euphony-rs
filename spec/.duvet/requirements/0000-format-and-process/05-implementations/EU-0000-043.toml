@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/05-implementations.md#EU-0000-043"
+
+[[spec]]
+level = "MUST"
+quote = "A citation of a requirement MUST name the rendered text of its section with the identifier as the anchor."

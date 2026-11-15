@@ -1,0 +1,32 @@
+# The configuration of euphony's specification set (RFC 0000).
+# Every tool that reads or writes the set takes its prefix, paths, levels and ranges from here.
+
+prefix = 'EU'
+levels = ['MUST', 'SHOULD', 'MAY']
+implementation_terms = [
+  'Rust', 'cargo', 'crate', 'tokio', 'serde', 'wasm', 'WebAssembly',
+  'TOML', 'JSON', 'YAML', 'Markdown', 'duvet',
+  'CoreAudio', 'ALSA', 'JACK', 'PipeWire', 'WASAPI', 'ASIO',
+  'VST', 'CLAP', 'LV2',
+]
+
+[paths]
+rfcs = 'rfcs'
+rendered = 'rendered'
+requirements = '.duvet/requirements'
+registry = 'registry/identifiers.toml'
+
+[foundation]
+name = 'specification'
+first = 0
+last = 0
+
+[contracts]
+name = 'contracts'
+first = 1000
+last = 1999
+
+[[system]]
+name = 'euphony'
+first = 1
+last = 999

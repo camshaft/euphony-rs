@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-034"
+
+[[spec]]
+level = "MUST"
+quote = "For each section of each written RFC, the renderer MUST write one text file in the rendered location."

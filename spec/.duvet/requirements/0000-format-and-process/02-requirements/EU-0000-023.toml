@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-023"
+
+[[spec]]
+level = "MUST"
+quote = "An RFC MUST NOT state which requirements any implementation builds."

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-033"
+
+[[spec]]
+level = "MUST"
+quote = "The bounds that requirements set on one parameter MUST leave at least one value."

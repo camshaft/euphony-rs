@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-008"
+
+[[spec]]
+level = "MUST"
+quote = "The area of an RFC MUST be the name of the group whose range holds its number."

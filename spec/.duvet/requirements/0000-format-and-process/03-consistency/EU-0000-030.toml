@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-030"
+
+[[spec]]
+level = "MUST"
+quote = "Where the formulas of the set are unsatisfiable, the check MUST report a minimal subset of them with the identifier of each requirement it names."

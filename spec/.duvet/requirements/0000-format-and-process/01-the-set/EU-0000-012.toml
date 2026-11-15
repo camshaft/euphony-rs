@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-012"
+
+[[spec]]
+level = "MUST"
+quote = "Each RFC of the system group MUST cover one component of the implementation."

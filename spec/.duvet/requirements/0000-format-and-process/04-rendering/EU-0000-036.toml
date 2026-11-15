@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/04-rendering.md#EU-0000-036"
+
+[[spec]]
+level = "MUST"
+quote = "The rendered text of a section MUST hold its prose after its heading and before its requirements."

@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-011"
+
+[[spec]]
+level = "MUST"
+quote = "Each behavior of euphony MUST be specified in exactly one RFC."

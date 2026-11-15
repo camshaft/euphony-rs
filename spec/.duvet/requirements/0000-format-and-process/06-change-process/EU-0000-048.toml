@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/06-change-process.md#EU-0000-048"
+
+[[spec]]
+level = "MUST"
+quote = "A pull request that changes the set MUST carry its source edits together with the files rendered from them."

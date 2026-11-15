@@ -1,0 +1,3 @@
+# The kinds of self-describing identifier that the RFCs of the set specify (RFC 0000).
+# Each [[entry]] holds code, identifies, format, body_length and defined_by.
+# No RFC specifies a kind yet.

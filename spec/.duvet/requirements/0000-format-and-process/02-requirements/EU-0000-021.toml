@@ -1,0 +1,5 @@
+target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-021"
+
+[[spec]]
+level = "MUST"
+quote = "A statement MUST NOT describe how any implementation meets it."
