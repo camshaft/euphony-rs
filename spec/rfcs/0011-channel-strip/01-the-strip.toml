@@ -1,0 +1,184 @@
+[section]
+anchor = 'the-strip'
+title = 'The strip and its stages'
+problem = "A musician who moves between tracks has to learn different processing on each one, and can't find the familiar processing of a mixing console channel on every track."
+motivation = "One fixed, ordered set of stages on every track lets a musician learn one strip and use it everywhere, as on a console whose every channel offers the same processing in the same order."
+prose = """
+Every audio track and every instrument track of a project has one channel strip. The strip is a fixed,
+ordered set of stages, the same on every such track, so that a musician who learns one strip can use
+every strip. Each stage is a built-in processor of euphony, as RFC 0010 specifies built-in processors,
+or a model of gear the musician captured. The stages are, in order: input, with trim, polarity and a
+short alignment delay; filters, a low cut and a high cut; a gate that quiets noise and spill from
+other instruments between notes; a four-band equalizer; a compressor that reduces the difference in
+loudness between loud and quiet passages; a de-esser that softens harsh s sounds; color, which adds
+saturation for warmth; free slots for further effects in any order; sends to effect returns that
+several tracks share; and pan with the fader. An auxiliary channel and the output channel have a
+shorter strip. The stages and their order come from the strip layout, a versioned record of the project."""
+
+[[requirement]]
+id = 'EU-0011-001'
+level = 'MUST'
+polarity = 'required'
+statement = "Every audio track and every instrument track MUST have exactly one channel strip."
+binds_to = 'system'
+rationale = "Every track offers its familiar processing in one place."
+
+[[requirement]]
+id = 'EU-0011-002'
+level = 'MUST'
+polarity = 'required'
+statement = "The channel strip of an audio or instrument track MUST hold these stages in this order: input, filters, gate, equalizer, compressor, de-esser, color, free slots, sends, and pan with the fader."
+binds_to = 'system'
+rationale = "A musician learns one order and finds each stage in the same place on every track."
+
+[[requirement]]
+id = 'EU-0011-003'
+level = 'MUST'
+polarity = 'required'
+statement = "The stages of a strip and their order MUST come from the project's strip layout, a versioned record of the project."
+binds_to = 'system'
+rationale = "Every track of a project shares one layout, and a new layout version changes them together."
+
+[[requirement]]
+id = 'EU-0011-004'
+level = 'MUST'
+polarity = 'required'
+statement = "Each stage MUST be a built-in processor of euphony or a model of gear the musician captured."
+binds_to = 'system'
+rationale = "The strip sounds the same on every computer and doesn't depend on processors from outside euphony."
+
+[[requirement]]
+id = 'EU-0011-005'
+level = 'MUST'
+polarity = 'required'
+statement = "The input stage MUST offer a trim, a polarity inversion and a short delay for aligning microphones."
+binds_to = 'system'
+rationale = "The input stage sets the level and the alignment that every later stage works from."
+
+[[requirement]]
+id = 'EU-0011-006'
+level = 'MUST'
+polarity = 'required'
+statement = "The filters stage MUST offer a low cut and a high cut."
+binds_to = 'system'
+rationale = "A low cut removes rumble under the instrument's lowest notes, and a high cut removes what lies above its range."
+
+[[requirement]]
+id = 'EU-0011-007'
+level = 'MUST'
+polarity = 'required'
+statement = "The gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold."
+binds_to = 'system'
+rationale = "The gate quiets noise and spill from other instruments in the quiet passages between notes."
+
+[[requirement]]
+id = 'EU-0011-008'
+level = 'MUST'
+polarity = 'required'
+statement = "The equalizer stage MUST offer four bands: a low shelf, a high shelf and two peaking bands."
+binds_to = 'system'
+rationale = "Four bands change the balance between low, middle and high frequencies as a console channel's equalizer does."
+
+[[requirement]]
+id = 'EU-0011-009'
+level = 'MUST'
+polarity = 'required'
+statement = "The compressor stage MUST reduce the track's level above its threshold by its ratio, with an attack and a release."
+binds_to = 'system'
+rationale = "The compressor reduces the difference in loudness between the track's loud and quiet moments."
+
+[[requirement]]
+id = 'EU-0011-010'
+level = 'MUST'
+polarity = 'required'
+statement = "The de-esser stage MUST reduce short loud events in a band of the high frequencies without reducing the rest of the track."
+binds_to = 'system'
+rationale = "The de-esser softens harsh s sounds and leaves the rest of the voice as it was."
+
+[[requirement]]
+id = 'EU-0011-011'
+level = 'MUST'
+polarity = 'required'
+statement = "The color stage MUST add saturation, from the strip's character or from a model of gear the musician captured."
+binds_to = 'system'
+rationale = "Saturation adds the warmth of analog gear to the track."
+
+[[requirement]]
+id = 'EU-0011-012'
+level = 'MUST'
+polarity = 'required'
+statement = "The free slots MUST hold any number of built-in effects and captured models, in the order the musician chooses."
+binds_to = 'system'
+rationale = "Processing beyond the fixed stages still has a place on the strip."
+
+[[requirement]]
+id = 'EU-0011-013'
+level = 'MUST'
+polarity = 'required'
+statement = "Each send MUST pass a share of the track that the musician sets to a shared effect return of the project."
+binds_to = 'system'
+rationale = "Several tracks share one effect, such as one reverb."
+
+[[requirement]]
+id = 'EU-0011-014'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to place each send before or after the fader."
+binds_to = 'system'
+rationale = "A send either follows the track's fader or stays apart from it, as a console's send does."
+
+[[requirement]]
+id = 'EU-0011-015'
+level = 'MUST'
+polarity = 'required'
+statement = "The last stage of a track's strip MUST offer pan or stereo width, and the fader."
+binds_to = 'system'
+rationale = "The track's place and level in the mix are set at the end of its strip."
+
+[[requirement]]
+id = 'EU-0011-016'
+level = 'MUST'
+polarity = 'required'
+statement = "Each strip MUST offer one switch that swaps the order of the equalizer and the compressor."
+binds_to = 'system'
+rationale = "Some material sounds better compressed before it is equalized, as some consoles allow."
+
+[[requirement]]
+id = 'EU-0011-017'
+level = 'MAY'
+polarity = 'required'
+statement = "The musician MAY set the filters stage to filter only the signal the gate's detector reads."
+binds_to = 'system'
+rationale = "The gate then opens on the instrument and not on rumble or hiss, while the track itself stays unfiltered."
+
+[[requirement]]
+id = 'EU-0011-018'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip of an auxiliary channel MUST hold an equalizer, a compressor and a color stage."
+binds_to = 'system'
+rationale = "Shared returns and groups need tone, dynamics and warmth, and not the stages of a recorded track."
+
+[[requirement]]
+id = 'EU-0011-019'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip of the output channel MUST hold an equalizer, a compressor, a color stage and a limiter."
+binds_to = 'system'
+rationale = "The output of the mix needs a limiter beside the stages an auxiliary channel has."
+
+[[requirement]]
+id = 'EU-0011-020'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to switch each stage on or off with one action."
+binds_to = 'system'
+rationale = "Switching familiar processing on is as quick as pressing a button on a console."
+
+[[requirement]]
+id = 'EU-0011-021'
+level = 'MUST'
+polarity = 'required'
+statement = "Each stage of a new track MUST start switched off."
+binds_to = 'system'
+rationale = "A new track sounds as it was recorded until the musician asks for processing."

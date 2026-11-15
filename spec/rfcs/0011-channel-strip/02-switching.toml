@@ -1,0 +1,133 @@
+[section]
+anchor = 'switching'
+title = 'Switching, delay and rendering'
+problem = "Processing that a musician switched off can still cost time and add delay, and a switch during playback can click or put tracks out of time with each other."
+motivation = "A stage that costs nothing while it is off, a switch that crosses at one sample position on every track, and a declared delay that matches the measured one keep the mix in time and leave the computer to the stages in use."
+prose = """
+A stage that is switched off isn't part of the track's processing at all. Switching a stage on or
+off is a change of the project that the live render crosses at one sample position, with a short
+crossfade. Each switched-on stage declares the delay it adds, and the project's delay compensation,
+as RFC 0005 specifies it, uses that declaration. In its default mode a stage doesn't add delay of
+its own, apart from the few samples the color stage's oversampling adds. Optional modes add declared
+delay: a linear-phase equalizer, and look-ahead for the compressor, the de-esser and the output
+limiter. The stages render on other computers as any other processing does, as RFC 0006 specifies."""
+
+[[requirement]]
+id = 'EU-0011-022'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A switched-off stage MUST NOT add processing to its track."
+binds_to = 'system'
+rationale = "A stage the musician doesn't use costs nothing."
+
+[[requirement]]
+id = 'EU-0011-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A switched-off stage MUST NOT add delay to its track."
+binds_to = 'system'
+rationale = "A stage the musician doesn't use never moves the track in time."
+
+[[requirement]]
+id = 'EU-0011-024'
+level = 'MUST'
+polarity = 'required'
+statement = "Switching a stage on or off during playback MUST take effect at the same sample position on every track and output it affects."
+binds_to = 'system'
+rationale = "Tracks stay in time with each other across a switch."
+
+[[requirement]]
+id = 'EU-0011-025'
+level = 'MUST'
+polarity = 'required'
+statement = "Switching a stage on or off MUST cross from the earlier output to the new one with a short crossfade, so that the output has no discontinuity."
+binds_to = 'system'
+rationale = "A switch during playback doesn't click."
+
+[[requirement]]
+id = 'EU-0011-026'
+level = 'MUST'
+polarity = 'required'
+statement = "Each switched-on stage MUST declare the delay it adds."
+binds_to = 'system'
+rationale = "Delay compensation keeps every track in time with the others."
+
+[[requirement]]
+id = 'EU-0011-027'
+level = 'MUST'
+polarity = 'required'
+statement = "The measured delay of a stage MUST equal its declared delay on each supported computer."
+binds_to = 'system'
+rationale = "A declaration that differs from the measurement would put tracks out of time."
+
+[[requirement]]
+id = 'EU-0011-028'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "In its default mode, a stage other than the color stage MUST NOT add delay."
+binds_to = 'system'
+rationale = "The strip is usable for live monitoring as it starts."
+
+[[requirement]]
+id = 'EU-0011-029'
+level = 'MAY'
+polarity = 'required'
+statement = "The equalizer MAY offer a linear-phase mode, whose delay it declares."
+binds_to = 'system'
+rationale = "Some material needs an equalizer that doesn't shift its phase, at the cost of delay."
+
+[[requirement]]
+id = 'EU-0011-030'
+level = 'MAY'
+polarity = 'required'
+statement = "The compressor, the de-esser and the output limiter MAY offer a look-ahead mode, whose delay each declares."
+binds_to = 'system'
+rationale = "Look-ahead catches fast peaks, at the cost of delay."
+
+[[requirement]]
+id = 'EU-0011-031'
+level = 'MUST'
+polarity = 'required'
+statement = "The project's delay compensation MUST use each stage's declared delay."
+binds_to = 'system'
+rationale = "Every track arrives at the output aligned, whatever its stages add."
+
+[[requirement]]
+id = 'EU-0011-032'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "On a track armed for live monitoring, a stage mode whose delay exceeds the musician's live-latency setting MUST NOT be available."
+binds_to = 'system'
+rationale = "A performer's monitoring is never later than the musician allows."
+
+[[requirement]]
+id = 'EU-0011-033'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip MUST show why a stage mode is unavailable on a track armed for live monitoring."
+binds_to = 'system'
+rationale = "The musician knows why a mode can't be chosen and what to change."
+
+[[requirement]]
+id = 'EU-0011-034'
+level = 'MUST'
+polarity = 'required'
+statement = "A strip MUST render the same output on every computer of a compatible numerical profile."
+binds_to = 'system'
+rationale = "Distributed rendering and every computer of the musician play the same sound."
+
+[[requirement]]
+id = 'EU-0011-035'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of one stage MUST invalidate only the rendered audio of its track and of what depends on that track."
+binds_to = 'system'
+rationale = "A small change doesn't render the whole project again."
+
+[[requirement]]
+id = 'EU-0011-036'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the computer's measured capacity can't run a strip live, the track MUST play its prepared audio with the strip's settings kept."
+binds_to = 'system'
+rationale = "A strip too heavy for the computer still plays as the musician set it."

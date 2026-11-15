@@ -1,0 +1,150 @@
+[section]
+anchor = 'presets'
+title = 'Strip presets and learning'
+problem = "A musician who finds settings that work for an instrument or a genre has to set them again on each new recording, and a fixed copy of those settings doesn't fit a new singer or a new room."
+motivation = "Strip presets that dial in from each new track's own sound, kept in the catalog and found by role and genre, and preferences learned only with the musician's approval, carry what works from one project to the next."
+prose = """
+A strip preset is a versioned record of a strip: its name, role and genre tags, character, layout
+version, each stage's on state and processor version, its sends, and its provenance, which is built
+in, the musician's own, learned or imported. Each stage of a preset is adaptive or fixed. An adaptive
+stage holds targets and offsets relative to the starting point, so applying it to another track dials
+that stage in from the track's own audio; a fixed stage holds exact values, for a sound to reproduce
+exactly. Presets are items of the catalog that RFC 0008 specifies. The offsets the musician keeps are
+evidence for the preference learning of RFC 0019, which proposes preferences and learned presets that
+the musician approves, edits or rejects."""
+
+[[requirement]]
+id = 'EU-0011-129'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to save a track's strip as a strip preset."
+binds_to = 'system'
+rationale = "Settings that work are kept for the next track."
+
+[[requirement]]
+id = 'EU-0011-130'
+level = 'MUST'
+polarity = 'required'
+statement = "A strip preset MUST record its name, role and genre tags, character, strip layout version, each stage's on state and processor version, its sends and its provenance."
+binds_to = 'system'
+rationale = "A preset carries everything it needs to rebuild the strip on another track."
+
+[[requirement]]
+id = 'EU-0011-131'
+level = 'MUST'
+polarity = 'required'
+statement = "The provenance of a strip preset MUST be one of built in, the musician's own, learned and imported."
+binds_to = 'system'
+rationale = "The musician knows where each preset came from."
+
+[[requirement]]
+id = 'EU-0011-132'
+level = 'MUST'
+polarity = 'required'
+statement = "Each stage of a strip preset MUST be adaptive or fixed."
+binds_to = 'system'
+rationale = "A preset either fits each new track or reproduces a sound exactly, stage by stage."
+
+[[requirement]]
+id = 'EU-0011-133'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a preset's adaptive stage MUST dial that stage in from the new track's own audio with the preset's targets and offsets."
+binds_to = 'system'
+rationale = "A vocal preset fits a new singer's take."
+
+[[requirement]]
+id = 'EU-0011-134'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a preset's fixed stage MUST set the stage's exact parameter values."
+binds_to = 'system'
+rationale = "A sound the musician wants reproduced comes back exactly."
+
+[[requirement]]
+id = 'EU-0011-135'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a preset's fixed stage MUST level-match it unless the musician turns level matching off for that apply."
+binds_to = 'system'
+rationale = "A fixed preset is compared fairly, unless the musician wants its level too."
+
+[[requirement]]
+id = 'EU-0011-136'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to place a strip preset on any track of any project."
+binds_to = 'system'
+rationale = "A preset serves every project, not only the one it was made in."
+
+[[requirement]]
+id = 'EU-0011-137'
+level = 'MUST'
+polarity = 'required'
+statement = "Strip presets MUST be items of the catalog, found by role, genre, character and provenance."
+binds_to = 'system'
+rationale = "The musician and their assistants find the right preset quickly."
+
+[[requirement]]
+id = 'EU-0011-138'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician's strip presets MUST sync to their paired devices."
+binds_to = 'system'
+rationale = "Presets follow the musician to each of their computers."
+
+[[requirement]]
+id = 'EU-0011-139'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The project SHOULD release original built-in presets for each role and for several genres."
+binds_to = 'system'
+rationale = "A new musician starts with presets made for common material."
+
+[[requirement]]
+id = 'EU-0011-140'
+level = 'MUST'
+polarity = 'required'
+statement = "Each offset the musician keeps after a starting point MUST be recorded as evidence of the musician's adjustment, linked to the starting point's inputs."
+binds_to = 'system'
+rationale = "The strip learns from what the musician actually changes."
+
+[[requirement]]
+id = 'EU-0011-141'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A preference MUST NOT enter the starting-point calculation before the musician approves it."
+binds_to = 'system'
+rationale = "Only what the musician agreed to shapes their sound."
+
+[[requirement]]
+id = 'EU-0011-142'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A preference MUST NOT be learned by counting the musician's adjustments."
+binds_to = 'system'
+rationale = "A preference is proposed from evidence and approved, never inferred from a tally."
+
+[[requirement]]
+id = 'EU-0011-143'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A learned strip preset MUST NOT appear among the musician's presets before the musician approves it."
+binds_to = 'system'
+rationale = "The musician decides what joins their presets."
+
+[[requirement]]
+id = 'EU-0011-144'
+level = 'MUST'
+polarity = 'required'
+statement = "A proposal of a learned strip preset MUST show the preset and the evidence it was learned from."
+binds_to = 'system'
+rationale = "The musician decides from what the proposal is based on."
+
+[[requirement]]
+id = 'EU-0011-145'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A learned strip preset MUST NOT be shared with a collaborator without the musician's approval."
+binds_to = 'system'
+rationale = "A learned preset reveals the musician's taste, which stays theirs to share."
