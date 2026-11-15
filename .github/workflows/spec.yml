@@ -18,8 +18,8 @@ permissions:
 
 concurrency:
   group: spec-${{ github.event.pull_request.number || github.ref }}
-  # A newer push to a pull request cancels its older run. A run on master is never cancelled: each one saves the tools
-  # cache in master's scope, and a later merge would otherwise cancel it before it finishes.
+  # A newer push to a pull request cancels its older run. A master run in progress is never cancelled, so it saves the
+  # tools cache in master's scope; a newer master run replaces one that still waits.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
