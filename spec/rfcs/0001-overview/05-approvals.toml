@@ -1,0 +1,102 @@
+[section]
+anchor = 'approvals'
+title = 'Approvals and the command gateway'
+problem = """\
+  Some actions send material beyond the owner's computers or can't be undone, and an assistant, a \
+  script or a collaborator that starts one could expose or destroy what the owner meant to keep."""
+motivation = """\
+  Holding exactly those actions for the owner's approval of their exact effect, and checking every \
+  command once at one gateway, guards what matters without putting a step in front of everything \
+  else."""
+prose = """
+An approval-held action is one of these: pairing a device; making a share link, and admitting the
+person behind an edit link; an export to a destination outside the owner's computers, a backup
+destination, or a public publication; pruning unique original audio, and purging retained learning
+evidence; sending private preference or project data to an assistant whose processing may leave the
+owner's computers, and sharing a preference, a workflow mechanism or a captured model with a
+collaborator; marking a network as the owner's, which lets real-time streams run unencrypted on it;
+the route, the channels and the level bound of a capture session, whose signals go into physical
+gear; and turning on or widening telemetry sending, and sending a problem report with its
+attachments. When the owner takes such an action on their own device, taking it is the approval.
+Unpairing a device, revoking a share link, and every edit, render, recording, routing, mapping or
+layout change are not approval-held. Adopting a learned preference or a workflow mechanism is an
+ordinary command that can be undone.
+
+The command gateway is the one place in the engine that accepts or refuses each command. It refuses
+a command with one of these reasons: unpaired, outside link level, link expired or revoked, or
+approval required. The commands that pair and unpair devices, make, revoke and list share links,
+admit an editor, and request and decide approvals are commands of the same set as every other
+command."""
+
+[[requirement]]
+id = 'EU-0001-059'
+level = 'MUST'
+polarity = 'required'
+statement = "An approval-held action that anyone other than the owner starts MUST wait for the owner's approval of its exact effect."
+binds_to = 'system'
+rationale = 'An assistant, a script or a collaborator cannot send material away or destroy it without the owner seeing what will happen.'
+
+[[requirement]]
+id = 'EU-0001-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The party that starts an approval-held action MUST NOT be able to approve it.'
+binds_to = 'system'
+rationale = 'An approval is a decision of the owner, never of the party that asks for it.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-059' } ]
+
+[[requirement]]
+id = 'EU-0001-061'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST accept an approval only with a record of the owner's own interaction on one of their paired owner devices."
+binds_to = 'system'
+rationale = "A script or an assistant running on the owner's computer cannot approve by claiming to be the owner."
+
+[[requirement]]
+id = 'EU-0001-062'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An action the owner takes on their own device MUST NOT wait for an approval.'
+binds_to = 'system'
+rationale = "The owner's own action is the approval, so the owner never confirms what they just did."
+
+[[requirement]]
+id = 'EU-0001-063'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of an action's exact effect MUST show its recipient, its destination and the assets it affects."
+binds_to = 'system'
+rationale = 'The owner approves what will happen, not a description of it.'
+
+[[requirement]]
+id = 'EU-0001-064'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST check each command against the party that sent it, the level of that party's link and any approval the command needs, before the command takes effect."
+binds_to = 'system'
+rationale = 'Every way into a session meets the same checks in one place.'
+
+[[requirement]]
+id = 'EU-0001-065'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST take a command's origin from the client session that carries it, never from a field of the command."
+binds_to = 'system'
+rationale = 'A client cannot claim to be another party by what it writes in a command.'
+
+[[requirement]]
+id = 'EU-0001-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'A refused command MUST carry exactly one reason from the closed set of unpaired, outside link level, link expired or revoked, and approval required.'
+binds_to = 'system'
+rationale = 'Every client and assistant reads why a command was refused from a typed reason, not from text.'
+
+[[requirement]]
+id = 'EU-0001-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'Pairings, share links and approvals MUST be managed through commands of the same command set that every client uses.'
+binds_to = 'system'
+rationale = 'The desktop interface and an assistant take the same operations, with the same checks.'
