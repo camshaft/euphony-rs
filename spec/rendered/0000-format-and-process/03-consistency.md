@@ -8,12 +8,13 @@ don't both hold, and supersedes retires its target. A requirement composed as al
 exactly_one holds exactly where all, any or exactly one of its parts hold, and one composed as
 unless holds exactly where its exception doesn't. Each logic formula is added as written, over
 identifiers, negation, conjunction, disjunction, implication, equivalence and parentheses. Each
-parameter a requirement sets has a name, a type, a unit and a bound. The check reads the whole set
-this way on every change.
+parameter a requirement sets has a name, a type, a unit and a bound. A relation to a requirement of
+an RFC the index lists as planned is a warning until that RFC is written. The check reads the whole
+set this way on every change.
 
 ### EU-0000-027 {#EU-0000-027}
 
-Each relation and each logic formula MUST name only identifiers of requirements the set holds.
+Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of an RFC the index lists as planned.
 
 ### EU-0000-028 {#EU-0000-028}
 
@@ -33,7 +34,11 @@ Each condition of a requirement MUST be able to hold together with the rest of t
 
 ### EU-0000-032 {#EU-0000-032}
 
-The relations of kind implies, refines and supersedes MUST NOT form a cycle.
+The relations of kind implies and refines MUST NOT form a cycle.
+
+### EU-0000-058 {#EU-0000-058}
+
+The relations of kind supersedes MUST NOT form a cycle.
 
 ### EU-0000-033 {#EU-0000-033}
 

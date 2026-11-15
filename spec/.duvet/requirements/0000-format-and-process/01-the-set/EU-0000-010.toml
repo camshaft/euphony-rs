@@ -2,4 +2,4 @@ target = "rendered/0000-format-and-process/01-the-set.md#EU-0000-010"
 
 [[spec]]
 level = "MUST"
-quote = "The metadata file of an RFC MUST list each source the RFC was written from."
+quote = "The metadata file of an RFC MUST list each public source the RFC was written from."

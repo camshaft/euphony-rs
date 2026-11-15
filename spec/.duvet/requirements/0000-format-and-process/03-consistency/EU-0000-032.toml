@@ -2,4 +2,4 @@ target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-032"
 
 [[spec]]
 level = "MUST"
-quote = "The relations of kind implies, refines and supersedes MUST NOT form a cycle."
+quote = "The relations of kind implies and refines MUST NOT form a cycle."

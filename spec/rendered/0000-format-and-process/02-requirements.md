@@ -5,8 +5,8 @@ and then one requirement table for each requirement. The fields of a requirement
 level, polarity, statement, conditions, compose, parts, relations, logic, params, binds_to and
 rationale. The level is one of the levels the configuration file lists, from the strongest, through
 the recommended, to the permissive, and the polarity is required or forbidden. A requirement binds
-to the system, or to the process by which the specification itself changes. The label may change;
-the identifier never does. An identifier is the prefix, a hyphen, the four-digit number of the RFC
+to the system, or to the process by which the specification itself changes. The label can change;
+the identifier never does. A key word is written in capitals. An identifier is the prefix, a hyphen, the four-digit number of the RFC
 that first held the requirement, a hyphen and a three-digit sequence number. The anchor of a section
 is unique in its RFC and stays the same when its title changes. The rationale says why a requirement
 exists, and the check doesn't read it. An RFC of the system group states where its component
@@ -31,7 +31,7 @@ An identifier MUST NOT be held by two requirements, at the same time or one afte
 
 ### EU-0000-017 {#EU-0000-017}
 
-An RFC MUST list in its retired list each identifier it no longer holds.
+An RFC MUST list in its retired list the identifier of each requirement it removes.
 
 ### EU-0000-018 {#EU-0000-018}
 

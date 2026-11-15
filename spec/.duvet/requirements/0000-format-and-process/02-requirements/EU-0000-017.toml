@@ -2,4 +2,4 @@ target = "rendered/0000-format-and-process/02-requirements.md#EU-0000-017"
 
 [[spec]]
 level = "MUST"
-quote = "An RFC MUST list in its retired list each identifier it no longer holds."
+quote = "An RFC MUST list in its retired list the identifier of each requirement it removes."

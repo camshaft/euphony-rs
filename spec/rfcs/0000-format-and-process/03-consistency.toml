@@ -17,14 +17,15 @@ don't both hold, and supersedes retires its target. A requirement composed as al
 exactly_one holds exactly where all, any or exactly one of its parts hold, and one composed as
 unless holds exactly where its exception doesn't. Each logic formula is added as written, over
 identifiers, negation, conjunction, disjunction, implication, equivalence and parentheses. Each
-parameter a requirement sets has a name, a type, a unit and a bound. The check reads the whole set
-this way on every change."""
+parameter a requirement sets has a name, a type, a unit and a bound. A relation to a requirement of
+an RFC the index lists as planned is a warning until that RFC is written. The check reads the whole
+set this way on every change."""
 
 [[requirement]]
 id = 'EU-0000-027'
 level = 'MUST'
 polarity = 'required'
-statement = 'Each relation and each logic formula MUST name only identifiers of requirements the set holds.'
+statement = 'Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of an RFC the index lists as planned.'
 binds_to = 'process'
 rationale = 'A relation to nothing proves nothing.'
 
@@ -65,9 +66,17 @@ rationale = 'No requirement holds only because its condition can never be true.'
 id = 'EU-0000-032'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'The relations of kind implies, refines and supersedes MUST NOT form a cycle.'
+statement = 'The relations of kind implies and refines MUST NOT form a cycle.'
 binds_to = 'process'
-rationale = 'A requirement never refines or replaces itself through others.'
+rationale = 'A requirement never refines itself through others.'
+
+[[requirement]]
+id = 'EU-0000-058'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The relations of kind supersedes MUST NOT form a cycle.'
+binds_to = 'process'
+rationale = 'A requirement never replaces itself, directly or through others.'
 
 [[requirement]]
 id = 'EU-0000-033'
