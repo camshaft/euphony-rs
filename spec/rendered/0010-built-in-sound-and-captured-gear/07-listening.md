@@ -46,6 +46,10 @@ The scope of the final evaluation MUST default to one candidate chosen in advanc
 
 The tolerated error rate of the final evaluation MUST default to 0.05.
 
+### EU-0010-204 {#EU-0010-204}
+
+The listeners of the final evaluation MUST default to the musician alone.
+
 ### EU-0010-116 {#EU-0010-116}
 
 The tolerated proportion of correct answers of the final evaluation MUST be above 0.5 and below 1.
