@@ -18,7 +18,9 @@ permissions:
 
 concurrency:
   group: spec-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  # A newer push to a pull request cancels its older run. A run on master is never cancelled: each one saves the tools
+  # cache in master's scope, and a later merge would otherwise cancel it before it finishes.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   PARTIMENTO_REV: 1616d94960a1426fed9c5c4d660d0e5ec31f7c39 # partimento v0.6.0
