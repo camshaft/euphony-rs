@@ -1,0 +1,63 @@
+[section]
+anchor = 'second-screens'
+title = 'Second screens and touch monitors'
+problem = """\
+  A touch monitor or a second window beside the desktop can extend a session, but one that acts as \
+  an authority of its own, or handles touch differently from a phone, splits control of the \
+  session."""
+motivation = """\
+  Treating every extra screen as another view of the same session, with the gestures that phones \
+  and tablets use, keeps one authority and one behavior wherever a musician reaches."""
+prose = """
+A second screen is another window or view of the session on the same computer. A touch monitor
+reports contacts, and each contact can be captured and cancelled. Phones, tablets and touch
+monitors share layout schemas, parameter ranges, gesture meanings and conformance cases with the
+desktop interface. An assistant works through typed commands and surface layouts."""
+
+[[requirement]]
+id = 'EU-0018-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A second screen MUST NOT hold an authority of its own over the session.'
+binds_to = 'system'
+rationale = 'Every screen of a session acts through the same session host.'
+
+[[requirement]]
+id = 'EU-0018-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'A touch monitor MUST capture and cancel each contact separately.'
+binds_to = 'system'
+rationale = 'Two hands on two controls never steal each other.'
+
+[[requirement]]
+id = 'EU-0018-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'A touch monitor MUST use the same atomic gestures as phones and tablets.'
+binds_to = 'system'
+rationale = 'A gesture means the same thing on every touch screen.'
+
+[[requirement]]
+id = 'EU-0018-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'A layout MUST adapt its density, safe areas, orientation and touch targets to the actual device.'
+binds_to = 'system'
+rationale = 'A shared layout is usable on each screen that shows it.'
+
+[[requirement]]
+id = 'EU-0018-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant MUST NOT act on a view through pixels or injected pointer events.'
+binds_to = 'system'
+rationale = 'An assistant takes the same checked commands as a person, whatever the view looks like.'
+
+[[requirement]]
+id = 'EU-0018-057'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A drawn panel on a phone or in a browser MUST NOT replace the semantic access that its platform's own controls provide."
+binds_to = 'system'
+rationale = 'A custom panel never takes assistive access away.'
