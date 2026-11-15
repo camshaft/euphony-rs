@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-006"
+
+[[spec]]
+level = "MUST"
+quote = "A region MUST refer to the audio it plays by the content identity of that audio."

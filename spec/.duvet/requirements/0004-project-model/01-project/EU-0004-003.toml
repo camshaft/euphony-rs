@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-003"
+
+[[spec]]
+level = "MUST"
+quote = "Every time in a project MUST be a whole number of samples at the sample rate of the project."

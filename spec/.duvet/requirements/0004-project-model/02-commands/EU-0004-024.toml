@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-024"
+
+[[spec]]
+level = "MUST"
+quote = "Where a command starts work that ends after its batch commits, the outcome of the batch MUST identify that work apart from the revision."

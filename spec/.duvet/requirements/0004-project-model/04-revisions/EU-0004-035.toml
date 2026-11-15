@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-035"
+
+[[spec]]
+level = "MUST"
+quote = "Each revision MUST carry a signature by which any copy verifies which copy committed it."

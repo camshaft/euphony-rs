@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-005"
+
+[[spec]]
+level = "MUST"
+quote = "Each link from one part of a project to another MUST be a typed field of the project."

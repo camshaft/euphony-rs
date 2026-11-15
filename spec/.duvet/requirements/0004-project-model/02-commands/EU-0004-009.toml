@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-009"
+
+[[spec]]
+level = "MUST"
+quote = "Each persistent change to a project MUST be made by a command."

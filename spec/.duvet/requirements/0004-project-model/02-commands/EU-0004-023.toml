@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-023"
+
+[[spec]]
+level = "MUST"
+quote = "A change of presentation that leaves the project as it was MUST NOT produce a revision."

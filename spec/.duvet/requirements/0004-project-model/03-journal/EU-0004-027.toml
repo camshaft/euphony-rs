@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-027"
+
+[[spec]]
+level = "MUST"
+quote = "Where a change needed an approval, its journal entry MUST record its proposer and its approver as separate actors."

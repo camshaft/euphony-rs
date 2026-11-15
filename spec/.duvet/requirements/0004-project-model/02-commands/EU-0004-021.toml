@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-021"
+
+[[spec]]
+level = "MUST"
+quote = "A change MUST pass the same checks whichever interface, command line, script, composition program or assistant sends it."

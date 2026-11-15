@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-012"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST check every command of a batch against the project schema before it commits the batch."

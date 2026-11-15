@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-022"
+
+[[spec]]
+level = "MUST"
+quote = "Each committed batch MUST be undoable by a later batch."

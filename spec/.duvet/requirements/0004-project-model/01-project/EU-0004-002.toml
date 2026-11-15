@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-002"
+
+[[spec]]
+level = "MUST"
+quote = "Each project MUST have exactly one sample rate."

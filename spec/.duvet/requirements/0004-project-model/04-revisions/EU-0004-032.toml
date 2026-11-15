@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-032"
+
+[[spec]]
+level = "MUST"
+quote = "A revision MUST NOT change once it is committed."

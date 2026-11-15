@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-043"
+
+[[spec]]
+level = "MUST"
+quote = "A subscription resumed from a cursor MUST deliver every event after that cursor."

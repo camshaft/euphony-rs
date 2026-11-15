@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-040"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of one copy MUST NOT stop another copy from committing to its branches."
