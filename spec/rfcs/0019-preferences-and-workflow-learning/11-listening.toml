@@ -31,9 +31,9 @@ rationale = 'A judgment is tied to what the listener actually heard.'
 id = 'EU-0019-182'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'A comment link MUST NOT allow anything beyond comments.'
+statement = "A comment link MUST NOT give its holder access to the owner's learning."
 binds_to = 'system'
-rationale = 'A comment link never becomes a way to edit or to read learning.'
+rationale = "Listening to a mix never opens the owner's learning."
 
 [[requirement]]
 id = 'EU-0019-183'
