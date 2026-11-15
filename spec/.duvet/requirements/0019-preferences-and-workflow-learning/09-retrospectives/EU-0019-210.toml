@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-210"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST show the owner the changes a retrospective proposes together as one diff."
