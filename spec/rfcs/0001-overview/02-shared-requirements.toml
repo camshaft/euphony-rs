@@ -1,0 +1,148 @@
+[section]
+anchor = 'shared-requirements'
+title = 'Requirements every component shares'
+problem = """\
+  Each interface and each component could offer different actions with different checks, and fail in \
+  different ways, so a musician's take, the project's history and what an assistant may do would \
+  depend on which way into the session they used."""
+motivation = """\
+  Requirements that every component meets keep every way into a session equal, keep the engine's \
+  work safe from any interface's failure, and keep releases able to work together."""
+prose = """
+A session action is any action on a session or on its project that the owner can take, such as an
+edit, a transport change, a recording or a render. A project action is a session action that changes
+the project. An interface is any client that shows or controls a session: the desktop interface, a
+command line, a script, a browser companion, a phone, a control surface or the adapter through which
+an assistant works. A release is one published version of a component. The engine is the program on
+the owner's computers that runs the session, which RFC 0002 states. Each component's RFC refines
+these requirements for that component."""
+
+[[requirement]]
+id = 'EU-0001-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'An assistant the owner connects MUST be able to take every project action the owner can take.'
+binds_to = 'system'
+rationale = 'An assistant works for the owner with the whole of the product, not a part of it.'
+
+[[requirement]]
+id = 'EU-0001-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'A project action that an assistant takes MUST pass the same validation as the same action taken by the owner.'
+binds_to = 'system'
+rationale = 'An assistant cannot make a change that the owner could not make.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-004' } ]
+
+[[requirement]]
+id = 'EU-0001-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each change to a project MUST be recorded in a history the owner can inspect, with the party that made it.'
+binds_to = 'system'
+rationale = 'The owner sees what each assistant, device and collaborator changed, and can undo it.'
+
+[[requirement]]
+id = 'EU-0001-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'A session action MUST return the same result whether it is taken from the desktop interface, a command line, a script or an assistant.'
+binds_to = 'system'
+rationale = 'A person and their assistants choose the way into a session that suits the moment, and get the same outcome.'
+
+[[requirement]]
+id = 'EU-0001-008'
+level = 'MUST'
+polarity = 'required'
+statement = "A session action MUST return the same result whether it is taken on the computer that runs the session or on another of the owner's computers."
+binds_to = 'system'
+rationale = 'The owner controls a session from any of their computers.'
+
+[[requirement]]
+id = 'EU-0001-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'An interface that a later release adds MUST return the same results for the same session actions as the interfaces before it.'
+binds_to = 'system'
+rationale = 'An interface added later, such as a text terminal interface, is one more way in, not a different product.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-007' } ]
+
+[[requirement]]
+id = 'EU-0001-010'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Closing, restarting or losing an interface MUST NOT stop or interrupt playback or recording.'
+binds_to = 'system'
+rationale = 'A take survives a window that crashes or closes.'
+
+[[requirement]]
+id = 'EU-0001-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Closing, restarting or losing an interface MUST NOT interrupt another interface.'
+binds_to = 'system'
+rationale = 'Each person and assistant working in a session keeps working when one interface fails.'
+
+[[requirement]]
+id = 'EU-0001-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'An interface that reattaches to a session MUST show the session as it stands.'
+binds_to = 'system'
+rationale = 'A reopened window shows what happened while it was gone.'
+
+[[requirement]]
+id = 'EU-0001-013'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An interface that reattaches to a session MUST NOT repeat input it sent before it reattached.'
+binds_to = 'system'
+rationale = 'A reconnection never applies an edit or starts a take a second time.'
+
+[[requirement]]
+id = 'EU-0001-014'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A crash of an interface during a recording MUST NOT lose a recorded sample.'
+binds_to = 'system'
+rationale = 'The engine, not the interface, holds what is recorded.'
+
+[[requirement]]
+id = 'EU-0001-015'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A crash of an interface MUST NOT change any output of the session other than that interface's own display."
+binds_to = 'system'
+rationale = 'What the listeners hear and what is recorded stay as they were.'
+
+[[requirement]]
+id = 'EU-0001-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'On one computer, the desktop interface MUST respond to faders, the transport, meters, waveforms and scrolling within the difference the owner accepts from the same interface and engine built into one program, after seeing that difference measured on their computer.'
+binds_to = 'system'
+rationale = "Running the engine apart from the interface doesn't cost more responsiveness than the person agrees to, on their own computer."
+
+[[requirement]]
+id = 'EU-0001-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where an interface and the engine it attaches to are from releases that cannot work together, the interface MUST say which release it needs.'
+binds_to = 'system'
+rationale = 'A person updates the right component instead of meeting an unexplained failure.'
+
+[[requirement]]
+id = 'EU-0001-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An interface and an engine from different releases MUST NOT misread each other's state or commands."
+binds_to = 'system'
+rationale = 'A version mismatch either works or is refused, and never changes the project in a way nobody asked for.'
+
+[[requirement]]
+id = 'EU-0001-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each behavior this set specifies MUST hold when a computer the session uses fails or returns outdated audio.'
+binds_to = 'system'
+rationale = 'A session spread across computers keeps its promises when one of them fails, not only when every one succeeds.'
