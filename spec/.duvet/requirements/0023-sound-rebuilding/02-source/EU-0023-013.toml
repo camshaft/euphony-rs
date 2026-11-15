@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/02-source.md#EU-0023-013"
+
+[[spec]]
+level = "MUST"
+quote = "Where an analysis result that a rebuild needs is missing, the rebuild MUST request it through the ordinary analysis request and show that it waits on it."

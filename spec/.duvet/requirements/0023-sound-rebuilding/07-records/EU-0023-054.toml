@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-054"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted sound MUST be saved in the project as processors and settings without the source audio."

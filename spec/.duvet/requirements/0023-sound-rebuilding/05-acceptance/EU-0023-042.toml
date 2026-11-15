@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-042"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild MUST NOT change the project before one of its candidates is accepted."

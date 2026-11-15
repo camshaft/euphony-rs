@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/02-source.md#EU-0023-014"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild whose target is a separated stem MUST report that its target is an estimate of the sound rather than the sound alone."

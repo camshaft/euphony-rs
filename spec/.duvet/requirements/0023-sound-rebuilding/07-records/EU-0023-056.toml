@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-056"
+
+[[spec]]
+level = "MUST"
+quote = "A project shared with a collaborator MUST NOT hold the source passage of a rebuilt sound unless the musician shares the source too."

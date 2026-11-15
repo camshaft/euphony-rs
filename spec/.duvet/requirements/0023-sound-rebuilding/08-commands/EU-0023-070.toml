@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-070"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild MUST NOT send anything outside the owner's computers."

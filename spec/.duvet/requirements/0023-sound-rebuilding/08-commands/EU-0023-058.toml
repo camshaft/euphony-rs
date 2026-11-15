@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-058"
+
+[[spec]]
+level = "MUST"
+quote = "Each rebuild command MUST be available equally to the desktop interface and to each assistant the musician connects."

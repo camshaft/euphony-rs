@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-071"
+
+[[spec]]
+level = "MUST"
+quote = "A worker's result MUST NOT change the project."

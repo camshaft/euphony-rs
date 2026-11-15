@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-067"
+
+[[spec]]
+level = "MUST"
+quote = "The accept command MUST return the outcome no blind result for a candidate whose blind comparison the musician hasn't taken, whether the musician or an assistant calls it."

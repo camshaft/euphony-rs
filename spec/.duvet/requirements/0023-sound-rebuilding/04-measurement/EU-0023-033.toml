@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-033"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild MUST offer the musician the several candidates that measure closest to the original."
