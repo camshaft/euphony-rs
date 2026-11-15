@@ -10,7 +10,7 @@ identity, and the context handle that results is bound to the principal, the sco
 it was read at. An acknowledgement shows that the context was delivered, and doesn't show that the
 assistant understood it. Changes reach a connected assistant as events of the resumable event
 stream; an assistant that can't subscribe refreshes its context when it begins or resumes work, and
-when a command answers that its context is stale. Through the same protocol, an assistant previews
+when a command answers that its context is stale. Through the client protocol, an assistant previews
 the effect of a change it proposes, runs the tests of a mechanism and records a retrospective.
 
 ### EU-0019-010 {#EU-0019-010}
@@ -87,7 +87,7 @@ A failed context read MUST leave assisted mutation unavailable, with its reason.
 
 ### EU-0019-207 {#EU-0019-207}
 
-An assistant MUST be able to preview the effect of a change it proposes through the client protocol.
+Through the client protocol, an assistant MUST be able to preview the effect of a change it proposes.
 
 ### EU-0019-208 {#EU-0019-208}
 
