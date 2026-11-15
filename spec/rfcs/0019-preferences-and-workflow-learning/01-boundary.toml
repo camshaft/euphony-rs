@@ -1,0 +1,89 @@
+[section]
+anchor = 'boundary'
+title = 'What euphony keeps and what assistants do'
+problem = """\
+  A person's taste and the way they like to work end up scattered across the memories of separate assistants, with no record of what the person approved, while an assistant built into euphony would take away the person's choice of assistant."""
+motivation = """\
+  One local store of the owner's evidence, preferences and workflow mechanisms, which the person's own assistants read and propose to through euphony's client protocol, keeps one record of what the owner approved, leaves every step of reasoning with the assistant the person chose, and keeps learning away from the audio the person listens to."""
+prose = """
+Preferences and workflow learning let the assistants a person chooses learn that person's musical
+taste and the way they like to work, and improve repeated work over time, while the person keeps
+control of what is learned. Euphony keeps, for each owner, a learning store of evidence, preference
+versions, workflow mechanisms, test and effect reports and retrospective work. The owner is the
+person whose taste and workflow the store records. An assistant is an external client of the client
+protocol that reasons for the person; euphony doesn't reason for itself. Euphony serves the store to
+the assistant, receives the assistant's evidence and proposals, and applies only what the owner
+accepted. Learning runs beside the command gateway and away from the real-time audio path, so that
+playback, recording and ordinary editing go on whatever the learning store does."""
+
+[[requirement]]
+id = 'EU-0019-001'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST keep one learning store for each owner, holding that owner's evidence, preference versions, mechanism versions, test and effect reports and retrospective work."
+binds_to = 'system'
+rationale = 'One record holds what each owner approved, whichever assistant the owner uses.'
+
+[[requirement]]
+id = 'EU-0019-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT run an assistant, an inference model for an assistant or a reasoning loop of its own.'
+binds_to = 'system'
+rationale = 'The person keeps the choice of assistant, and every step of reasoning stays with it.'
+
+[[requirement]]
+id = 'EU-0019-003'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT hold the credentials an assistant uses for a model service.'
+binds_to = 'system'
+rationale = "Model services stay the assistant's concern, and euphony never acts as the assistant."
+
+[[requirement]]
+id = 'EU-0019-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST serve the learning store to assistants through the resources, tools and procedures of its client protocol alone.'
+binds_to = 'system'
+rationale = 'Every assistant reads and proposes through one protocol, with no second interface to secure.'
+
+[[requirement]]
+id = 'EU-0019-005'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT depend on an assistant running a procedure or reading a notification that euphony offers it.'
+binds_to = 'system'
+rationale = 'A procedure or a notification is content an assistant chooses to use, never a command euphony can force.'
+
+[[requirement]]
+id = 'EU-0019-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Learning work MUST NOT run on the real-time audio path.'
+binds_to = 'system'
+rationale = 'Learning never makes the audio the person listens to drop out.'
+
+[[requirement]]
+id = 'EU-0019-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback, recording and ordinary editing MUST go on while the learning store is unavailable or failing.'
+binds_to = 'system'
+rationale = 'A failure of learning never stops the music.'
+
+[[requirement]]
+id = 'EU-0019-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'Ordinary native operation MUST stay available whether or not an assistant is attached.'
+binds_to = 'system'
+rationale = 'A person can always work without an assistant.'
+
+[[requirement]]
+id = 'EU-0019-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST define the assistants it supports by the protocol capabilities they declare, not by their vendor or product.'
+binds_to = 'system'
+rationale = 'Any assistant that conforms works, and support never depends on a list of names.'

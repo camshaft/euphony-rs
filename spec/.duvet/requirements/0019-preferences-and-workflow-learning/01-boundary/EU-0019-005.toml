@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-005"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT depend on an assistant running a procedure or reading a notification that euphony offers it."

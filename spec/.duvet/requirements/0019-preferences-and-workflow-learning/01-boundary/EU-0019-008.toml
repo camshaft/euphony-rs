@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-008"
+
+[[spec]]
+level = "MUST"
+quote = "Ordinary native operation MUST stay available whether or not an assistant is attached."
