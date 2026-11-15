@@ -10,8 +10,9 @@ publication and decoder retirement in one atomic step against each other. This i
 the local store, not a claim that offline peers have migrated. An import, an archive or a peer
 exchange that waits for a decoder or a version is held with its bytes. The registration of what it
 waits for marks every such hold ready in one atomic step of a fixed size, without any other prompt,
-and each ready item is then negotiated, verified and published as durable work of its own, which
-survives an interruption.
+and each ready item is then read a page at a time and negotiated, verified and published as
+durable work of its own, which survives an interruption; a decoder isn't retired while a ready item
+depends on it.
 
 ### EU-0007-094 {#EU-0007-094}
 
@@ -67,15 +68,23 @@ Each held import, archive or peer exchange MUST record the decoder or the schema
 
 ### EU-0007-106 {#EU-0007-106}
 
-The registration of a verified decoder or a supported version MUST mark each held item that waits for it ready, in an atomic step whose work does not grow with the number of held items.
+The registration of a verified decoder or a supported version MUST mark each held item that waits for it ready, in an atomic step that makes a fixed number of store writes however many items wait.
 
 ### EU-0007-132 {#EU-0007-132}
 
 The atomic step of a registration MUST NOT negotiate, verify or publish a held item.
 
+### EU-0007-138 {#EU-0007-138}
+
+The store MUST NOT retire a decoder while a ready item depends on it.
+
 ### EU-0007-133 {#EU-0007-133}
 
-The store MUST negotiate and verify each ready item as durable work of its own.
+The store MUST negotiate and verify each ready item as durable work of its own, started by the registration that marks it ready.
+
+### EU-0007-137 {#EU-0007-137}
+
+The store MUST read the ready items a page at a time.
 
 ### EU-0007-107 {#EU-0007-107}
 
@@ -95,7 +104,7 @@ A timer MUST NOT start the work of a ready item.
 
 ### EU-0007-108 {#EU-0007-108}
 
-A ready item that fails verification MUST stay held, with its bytes kept and its failure recorded, until the next registration of what it waits for marks it ready again.
+A ready item that fails verification MUST stay held, with its bytes kept and its failure recorded against that registration, until the next registration of what it waits for marks it ready again.
 
 ### EU-0007-109 {#EU-0007-109}
 
