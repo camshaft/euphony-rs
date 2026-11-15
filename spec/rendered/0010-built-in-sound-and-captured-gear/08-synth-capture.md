@@ -48,7 +48,11 @@ Synthesizer calibration MUST estimate the distribution of the delay from a sent 
 
 ### EU-0010-146 {#EU-0010-146}
 
-Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty and keep the raw timing.
+Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty.
+
+### EU-0010-270 {#EU-0010-270}
+
+Where the delays of converter, transport and synthesizer can't be separated, the capture MUST keep the raw timing.
 
 ### EU-0010-147 {#EU-0010-147}
 
@@ -64,7 +68,11 @@ A synthesizer capture MUST reject a clipped take.
 
 ### EU-0010-150 {#EU-0010-150}
 
-A level excursion MUST stop a synthesizer capture and keep the partial take as invalid for fitting.
+A level excursion MUST stop a synthesizer capture.
+
+### EU-0010-271 {#EU-0010-271}
+
+A synthesizer capture that a level excursion stopped MUST keep its partial take as invalid for fitting.
 
 ### EU-0010-151 {#EU-0010-151}
 
@@ -72,11 +80,19 @@ After a device reconnects, a synthesizer capture MUST check the identity and cal
 
 ### EU-0010-152 {#EU-0010-152}
 
-A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence, and record which state the sequence restores.
+A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence.
+
+### EU-0010-272 {#EU-0010-272}
+
+A synthesizer capture MUST record which state its reset sequence restores.
 
 ### EU-0010-153 {#EU-0010-153}
 
-Where a reset can't restore the hidden state of a device, the capture MUST mark that uncertainty and validate the model statistically rather than claim waveform identity.
+Where a reset can't restore the hidden state of a device, the capture MUST mark that uncertainty.
+
+### EU-0010-273 {#EU-0010-273}
+
+Where a reset can't restore the hidden state of a device, the capture MUST validate the model statistically rather than claim waveform identity.
 
 ### EU-0010-154 {#EU-0010-154}
 
@@ -112,7 +128,11 @@ A synthesizer capture plan MUST list the patch families and controls the model s
 
 ### EU-0010-162 {#EU-0010-162}
 
-A synthesizer capture MUST hold each control the musician did not select at a recorded value, and show it as fixed.
+A synthesizer capture MUST hold each control the musician did not select at a recorded value.
+
+### EU-0010-274 {#EU-0010-274}
+
+euphony MUST show each control that a synthesizer capture held at a recorded value as fixed.
 
 ### EU-0010-163 {#EU-0010-163}
 

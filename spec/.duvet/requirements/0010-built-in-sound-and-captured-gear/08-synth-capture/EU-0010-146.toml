@@ -2,4 +2,4 @@ target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-
 
 [[spec]]
 level = "MUST"
-quote = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty and keep the raw timing."
+quote = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty."
