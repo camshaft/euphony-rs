@@ -7,6 +7,7 @@ project, one previews a route without activating it, and one applies a batch of 
 edits as one change. Composition programs build routes with the same typed data. Clients follow a
 graph through its committed, compiled, activated and failed events. Importing a project from
 another workstation brings its sidechains and automation into routes, with a report of each.
+RFC 0009 states that the code of a composition program doesn't run on the audio path.
 
 ### EU-0012-115 {#EU-0012-115}
 
@@ -72,10 +73,6 @@ A preview MUST NOT activate anything.
 
 A composition program MUST build routes with the same typed data as the commands, using stable track and parameter handles.
 
-### EU-0012-131 {#EU-0012-131}
-
-Code of a composition program MUST NOT run in the path that processes samples.
-
 ### EU-0012-132 {#EU-0012-132}
 
 Editors, scripts and assistant clients MUST receive the same committed, compiled, activated and failed events of a graph.
@@ -90,7 +87,11 @@ The same edit made from the interface, a script or an assistant MUST produce the
 
 ### EU-0012-135 {#EU-0012-135}
 
-A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly, without interrupting unrelated recording.
+A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly.
+
+### EU-0012-159 {#EU-0012-159}
+
+A failed batch MUST NOT interrupt unrelated recording.
 
 ### EU-0012-136 {#EU-0012-136}
 
