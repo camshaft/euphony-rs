@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-067"
+
+[[spec]]
+level = "MUST"
+quote = "A loop MUST keep or reset its state at a transport change as its stored policy says, the same in offline and live playback."

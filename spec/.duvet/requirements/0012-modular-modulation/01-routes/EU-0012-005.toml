@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-005"
+
+[[spec]]
+level = "MUST"
+quote = "A route that reads an automation lane MUST read the lane's value before modulation."

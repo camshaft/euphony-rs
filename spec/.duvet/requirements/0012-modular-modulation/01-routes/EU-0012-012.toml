@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-012"
+
+[[spec]]
+level = "MUST"
+quote = "A continuous control MUST accept numeric modulation."

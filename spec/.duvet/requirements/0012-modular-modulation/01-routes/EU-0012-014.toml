@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-014"
+
+[[spec]]
+level = "MUST"
+quote = "A control that selects a resource MUST accept modulation only as a typed choice among prepared resources, applied as one control change."

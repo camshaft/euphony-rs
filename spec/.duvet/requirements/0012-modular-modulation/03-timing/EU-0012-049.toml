@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-049"
+
+[[spec]]
+level = "MUST"
+quote = "A processor that accepts updates at any sample MUST apply each update at the sample it is given."

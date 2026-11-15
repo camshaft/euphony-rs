@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-001"
+
+[[spec]]
+level = "MUST"
+quote = "A musician MUST be able to connect a source of any track to any modulatable sound control of any track or effect."

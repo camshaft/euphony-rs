@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-017"
+
+[[spec]]
+level = "MUST"
+quote = "A source taken after the fader MUST follow its track's mute and gain."

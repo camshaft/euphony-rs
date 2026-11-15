@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-002"
+
+[[spec]]
+level = "MUST"
+quote = "Each route MUST be stored in the project as typed data with an identifier that it keeps for its life."

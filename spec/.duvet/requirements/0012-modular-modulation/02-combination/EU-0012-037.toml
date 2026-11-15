@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-037"
+
+[[spec]]
+level = "MUST"
+quote = "Recording automation on a target MUST write its base lane, not its modulated value."

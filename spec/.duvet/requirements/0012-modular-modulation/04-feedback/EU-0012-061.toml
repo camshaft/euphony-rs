@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-061"
+
+[[spec]]
+level = "MUST"
+quote = "The cycle check MUST treat a processor that doesn't declare its feedthrough as passing every input to every output without delay."

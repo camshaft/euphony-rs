@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-046"
+
+[[spec]]
+level = "MUST"
+quote = "Each position of a modulation update MUST be an integer number of project samples."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-036"
+
+[[spec]]
+level = "MUST"
+quote = "The base of a target MUST be its evaluated track or region automation, or its manual value where it has no automation."

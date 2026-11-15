@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-006"
+
+[[spec]]
+level = "MUST"
+quote = "Reading the effective value of a control MUST be a source distinct from reading its automation lane, with its own dependency."

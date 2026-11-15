@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-011"
+
+[[spec]]
+level = "MUST"
+quote = "Each built-in processor MUST declare every public control in the parameter registry, with its unit, legal domain, mapping from normalized to physical value, value kind, update capability and effect on state."

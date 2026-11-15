@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-055"
+
+[[spec]]
+level = "MUST"
+quote = "A discrete control MUST apply a change at its declared safe boundary."

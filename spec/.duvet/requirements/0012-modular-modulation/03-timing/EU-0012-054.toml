@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-054"
+
+[[spec]]
+level = "MUST"
+quote = "Reducing the rate of a control MUST filter it against aliasing and record the latency the filter adds."

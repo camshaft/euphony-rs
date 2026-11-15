@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-066"
+
+[[spec]]
+level = "MUST"
+quote = "The buffers of a feedback delay MUST start at zero unless a saved checkpoint supplies them."
