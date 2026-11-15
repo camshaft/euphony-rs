@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-094"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT limit the number of routes or voices by a fixed count."

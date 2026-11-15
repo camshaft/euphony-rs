@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-104"
+
+[[spec]]
+level = "MUST"
+quote = "The per-voice modulator state of a voice MUST end when the voice ends, including when the voice is stolen."

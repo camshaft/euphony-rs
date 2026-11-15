@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-106"
+
+[[spec]]
+level = "MUST"
+quote = "For each voice, the summed contribution MUST be the global contribution plus the voice's own contributions, summed in the order of their route identifiers."

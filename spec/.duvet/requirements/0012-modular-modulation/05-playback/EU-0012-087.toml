@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-087"
+
+[[spec]]
+level = "MUST"
+quote = "A switch between prepared and live playback MUST carry matching oscillator phase, follower history and delay state at an aligned sample."

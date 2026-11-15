@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-097"
+
+[[spec]]
+level = "MUST"
+quote = "The source of a per-voice route MUST be a source of one voice: a note's velocity, key, release velocity or expression, or an envelope or oscillator that starts with the note."

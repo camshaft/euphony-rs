@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-100"
+
+[[spec]]
+level = "MUST"
+quote = "A preview MUST refuse a per-voice route to a control that doesn't accept it, with that reason, unless the musician chooses the global scope."

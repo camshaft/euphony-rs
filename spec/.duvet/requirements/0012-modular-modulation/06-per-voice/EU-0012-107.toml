@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-107"
+
+[[spec]]
+level = "MUST"
+quote = "A source of the whole instrument that reaches a per-voice target MUST reach every voice with the same value."

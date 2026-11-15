@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-090"
+
+[[spec]]
+level = "MUST"
+quote = "A missed live deadline MUST NOT silently lower the rate of modulation."

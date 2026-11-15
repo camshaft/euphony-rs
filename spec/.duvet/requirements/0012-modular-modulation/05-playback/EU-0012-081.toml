@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-081"
+
+[[spec]]
+level = "MUST"
+quote = "A worker MUST NOT publish a result for an older graph as the current revision."

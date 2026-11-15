@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-085"
+
+[[spec]]
+level = "MUST"
+quote = "During a live input or a gesture on a depth, the affected part and its consumers MUST render on the musician's computer while the unaffected prepared audio continues."
