@@ -1,5 +1,0 @@
-target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-034"
-
-[[spec]]
-level = "MUST"
-quote = "Discovery on the local network MUST NOT make a peer trusted."

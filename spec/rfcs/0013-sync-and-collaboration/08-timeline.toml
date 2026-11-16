@@ -52,7 +52,7 @@ rationale = 'An anchor means the same time to every output for its whole life.'
 id = 'EU-0013-147'
 level = 'MUST'
 polarity = 'required'
-statement = 'Every output MUST write project sample P to its device at host media-clock time T0 + (P - P0) / (r f), converted to its own clock, less its own output latency.'
+statement = 'In aligned mode, every output MUST write project sample P to its device at host media-clock time T0 + (P - P0) / (r f), converted to its own clock, less its own output latency.'
 binds_to = 'system'
 rationale = "Every output, the host's included, follows the same timeline."
 
@@ -60,9 +60,25 @@ rationale = "Every output, the host's included, follows the same timeline."
 id = 'EU-0013-148'
 level = 'MUST'
 polarity = 'required'
-statement = 'The host MUST set the output time of each anchor at least the common presentation delay after it accepts the change.'
+statement = 'In aligned mode, the host MUST set the output time of each anchor at least the common presentation delay after it accepts the change.'
 binds_to = 'system'
 rationale = 'Every participant receives a change before it must sound.'
+
+[[requirement]]
+id = 'EU-0013-228'
+level = 'MUST'
+polarity = 'required'
+statement = 'In host-live mode, the host MUST set the output time of each anchor at its own output time with its normal monitoring latency, without the common presentation delay.'
+binds_to = 'system'
+rationale = 'A performer listens to their own playing with normal monitoring latency.'
+
+[[requirement]]
+id = 'EU-0013-229'
+level = 'MUST'
+polarity = 'required'
+statement = 'In host-live mode, each participant MUST write project sample P to its device at T(P) plus its measured end-to-end delay, converted to its own clock, less its own output latency.'
+binds_to = 'system'
+rationale = 'A participant plays the take as soon as it reaches them, behind the host by its own delay.'
 
 [[requirement]]
 id = 'EU-0013-149'
@@ -172,7 +188,7 @@ rationale = 'An internet path never claims tighter alignment than it can give.'
 id = 'EU-0013-162'
 level = 'MUST'
 polarity = 'required'
-statement = "In aligned mode, every output of the session, the host's included, MUST play the same moment of the project within the alignment bound the session shows for it."
+statement = "In aligned mode, every output of the session whose alignment the session doesn't show as unverified, the host's included, MUST play the same moment of the project within the alignment bound the session shows for it."
 binds_to = 'system'
 rationale = 'Everyone listens to the same moment, as in one room.'
 
@@ -180,7 +196,7 @@ rationale = 'Everyone listens to the same moment, as in one room.'
 id = 'EU-0013-163'
 level = 'MUST'
 polarity = 'required'
-statement = 'Aligned mode MUST be the mode of a shared listening session while nothing records.'
+statement = 'Aligned mode MUST be the mode of a shared listening session while it neither records nor monitors a live input.'
 binds_to = 'system'
 rationale = 'Shared listening is for hearing the same moment together.'
 
@@ -260,7 +276,7 @@ rationale = 'A person knows which values are measured and which are reported.'
 id = 'EU-0013-173'
 level = 'MUST'
 polarity = 'required'
-statement = 'On a new transport generation, a participant MUST discard buffered audio of the previous generation.'
+statement = 'On a seek or a loop change, a participant MUST discard buffered audio of the previous generation.'
 binds_to = 'system'
 rationale = "After a seek or a loop change, the old position doesn't play anywhere."
 

@@ -62,14 +62,6 @@ binds_to = 'system'
 rationale = 'A revoked peer loses access as soon as each peer knows.'
 
 [[requirement]]
-id = 'EU-0013-065'
-level = 'MUST'
-polarity = 'required'
-statement = 'Revocation MUST rotate the keys of objects made after it.'
-binds_to = 'system'
-rationale = 'A revoked peer cannot read new work.'
-
-[[requirement]]
 id = 'EU-0013-066'
 level = 'MUST'
 polarity = 'required'

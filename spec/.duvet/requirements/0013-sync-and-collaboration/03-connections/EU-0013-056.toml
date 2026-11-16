@@ -2,4 +2,4 @@ target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-056"
 
 [[spec]]
 level = "MUST"
-quote = "A browser connection MUST carry only companion control and selected prepared audio."
+quote = "A browser connection MUST NOT carry a full copy of a project or an exchange of its history or objects."

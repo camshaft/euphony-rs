@@ -22,14 +22,6 @@ link carries. The host is reached through the connection path of collaboration, 
 port of its own."""
 
 [[requirement]]
-id = 'EU-0013-112'
-level = 'MUST'
-polarity = 'required'
-statement = 'A share link MUST grant exactly one level, which is listen, comment or edit.'
-binds_to = 'system'
-rationale = 'A person knows exactly what a link allows.'
-
-[[requirement]]
 id = 'EU-0013-113'
 level = 'MUST'
 polarity = 'required'
@@ -173,14 +165,7 @@ polarity = 'required'
 statement = 'An edit link MUST be single use and bind to the first identity the owner approves.'
 binds_to = 'system'
 rationale = 'An edit link admits one person.'
-
-[[requirement]]
-id = 'EU-0013-126'
-level = 'MUST'
-polarity = 'required'
-statement = 'Every link MUST have an expiry.'
-binds_to = 'system'
-rationale = 'No link grants access forever.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
 
 [[requirement]]
 id = 'EU-0013-127'
@@ -189,6 +174,7 @@ polarity = 'required'
 statement = 'A link MUST expire, by default, when the session it was made for ends.'
 binds_to = 'system'
 rationale = 'The narrowest lifetime is the default.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-041' } ]
 
 [[requirement]]
 id = 'EU-0013-128'
@@ -207,12 +193,13 @@ binds_to = 'system'
 rationale = 'The owner sees who joined and when.'
 
 [[requirement]]
-id = 'EU-0013-130'
+id = 'EU-0013-227'
 level = 'MUST'
 polarity = 'required'
-statement = 'The owner MUST be able to revoke a link, or one participant, from the sharing view of the session, the phone client or the assistant interface.'
+statement = 'The owner MUST be able to revoke one participant of a link, from the sharing view of the session or the assistant interface.'
 binds_to = 'system'
-rationale = 'A person withdraws access from wherever they are.'
+rationale = "The owner withdraws one person's access without ending the link for the others."
+relations = [ { kind = 'depends_on', target = 'EU-0001-045' } ]
 
 [[requirement]]
 id = 'EU-0013-131'
@@ -221,14 +208,7 @@ polarity = 'required'
 statement = 'Revocation MUST refuse new redemptions of the link at once.'
 binds_to = 'system'
 rationale = 'A revoked link stops working immediately.'
-
-[[requirement]]
-id = 'EU-0013-132'
-level = 'MUST'
-polarity = 'required'
-statement = 'Revocation MUST end each stream and control channel that the link admitted.'
-binds_to = 'system'
-rationale = 'A removed participant stops hearing and controlling at once.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-045' } ]
 
 [[requirement]]
 id = 'EU-0013-133'
@@ -237,6 +217,7 @@ polarity = 'required'
 statement = 'On revocation, the host MUST rotate the stream keys of the session so that a removed client cannot decode later packets.'
 binds_to = 'system'
 rationale = 'Packets sent after removal stay unreadable to the removed client.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-048' } ]
 
 [[requirement]]
 id = 'EU-0013-134'
@@ -245,14 +226,6 @@ polarity = 'required'
 statement = 'The dialog that makes a link MUST say that revocation cannot recall audio a listener already heard or recorded on their own device.'
 binds_to = 'system'
 rationale = 'A person does not expect revocation to undo what was heard.'
-
-[[requirement]]
-id = 'EU-0013-135'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'The host MUST NOT open an inbound port or run a public web server for a shared session.'
-binds_to = 'system'
-rationale = 'Sharing never exposes the host to the internet.'
 
 [[requirement]]
 id = 'EU-0013-136'

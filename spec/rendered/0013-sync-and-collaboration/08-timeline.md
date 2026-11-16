@@ -32,11 +32,19 @@ A transport change MUST NOT add a delay to an existing anchor.
 
 ### EU-0013-147 {#EU-0013-147}
 
-Every output MUST write project sample P to its device at host media-clock time T0 + (P - P0) / (r f), converted to its own clock, less its own output latency.
+In aligned mode, every output MUST write project sample P to its device at host media-clock time T0 + (P - P0) / (r f), converted to its own clock, less its own output latency.
 
 ### EU-0013-148 {#EU-0013-148}
 
-The host MUST set the output time of each anchor at least the common presentation delay after it accepts the change.
+In aligned mode, the host MUST set the output time of each anchor at least the common presentation delay after it accepts the change.
+
+### EU-0013-228 {#EU-0013-228}
+
+In host-live mode, the host MUST set the output time of each anchor at its own output time with its normal monitoring latency, without the common presentation delay.
+
+### EU-0013-229 {#EU-0013-229}
+
+In host-live mode, each participant MUST write project sample P to its device at T(P) plus its measured end-to-end delay, converted to its own clock, less its own output latency.
 
 ### EU-0013-149 {#EU-0013-149}
 
@@ -92,11 +100,11 @@ The session MUST NOT present an alignment bound as sample alignment.
 
 ### EU-0013-162 {#EU-0013-162}
 
-In aligned mode, every output of the session, the host's included, MUST play the same moment of the project within the alignment bound the session shows for it.
+In aligned mode, every output of the session whose alignment the session doesn't show as unverified, the host's included, MUST play the same moment of the project within the alignment bound the session shows for it.
 
 ### EU-0013-163 {#EU-0013-163}
 
-Aligned mode MUST be the mode of a shared listening session while nothing records.
+Aligned mode MUST be the mode of a shared listening session while it neither records nor monitors a live input.
 
 ### EU-0013-164 {#EU-0013-164}
 
@@ -136,7 +144,7 @@ The session MUST show where each output latency value came from.
 
 ### EU-0013-173 {#EU-0013-173}
 
-On a new transport generation, a participant MUST discard buffered audio of the previous generation.
+On a seek or a loop change, a participant MUST discard buffered audio of the previous generation.
 
 ### EU-0013-174 {#EU-0013-174}
 

@@ -25,7 +25,7 @@ Deprecating a revision MUST NOT change its parents, configuration, musical event
 
 ### EU-0013-070 {#EU-0013-070}
 
-A peer MUST retain the small history of each revision that retained work references.
+A peer MUST retain the small history of every deprecated revision.
 
 ### EU-0013-071 {#EU-0013-071}
 

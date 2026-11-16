@@ -20,14 +20,6 @@ local-network features, and project sync across the internet is not sample-synch
 An offline bundle stays a separate way to recover a project's history."""
 
 [[requirement]]
-id = 'EU-0013-034'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'Discovery on the local network MUST NOT make a peer trusted.'
-binds_to = 'system'
-rationale = 'Anyone on a shared network can announce themselves.'
-
-[[requirement]]
 id = 'EU-0013-035'
 level = 'MUST'
 polarity = 'required'
@@ -214,8 +206,8 @@ rationale = 'A person never believes their work was exchanged when it was not.'
 [[requirement]]
 id = 'EU-0013-056'
 level = 'MUST'
-polarity = 'required'
-statement = 'A browser connection MUST carry only companion control and selected prepared audio.'
+polarity = 'forbidden'
+statement = 'A browser connection MUST NOT carry a full copy of a project or an exchange of its history or objects.'
 binds_to = 'system'
 rationale = 'Full project copies live only in native copies.'
 

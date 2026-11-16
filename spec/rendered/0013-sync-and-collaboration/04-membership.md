@@ -31,10 +31,6 @@ The proposals of a revoked peer MUST stay quarantined until an authorized person
 
 Revocation MUST stop new transfers to and commands from the revoked peer once the applying peer learns of it.
 
-### EU-0013-065 {#EU-0013-065}
-
-Revocation MUST rotate the keys of objects made after it.
-
 ### EU-0013-066 {#EU-0013-066}
 
 When a link or an invitation is made, the system MUST show that revocation cannot erase copies already received or reach an offline peer at once.

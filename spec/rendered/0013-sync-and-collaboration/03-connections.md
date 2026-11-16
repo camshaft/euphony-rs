@@ -13,10 +13,6 @@ between native copies. Existing standards for local discovery, local audio strea
 local-network features, and project sync across the internet is not sample-synchronous performance.
 An offline bundle stays a separate way to recover a project's history.
 
-### EU-0013-034 {#EU-0013-034}
-
-Discovery on the local network MUST NOT make a peer trusted.
-
 ### EU-0013-035 {#EU-0013-035}
 
 Collaborators MUST be able to connect and sync across the internet through home routers.
@@ -111,7 +107,7 @@ Where neither a direct path nor an approved relay path works, a peer MUST report
 
 ### EU-0013-056 {#EU-0013-056}
 
-A browser connection MUST carry only companion control and selected prepared audio.
+A browser connection MUST NOT carry a full copy of a project or an exchange of its history or objects.
 
 ### EU-0013-057 {#EU-0013-057}
 

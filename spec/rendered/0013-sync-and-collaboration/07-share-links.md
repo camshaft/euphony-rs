@@ -15,10 +15,6 @@ starts the enrollment of a collaborator. Transport control is one setting of the
 link carries. The host is reached through the connection path of collaboration, without an inbound
 port of its own.
 
-### EU-0013-112 {#EU-0013-112}
-
-A share link MUST grant exactly one level, which is listen, comment or edit.
-
 ### EU-0013-113 {#EU-0013-113}
 
 The secret of a link MUST hold at least 128 random bits from the secure random source of the operating system.
@@ -91,10 +87,6 @@ The policy stream MUST record an edit level only after the owner approves the ex
 
 An edit link MUST be single use and bind to the first identity the owner approves.
 
-### EU-0013-126 {#EU-0013-126}
-
-Every link MUST have an expiry.
-
 ### EU-0013-127 {#EU-0013-127}
 
 A link MUST expire, by default, when the session it was made for ends.
@@ -107,17 +99,13 @@ The owner MAY choose a later expiry or a number of uses for a listen or comment 
 
 The host MUST record each redemption of a link with the identity of the joining client and the time.
 
-### EU-0013-130 {#EU-0013-130}
+### EU-0013-227 {#EU-0013-227}
 
-The owner MUST be able to revoke a link, or one participant, from the sharing view of the session, the phone client or the assistant interface.
+The owner MUST be able to revoke one participant of a link, from the sharing view of the session or the assistant interface.
 
 ### EU-0013-131 {#EU-0013-131}
 
 Revocation MUST refuse new redemptions of the link at once.
-
-### EU-0013-132 {#EU-0013-132}
-
-Revocation MUST end each stream and control channel that the link admitted.
 
 ### EU-0013-133 {#EU-0013-133}
 
@@ -126,10 +114,6 @@ On revocation, the host MUST rotate the stream keys of the session so that a rem
 ### EU-0013-134 {#EU-0013-134}
 
 The dialog that makes a link MUST say that revocation cannot recall audio a listener already heard or recorded on their own device.
-
-### EU-0013-135 {#EU-0013-135}
-
-The host MUST NOT open an inbound port or run a public web server for a shared session.
 
 ### EU-0013-136 {#EU-0013-136}
 

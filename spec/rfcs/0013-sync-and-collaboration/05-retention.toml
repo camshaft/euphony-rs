@@ -41,7 +41,7 @@ rationale = 'History stays true after its audio is retired.'
 id = 'EU-0013-070'
 level = 'MUST'
 polarity = 'required'
-statement = 'A peer MUST retain the small history of each revision that retained work references.'
+statement = 'A peer MUST retain the small history of every deprecated revision.'
 binds_to = 'system'
 rationale = 'A retired version can still be opened and understood.'
 
