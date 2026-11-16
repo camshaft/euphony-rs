@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-152"
+
+[[spec]]
+level = "MUST"
+quote = "The exposure that fits a finding MUST be transport-active hours for a deadline miss, render jobs of the finding's job kind for a render failure, attempts of the finding's tool for a tool failure, and hours with the finding's process running for a crash."

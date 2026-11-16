@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-168"
+
+[[spec]]
+level = "MUST"
+quote = "The release check MUST NOT pass a release in which sending is on in a new installation."

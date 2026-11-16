@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-079"
+
+[[spec]]
+level = "MUST"
+quote = "The first batch of a submission identity MUST register the identity with its public key."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-089"
+
+[[spec]]
+level = "MUST"
+quote = "The client MUST offer to draft a problem report at the next start after a crash, from a report command in the native interface, and through the assistant adapter."

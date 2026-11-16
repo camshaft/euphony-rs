@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-036"
+
+[[spec]]
+level = "MUST"
+quote = "The person MUST be able to turn each category on and off apart from the others."

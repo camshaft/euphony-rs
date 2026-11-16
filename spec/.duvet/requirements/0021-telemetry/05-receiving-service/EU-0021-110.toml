@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-110"
+
+[[spec]]
+level = "MUST"
+quote = "On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups."

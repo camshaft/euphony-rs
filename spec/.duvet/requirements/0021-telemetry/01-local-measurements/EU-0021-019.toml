@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-019"
+
+[[spec]]
+level = "MUST"
+quote = "Each exposure interval MUST state, for each family, whether recording was on throughout, the count of events recorded, the count lost to storage pressure and the count of batches built for it."

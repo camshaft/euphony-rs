@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-098"
+
+[[spec]]
+level = "MUST"
+quote = "The person MUST be able to delete a report with a signed deletion request."

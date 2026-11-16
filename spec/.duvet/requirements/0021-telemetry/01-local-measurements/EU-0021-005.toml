@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-005"
+
+[[spec]]
+level = "MUST"
+quote = "Each field that a measure is split by MUST take its value from a closed set that the public schema lists."

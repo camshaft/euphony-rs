@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-149"
+
+[[spec]]
+level = "MUST"
+quote = "Regression detection MUST run when a stored batch completes the data it needs."

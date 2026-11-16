@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-026"
+
+[[spec]]
+level = "MUST"
+quote = "Turning off the recording of deadline misses MUST NOT remove the visible indication of a missed deadline."

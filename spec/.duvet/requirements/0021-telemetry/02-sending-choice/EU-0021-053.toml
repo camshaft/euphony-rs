@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-053"
+
+[[spec]]
+level = "MUST"
+quote = "In the first mode, the client MUST send a batch only with a send authorization bound to the batch identity, its digest, its destination and the consent revision it was built under."

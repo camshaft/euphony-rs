@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-166"
+
+[[spec]]
+level = "MUST"
+quote = "Each release build MUST publish the symbol files of its own code."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-142"
+
+[[spec]]
+level = "MUST"
+quote = "An unverified result MUST NOT confirm a fix."

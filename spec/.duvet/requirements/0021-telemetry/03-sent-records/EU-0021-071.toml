@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-071"
+
+[[spec]]
+level = "MUST"
+quote = "Each time in a batch MUST be an offset within the batch."

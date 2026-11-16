@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-119"
+
+[[spec]]
+level = "MUST"
+quote = "Under storage pressure on the computer, the outbox MUST remove the oldest telemetry batches first."

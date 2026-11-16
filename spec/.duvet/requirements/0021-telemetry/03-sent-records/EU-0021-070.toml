@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-070"
+
+[[spec]]
+level = "MUST"
+quote = "An audio interface model outside the closed list of known models MUST be sent as other."

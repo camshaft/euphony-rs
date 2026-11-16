@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-163"
+
+[[spec]]
+level = "MUST"
+quote = "The public configuration of each release MUST set the submission schema version and the destination."

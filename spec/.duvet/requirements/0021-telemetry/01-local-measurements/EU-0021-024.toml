@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-024"
+
+[[spec]]
+level = "MUST"
+quote = "The person MUST be able to turn local recording of each family off."
