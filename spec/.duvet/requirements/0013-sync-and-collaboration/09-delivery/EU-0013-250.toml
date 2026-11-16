@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-250"
+
+[[spec]]
+level = "MUST"
+quote = "A participant stopped for a shrinking upload MUST be admitted again only once the measured upload carries its stream while the congestion control is raising the rates of the remaining streams."

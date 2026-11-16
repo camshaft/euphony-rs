@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-245"
+
+[[spec]]
+level = "MUST"
+quote = "Each waiting participant MUST see that it waits for the upload of the host and its place in the waiting order."
