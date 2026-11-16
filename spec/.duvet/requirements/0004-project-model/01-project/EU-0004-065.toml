@@ -1,5 +1,0 @@
-target = "rendered/0004-project-model/01-project.md#EU-0004-065"
-
-[[spec]]
-level = "MUST"
-quote = "euphony MUST choose the identity of each project it creates."

@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-078"
+
+[[spec]]
+level = "MUST"
+quote = "A command that creates a project with the actor and idempotency key of a committed creation MUST NOT create another project."

@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-077"
+
+[[spec]]
+level = "MUST"
+quote = "A command that creates a project sent again with the actor, idempotency key and sample rate of a committed creation MUST receive the outcome of that creation."

@@ -1,6 +1,7 @@
 ## Commands and their outcomes {#commands}
 
-Every change a person or an assistant makes to a project is a command. Commands are sent in batches.
+Every change a person or an assistant makes to a project is a command. Every command that changes
+an existing project is sent in a batch.
 A batch names the project, the revision its sender expects to change, a key that identifies the batch
 across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
 euphony refuses as denied a batch that names another actor before it reads any batch of that actor.
@@ -8,8 +9,8 @@ euphony also refuses as denied a batch from a caller who may not change the proj
 checks the batch's expected revision or its key.
 It refuses a batch that names a project that doesn't exist in the same way, so that a refusal
 doesn't tell a caller whether the project exists.
-A request that creates a project isn't a batch and doesn't name a project, as the project section
-states, so this refusal never applies to it.
+The command that creates a project is sent alone and not in a batch, as the project section states,
+so this refusal never applies to it.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
