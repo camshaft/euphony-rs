@@ -13,10 +13,12 @@ Every change a person or an assistant makes to a project is a command. Commands 
 A batch names the project, the revision its sender expects to change, a key that identifies the batch
 across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
 euphony refuses as denied a batch that names another actor before it makes any other check of the
-batch but the check that it names an actor: before it checks the batch's commands against the
-project schema, its expected revision or its idempotency key. euphony refuses as invalid input a
-batch that doesn't name an actor it can compare with the caller, and a batch of the caller that
-leaves out its project, its expected revision or its idempotency key. euphony checks every other
+batch but the check that it names an actor that euphony can compare with the caller: before it
+checks the batch's commands against the project schema, its expected revision or its idempotency
+key. euphony refuses as invalid input a batch that doesn't name an actor it can compare with the
+caller, a batch of the caller that leaves out its project, and a batch of the caller that names a
+project the caller may change and leaves out its expected revision or its idempotency key. euphony
+checks every other
 batch against the project schema and the access rules that the overview RFC states, and then
 commits it whole as a new revision, or refuses it whole with a typed reason: a conflict, a denial,
 invalid input or unavailable storage. A gesture in an interface, a line of a script, the result of
@@ -54,7 +56,7 @@ rationale = 'euphony knows what the batch changes, against which state, across r
 id = 'EU-0004-049'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch but the check that it names an actor: before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
+statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch but the check that it names an actor that euphony can compare with the caller: before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
 binds_to = 'system'
 rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used, and a batch that names another actor is refused as denied whichever other check it would fail.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
@@ -63,9 +65,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-063'
 level = 'MUST'
 polarity = 'required'
-statement = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input."
+statement = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, or names that caller and a project that the caller may change and leaves out its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input."
 binds_to = 'system'
-rationale = "A batch that leaves out what EU-0004-011 asks for has one result, invalid input, and a batch whose actor euphony can't compare with the caller is refused before EU-0004-049 compares it, while a batch that names another actor stays denied whatever else it leaves out."
+rationale = "A batch that leaves out what EU-0004-011 asks for has one result, invalid input, and a batch whose actor euphony can't compare with the caller is refused before EU-0004-049 compares it, while a batch that names another actor stays denied whatever else it leaves out, and a batch of a caller who may not change the project it names gets the result the access rules state for that caller, whether or not it names its expected revision and its key."
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-049' } ]
 
 [[requirement]]
