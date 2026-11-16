@@ -127,7 +127,7 @@ rationale = 'The host can tell a stale, repeated or reordered turn from a new on
 id = 'EU-0015-096'
 level = 'MUST'
 polarity = 'required'
-statement = 'The host MUST apply each encoder turn once, however often it arrives and in whatever order.'
+statement = 'The host MUST apply each encoder turn it accepts exactly once, however often it arrives and in whatever order.'
 binds_to = 'system'
 rationale = 'A lossy network never doubles or reverses a change of level.'
 

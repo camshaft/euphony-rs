@@ -67,7 +67,7 @@ An encoder turn MUST carry the sink's control epoch, the map revision, a sequenc
 
 ### EU-0015-096 {#EU-0015-096}
 
-The host MUST apply each encoder turn once, however often it arrives and in whatever order.
+The host MUST apply each encoder turn it accepts exactly once, however often it arrives and in whatever order.
 
 ### EU-0015-097 {#EU-0015-097}
 
