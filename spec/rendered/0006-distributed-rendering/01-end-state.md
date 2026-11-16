@@ -38,6 +38,10 @@ Rendering MUST NOT stop recording or live monitoring on the musician's computer.
 
 The loss of a worker MUST NOT lose an accepted edit.
 
+### EU-0006-082 {#EU-0006-082}
+
+The loss of a worker MUST NOT lose a result the host has accepted.
+
 ### EU-0006-008 {#EU-0006-008}
 
 Render work that a lost worker left unfinished MUST be offered to another worker.

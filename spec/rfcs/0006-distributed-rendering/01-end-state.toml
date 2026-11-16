@@ -77,6 +77,14 @@ binds_to = 'system'
 rationale = 'Removing a computer from the studio never undoes the work done on the project.'
 
 [[requirement]]
+id = 'EU-0006-082'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The loss of a worker MUST NOT lose a result the host has accepted.'
+binds_to = 'system'
+rationale = 'Removing a computer from the studio never costs the audio it already prepared.'
+
+[[requirement]]
 id = 'EU-0006-008'
 level = 'MUST'
 polarity = 'required'
