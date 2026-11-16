@@ -90,4 +90,4 @@ While a worker holds a lease on a job, the job protocol MUST close the connectio
 
 ### EU-0006-094 {#EU-0006-094}
 
-When a present worker that renders a job's render profile asks for a lease, and that job's running attempt has gone longer without a progress report than the intervals between its worker's own progress reports have shown, by more than their variation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts.
+When a present worker that renders a job's render profile asks for a lease, and the time since that job's running attempt last reported progress exceeds the mean of the intervals between its worker's progress reports by more than their standard deviation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts.
