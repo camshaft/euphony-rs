@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-090"
+
+[[spec]]
+level = "MUST"
+quote = "A place command of a pruned item MUST be refused as unavailable."

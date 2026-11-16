@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-078"
+
+[[spec]]
+level = "MUST"
+quote = "A placement, a private export or a share with a collaborator of an item whose license is unknown or restricts that use MUST warn the owner."

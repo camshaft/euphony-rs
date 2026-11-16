@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-056"
+
+[[spec]]
+level = "MUST"
+quote = "Recording, live monitoring and the audio output MUST continue without interruption while content is fetched."

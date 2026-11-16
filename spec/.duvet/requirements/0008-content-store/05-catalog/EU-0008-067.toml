@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-067"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST index every item in the stores of the owner."

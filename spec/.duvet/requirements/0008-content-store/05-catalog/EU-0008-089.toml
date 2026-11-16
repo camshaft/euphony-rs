@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-089"
+
+[[spec]]
+level = "MUST"
+quote = "A pruned item MUST keep its entry, with its metadata, analysis, uses and pruning record."

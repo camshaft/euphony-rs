@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-066"
+
+[[spec]]
+level = "SHOULD"
+quote = "The owner SHOULD see the measured saving of storing each item once before any content of their library moves into the store."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-087"
+
+[[spec]]
+level = "MUST"
+quote = "Editing a placed note sequence or automation curve MUST leave the item in its source project unchanged."

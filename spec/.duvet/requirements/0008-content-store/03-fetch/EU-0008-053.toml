@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-053"
+
+[[spec]]
+level = "MUST"
+quote = "A session that plays on MUST mark each passage whose content has not arrived as missing."

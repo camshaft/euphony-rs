@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-084"
+
+[[spec]]
+level = "MUST"
+quote = "A person and the assistants of the owner MUST reach the same catalog actions with the same results."

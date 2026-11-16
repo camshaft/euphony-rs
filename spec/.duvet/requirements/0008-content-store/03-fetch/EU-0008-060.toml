@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-060"
+
+[[spec]]
+level = "SHOULD"
+quote = "Opening a project held only on storage computers and playing it SHOULD NOT cause a missed audio deadline from waiting for its content."

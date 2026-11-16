@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-051"
+
+[[spec]]
+level = "MUST"
+quote = "Where a measured capacity falls during playback, the session MUST plan the fetches again."
