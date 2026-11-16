@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-051"
+
+[[spec]]
+level = "MUST"
+quote = "Where the actor of a batch may read the batch's branch, a conflict MUST identify the head revision of that branch."
