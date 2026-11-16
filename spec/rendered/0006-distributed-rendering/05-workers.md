@@ -18,6 +18,9 @@ An attempt that hangs while its worker's transport keeps acknowledging stops sen
 reports, and the next other worker that can take its job and asks for a lease receives a replacing
 attempt, judged from the intervals between the first worker's own reports, or between the reports
 of other workers of its render profile until the first worker's own show their variation.
+A lease request that the host can't answer with a job at once waits at the host, and the host
+judges the hung attempt again on each liveness probe it sends and each message it receives, so
+the waiting worker receives the replacing attempt without asking again.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states.
 
@@ -92,3 +95,11 @@ While a worker holds a lease on a job, the job protocol MUST close the connectio
 ### EU-0006-094 {#EU-0006-094}
 
 When a present worker that renders a job's render profile and doesn't hold that job's running attempt asks for a lease, and the time since that attempt started or last reported progress, whichever is later, exceeds the mean of the attempt's measured report intervals by more than their standard deviation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts. An attempt's measured report intervals are its worker's report intervals for the job's render profile once they show a standard deviation, and otherwise the report intervals of every worker for that render profile, each counting the time from an attempt's start to its first progress report as an interval.
+
+### EU-0006-095 {#EU-0006-095}
+
+A lease request that the host can't answer with a job when it arrives MUST wait at the host until the host offers it a job or the connection to its worker closes.
+
+### EU-0006-096 {#EU-0006-096}
+
+While a lease request waits at the host, the host MUST offer it a job as EU-0006-094 offers one to a worker that asks, on the first event the host handles after that job's running attempt meets the condition of EU-0006-094, where an event is a liveness probe the job protocol sends under EU-0006-093, or a progress report, an answer or a lease request the host receives.

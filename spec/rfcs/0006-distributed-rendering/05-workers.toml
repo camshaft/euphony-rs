@@ -28,6 +28,9 @@ An attempt that hangs while its worker's transport keeps acknowledging stops sen
 reports, and the next other worker that can take its job and asks for a lease receives a replacing
 attempt, judged from the intervals between the first worker's own reports, or between the reports
 of other workers of its render profile until the first worker's own show their variation.
+A lease request that the host can't answer with a job at once waits at the host, and the host
+judges the hung attempt again on each liveness probe it sends and each message it receives, so
+the waiting worker receives the replacing attempt without asking again.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states."""
 
@@ -173,4 +176,20 @@ level = 'MUST'
 polarity = 'required'
 statement = "When a present worker that renders a job's render profile and doesn't hold that job's running attempt asks for a lease, and the time since that attempt started or last reported progress, whichever is later, exceeds the mean of the attempt's measured report intervals by more than their standard deviation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts. An attempt's measured report intervals are its worker's report intervals for the job's render profile once they show a standard deviation, and otherwise the report intervals of every worker for that render profile, each counting the time from an attempt's start to its first progress report as an interval."
 binds_to = 'system'
-rationale = "An attempt that hangs while its worker's transport keeps acknowledging stops sending progress reports, and one that hangs before its first report never sends one, so the time from an attempt's start to its first report counts as an interval. The next lease request from another worker that can take its job is the event that moves the job, judged from the mean and the standard deviation of the report intervals that workers of its render profile have shown, the hung attempt's worker's own once they show a spread, never from a fixed margin or a timer. A lease request from the worker that holds the hung attempt doesn't move the job, which would go back to the computer where it hangs. The host keeps those two values as running statistics of each worker's and each render profile's report intervals, whose size doesn't grow with the reports, and keeps the running attempts of each render profile ordered by the time each attempt's next report is due, its start or last report plus that mean and that deviation, so a lease request reads only the earliest of them that another worker holds and its cost doesn't grow with the running attempts or the reports. Where no worker has shown report intervals for a render profile yet, nothing measures a hang, and the attempt keeps its lease until an event of EU-0006-079 ends it. Until another worker that can take its job asks, the attempt keeps its lease, since no other worker could take the job."
+rationale = "An attempt that hangs while its worker's transport keeps acknowledging stops sending progress reports, and one that hangs before its first report never sends one, so the time from an attempt's start to its first report counts as an interval. The next lease request from another worker that can take its job is the event that moves the job, judged from the mean and the standard deviation of the report intervals that workers of its render profile have shown, the hung attempt's worker's own once they show a spread, never from a fixed margin or a timer. A lease request from the worker that holds the hung attempt doesn't move the job, which would go back to the computer where it hangs. The host keeps those two values as running statistics of each worker's and each render profile's report intervals, whose size doesn't grow with the reports, and keeps the running attempts of each render profile ordered by the time each attempt's next report is due, its start or last report plus that mean and that deviation, so a lease request reads only the earliest of them that another worker holds and its cost doesn't grow with the running attempts or the reports. Where no worker has shown report intervals for a render profile yet, nothing measures a hang, and the attempt keeps its lease until an event of EU-0006-079 ends it. A lease request from another worker that came before the attempt met that condition waits at the host under EU-0006-095, and EU-0006-096 answers it on the first event the host handles once the attempt meets it, so a worker that asked early still receives the job. Until another worker that can take its job has asked, the attempt keeps its lease, since no other worker could take the job."
+
+[[requirement]]
+id = 'EU-0006-095'
+level = 'MUST'
+polarity = 'required'
+statement = "A lease request that the host can't answer with a job when it arrives MUST wait at the host until the host offers it a job or the connection to its worker closes."
+binds_to = 'system'
+rationale = "A worker that the host can't give a job to doesn't ask again on a timer of its own: its one request waits at the host, which answers it on an event, such as the arrival of a new job or the event EU-0006-096 names."
+
+[[requirement]]
+id = 'EU-0006-096'
+level = 'MUST'
+polarity = 'required'
+statement = "While a lease request waits at the host, the host MUST offer it a job as EU-0006-094 offers one to a worker that asks, on the first event the host handles after that job's running attempt meets the condition of EU-0006-094, where an event is a liveness probe the job protocol sends under EU-0006-093, or a progress report, an answer or a lease request the host receives."
+binds_to = 'system'
+rationale = "An attempt becomes overdue as time passes, not on a message, so a request that came before the attempt was overdue needs a later event to answer it. While the hung attempt holds its lease, the job protocol keeps sending liveness probes on its worker's connection at the pace the transport discovers, so such an event always comes, and on each one the host reads only the earliest-due running attempt of each render profile, with no timer or fixed interval of the scheduler's own."
