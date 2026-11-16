@@ -16,7 +16,8 @@ capabilities it supports, and the two use the newest version both support. Clien
 different releases meet: computers of the person that run different releases, phone controllers
 installed from an application store, and scripts. Each project configures the oldest client release
 it still supports, and each release of the engine serves every minor version of its major version
-from that release on."""
+from that release on. RFC 0001 states that an interface which cannot work with an engine says which
+release it needs."""
 
 [[requirement]]
 id = 'EU-0003-065'
@@ -83,15 +84,6 @@ polarity = 'required'
 statement = 'The engine MUST refuse a major version it does not speak with a typed error that lists the versions it serves.'
 binds_to = 'system'
 rationale = 'A client that is too old or too new learns what the engine serves.'
-
-[[requirement]]
-id = 'EU-0003-073'
-level = 'MUST'
-polarity = 'required'
-statement = 'A client that cannot work with the release of an engine MUST state which release it needs.'
-binds_to = 'system'
-rationale = 'The person learns what to update, not only that something failed.'
-relations = [ { kind = 'depends_on', target = 'EU-0003-072' } ]
 
 [[requirement]]
 id = 'EU-0003-074'
