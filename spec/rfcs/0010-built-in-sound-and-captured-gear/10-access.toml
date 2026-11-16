@@ -38,7 +38,6 @@ polarity = 'required'
 statement = "Sharing a model with a collaborator MUST need the owner's approval and a statement of the rights claimed."
 binds_to = 'system'
 rationale = "Every release of a model is a recorded decision of its owner."
-relations = [ { kind = 'depends_on', target = 'EU-0010-212' } ]
 
 [[requirement]]
 id = 'EU-0010-195'
