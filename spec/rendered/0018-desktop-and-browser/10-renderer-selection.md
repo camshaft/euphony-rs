@@ -32,7 +32,7 @@ The selection MUST require the musician's physical acceptance on every supported
 
 ### EU-0018-086 {#EU-0018-086}
 
-A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites and keep the current renderer.
+A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites.
 
 ### EU-0018-087 {#EU-0018-087}
 
@@ -61,3 +61,7 @@ A rollback of the renderer MUST leave the project's audio and command history un
 ### EU-0018-093 {#EU-0018-093}
 
 The desktop interface MUST NOT claim expressive-control readiness on a physical profile that hasn't met the timing criterion the musician selected.
+
+### EU-0018-094 {#EU-0018-094}
+
+A selection with missing, failed, stale or mismatched evidence MUST keep the current renderer.

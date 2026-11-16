@@ -16,13 +16,14 @@ audio the native hosts rendered already, listed in a pinned manifest. A browser 
 permission, require a person's gesture before it plays audio, evict stored data, change its audio
 device and suspend a page in the background. Local network discovery, multicast audio and network
 clock synchronization stay with the native hosts. Narrowing the browser leaves distributed
-rendering on native workers and collaboration between native hosts as they are."""
+rendering on native workers and collaboration between native hosts as they are. RFC 0017 states
+that the companion doesn't offer offline editing or render on its own."""
 
 [[requirement]]
 id = 'EU-0018-058'
 level = 'MUST'
 polarity = 'required'
-statement = 'The browser companion MUST control an authorized desktop session through the client protocol.'
+statement = 'The browser companion MUST control an authenticated and authorized desktop session through the client protocol.'
 binds_to = 'system'
 rationale = 'A musician controls a session from a browser without installing anything.'
 
@@ -71,9 +72,9 @@ rationale = "A musician knows what the browser can't do instead of finding out b
 id = 'EU-0018-064'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'The browser companion MUST NOT edit a project or run a composition program offline.'
+statement = 'The browser companion MUST NOT run a composition program offline.'
 binds_to = 'system'
-rationale = 'Every edit and every program runs on a native host, with its checks and its timing.'
+rationale = 'Every program runs on a native host, with its checks and its timing.'
 
 [[requirement]]
 id = 'EU-0018-065'
@@ -82,14 +83,6 @@ polarity = 'forbidden'
 statement = 'The browser companion MUST NOT record audio locally.'
 binds_to = 'system'
 rationale = 'Recording stays where professional audio devices and timing are.'
-
-[[requirement]]
-id = 'EU-0018-066'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'The browser companion MUST NOT offer itself as a rendering worker.'
-binds_to = 'system'
-rationale = 'A browser lacks the device and network access of a native worker.'
 
 [[requirement]]
 id = 'EU-0018-067'
@@ -138,3 +131,11 @@ polarity = 'required'
 statement = "The controls of the browser companion MUST be accessible to the browser's assistive technology."
 binds_to = 'system'
 rationale = 'Every musician can use the companion.'
+
+[[requirement]]
+id = 'EU-0018-095'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The browser companion MUST NOT claim the monitoring latency of a native host.'
+binds_to = 'system'
+rationale = 'A musician tests the deadlines a browser actually meets instead of trusting a promise.'

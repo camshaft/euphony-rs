@@ -7,11 +7,12 @@ audio the native hosts rendered already, listed in a pinned manifest. A browser 
 permission, require a person's gesture before it plays audio, evict stored data, change its audio
 device and suspend a page in the background. Local network discovery, multicast audio and network
 clock synchronization stay with the native hosts. Narrowing the browser leaves distributed
-rendering on native workers and collaboration between native hosts as they are.
+rendering on native workers and collaboration between native hosts as they are. RFC 0017 states
+that the companion doesn't offer offline editing or render on its own.
 
 ### EU-0018-058 {#EU-0018-058}
 
-The browser companion MUST control an authorized desktop session through the client protocol.
+The browser companion MUST control an authenticated and authorized desktop session through the client protocol.
 
 ### EU-0018-059 {#EU-0018-059}
 
@@ -35,15 +36,11 @@ The browser companion MUST report each capability it lacks as unavailable.
 
 ### EU-0018-064 {#EU-0018-064}
 
-The browser companion MUST NOT edit a project or run a composition program offline.
+The browser companion MUST NOT run a composition program offline.
 
 ### EU-0018-065 {#EU-0018-065}
 
 The browser companion MUST NOT record audio locally.
-
-### EU-0018-066 {#EU-0018-066}
-
-The browser companion MUST NOT offer itself as a rendering worker.
 
 ### EU-0018-067 {#EU-0018-067}
 
@@ -68,3 +65,7 @@ The browser companion MUST NOT claim direct access to local network discovery, m
 ### EU-0018-072 {#EU-0018-072}
 
 The controls of the browser companion MUST be accessible to the browser's assistive technology.
+
+### EU-0018-095 {#EU-0018-095}
+
+The browser companion MUST NOT claim the monitoring latency of a native host.

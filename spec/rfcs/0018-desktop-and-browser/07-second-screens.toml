@@ -9,34 +9,11 @@ motivation = """\
   Treating every extra screen as another view of the same session, with the gestures that phones \
   and tablets use, keeps one authority and one behavior wherever a musician reaches."""
 prose = """
-A second screen is another window or view of the session on the same computer. A touch monitor
-reports contacts, and each contact can be captured and cancelled. Phones, tablets and touch
+A second screen is another window or view of the session on the same computer, and a touch monitor
+reports each contact apart. Both are surfaces as RFC 0017 defines them, and its requirements on a
+surface's authority, on touch contacts and on gestures hold for them. Phones, tablets and touch
 monitors share layout schemas, parameter ranges, gesture meanings and conformance cases with the
 desktop interface. An assistant works through typed commands and surface layouts."""
-
-[[requirement]]
-id = 'EU-0018-052'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'A second screen MUST NOT hold an authority of its own over the session.'
-binds_to = 'system'
-rationale = 'Every screen of a session acts through the same session host.'
-
-[[requirement]]
-id = 'EU-0018-053'
-level = 'MUST'
-polarity = 'required'
-statement = 'A touch monitor MUST capture and cancel each contact separately.'
-binds_to = 'system'
-rationale = 'Two hands on two controls never steal each other.'
-
-[[requirement]]
-id = 'EU-0018-054'
-level = 'MUST'
-polarity = 'required'
-statement = 'A touch monitor MUST use the same atomic gestures as phones and tablets.'
-binds_to = 'system'
-rationale = 'A gesture means the same thing on every touch screen.'
 
 [[requirement]]
 id = 'EU-0018-055'

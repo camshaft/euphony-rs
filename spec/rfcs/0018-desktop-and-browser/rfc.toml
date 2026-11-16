@@ -7,5 +7,5 @@ abstract = """\
   audio path, text, scale, accessibility and shortcuts, second screens and touch monitors, the \
   browser companion's control and prepared playback, original visual design, and the evidence \
   that selects the supported renderer."""
-retired = []
+retired = ['EU-0018-052', 'EU-0018-053', 'EU-0018-054', 'EU-0018-066']
 sources = []

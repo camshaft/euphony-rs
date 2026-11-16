@@ -68,9 +68,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
 id = 'EU-0018-086'
 level = 'MUST'
 polarity = 'required'
-statement = 'A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites and keep the current renderer.'
+statement = 'A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites.'
 binds_to = 'system'
-rationale = 'An unproved renderer never becomes the supported one, and the caller learns what is left to prove.'
+rationale = 'The caller learns what is left to prove.'
 relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
 
 [[requirement]]
@@ -128,3 +128,12 @@ polarity = 'forbidden'
 statement = "The desktop interface MUST NOT claim expressive-control readiness on a physical profile that hasn't met the timing criterion the musician selected."
 binds_to = 'system'
 rationale = 'A smooth display never stands in for fast sound control.'
+
+[[requirement]]
+id = 'EU-0018-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'A selection with missing, failed, stale or mismatched evidence MUST keep the current renderer.'
+binds_to = 'system'
+rationale = 'An unproved renderer never becomes the supported one.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-081' } ]
