@@ -2,4 +2,4 @@ target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-047"
 
 [[spec]]
 level = "MUST"
-quote = "A station MUST read the rates, formats, period sizes and jack detection its output device supports from the device."
+quote = "A station MUST read the rates, formats, period sizes and headphone detection its output device supports from the device."

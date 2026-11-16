@@ -65,7 +65,7 @@ level = 'MUST'
 polarity = 'required'
 statement = "The host MUST refuse a control map binding to a control the station's hardware description doesn't list."
 binds_to = 'system'
-rationale = 'A map never refers to a knob or light the station doesn't have.'
+rationale = "A map never refers to a knob or light the station doesn't have."
 
 [[requirement]]
 id = 'EU-0015-089'

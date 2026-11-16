@@ -15,7 +15,7 @@ is the sink of one listener. The session host calculates the station's sink mix 
 every other sink mix and sends the station the finished stream, which the station plays after its
 own output protection. The station doesn't run the session host, compile the graph or render for the
 session, and doesn't hold project objects or stems. The hardware description of a station lists its
-encoders, switches and light groups by stable identity, its output formats and its jack state. A
+encoders, switches and light groups by stable identity, its output formats and its headphone socket state. A
 station reaches its listener's sink alone: that sink's stream and meters, its mix parameters, its mix
 revision and its control map. A wired network connection is the recommended path, and a wireless
 connection is supported and measured. A station isn't a mixer on its own: it plays and controls its
@@ -73,7 +73,7 @@ rationale = 'A control map refers to each control the same way on every connecti
 id = 'EU-0015-047'
 level = 'MUST'
 polarity = 'required'
-statement = 'A station MUST read the rates, formats, period sizes and jack detection its output device supports from the device.'
+statement = 'A station MUST read the rates, formats, period sizes and headphone detection its output device supports from the device.'
 binds_to = 'system'
 rationale = 'A station plays correctly on any output device, without assumed settings.'
 
@@ -89,7 +89,7 @@ rationale = 'The listener at the station is protected where the sound plays.'
 id = 'EU-0015-049'
 level = 'MUST'
 polarity = 'required'
-statement = 'Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and jack state.'
+statement = 'Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and headphone socket state.'
 binds_to = 'system'
 rationale = 'The host knows what the station can play and how late it plays.'
 
@@ -105,7 +105,7 @@ rationale = 'The host knows when the listener plugs in or unplugs, without polli
 id = 'EU-0015-051'
 level = 'MUST'
 polarity = 'required'
-statement = "Where its hardware doesn't report headphone insertion, a station MUST report its jack state as unknown."
+statement = "Where its hardware doesn't report headphone insertion, a station MUST report its headphone socket state as unknown."
 binds_to = 'system'
 rationale = 'The host never reads a missing report as headphones being plugged in.'
 
