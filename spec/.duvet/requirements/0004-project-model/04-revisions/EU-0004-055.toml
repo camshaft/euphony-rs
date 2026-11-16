@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-055"
+
+[[spec]]
+level = "MUST"
+quote = "A copy MUST NOT accept a revision on a working branch unless the copy that holds that branch signed it."

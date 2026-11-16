@@ -38,6 +38,10 @@ Each branch MUST point at exactly one revision.
 
 A copy MUST NOT commit to a working branch that another copy holds.
 
+### EU-0004-055 {#EU-0004-055}
+
+A copy MUST NOT accept a revision on a working branch unless the copy that holds that branch signed it.
+
 ### EU-0004-039 {#EU-0004-039}
 
 Committing a batch MUST NOT need any other copy of the project to be reachable.
