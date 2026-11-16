@@ -94,6 +94,14 @@ binds_to = 'system'
 rationale = "The work of a project fans out across the owner's computers."
 
 [[requirement]]
+id = 'EU-0006-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'A send, a sidechain or a bus MUST render a time range only after each of its upstream dependencies has rendered the input that range reads.'
+binds_to = 'system'
+rationale = "A bus never mixes audio that its sources haven't produced yet, so independent work runs in parallel without a wrong mix."
+
+[[requirement]]
 id = 'EU-0006-035'
 level = 'MUST'
 polarity = 'required'
