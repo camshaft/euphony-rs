@@ -40,9 +40,9 @@ rationale = 'Lyrics, stems and embeddings never become a way around the boundary
 id = 'EU-0020-080'
 level = 'MUST'
 polarity = 'required'
-statement = "The system MUST check the requester's boundary again before it dispatches a job and before it delivers a result."
+statement = "The system MUST check again, before it dispatches a job, the requester's boundary, and before it delivers a result, the boundary of each reader it delivers it to."
 binds_to = 'system'
-rationale = 'A boundary narrowed while a job ran still holds when the result is ready.'
+rationale = 'A boundary narrowed while a job ran still holds for each reader when the result is ready.'
 
 [[requirement]]
 id = 'EU-0020-081'

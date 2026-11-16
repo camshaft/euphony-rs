@@ -2,4 +2,4 @@ target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-080"
 
 [[spec]]
 level = "MUST"
-quote = "The system MUST check the requester's boundary again before it dispatches a job and before it delivers a result."
+quote = "The system MUST check again, before it dispatches a job, the requester's boundary, and before it delivers a result, the boundary of each reader it delivers it to."
