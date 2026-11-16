@@ -15,10 +15,13 @@ refuses it whole with a typed reason: a conflict, a denial, invalid input or una
 gesture in an interface, a line of a script, the result of a composition program and the call of an
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
-subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
+subject of the client protocol RFC. The command gateway of the overview RFC refuses a batch from an
+unpaired device, beyond the level of its link, or over an expired or revoked link before euphony
+checks the batch's key, and asks for the owner's approval only of a batch that the key check doesn't
+answer as a retry. A key identifies a batch only among the batches one actor sends
 to one project: a retry of a committed batch on the same branch that passes every check euphony
-makes before it checks the key receives that batch's outcome, and a key used again for another
-branch or other commands is refused.
+makes before it checks the key receives that batch's outcome without a new approval, and a key used
+again for another branch or other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -86,7 +89,7 @@ A batch with the project, actor and idempotency key of a committed batch MUST NO
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056 or EU-0004-092, or as invalid input by EU-0004-093 or EU-0004-064, such as a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.
+A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, without a new approval by the owner, except where euphony refuses it before it checks its idempotency key: as unpaired, outside link level, or link expired or revoked by the command gateway of the overview RFC, as denied by EU-0004-049, EU-0004-056 or EU-0004-092, or as invalid input by EU-0004-093 or EU-0004-064, such as a retry from a device the owner unpaired or over a share link the owner revoked after that batch committed, a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.
 
 ### EU-0004-046 {#EU-0004-046}
 
