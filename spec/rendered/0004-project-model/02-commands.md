@@ -58,7 +58,7 @@ Where the branch that a batch names is not a branch of the project, euphony MUST
 
 ### EU-0004-096 {#EU-0004-096}
 
-Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-095 and before it checks the batch's expected revision or its idempotency key.
+Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-095 and before it checks the batch's commands against the project schema, its expected revision or its idempotency key.
 
 ### EU-0004-064 {#EU-0004-064}
 
