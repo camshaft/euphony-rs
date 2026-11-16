@@ -8,7 +8,9 @@ How copies exchange revisions and merge branches is the subject of the sync and 
 read of a project answers with a view of one revision and names that revision. Each answer holds at
 most one page: a longer answer names the token that reads its next page, each page shows that same
 revision, and reading one page costs no more in a project with a long history than in a new one. A
-subscriber to the events of a project holds a cursor that a later subscription resumes from.
+subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
+answers a read or a subscription only for a caller who may read the project, and refuses any other as
+denied.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -81,3 +83,7 @@ An answer to a read that does not hold its last page MUST name the token that re
 ### EU-0004-054 {#EU-0004-054}
 
 The cost of reading one page MUST NOT grow with the length of the history or the size of the project.
+
+### EU-0004-050 {#EU-0004-050}
+
+euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
