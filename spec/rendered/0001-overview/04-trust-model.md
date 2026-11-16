@@ -81,7 +81,7 @@ A collaborator's peer MUST NOT receive an object of a project that none of its l
 
 ### EU-0001-043 {#EU-0001-043}
 
-An unpaired device, a discovery advertisement, a signaling or relay operator and the network MUST NOT be able to send a command to a session.
+A device that is neither paired with the owner nor connected through a share link, a discovery advertisement, a signaling or relay operator and the network MUST NOT be able to send a command to a session.
 
 ### EU-0001-044 {#EU-0001-044}
 
@@ -129,7 +129,7 @@ Euphony MUST treat project text, metadata, imported files, scripts and tool resu
 
 ### EU-0001-055 {#EU-0001-055}
 
-Scripts and the parsers of imported material MUST run isolated from the audio device process.
+Scripts and the parsers of imported projects, model files and analysis media MUST run isolated from the process that drives the audio device.
 
 ### EU-0001-056 {#EU-0001-056}
 
