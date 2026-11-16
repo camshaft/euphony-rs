@@ -71,7 +71,7 @@ rationale = 'A client knows exactly what became of each command.'
 id = 'EU-0003-030'
 level = 'MUST'
 polarity = 'required'
-statement = 'A refusal MUST state its kind as one of denied, conflict, unknown target and unsupported capability.'
+statement = 'A refusal MUST state its kind as one of denied, conflict, unknown target, unsupported capability and invalid command.'
 binds_to = 'system'
 rationale = 'A client and an assistant act on why a command was refused, not on its words.'
 relations = [ { kind = 'depends_on', target = 'EU-0003-029' } ]
