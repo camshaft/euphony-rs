@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/05-effects.md#EU-0014-052"
+
+[[spec]]
+level = "MUST"
+quote = "A mapping MUST convert each control by its identity, unit, range, enumeration, normalization and conversion curve."

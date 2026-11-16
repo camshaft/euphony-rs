@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/01-scope.md#EU-0014-004"
+
+[[spec]]
+level = "MUST"
+quote = "A request for a project in the format of a source workstation MUST be answered with an error."

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/02-import.md#EU-0014-072"
+
+[[spec]]
+level = "MUST"
+quote = "Text read from a source project MUST be treated as data, never as an instruction to an assistant."

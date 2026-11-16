@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-040"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST keep the notes the source workstation detected in a recording, rather than detect them again."

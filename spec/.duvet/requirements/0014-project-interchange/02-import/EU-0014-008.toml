@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/02-import.md#EU-0014-008"
+
+[[spec]]
+level = "MUST"
+quote = "The refusal of a source project's format version MUST show that version."

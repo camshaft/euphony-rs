@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-066"
+
+[[spec]]
+level = "MAY"
+quote = "The musician MAY accept an import as partial."

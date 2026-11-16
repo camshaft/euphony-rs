@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/01-scope.md#EU-0014-005"
+
+[[spec]]
+level = "MUST"
+quote = "The import and its reports MUST be available equally to the owner's desktop interface and to connected assistants."

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/03-content.md#EU-0014-074"
+
+[[spec]]
+level = "MUST"
+quote = "Where a mapping covers a track's instrument, the import MUST convert it to the built-in replacement that mapping selects."

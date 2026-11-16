@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-039"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST convert the pitch edits of a region as edits of each detected note: its position, length, pitch offset, pitch drift, vibrato, formant shift and gain."
