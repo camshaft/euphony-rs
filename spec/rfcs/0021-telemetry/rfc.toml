@@ -2,5 +2,5 @@ number = 21
 title = 'Telemetry and improvement'
 area = 'euphony'
 abstract = "How euphony measures its performance and failures on a person's own computers, how the person chooses whether to send those measurements and what a sent record holds, how a person reports one problem, and how the project's receiving service turns what people send into findings, release comparisons and measured fixes."
-retired = []
+retired = ['EU-0021-063', 'EU-0021-064', 'EU-0021-094']
 sources = []

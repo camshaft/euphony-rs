@@ -11,7 +11,8 @@ and holds in the outbox until it is sent or deleted. Each change of the sending 
 consent revision. A send authorization is the record that the person reviewed one batch in the
 outbox and chose to send it. The sent log on the computer holds each batch that was sent. Bytes
 already sent can't be recalled: the sent log shows them, and deletion at the receiving service
-removes what it holds of them.
+removes what it holds of them. RFC 0001 states the owner's approval of turning sending on or
+widening it, and what that approval shows (EU-0001-059, EU-0001-062 and EU-0001-063).
 
 ### EU-0021-032 {#EU-0021-032}
 
@@ -19,7 +20,7 @@ Sending MUST be off in a new installation.
 
 ### EU-0021-033 {#EU-0021-033}
 
-While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings.
+While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send.
 
 ### EU-0021-034 {#EU-0021-034}
 
@@ -75,7 +76,7 @@ A batch whose check fails MUST NOT be sent.
 
 ### EU-0021-047 {#EU-0021-047}
 
-Where the consent has narrowed, changed or been turned off, the client MUST delete the batch or rebuild it under the current consent.
+Where the consent has narrowed or changed while sending is still on, the client MUST delete the batch or rebuild it under the current consent.
 
 ### EU-0021-048 {#EU-0021-048}
 
@@ -136,11 +137,3 @@ Turning sending off MUST delete every batch still in the outbox.
 ### EU-0021-062 {#EU-0021-062}
 
 The screen that turns sending off MUST offer the deletion of what was already sent.
-
-### EU-0021-063 {#EU-0021-063}
-
-The owner's own change of the sending choice in the native client of a paired owner device MUST count as the owner's approval of that change.
-
-### EU-0021-064 {#EU-0021-064}
-
-An assistant's, a script's or a workflow's request to turn sending on or widen it MUST wait for the owner's approval of the exact categories, projects and destination.

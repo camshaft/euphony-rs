@@ -4,7 +4,8 @@ A problem report is one report of a crash or another problem that the person sen
 parts they choose. It is a choice of the owner apart from the sending choice, and the receiving
 service joins it to the finding of the event it describes. Its attachments can hold the person's
 music, so each one stays off until the person adds it, and only the maintainers that the project's
-configuration lists can open it.
+configuration lists can open it. RFC 0001 states the owner's approval of sending a report that an
+assistant, a script or a workflow drafts (EU-0001-059 and EU-0001-062).
 
 ### EU-0021-088 {#EU-0021-088}
 
@@ -29,10 +30,6 @@ Before the person adds the full crash dump, the client MUST warn that it can hol
 ### EU-0021-093 {#EU-0021-093}
 
 The preview of a report MUST show each part as the outbox shows a batch.
-
-### EU-0021-094 {#EU-0021-094}
-
-A report that an assistant drafts MUST wait for the owner's approval before it goes.
 
 ### EU-0021-095 {#EU-0021-095}
 
