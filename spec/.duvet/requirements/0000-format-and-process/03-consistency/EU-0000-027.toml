@@ -2,4 +2,4 @@ target = "rendered/0000-format-and-process/03-consistency.md#EU-0000-027"
 
 [[spec]]
 level = "MUST"
-quote = "Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of an RFC the index lists as planned."
+quote = "Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of a planned RFC, one the index lists whose directory the set doesn't hold."
