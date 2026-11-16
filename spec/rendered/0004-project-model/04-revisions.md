@@ -5,9 +5,10 @@ revisions of a project form a graph without a cycle. A branch is a name that poi
 its head. Each copy holds its working branches and is the only copy that commits to them, so a
 musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
 How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
-read of a project answers with a view of one revision and names that revision; a long answer comes in
-pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
-subscription resumes from.
+read of a project answers with a view of one revision and names that revision. Each answer holds at
+most one page: a longer answer names the token that reads its next page, each page shows that same
+revision, and reading one page costs no more in a project with a long history than in a new one. A
+subscriber to the events of a project holds a cursor that a later subscription resumes from.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -64,3 +65,15 @@ A subscription resumed from a cursor MUST NOT deliver an event at or before that
 ### EU-0004-045 {#EU-0004-045}
 
 A subscriber MUST learn of each committed revision of the project without asking for it.
+
+### EU-0004-052 {#EU-0004-052}
+
+Each answer to a read of a project MUST hold at most one page.
+
+### EU-0004-053 {#EU-0004-053}
+
+An answer to a read that does not hold its last page MUST name the token that reads its next page.
+
+### EU-0004-054 {#EU-0004-054}
+
+The cost of reading one page MUST NOT grow with the length of the history or the size of the project.
