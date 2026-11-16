@@ -16,8 +16,9 @@ key that identifies it across retries; it doesn't name an identity.
 euphony chooses the identity of the new project without regard to the identities other projects
 hold, and the outcome of the command identifies the project and its first revision, which the
 first batch sent to the project names as its expected revision. A creation sent again with the same
-actor and key receives the outcome of the first and doesn't create a second project. Only the owner,
-a paired owner device and an assistant the owner connected may create a project: a collaborator
+actor, key and sample rate receives the outcome of the first and doesn't create a second project,
+and the same key with another sample rate is refused as invalid input. Only the owner, a paired
+owner device and an assistant the owner connected may create a project: a collaborator
 reaches only the projects that its share links reach.
 
 ### EU-0004-001 {#EU-0004-001}
