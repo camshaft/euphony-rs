@@ -75,7 +75,6 @@ polarity = 'required'
 statement = "euphony MUST refuse a fit, evaluation or capture plan submitted for a stopped run, with the stop rule that holds and the report of the best candidates."
 binds_to = 'system'
 rationale = "The stop holds whatever the assistant does next."
-relations = [ { kind = 'depends_on', target = 'EU-0010-098' } ]
 
 [[requirement]]
 id = 'EU-0010-101'
@@ -84,7 +83,6 @@ polarity = 'required'
 statement = "euphony MUST refuse a job of a stopped run at admission, a job queued before the stop included."
 binds_to = 'system'
 rationale = "Work queued before the stop does not run after it."
-relations = [ { kind = 'depends_on', target = 'EU-0010-098' } ]
 
 [[requirement]]
 id = 'EU-0010-102'

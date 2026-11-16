@@ -53,7 +53,6 @@ polarity = 'required'
 statement = "The final evaluation MUST refuse final material that fitting, the assistant or development listening read."
 binds_to = 'system'
 rationale = "The final test judges a model on material that never shaped it."
-relations = [ { kind = 'depends_on', target = 'EU-0010-046' } ]
 
 [[requirement]]
 id = 'EU-0010-113'
@@ -256,7 +255,7 @@ polarity = 'required'
 statement = "The report of a final evaluation MUST state shown close for a listener only where their upper bound is below the tolerated proportion and they passed the positive control."
 binds_to = 'system'
 rationale = "Closeness is claimed only where the evidence bounds it."
-relations = [ { kind = 'depends_on', target = 'EU-0010-124' }, { kind = 'depends_on', target = 'EU-0010-129' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0010-124' } ]
 
 [[requirement]]
 id = 'EU-0010-135'
