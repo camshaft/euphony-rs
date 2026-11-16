@@ -19,10 +19,9 @@ where a client falls behind further than that, it ends the subscription rather t
 waveform tile holds the peak data of one audio item at one zoom level and position; since the
 content of an item never changes, neither does its tile. Content transfer covers the imports,
 exports and recordings that a client sends or receives. A client on the same computer hands the
-engine the file the person chose, so that the choice reaches the engine without granting it a path,
-and a client on another computer sends the content into the content store of the session. No client
-writes the memory of the engine, and the engine treats every message from a client as untrusted
-until it has checked it."""
+engine the file the person chose, as RFC 0002 states, and a client on another computer sends the
+content into the content store of the session. No client writes the memory of the engine, and the
+engine treats every message from a client as untrusted until it has checked it."""
 
 [[requirement]]
 id = 'EU-0003-049'
@@ -114,22 +113,6 @@ statement = 'A client MAY keep a waveform tile by its identity without ever inva
 binds_to = 'system'
 rationale = 'The content of an audio item never changes, so its tile never changes either.'
 relations = [ { kind = 'depends_on', target = 'EU-0003-058' } ]
-
-[[requirement]]
-id = 'EU-0003-060'
-level = 'MUST'
-polarity = 'required'
-statement = 'A client on the computer running the session MUST pass a file the person chose to the engine as an open file rather than as a path.'
-binds_to = 'system'
-rationale = 'The choice the person made in a dialog reaches the engine without granting it a path.'
-
-[[requirement]]
-id = 'EU-0003-061'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'Passing a file the person chose MUST NOT grant the engine access to any other file.'
-binds_to = 'system'
-rationale = 'The engine reads only what the person picked.'
 
 [[requirement]]
 id = 'EU-0003-062'
