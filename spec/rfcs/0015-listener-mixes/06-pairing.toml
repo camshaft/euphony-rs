@@ -29,9 +29,9 @@ back audio already played."""
 id = 'EU-0015-057'
 level = 'MUST'
 polarity = 'required'
-statement = 'A station MUST make its device key pair on its first start and keep the private key on the station.'
+statement = 'A station MUST make its device key pair on its first start.'
 binds_to = 'system'
-rationale = 'The identity of a station never leaves the station.'
+rationale = 'Each station has an identity of its own before it is ever paired.'
 
 [[requirement]]
 id = 'EU-0015-058'
@@ -176,3 +176,11 @@ polarity = 'required'
 statement = 'Control traffic between a station and the host MUST be authenticated and encrypted on every network.'
 binds_to = 'system'
 rationale = 'No one on any network changes a mix in the name of a station.'
+
+[[requirement]]
+id = 'EU-0015-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST keep the private key of its device key pair on the station.'
+binds_to = 'system'
+rationale = 'The identity of a station never leaves the station.'

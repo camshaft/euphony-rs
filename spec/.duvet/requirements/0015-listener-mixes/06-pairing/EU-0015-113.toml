@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-113"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST keep the private key of its device key pair on the station."

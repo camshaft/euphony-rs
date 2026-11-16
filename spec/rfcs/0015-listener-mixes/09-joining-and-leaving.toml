@@ -51,9 +51,9 @@ rationale = 'A listener never gets a loud surprise when they plug in or reconnec
 id = 'EU-0015-109'
 level = 'MUST'
 polarity = 'required'
-statement = 'When a station leaves, the host MUST make its sink unavailable and stop calculating its output.'
+statement = 'When a station leaves, the host MUST make its sink unavailable.'
 binds_to = 'system'
-rationale = 'No work is spent on a mix that no one listens to.'
+rationale = 'Every client sees that the station is gone.'
 
 [[requirement]]
 id = 'EU-0015-110'
@@ -75,6 +75,22 @@ rationale = 'A dropped connection costs the listener nothing but the time it was
 id = 'EU-0015-112'
 level = 'MUST'
 polarity = 'required'
-statement = "A headphone removal MUST mute the station's output until headphones are inserted again, without ending its connection."
+statement = "A headphone removal MUST mute the station's output until headphones are inserted again."
 binds_to = 'system'
-rationale = 'Unplugging never sends sound into the room or drops the station from the session.'
+rationale = 'Unplugging never sends sound into the room.'
+
+[[requirement]]
+id = 'EU-0015-114'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a station leaves, the host MUST stop calculating its output.'
+binds_to = 'system'
+rationale = 'No work is spent on a mix that no one listens to.'
+
+[[requirement]]
+id = 'EU-0015-115'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A headphone removal MUST NOT end the station's connection."
+binds_to = 'system'
+rationale = 'Unplugging never drops the station from the session.'
