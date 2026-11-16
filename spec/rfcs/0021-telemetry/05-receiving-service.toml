@@ -103,7 +103,7 @@ rationale = "Attachments are kept only while they help fix their problem."
 id = 'EU-0021-110'
 level = 'MUST'
 polarity = 'required'
-statement = "On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups."
+statement = "On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups, each backup copy no later than that backup's expiry."
 binds_to = 'system'
 rationale = "Deletion reaches every store that holds the identity's data."
 
