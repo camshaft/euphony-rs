@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-147"
+
+[[spec]]
+level = "MUST"
+quote = "Each comparison MUST state its coverage."

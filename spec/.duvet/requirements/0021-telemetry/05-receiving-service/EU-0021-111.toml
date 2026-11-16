@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-111"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST record a tombstone for an identity before it deletes the identity's data."

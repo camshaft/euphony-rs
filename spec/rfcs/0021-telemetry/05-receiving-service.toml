@@ -1,0 +1,197 @@
+[section]
+anchor = 'receiving-service'
+title = "The receiving service"
+problem = "What people send has to reach a service that accepts only what they actually sent, keeps nothing that points back to them, deletes it when they ask, and doesn't lose it when busy."
+motivation = "A public service that checks every signature and schema, keeps neither addresses nor cookies, deletes an identity's data everywhere behind a tombstone, and answers congestion with a retry signal earns the trust that sending needs."
+prose = """
+The receiving service is the service the project runs to take in what people send. It ingests
+signed batches and problem reports, stores them, groups their records into findings, holds the
+findings and their aggregates, shows them to the maintainers, and files tracker issues. A tombstone
+is the record that an identity's data was deleted. Deploying the service is an act that people
+outside the project can see."""
+
+[[requirement]]
+id = 'EU-0021-099'
+level = 'MUST'
+polarity = 'required'
+statement = "The receiving service MUST be public code built and released from euphony's public repository."
+binds_to = 'system'
+rationale = "Anyone can read what the service does with what they send."
+
+[[requirement]]
+id = 'EU-0021-100'
+level = 'MUST'
+polarity = 'required'
+statement = "The receiving service MUST be deployed only with the approval of the project's owner."
+binds_to = 'system'
+rationale = "Running a public service is a decision of the project."
+
+[[requirement]]
+id = 'EU-0021-101'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST bind each submission identity to the public key that its first batch registers."
+binds_to = 'system'
+rationale = "Later batches and deletion requests of the identity are checked against that key."
+
+[[requirement]]
+id = 'EU-0021-102'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST refuse a batch with a missing or wrong signature."
+binds_to = 'system'
+rationale = "No one adds data under another installation's identity."
+relations = [ { kind = 'depends_on', target = 'EU-0021-101' } ]
+
+[[requirement]]
+id = 'EU-0021-103'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST refuse a batch whose identity it already stored with other contents."
+binds_to = 'system'
+rationale = "A stored batch can't be replaced."
+
+[[requirement]]
+id = 'EU-0021-104'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST drop an exact replay of a stored batch."
+binds_to = 'system'
+rationale = "A retry or a replay never counts twice."
+
+[[requirement]]
+id = 'EU-0021-105'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST refuse a batch that holds an unknown field, an unknown schema version or a record of the wrong class."
+binds_to = 'system'
+rationale = "The service keeps only what the public schema allows."
+
+[[requirement]]
+id = 'EU-0021-106'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The service MUST NOT keep a client's network address in any record or log."
+binds_to = 'system'
+rationale = "What is stored can't be traced to where it came from."
+
+[[requirement]]
+id = 'EU-0021-107'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The service MUST NOT set a cookie."
+binds_to = 'system'
+rationale = "The service doesn't track senders beyond the identity they hold."
+
+[[requirement]]
+id = 'EU-0021-108'
+level = 'MUST'
+polarity = 'required'
+statement = "Once the comparison of the next release is published, the service MUST reduce the raw events of a release to aggregate counts by release and hardware class without an identity."
+binds_to = 'system'
+rationale = "Raw events are kept only as long as a comparison needs them."
+
+[[requirement]]
+id = 'EU-0021-109'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST delete a report's attachments once its finding closes and the next release's comparison is published, or once the person deletes them."
+binds_to = 'system'
+rationale = "Attachments are kept only while they help fix their problem."
+
+[[requirement]]
+id = 'EU-0021-110'
+level = 'MUST'
+polarity = 'required'
+statement = "On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups, each backup copy no later than that backup's expiry."
+binds_to = 'system'
+rationale = "Deletion reaches every store that holds the identity's data."
+
+[[requirement]]
+id = 'EU-0021-111'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST record a tombstone for an identity before it deletes the identity's data."
+binds_to = 'system'
+rationale = "Work already under way can't write the data again."
+
+[[requirement]]
+id = 'EU-0021-112'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST refuse every later upload, retry or grouping job of an identity that has a tombstone."
+binds_to = 'system'
+rationale = "Deleted data stays deleted."
+relations = [ { kind = 'depends_on', target = 'EU-0021-111' } ]
+
+[[requirement]]
+id = 'EU-0021-113'
+level = 'MUST'
+polarity = 'required'
+statement = "The receipt of a deletion MUST say which stores are deleted and which still hold a copy, with the time each remaining copy ends."
+binds_to = 'system'
+rationale = "The person knows when their data is gone everywhere."
+
+[[requirement]]
+id = 'EU-0021-114'
+level = 'MAY'
+polarity = 'required'
+statement = "Aggregate counts and tracker issues that don't hold an identity MAY remain after a deletion."
+binds_to = 'system'
+rationale = "Counts without an identity don't point back to the person."
+
+[[requirement]]
+id = 'EU-0021-115'
+level = 'MUST'
+polarity = 'required'
+statement = "When it is congested, the service MUST answer with a retry signal."
+binds_to = 'system'
+rationale = "Clients learn the service's capacity from its answers."
+
+[[requirement]]
+id = 'EU-0021-116'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The service MUST NOT set a sending limit for each client."
+binds_to = 'system'
+rationale = "Capacity is discovered from the service's answers, not set as a cap."
+
+[[requirement]]
+id = 'EU-0021-117'
+level = 'MUST'
+polarity = 'required'
+statement = "On a retry signal, the client MUST keep the batch in its outbox and send it again later with growing intervals between attempts."
+binds_to = 'system'
+rationale = "A busy service delays a batch without losing it."
+
+[[requirement]]
+id = 'EU-0021-118'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The client MUST NOT drop a batch for want of capacity at the service."
+binds_to = 'system'
+rationale = "A busy service delays a batch, and the client doesn't drop it for that reason."
+
+[[requirement]]
+id = 'EU-0021-119'
+level = 'MUST'
+polarity = 'required'
+statement = "Under storage pressure on the computer, the outbox MUST remove the oldest telemetry batches first."
+binds_to = 'system'
+rationale = "Telemetry yields space before the person's work."
+
+[[requirement]]
+id = 'EU-0021-120'
+level = 'MUST'
+polarity = 'required'
+statement = "The performance and problems view MUST say when the outbox removed batches under storage pressure."
+binds_to = 'system'
+rationale = "The person knows which batches never went."
+
+[[requirement]]
+id = 'EU-0021-172'
+level = 'MUST'
+polarity = 'required'
+statement = "The receiving service's keys and the accounts of its maintainers MUST be configuration data."
+binds_to = 'system'
+rationale = "A key or a maintainer changes without a new release of the service."

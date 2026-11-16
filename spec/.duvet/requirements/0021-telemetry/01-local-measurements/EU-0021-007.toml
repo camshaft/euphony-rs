@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-007"
+
+[[spec]]
+level = "MUST"
+quote = "Each missed audio deadline MUST be recorded as a deadline miss event that states the device period, the buffer size, the part that missed, how late it was, and whether the output went silent or played a prepared result."

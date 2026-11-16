@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-067"
+
+[[spec]]
+level = "MUST"
+quote = "The submission schema MUST NOT hold a free-text field."

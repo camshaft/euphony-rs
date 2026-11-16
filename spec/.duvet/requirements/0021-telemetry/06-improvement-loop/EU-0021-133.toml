@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-133"
+
+[[spec]]
+level = "MUST"
+quote = "A combination below the publication threshold MUST be published only with its release or hardware class generalized to a coarser level that meets the threshold."

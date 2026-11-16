@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-016"
+
+[[spec]]
+level = "MUST"
+quote = "Each assistant tool call MUST be recorded as a tool call event that states the tool, the result kind, the duration, the schema version and, for an action that needs the owner's approval, whether it waited for that approval and how the owner decided."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-060"
+
+[[spec]]
+level = "MUST"
+quote = "The sent log MUST keep each sent batch as it was sent."

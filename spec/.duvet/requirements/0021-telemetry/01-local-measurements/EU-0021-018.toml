@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-018"
+
+[[spec]]
+level = "MUST"
+quote = "Each exposure interval MUST state its identity, its session, its start and end, how the session ended, and the use it covers in open hours, transport-active hours, render jobs of each kind and attempts of each tool."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-075"
+
+[[spec]]
+level = "MUST"
+quote = "Each installation MUST hold a random submission identity made on the computer."

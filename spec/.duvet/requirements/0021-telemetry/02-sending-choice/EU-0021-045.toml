@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-045"
+
+[[spec]]
+level = "MUST"
+quote = "At the first send and at each retry, the client MUST check that the bytes have the digest the outbox showed and that the current consent revision still allows the batch's destination, schema, fields, categories and projects."

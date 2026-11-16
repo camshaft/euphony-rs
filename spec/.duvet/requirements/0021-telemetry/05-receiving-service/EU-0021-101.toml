@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-101"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST bind each submission identity to the public key that its first batch registers."

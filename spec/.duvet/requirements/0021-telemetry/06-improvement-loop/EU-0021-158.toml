@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-158"
+
+[[spec]]
+level = "MUST"
+quote = "Zero cases over less exposure than the criterion requires MUST be reported as not observed over this exposure."

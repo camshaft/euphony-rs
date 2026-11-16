@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-134"
+
+[[spec]]
+level = "MUST"
+quote = "A published trail MUST hold only the event kinds present in cases from at least the publication threshold's count of identities."

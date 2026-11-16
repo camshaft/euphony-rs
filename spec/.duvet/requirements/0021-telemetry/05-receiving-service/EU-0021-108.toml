@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-108"
+
+[[spec]]
+level = "MUST"
+quote = "Once the comparison of the next release is published, the service MUST reduce the raw events of a release to aggregate counts by release and hardware class without an identity."

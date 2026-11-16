@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-059"
+
+[[spec]]
+level = "MUST"
+quote = "A change from the first mode to the second MUST be a change of the sending choice that the owner makes."

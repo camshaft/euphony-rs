@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-130"
+
+[[spec]]
+level = "MUST"
+quote = "A closed finding that recurs in a later release MUST open again."

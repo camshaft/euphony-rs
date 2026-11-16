@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-012"
+
+[[spec]]
+level = "MUST"
+quote = "Each measured round trip, jitter and clock-lock change of an audio interface, a network MIDI host, a headphone station, a shared-session participant or a control surface MUST be recorded as a device latency event."

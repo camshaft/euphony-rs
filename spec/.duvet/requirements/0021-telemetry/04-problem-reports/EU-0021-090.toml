@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-090"
+
+[[spec]]
+level = "MUST"
+quote = "A drafted report MUST hold the person's own description, the crash or error event they choose, and its trail."

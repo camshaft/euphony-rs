@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-136"
+
+[[spec]]
+level = "MUST"
+quote = "While the project hasn't set a publication threshold, every finding MUST stay private."

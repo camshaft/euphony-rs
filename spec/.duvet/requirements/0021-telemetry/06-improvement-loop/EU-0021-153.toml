@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-153"
+
+[[spec]]
+level = "MUST"
+quote = "An exposure interval sent again in a later batch MUST count once."

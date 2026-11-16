@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-023"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator, a link participant or a listener endpoint MUST NOT read the performance and problems view."

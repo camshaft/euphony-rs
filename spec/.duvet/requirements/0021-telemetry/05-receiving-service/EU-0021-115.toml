@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-115"
+
+[[spec]]
+level = "MUST"
+quote = "When it is congested, the service MUST answer with a retry signal."

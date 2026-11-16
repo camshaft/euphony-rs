@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-043"
+
+[[spec]]
+level = "MUST"
+quote = "Each batch and each problem report MUST record the consent it was built under: the consent revision, the destination, the submission schema version and its field set, and the categories and projects it covers."

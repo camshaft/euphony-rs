@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-058"
+
+[[spec]]
+level = "MUST"
+quote = "A change from the second mode to the first MUST apply to every batch not yet sent."

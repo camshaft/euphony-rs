@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-095"
+
+[[spec]]
+level = "MUST"
+quote = "The receiving service MUST answer each report with its identity and join it to its finding."

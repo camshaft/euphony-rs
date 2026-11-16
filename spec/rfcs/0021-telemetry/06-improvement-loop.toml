@@ -1,0 +1,359 @@
+[section]
+anchor = 'improvement-loop'
+title = "Findings and the improvement loop"
+problem = "What people send helps only where repeated failures are grouped, each release is compared with the one before it, and each fix is shown to work, and a small or forged sample can make any of these say the wrong thing or expose one person."
+motivation = "Findings keyed by typed fields, comparisons that state their coverage and uncertainty and are shown with and without anomalous senders, publication only above a threshold of reporters, and fixes closed only on declared evidence turn what people send into measured improvement without overclaiming."
+prose = """
+A finding is a group of records that share a finding key, which the service reads from typed fields
+alone. Each finding has one tracker issue, which is private to the maintainers until the publication
+policy lets the service publish it on the project's public issue tracker. The publication threshold
+is the least count of reporting identities that a published combination of finding key, release and
+hardware class needs, and the project sets it. A valid signature shows only that a batch came from
+the holder of its identity's key, so a sender can still invent measurements or make many
+identities: an anomaly is a provisional signal and never proof of forgery, and each result is shown
+with and without the identities that the project's anomaly policy marks. A comparison reads the
+records of one release against the release before it. A fix-effect report reads the rate of a
+finding before and after the release that fixes it, over the exposure that fits the work that can
+fail, and only over complete exposure intervals. A complete interval is one whose family recorded
+throughout, which didn't lose an event, for which the service received every batch the client
+built, and whose session ended normally or with the crash it records."""
+
+[[requirement]]
+id = 'EU-0021-121'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST assign each record a finding key from its typed fields alone."
+binds_to = 'system'
+rationale = "Grouping reads structure, never text."
+
+[[requirement]]
+id = 'EU-0021-122'
+level = 'MUST'
+polarity = 'required'
+statement = "The finding key of a crash MUST be its process, its exception kind and the frames of euphony's own code on the faulting thread."
+binds_to = 'system'
+rationale = "Crashes of one cause group together across computers."
+
+[[requirement]]
+id = 'EU-0021-123'
+level = 'MUST'
+polarity = 'required'
+statement = "The finding key of an error MUST be its interface, its operation and its result kind."
+binds_to = 'system'
+rationale = "Errors of one kind in one place group together."
+
+[[requirement]]
+id = 'EU-0021-124'
+level = 'MUST'
+polarity = 'required'
+statement = "The finding key of a tool call MUST be its tool and its result kind."
+binds_to = 'system'
+rationale = "Failures of one tool group together."
+
+[[requirement]]
+id = 'EU-0021-125'
+level = 'MUST'
+polarity = 'required'
+statement = "The finding key of a performance record MUST be its measure, its component and its hardware class."
+binds_to = 'system'
+rationale = "Performance is compared only between like computers."
+
+[[requirement]]
+id = 'EU-0021-126'
+level = 'MUST'
+polarity = 'required'
+statement = "A finding MUST count its cases and its distinct submission identities by release."
+binds_to = 'system'
+rationale = "How often and how widely a failure occurs is known for each release."
+
+[[requirement]]
+id = 'EU-0021-127'
+level = 'MUST'
+polarity = 'required'
+statement = "Each comparison MUST state that a count of distinct submission identities isn't a verified count of computers."
+binds_to = 'system'
+rationale = "One sender can make many identities."
+
+[[requirement]]
+id = 'EU-0021-128'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST keep one tracker issue for each finding key."
+binds_to = 'system'
+rationale = "Each failure is tracked once."
+
+[[requirement]]
+id = 'EU-0021-129'
+level = 'MUST'
+polarity = 'required'
+statement = "A later case of a finding MUST add to that finding's count instead of filing a new issue."
+binds_to = 'system'
+rationale = "Repeats strengthen one finding instead of scattering into many."
+
+[[requirement]]
+id = 'EU-0021-130'
+level = 'MUST'
+polarity = 'required'
+statement = "A closed finding that recurs in a later release MUST open again."
+binds_to = 'system'
+rationale = "A failure that returns isn't left closed."
+
+[[requirement]]
+id = 'EU-0021-131'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The service MUST NOT publish a finding until the publication policy passes."
+binds_to = 'system'
+rationale = "A published finding never singles out one reporter."
+
+[[requirement]]
+id = 'EU-0021-132'
+level = 'MUST'
+polarity = 'required'
+statement = "Each published combination of finding key, release and hardware class MUST hold cases from at least the publication threshold's count of reporting identities."
+binds_to = 'system'
+rationale = "A published count always covers enough reporters to hide each one."
+
+[[requirement]]
+id = 'EU-0021-133'
+level = 'MUST'
+polarity = 'required'
+statement = "A combination below the publication threshold MUST be published only with its release or hardware class generalized to a coarser level that meets the threshold."
+binds_to = 'system'
+rationale = "A rare combination is published in a form that hides its reporters, or not at all."
+relations = [ { kind = 'depends_on', target = 'EU-0021-132' } ]
+
+[[requirement]]
+id = 'EU-0021-134'
+level = 'MUST'
+polarity = 'required'
+statement = "A published trail MUST hold only the event kinds present in cases from at least the publication threshold's count of identities."
+binds_to = 'system'
+rationale = "A trail never shows what one person did."
+
+[[requirement]]
+id = 'EU-0021-135'
+level = 'MUST'
+polarity = 'required'
+statement = "A later update of a published finding MUST publish new counts only where the change itself comes from at least the publication threshold's count of identities."
+binds_to = 'system'
+rationale = "One more person's contribution can't be read from the difference."
+
+[[requirement]]
+id = 'EU-0021-136'
+level = 'MUST'
+polarity = 'required'
+statement = "While the project hasn't set a publication threshold, every finding MUST stay private."
+binds_to = 'system'
+rationale = "Nothing is published before the project decides how many reporters a publication needs."
+
+[[requirement]]
+id = 'EU-0021-137'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the publication policy can't establish that a finding meets it, the finding MUST stay private until a maintainer reviews it."
+binds_to = 'system'
+rationale = "Doubt keeps a finding private."
+
+[[requirement]]
+id = 'EU-0021-138'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A maintainer MUST NOT publish a part of a finding that the publication policy doesn't pass without the consent of each reporter whose cases it holds."
+binds_to = 'system'
+rationale = "Only the reporters can agree to expose their own cases."
+
+[[requirement]]
+id = 'EU-0021-139'
+level = 'MUST'
+polarity = 'required'
+statement = "Each comparison and each fix-effect report MUST be computed with all records and again without the identities that the anomaly policy marks, and show both results with the count left out."
+binds_to = 'system'
+rationale = "A forged flood can't decide a result unseen, and a real outlier isn't hidden."
+
+[[requirement]]
+id = 'EU-0021-140'
+level = 'MUST'
+polarity = 'required'
+statement = "The anomaly policy MUST be project configuration."
+binds_to = 'system'
+rationale = "The project tunes what counts as anomalous without a change of code."
+
+[[requirement]]
+id = 'EU-0021-141'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the two results disagree on the direction of a change, the result MUST be reported as unverified."
+binds_to = 'system'
+rationale = "A result that depends on suspect senders isn't claimed."
+relations = [ { kind = 'depends_on', target = 'EU-0021-139' } ]
+
+[[requirement]]
+id = 'EU-0021-142'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An unverified result MUST NOT confirm a fix."
+binds_to = 'system'
+rationale = "A fix is confirmed only on evidence that holds."
+
+[[requirement]]
+id = 'EU-0021-143'
+level = 'MUST'
+polarity = 'required'
+statement = "A timing comparison MUST use only records with the same job kind, a matching frame count and the same cache result."
+binds_to = 'system'
+rationale = "A cache hit or a lighter job isn't read as a speed-up."
+
+[[requirement]]
+id = 'EU-0021-144'
+level = 'MUST'
+polarity = 'required'
+statement = "For each measure and hardware class, the service MUST compare the distribution in a release with the distribution in the release before it, with the count of submission identities and an interval of uncertainty."
+binds_to = 'system'
+rationale = "Each release shows what changed and how sure the comparison is."
+
+[[requirement]]
+id = 'EU-0021-145'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST flag a regression where the worse direction passes the margin that the project configures."
+binds_to = 'system'
+rationale = "A release that got worse is found from what people sent."
+relations = [ { kind = 'depends_on', target = 'EU-0021-144' } ]
+
+[[requirement]]
+id = 'EU-0021-146'
+level = 'MUST'
+polarity = 'required'
+statement = "A hardware class with too few computers to give an interval MUST be reported as unverified."
+binds_to = 'system'
+rationale = "A sample too small to judge isn't read as no change."
+
+[[requirement]]
+id = 'EU-0021-147'
+level = 'MUST'
+polarity = 'required'
+statement = "Each comparison MUST state its coverage."
+binds_to = 'system'
+rationale = "A reader knows which computers a comparison speaks for."
+
+[[requirement]]
+id = 'EU-0021-148'
+level = 'MUST'
+polarity = 'required'
+statement = "Each comparison MUST state any change in who sends, such as a new release cohort or another mix of hardware classes."
+binds_to = 'system'
+rationale = "A change of senders isn't read as a change of euphony."
+
+[[requirement]]
+id = 'EU-0021-149'
+level = 'MUST'
+polarity = 'required'
+statement = "Regression detection MUST run when a stored batch completes the data it needs."
+binds_to = 'system'
+rationale = "Detection follows the data, not a timer."
+
+[[requirement]]
+id = 'EU-0021-150'
+level = 'MUST'
+polarity = 'required'
+statement = "The issue of a fix MUST state the finding key it fixes."
+binds_to = 'system'
+rationale = "The fix is measured against the failure it targets."
+
+[[requirement]]
+id = 'EU-0021-151'
+level = 'MUST'
+polarity = 'required'
+statement = "Before the release with a fix, the project MUST declare the criterion that decides the fix's effect: the exposure that fits the finding, the least exposure and the confidence level."
+binds_to = 'system'
+rationale = "Success is decided before the evidence arrives."
+
+[[requirement]]
+id = 'EU-0021-152'
+level = 'MUST'
+polarity = 'required'
+statement = "The exposure that fits a finding MUST be transport-active hours for a deadline miss, render jobs of the finding's job kind for a render failure, attempts of the finding's tool for a tool failure, and hours with the finding's process running for a crash."
+binds_to = 'system'
+rationale = "A rate is read against the work that can fail."
+
+[[requirement]]
+id = 'EU-0021-153'
+level = 'MUST'
+polarity = 'required'
+statement = "An exposure interval sent again in a later batch MUST count once."
+binds_to = 'system'
+rationale = "Exposure isn't inflated by repeats."
+
+[[requirement]]
+id = 'EU-0021-154'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST leave each incomplete exposure interval out of both the cases and the exposure."
+binds_to = 'system'
+rationale = "An incomplete record can't make a fix look better than it is."
+
+[[requirement]]
+id = 'EU-0021-155'
+level = 'MUST'
+polarity = 'required'
+statement = "Each fix-effect report MUST state how much exposure it left out as incomplete."
+binds_to = 'system'
+rationale = "A reader sees how much of the record the report couldn't use."
+
+[[requirement]]
+id = 'EU-0021-156'
+level = 'MUST'
+polarity = 'required'
+statement = "Once the release with a fix has reports, the service MUST post the change in the finding's rate with its interval of uncertainty, the exposure and the cohort of each release."
+binds_to = 'system'
+rationale = "Each fix shows what it did."
+
+[[requirement]]
+id = 'EU-0021-157'
+level = 'MUST'
+polarity = 'required'
+statement = "The service MUST close a fixed finding only where its declared criterion is met."
+binds_to = 'system'
+rationale = "A finding closes on evidence, not on a hope."
+relations = [ { kind = 'depends_on', target = 'EU-0021-151' } ]
+
+[[requirement]]
+id = 'EU-0021-158'
+level = 'MUST'
+polarity = 'required'
+statement = "Zero cases over less exposure than the criterion requires MUST be reported as not observed over this exposure."
+binds_to = 'system'
+rationale = "Absence of cases over too little use isn't read as a fix."
+
+[[requirement]]
+id = 'EU-0021-159'
+level = 'MUST'
+polarity = 'required'
+statement = "A performance fix MUST report the change in its measure as a fix-effect report does."
+binds_to = 'system'
+rationale = "Performance fixes are measured like failure fixes."
+
+[[requirement]]
+id = 'EU-0021-160'
+level = 'MUST'
+polarity = 'required'
+statement = "A fix-effect report without comparable evidence MUST say that the fix's benefit is unverified."
+binds_to = 'system'
+rationale = "A benefit isn't claimed without evidence."
+
+[[requirement]]
+id = 'EU-0021-161'
+level = 'MUST'
+polarity = 'required'
+statement = "The notes of each release MUST list the findings it fixed and their measured effect."
+binds_to = 'system'
+rationale = "People see what their reports helped fix."
+
+[[requirement]]
+id = 'EU-0021-162'
+level = 'MUST'
+polarity = 'required'
+statement = "After a release, the service MUST post its comparison on the release's tracking issue."
+binds_to = 'system'
+rationale = "Each release's comparison is in one public place."

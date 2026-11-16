@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-022"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant that the owner connects MUST be able to read the performance and problems view as the owner does."
