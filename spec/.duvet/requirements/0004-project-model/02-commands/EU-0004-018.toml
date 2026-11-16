@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-018"
 
 [[spec]]
 level = "MUST"
-quote = "A conflict MUST include, at the head of the batch's branch, the view of each part of the project that a command of the batch names or changes and that the actor of the batch may read, holding that part's own fields and the identities of the parts it holds, without their contents."
+quote = "A conflict MUST include, at the head of the batch's branch, the view of each part of the project that a command of the batch names or changes and that the actor of the batch may read, holding that part's own fields and the identities of the parts it holds that the actor of the batch may read, without their contents."
