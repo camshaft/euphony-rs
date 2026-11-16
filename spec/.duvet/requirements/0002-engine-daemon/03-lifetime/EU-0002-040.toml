@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-040"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST admit attachments and display traffic under an adaptive fair queue, from the measured cost of each."

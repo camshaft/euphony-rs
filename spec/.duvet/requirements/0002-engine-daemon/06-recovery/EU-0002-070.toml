@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-070"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted session host MUST restore the committed project state from its journal."

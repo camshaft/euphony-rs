@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-011"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted host service MUST find each running session host and audio device process of its computer through the endpoints they registered."

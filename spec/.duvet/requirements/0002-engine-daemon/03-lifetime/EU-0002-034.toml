@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-034"
+
+[[spec]]
+level = "MUST"
+quote = "A crash, a hang or a closed window of a client MUST end only that client's attachment."

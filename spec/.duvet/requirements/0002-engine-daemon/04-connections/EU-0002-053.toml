@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-053"
+
+[[spec]]
+level = "MUST"
+quote = "A client on another of the owner's computers MUST attach over a mutually authenticated and encrypted connection of a paired device."

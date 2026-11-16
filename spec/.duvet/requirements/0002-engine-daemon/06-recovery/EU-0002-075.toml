@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-075"
+
+[[spec]]
+level = "MUST"
+quote = "After recovery, the transport MUST stay stopped until a person or a client starts it."

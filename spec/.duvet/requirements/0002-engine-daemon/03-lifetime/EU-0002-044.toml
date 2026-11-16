@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-044"
+
+[[spec]]
+level = "MUST"
+quote = "A session MUST keep one undo history for all of its clients."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-027"
+
+[[spec]]
+level = "MUST"
+quote = "Each metric of the session host MUST use a closed set of categories."

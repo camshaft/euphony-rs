@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-002"
+
+[[spec]]
+level = "MUST"
+quote = "The operating system MUST start the host service when a client first connects to its local endpoint."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-036"
+
+[[spec]]
+level = "MUST"
+quote = "When a client's attachment ends, the session host MUST release each momentary control that client held."

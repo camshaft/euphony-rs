@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-063"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST NOT report a pending render as a completed export."

@@ -1,0 +1,10 @@
+number = 2
+title = 'Engine daemon and session host'
+area = 'euphony'
+abstract = """\
+  The engine of euphony as daemons on each of the owner's computers: the host service that \
+  supervises the engine's processes, the session host that owns each open session, how a session \
+  outlives every client, how a connection receives the origin of its commands, how the session host \
+  checks each command, and how a session recovers when its host fails."""
+retired = []
+sources = []

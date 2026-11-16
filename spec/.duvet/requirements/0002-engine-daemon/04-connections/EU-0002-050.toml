@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-050"
+
+[[spec]]
+level = "MUST"
+quote = "A command that a client forwards, queues or replays MUST keep the origin of the client session that first sent it."

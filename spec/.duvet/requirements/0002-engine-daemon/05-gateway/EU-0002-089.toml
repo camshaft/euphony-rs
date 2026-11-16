@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-089"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST let the caller that started an operation cancel it."

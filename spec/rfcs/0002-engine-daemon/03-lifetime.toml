@@ -1,0 +1,150 @@
+[section]
+anchor = 'lifetime'
+title = 'Session lifetime and attached clients'
+problem = """\
+  A musician loses a take when the window they record in crashes or closes, and a second interface \
+  can't control the same session, while the lifetime of the engine is tied to one interface."""
+motivation = """\
+  A session that outlives every client, that several clients attach to at once, and that a client's \
+  failure can't close, keeps playback and recording running whatever happens to an interface, and \
+  makes the desktop interface one client among many."""
+prose = """
+A client attaches to a session to control it and detaches when it leaves. Each attachment has a
+generation, which a later attachment of the same client replaces. The desktop interface, a command
+line, a script, an assistant's adapter, a phone, a hardware controller and a terminal interface are
+all clients, and any number of them attach to one session at once, each with its own layout. They
+share one session state: one selected branch and transport, one control epoch for transport and
+recording, one owner for the targets of each gesture, and one undo history. A session closes when a
+client closes it, when the computer shuts down, or when the person quits the last attached client
+while the session is neither recording nor playing and the person didn't choose to keep it running.
+The overview RFC states that the failure of an interface doesn't stop playback or recording; this
+section states how the session host keeps that true. The client protocol is specified in its own
+RFC."""
+
+[[requirement]]
+id = 'EU-0002-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'A session MUST stay open until a client closes it, the computer shuts down, or the person quits the last client attached to it.'
+binds_to = 'system'
+rationale = 'A session closes only at a stated event.'
+
+[[requirement]]
+id = 'EU-0002-031'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT close a session on a timer.'
+binds_to = 'system'
+rationale = 'A session never ends because a clock ran out.'
+
+[[requirement]]
+id = 'EU-0002-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the person quits the last client attached to a session, the session MUST stay open while it records, plays, or is marked by the person to keep running.'
+binds_to = 'system'
+rationale = 'Quitting an interface never cuts a take or a playback short.'
+
+[[requirement]]
+id = 'EU-0002-080'
+level = 'MUST'
+polarity = 'required'
+statement = "When the person quits the last client attached to a session that is neither recording nor playing and that the person didn't mark to keep running, the session host MUST close the session."
+binds_to = 'system'
+rationale = 'A session the person has finished with does not keep running unseen.'
+
+[[requirement]]
+id = 'EU-0002-033'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A client's failure MUST NOT close a session."
+binds_to = 'system'
+rationale = 'Only a person or a client closes a session.'
+
+[[requirement]]
+id = 'EU-0002-034'
+level = 'MUST'
+polarity = 'required'
+statement = "A crash, a hang or a closed window of a client MUST end only that client's attachment."
+binds_to = 'system'
+rationale = "A client's failure never reaches another client or the engine."
+
+[[requirement]]
+id = 'EU-0002-035'
+level = 'MUST'
+polarity = 'required'
+statement = "When a client's attachment ends, the session host MUST end each gesture that client held with a recorded forced end."
+binds_to = 'system'
+rationale = 'A gesture never stays open after its client is gone, and its history shows why it ended.'
+
+[[requirement]]
+id = 'EU-0002-036'
+level = 'MUST'
+polarity = 'required'
+statement = "When a client's attachment ends, the session host MUST release each momentary control that client held."
+binds_to = 'system'
+rationale = 'A held control never stays held by a client that is gone.'
+
+[[requirement]]
+id = 'EU-0002-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client that attaches again after its attachment ended MUST attach in a new generation.'
+binds_to = 'system'
+rationale = 'A new attachment is never mistaken for the old one.'
+
+[[requirement]]
+id = 'EU-0002-038'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT apply input that a client sent in an ended generation.'
+binds_to = 'system'
+rationale = 'Input from before a failure is never replayed as new.'
+
+[[requirement]]
+id = 'EU-0002-039'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT cap the number of clients attached to a session.'
+binds_to = 'system'
+rationale = 'Capacity is discovered from measured cost, not set as a number.'
+
+[[requirement]]
+id = 'EU-0002-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST admit attachments and display traffic under an adaptive fair queue, from the measured cost of each.'
+binds_to = 'system'
+rationale = 'Each client receives its fair part of what the computer can serve.'
+
+[[requirement]]
+id = 'EU-0002-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'Under load, the session host MUST reduce only display frames that a newer frame replaces.'
+binds_to = 'system'
+rationale = 'Load never drops a command or an accepted change.'
+
+[[requirement]]
+id = 'EU-0002-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'All clients attached to a session MUST share one session state.'
+binds_to = 'system'
+rationale = 'Every interface shows and controls the same session.'
+
+[[requirement]]
+id = 'EU-0002-043'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A client MUST NOT hold authority over its session's state."
+binds_to = 'system'
+rationale = 'Adding a kind of client never adds a second authority.'
+
+[[requirement]]
+id = 'EU-0002-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'A session MUST keep one undo history for all of its clients.'
+binds_to = 'system'
+rationale = 'One person working with several controls undoes the same history from each.'

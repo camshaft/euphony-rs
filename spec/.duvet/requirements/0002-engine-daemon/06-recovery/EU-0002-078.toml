@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-078"
+
+[[spec]]
+level = "MUST"
+quote = "On reattachment, the session host MUST answer the outcome of each command a client sent before the failure by its idempotency key."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-033"
+
+[[spec]]
+level = "MUST"
+quote = "A client's failure MUST NOT close a session."

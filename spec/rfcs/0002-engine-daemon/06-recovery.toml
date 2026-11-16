@@ -1,0 +1,108 @@
+[section]
+anchor = 'recovery'
+title = 'Session host failure and recovery'
+problem = """\
+  A failed session host could leave a take half written, run an export or a message twice, or \
+  start playback that the musician didn't ask for, and a stale host could keep sending commands to \
+  the audio device."""
+motivation = """\
+  A host failure that ends playback and the take safely, and a restart that restores the committed \
+  state, adopts the take once and doesn't run an external effect again, keeps every accepted change \
+  and every recorded sample without surprising the musician."""
+prose = """
+In this version, a failure of the session host ends the session's playback and take rather than
+continuing them. The audio device process learns of the loss, fades its output out and closes the
+take file, as the RFC of the audio device states. The host service then starts the session host
+again, which restores the committed project state from its journal and adopts the closed take. A
+new audio device process starts in a new generation, and accepts commands only from the generation
+of the session host that started it. Continuing playback and a take through a failure of the session
+host needs a recovery handshake between a surviving audio device process and a new session host,
+and is left to a later version."""
+
+[[requirement]]
+id = 'EU-0002-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'After a session host fails, the host service MUST start the session host again.'
+binds_to = 'system'
+rationale = 'A session recovers without a person starting it.'
+
+[[requirement]]
+id = 'EU-0002-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restarted session host MUST restore the committed project state from its journal.'
+binds_to = 'system'
+rationale = 'Every accepted change survives the failure.'
+
+[[requirement]]
+id = 'EU-0002-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restarted session host MUST adopt the take its failure closed exactly once, by the identity of the take.'
+binds_to = 'system'
+rationale = 'A recorded take appears once, and is never lost or doubled.'
+
+[[requirement]]
+id = 'EU-0002-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restarted session host MUST start the audio device process in a new generation.'
+binds_to = 'system'
+rationale = 'An audio device process obeys only the session host that started it.'
+
+[[requirement]]
+id = 'EU-0002-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A restarted session host MUST NOT run an external effect of a journaled command again.'
+binds_to = 'system'
+rationale = 'An export, a send or a device message happens once.'
+
+[[requirement]]
+id = 'EU-0002-074'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A restarted session host MUST NOT restart a play or record action.'
+binds_to = 'system'
+rationale = 'Recovery never starts sound that the musician did not ask for.'
+
+[[requirement]]
+id = 'EU-0002-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'After recovery, the transport MUST stay stopped until a person or a client starts it.'
+binds_to = 'system'
+rationale = 'The musician decides when sound starts again.'
+
+[[requirement]]
+id = 'EU-0002-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command whose commit was journaled before the failure MUST be part of the restored state, whether or not it was acknowledged.'
+binds_to = 'system'
+rationale = 'An accepted change is never lost by a failure between its commit and its answer.'
+
+[[requirement]]
+id = 'EU-0002-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A command that was not journaled before the failure MUST NOT be part of the restored state.'
+binds_to = 'system'
+rationale = 'A command that was never accepted never applies.'
+
+[[requirement]]
+id = 'EU-0002-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'On reattachment, the session host MUST answer the outcome of each command a client sent before the failure by its idempotency key.'
+binds_to = 'system'
+rationale = 'A client learns whether its command applied without sending it twice.'
+
+[[requirement]]
+id = 'EU-0002-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'Until the restarted session host has restored the session, each attached client MUST show the session as stopped and recovering.'
+binds_to = 'system'
+rationale = 'The musician sees why the session is silent.'

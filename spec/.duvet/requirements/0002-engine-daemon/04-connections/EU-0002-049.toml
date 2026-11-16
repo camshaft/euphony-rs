@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-049"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST assign the origin of the owner's native client only to a client that authenticates with the paired-device key of its computer."

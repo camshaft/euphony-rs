@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-047"
+
+[[spec]]
+level = "MUST"
+quote = "At attach, the host service MUST issue the connection a client session credential bound to the session and its generation."

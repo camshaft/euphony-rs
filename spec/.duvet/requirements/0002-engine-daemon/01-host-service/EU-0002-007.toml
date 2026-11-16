@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-007"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST run each runner of a composition program as a process of its own."

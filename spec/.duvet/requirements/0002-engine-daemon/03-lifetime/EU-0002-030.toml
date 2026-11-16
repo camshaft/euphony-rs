@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-030"
+
+[[spec]]
+level = "MUST"
+quote = "A session MUST stay open until a client closes it, the computer shuts down, or the person quits the last client attached to it."

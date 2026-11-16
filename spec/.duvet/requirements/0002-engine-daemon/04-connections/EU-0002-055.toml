@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-055"
+
+[[spec]]
+level = "MUST"
+quote = "A link participant's attachment MUST receive only what its link's level allows."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-026"
+
+[[spec]]
+level = "MUST"
+quote = "The type of each operational event MUST be defined in the public schema."

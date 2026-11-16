@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-082"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST assign a paired-device or link-participant origin only to a connection that authenticated as that paired device or that link."
