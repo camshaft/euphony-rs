@@ -1,0 +1,128 @@
+[section]
+anchor = 'interfaces'
+title = 'The command line, the assistant adapter and other interfaces'
+problem = """\
+  A person, a script and an assistant each need a way into a session that suits them, and a window, \
+  a terminal and a reskin that each carried behavior of their own would come to give different \
+  results for the same action."""
+motivation = """\
+  A command line, an assistant adapter, a terminal interface and layouts that are all clients of the \
+  one protocol, and that differ only in presentation, offer each user a fitting way in with the same \
+  results."""
+prose = """
+The command line sends one command, or a batch of commands from a file, and prints the typed result
+of each, for scripts, tests and use without a window. The assistant adapter offers each command of
+the session to assistants as a tool with the same parameters, validation and results, and every
+command it forwards carries the origin of an assistant. The terminal interface offers the transport,
+a track list with meters, a mixer, a command prompt for the session and a log of refusals, and edits
+through the same commands as every other client. The desktop interface reads its layout, the
+arrangement of its views, panels and tools, and its theme, its colors, fonts and icons, as data over
+views that each have a semantic identity, so a reskinned desktop interface is the same client with
+other data. The editor of a built-in processor is a view that each client draws from the typed
+parameters of the processor and its declarative panel description, so a phone, a terminal and a
+desktop interface on another computer show the same controls."""
+
+[[requirement]]
+id = 'EU-0003-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command line MUST send a single command, or a batch of commands read from a file.'
+binds_to = 'system'
+rationale = 'Scripts and tests drive a session from a terminal.'
+
+[[requirement]]
+id = 'EU-0003-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command line MUST print the typed result of each command it sends.'
+binds_to = 'system'
+rationale = 'A script reads what became of each command, refusals included.'
+
+[[requirement]]
+id = 'EU-0003-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command line MUST work while no other client is attached.'
+binds_to = 'system'
+rationale = 'Tests, scripts and assistants use a session without a window.'
+
+[[requirement]]
+id = 'EU-0003-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'The assistant adapter MUST offer each command of the session to assistants as a tool.'
+binds_to = 'system'
+rationale = 'An assistant can take every action that the person can take.'
+
+[[requirement]]
+id = 'EU-0003-095'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each tool of the assistant adapter MUST have the parameters, the validation and the results of the command it carries.'
+binds_to = 'system'
+rationale = 'An assistant gets the same result as any other client for the same command.'
+
+[[requirement]]
+id = 'EU-0003-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command that the assistant adapter forwards MUST carry the origin of an assistant.'
+binds_to = 'system'
+rationale = 'The history shows what an assistant did, and an action that waits for the person still waits for the person.'
+
+[[requirement]]
+id = 'EU-0003-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'The terminal interface MUST offer the transport, a track list with meters, a mixer, a command prompt for the session and a log of refusals.'
+binds_to = 'system'
+rationale = 'A person can run a session from a text terminal.'
+
+[[requirement]]
+id = 'EU-0003-098'
+level = 'MUST'
+polarity = 'required'
+statement = 'The terminal interface MUST stay usable on a terminal without color.'
+binds_to = 'system'
+rationale = 'The terminal interface works wherever a terminal does.'
+
+[[requirement]]
+id = 'EU-0003-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'A layout or a theme of the desktop interface MUST be data that the interface reads.'
+binds_to = 'system'
+rationale = 'A reskin is the same client with other data, not another client.'
+
+[[requirement]]
+id = 'EU-0003-100'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Switching the layout or the theme MUST NOT change the project, any command or the audio.'
+binds_to = 'system'
+rationale = 'A layout changes only how the session looks.'
+
+[[requirement]]
+id = 'EU-0003-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'A layout MUST refer to views only by their semantic identity.'
+binds_to = 'system'
+rationale = 'A layout keeps working when the code that draws a view changes.'
+
+[[requirement]]
+id = 'EU-0003-102'
+level = 'MUST'
+polarity = 'required'
+statement = 'The editor of a built-in processor MUST be drawn by the client from the typed parameters of the processor and its declarative panel description.'
+binds_to = 'system'
+rationale = 'An editor needs no window near the process that runs the processor.'
+
+[[requirement]]
+id = 'EU-0003-103'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every client MUST be able to show the editor of a built-in processor, whatever computer runs the processor.'
+binds_to = 'system'
+rationale = 'A phone, a terminal and a remote desktop interface show the same controls.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-102' } ]

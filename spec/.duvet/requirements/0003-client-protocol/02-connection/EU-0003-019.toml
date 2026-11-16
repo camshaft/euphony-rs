@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/02-connection.md#EU-0003-019"
+
+[[spec]]
+level = "MUST"
+quote = "A record of the person's interaction MUST NOT be accepted more than once."

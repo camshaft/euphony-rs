@@ -1,0 +1,10 @@
+number = 3
+title = 'Client protocol and assistant adapter'
+area = 'euphony'
+abstract = """\
+  The one versioned protocol through which every interface, the command line and the assistant \
+  adapter reach a session: connecting from any computer, session operations, commands and state, \
+  display streams and content, versions and compatibility, and the command line, the assistant \
+  adapter and the other interfaces."""
+retired = []
+sources = []

@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/04-streams.md#EU-0003-053"
+
+[[spec]]
+level = "MUST"
+quote = "Where the audio process stops, a client MUST show the last complete display frame with its age growing."

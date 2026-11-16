@@ -1,0 +1,52 @@
+[section]
+anchor = 'connection'
+title = 'Connecting from any computer'
+problem = """\
+  A session that any program on the computer can connect to, or that believes what a connecting \
+  program says about itself, lets another user's program or a script act as the person's own \
+  interface and approve what only the person may approve."""
+motivation = """\
+  Messages that are the same on every computer, a discovery that never admits a connection by \
+  itself, and a record of the person's interaction that counts only once, let every interface reach \
+  a session while the checks that RFC 0002 states decide who acts."""
+prose = """
+On the computer that runs the session, a client connects to a local endpoint at a location that
+follows the convention of each platform. From another computer, a client connects as a paired
+device or as a participant of a share link, and uses discovery on the local network only as a hint
+of where a session runs. RFC 0002 states who may connect, the client session that each attachment
+receives, the origin of each command, and the approvals that only the person's native interface
+decides. A record of the person's interaction comes from the person's input on that interface and
+counts for one action alone. The messages are the same locally and remotely; only the transport and
+the delivery of display streams differ."""
+
+[[requirement]]
+id = 'EU-0003-019'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A record of the person's interaction MUST NOT be accepted more than once."
+binds_to = 'system'
+rationale = 'A record taken from one approval cannot approve another action.'
+
+[[requirement]]
+id = 'EU-0003-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Discovery on the local network MUST NOT by itself admit a connection.'
+binds_to = 'system'
+rationale = 'A computer that announces itself is still checked before it attaches.'
+
+[[requirement]]
+id = 'EU-0003-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'The client protocol MUST carry the same messages on the computer running the session and from another computer.'
+binds_to = 'system'
+rationale = 'A client works the same way wherever it runs, and only its transport differs.'
+
+[[requirement]]
+id = 'EU-0003-025'
+level = 'MAY'
+polarity = 'required'
+statement = 'The location of the local endpoint MAY be configured.'
+binds_to = 'system'
+rationale = 'Each platform keeps its own convention, and a person can move the endpoint.'

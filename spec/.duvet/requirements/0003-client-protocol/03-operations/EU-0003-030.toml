@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/03-operations.md#EU-0003-030"
+
+[[spec]]
+level = "MUST"
+quote = "A refusal MUST state its kind as one of denied, stale revision, conflict, unknown target and unsupported capability."
