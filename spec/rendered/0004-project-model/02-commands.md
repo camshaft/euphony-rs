@@ -14,13 +14,13 @@ conflict carries, at the head of the batch's branch, the view of each part of th
 batch's commands name or change and that its actor may read, with that part's own fields and the
 identities of the parts it holds that its actor may read; it names that head to an actor who may
 read the branch, and the sender reads the rest of the project in pages, as the revisions section
-states. A gesture in an
-interface, a line of a script, the result of a composition program and the call of an assistant all
-reach the project as such batches. A change of presentation that leaves the project as it was, such
-as scrolling, isn't a command. The protocol that carries batches to euphony is the subject of the
-client protocol RFC. A key identifies a batch only among the batches one actor sends to one project:
-a retry of a committed batch receives that batch's outcome, and a key used again for other commands
-is refused.
+states. A gesture in an interface, a line of a script, the result of a composition program and the
+call of an assistant all reach the project as such batches. A change of presentation that leaves the
+project as it was, such as scrolling, isn't a command. The protocol that carries batches to euphony
+is the subject of the client protocol RFC. A key identifies a batch only among the batches one actor
+sends to one project: a retry of a committed batch receives that batch's outcome, unless euphony
+refuses it as denied first, as it does once its caller may no longer change the project, and a key
+used again for other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -84,7 +84,7 @@ A batch with the project, actor and idempotency key of a committed batch MUST NO
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.
+A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where EU-0004-049 or EU-0004-056 refuses it as denied, such as a retry from a caller who lost change access after that batch committed.
 
 ### EU-0004-046 {#EU-0004-046}
 
