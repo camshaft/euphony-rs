@@ -89,6 +89,6 @@ The cost of reading one page MUST NOT grow with the length of the history or the
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
 
-### EU-0004-056 {#EU-0004-056}
+### EU-0004-057 {#EU-0004-057}
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with an answer that does not differ from its refusal of a caller who may not read an existing project.
