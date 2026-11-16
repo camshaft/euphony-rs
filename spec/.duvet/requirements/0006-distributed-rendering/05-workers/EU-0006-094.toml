@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-094"
 
 [[spec]]
 level = "MUST"
-quote = "When a present worker that renders a job's render profile asks for a lease, and that job's running attempt has gone longer without a progress report than the intervals between its worker's own progress reports have shown, by more than their variation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts."
+quote = "When a present worker that renders a job's render profile and doesn't hold that job's running attempt asks for a lease, and that attempt has gone longer without a progress report than the intervals between its worker's own progress reports have shown, by more than their variation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts."

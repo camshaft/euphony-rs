@@ -15,7 +15,7 @@ worker's rate of progress from those reports as it measures its other capacity s
 While a worker holds a lease, the job protocol closes the connection to that worker once the
 transport reports that the worker stopped acknowledging what is sent on it, which ends that lease.
 An attempt that hangs while its worker's transport keeps acknowledging stops sending progress
-reports, and the next worker that can take its job and asks for a lease receives a replacing
+reports, and the next other worker that can take its job and asks for a lease receives a replacing
 attempt, judged from the intervals between the first worker's own reports.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states.
@@ -90,4 +90,4 @@ While a worker holds a lease on a job, the job protocol MUST close the connectio
 
 ### EU-0006-094 {#EU-0006-094}
 
-When a present worker that renders a job's render profile asks for a lease, and that job's running attempt has gone longer without a progress report than the intervals between its worker's own progress reports have shown, by more than their variation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts.
+When a present worker that renders a job's render profile and doesn't hold that job's running attempt asks for a lease, and that attempt has gone longer without a progress report than the intervals between its worker's own progress reports have shown, by more than their variation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts.
