@@ -12,9 +12,12 @@ command from an origin that may not take it is denied, whatever its expected rev
 that names an object the session doesn't hold, or one outside the part of the session the client
 may see, has an unknown target, so the kind of the refusal doesn't tell the client whether the
 object exists. A command that needs a capability the session host doesn't serve has an unsupported
-capability. The state of the session reaches a client as a snapshot of the part the client may see
-and then as an ordered stream of deltas, each at a revision, which the client resumes from a
-cursor. A gesture, such as a fader drag, is a token that begins, is updated in sequence with the
+capability. A command that decodes but fails validation, such as one that sets a value outside the
+range its target takes, is an invalid command; a command on an object outside the part of the
+session the client may see has an unknown target, and is never refused as an invalid command. The
+state of the session reaches a client as a snapshot of the part the client may see and then as an
+ordered stream of deltas, each at a revision, which the client resumes from a cursor. A gesture,
+such as a fader drag, is a token that begins, is updated in sequence with the
 time each update was captured, and ends or is cancelled. Undo and redo are commands on the one
 history of the session, and RFC 0002 states how the session host keeps that
 history, applies each command once and resumes a subscription from its cursor. The state of a view
@@ -40,7 +43,7 @@ Each command MUST be answered with the revision it committed or with a typed ref
 
 ### EU-0003-030 {#EU-0003-030}
 
-A refusal MUST state its kind as one of denied, conflict, unknown target and unsupported capability.
+A refusal MUST state its kind as one of denied, conflict, unknown target, unsupported capability and invalid command.
 
 ### EU-0003-031 {#EU-0003-031}
 
