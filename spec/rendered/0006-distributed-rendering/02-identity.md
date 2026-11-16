@@ -56,6 +56,10 @@ An export MUST use exactly one render profile.
 
 The manifest of a revision MUST pin at most one validated result for each descriptor the revision needs.
 
+### EU-0006-083 {#EU-0006-083}
+
+Once a descriptor that a revision needs has a validated result, the manifest of that revision MUST pin a validated result for that descriptor.
+
 ### EU-0006-022 {#EU-0006-022}
 
 Where no present worker can render a project's pinned render profile, euphony MUST play the project's pinned results.
