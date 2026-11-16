@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-015"
+
+[[spec]]
+level = "MUST"
+quote = "Where a route needs a conversion its target doesn't support, the system MUST explain why before the route is activated."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-058"
+
+[[spec]]
+level = "MUST"
+quote = "The refusal of a cycle MUST name the path of the cycle."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-040"
+
+[[spec]]
+level = "MUST"
+quote = "A newly connected route MUST start at a depth of zero."

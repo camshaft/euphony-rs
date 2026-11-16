@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-134"
+
+[[spec]]
+level = "MUST"
+quote = "The same edit made from the interface, a script or an assistant MUST produce the same graph."

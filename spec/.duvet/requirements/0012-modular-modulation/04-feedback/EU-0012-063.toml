@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-063"
+
+[[spec]]
+level = "MUST"
+quote = "Each step of a feedback loop MUST read the delayed values, then evaluate the loop, then commit the new delay state."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-140"
+
+[[spec]]
+level = "MUST"
+quote = "A sidechain MUST be imported only where the mapping of its source and target processors is verified."

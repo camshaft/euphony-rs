@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-031"
+
+[[spec]]
+level = "MUST"
+quote = "In Replace mode, while at least one of its routes is present and not bypassed, the normalized value of a target MUST be its stored replacement base plus its summed contribution."

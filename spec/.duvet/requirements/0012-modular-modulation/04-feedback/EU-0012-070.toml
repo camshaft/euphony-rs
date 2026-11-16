@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-070"
+
+[[spec]]
+level = "MUST"
+quote = "The output MUST stay within the safe gain that the output device's profile stores."

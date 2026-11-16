@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-076"
+
+[[spec]]
+level = "MUST"
+quote = "The value a modulated control takes at each moment MUST be the same in prepared playback as in live playback of the same revision."

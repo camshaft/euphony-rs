@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-019"
+
+[[spec]]
+level = "MUST"
+quote = "A source whose live input is missing MUST be marked unavailable, with a warning the musician sees."

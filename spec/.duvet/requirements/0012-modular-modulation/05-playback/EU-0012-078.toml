@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-078"
+
+[[spec]]
+level = "MUST"
+quote = "An edit of an automation lane MUST invalidate its consumers, their tails and the future ranges that depend on their state."

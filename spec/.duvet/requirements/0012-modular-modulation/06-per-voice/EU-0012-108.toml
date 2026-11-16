@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-108"
+
+[[spec]]
+level = "MUST"
+quote = "A per-voice source that reaches a global target MUST be aggregated to one value by the route's stored aggregation: sum, maximum, mean or newest voice."

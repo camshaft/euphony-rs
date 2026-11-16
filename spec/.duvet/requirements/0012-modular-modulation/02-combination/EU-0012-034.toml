@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-034"
+
+[[spec]]
+level = "MUST"
+quote = "A target whose routes are all absent or bypassed MUST take its unmodulated base in every mode."

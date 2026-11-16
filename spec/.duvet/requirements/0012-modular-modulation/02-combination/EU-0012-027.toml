@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-027"
+
+[[spec]]
+level = "MUST"
+quote = "The contributions to one target MUST be summed in the order of their route identifiers, with the accumulator the project's numerical profile declares."

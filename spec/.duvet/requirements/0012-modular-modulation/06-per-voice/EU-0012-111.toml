@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-111"
+
+[[spec]]
+level = "MUST"
+quote = "The modulator state of each voice MUST be kept under the route's stored reset policy."

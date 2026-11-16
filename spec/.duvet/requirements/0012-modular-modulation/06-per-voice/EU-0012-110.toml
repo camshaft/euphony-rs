@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-110"
+
+[[spec]]
+level = "MUST"
+quote = "With no active voice, an aggregation MUST return the neutral contribution."

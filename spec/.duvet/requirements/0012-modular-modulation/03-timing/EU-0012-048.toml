@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-048"
+
+[[spec]]
+level = "MUST"
+quote = "The project MUST store the seed, phase and reset policy of each oscillator."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-020"
+
+[[spec]]
+level = "MUST"
+quote = "The route of an unavailable source MUST contribute what its stored fallback selects: the neutral contribution, or the last value it held."

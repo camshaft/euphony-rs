@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-016"
+
+[[spec]]
+level = "MUST"
+quote = "Muting a track's audible output MUST NOT mute the sources it offers before its fader."

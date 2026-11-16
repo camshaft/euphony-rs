@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-092"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted edit MUST stay saved when the graph it makes can't run on the available capacity."

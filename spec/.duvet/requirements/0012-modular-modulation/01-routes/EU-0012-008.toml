@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-008"
+
+[[spec]]
+level = "MUST"
+quote = "Following an audio signal's envelope and using the raw signal MUST be distinct conversions."

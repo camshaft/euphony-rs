@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-042"
+
+[[spec]]
+level = "MUST"
+quote = "A route MUST NOT replace another route's contribution to the same target."

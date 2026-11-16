@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-105"
+
+[[spec]]
+level = "MUST"
+quote = "Voice allocation and stealing MUST follow the processor's declared deterministic policy over the note events."

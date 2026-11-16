@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-165"
+
+[[spec]]
+level = "MUST"
+quote = "A musician MUST be able to use a low-frequency oscillator as the source of a route."

@@ -1,0 +1,246 @@
+[section]
+anchor = "editing"
+title = "Patching, commands and import"
+problem = "A musician, a script and an assistant need to see and change the same routes, and a project from another workstation carries sidechains and automation; without one set of typed commands, a view of every contribution and a reported import, edits differ by client and imported connections disappear."
+motivation = "Typed commands that every client uses, a patch view that shows each part of a value and which graph is playing, and an import that maps only what it verifies and reports the rest keep routes the same whoever edits them."
+prose = """
+The patch view shows source sockets and target controls beside a project's tracks and automation
+lanes. Dragging a source to a control opens a preview of the route before anything changes. The
+command interface offers three commands for routes: one lists the sources and targets of a
+project, one previews a route without activating it, and one applies a batch of route and target
+edits as one change. Composition programs build routes with the same typed data. Clients follow a
+graph through its committed, compiled, activated and failed events. Importing a project from
+another workstation brings its sidechains and automation into routes, with a report of each.
+RFC 0009 states that the code of a composition program doesn't run on the audio path."""
+
+[[requirement]]
+id = "EU-0012-115"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST show source sockets and target controls beside the tracks and automation lanes."
+binds_to = "system"
+rationale = "Routes are patched where the musician already works."
+
+[[requirement]]
+id = "EU-0012-116"
+level = "MUST"
+polarity = "required"
+statement = "Connecting a source to a control MUST open a preview that shows the tap, conversion, units, effective range, depth, offset, curve, combination mode, timing capability and any cycle delay."
+binds_to = "system"
+rationale = "The musician sees what a route does before it changes the sound."
+
+[[requirement]]
+id = "EU-0012-117"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST show a target's base, each contribution and its effective value separately."
+binds_to = "system"
+rationale = "The musician sees where a value comes from."
+
+[[requirement]]
+id = "EU-0012-118"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST show where a value is clipped and where a source is unavailable."
+binds_to = "system"
+rationale = "A clipped or missing source is never hidden."
+
+[[requirement]]
+id = "EU-0012-119"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST show the physical range a modulated target reaches."
+binds_to = "system"
+rationale = "A logarithmic mapping's result is visible in the control's own units."
+
+[[requirement]]
+id = "EU-0012-120"
+level = "MUST"
+polarity = "required"
+statement = "Removing, bypassing and undoing a route MUST use the same kind of change as creating it."
+binds_to = "system"
+rationale = "Every route edit is recorded and undone the same way."
+
+[[requirement]]
+id = "EU-0012-121"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST distinguish the saved graph from the graph that is playing."
+binds_to = "system"
+rationale = "The musician knows whether an edit is heard yet."
+
+[[requirement]]
+id = "EU-0012-122"
+level = "MUST"
+polarity = "required"
+statement = "The patch view MUST show, for each voice someone watches, its contribution and effective value beside the global contribution."
+binds_to = "system"
+rationale = "Per-voice modulation can be inspected note by note."
+
+[[requirement]]
+id = "EU-0012-123"
+level = "MUST"
+polarity = "forbidden"
+statement = "The system MUST NOT publish per-voice effective values of a target that no one watches."
+binds_to = "system"
+rationale = "Values for every voice would add work in every block."
+
+[[requirement]]
+id = "EU-0012-124"
+level = "MUST"
+polarity = "required"
+statement = "The command interface MUST offer a command that lists the modulation sources and targets of a project."
+binds_to = "system"
+rationale = "A client finds what it can connect without reading the project's internals."
+
+[[requirement]]
+id = "EU-0012-125"
+level = "MUST"
+polarity = "required"
+statement = "The command interface MUST offer a command that previews a modulation."
+binds_to = "system"
+rationale = "A client learns what a route does before applying it."
+
+[[requirement]]
+id = "EU-0012-126"
+level = "MUST"
+polarity = "required"
+statement = "The command interface MUST offer a command that applies a batch of route and target edits as one change."
+binds_to = "system"
+rationale = "Several route edits succeed or fail together."
+
+[[requirement]]
+id = "EU-0012-127"
+level = "MUST"
+polarity = "required"
+statement = "A batch MUST carry its project, the revision it expects, an idempotency identity and its edits."
+binds_to = "system"
+rationale = "A repeated or stale batch is recognized rather than applied twice or over newer work."
+
+[[requirement]]
+id = "EU-0012-128"
+level = "MUST"
+polarity = "required"
+statement = "A batch MUST answer with the new revision and the graph's diagnostics, or with a refusal that states its cause: denied, stale revision, missing endpoint, incompatible units or rate, invalid cycle or unavailable resources."
+binds_to = "system"
+rationale = "A client acts on a typed outcome, not on a message's text."
+
+[[requirement]]
+id = "EU-0012-129"
+level = "MUST"
+polarity = "forbidden"
+statement = "A preview MUST NOT activate anything."
+binds_to = "system"
+rationale = "Looking at a route never changes the sound."
+
+[[requirement]]
+id = "EU-0012-130"
+level = "MUST"
+polarity = "required"
+statement = "A composition program MUST build routes with the same typed data as the commands, using stable track and parameter handles."
+binds_to = "system"
+rationale = "A generated route is the same kind of route as a drawn one."
+
+[[requirement]]
+id = "EU-0012-132"
+level = "MUST"
+polarity = "required"
+statement = "Editors, scripts and assistant clients MUST receive the same committed, compiled, activated and failed events of a graph."
+binds_to = "system"
+rationale = "Every client sees the same state of the patch."
+
+[[requirement]]
+id = "EU-0012-133"
+level = "MUST"
+polarity = "forbidden"
+statement = "A stale compile result MUST NOT replace a newer graph."
+binds_to = "system"
+rationale = "A slow compile never undoes a later edit."
+
+[[requirement]]
+id = "EU-0012-134"
+level = "MUST"
+polarity = "required"
+statement = "The same edit made from the interface, a script or an assistant MUST produce the same graph."
+binds_to = "system"
+rationale = "No client has a route that another can't make."
+
+[[requirement]]
+id = "EU-0012-135"
+level = "MUST"
+polarity = "required"
+statement = "A malformed batch, a stale revision, an unauthorized edit or an edit that needs more computation than is available MUST fail visibly."
+binds_to = "system"
+rationale = "The musician learns why an edit wasn't applied."
+
+[[requirement]]
+id = "EU-0012-159"
+level = "MUST"
+polarity = "forbidden"
+statement = "A failed edit MUST NOT interrupt unrelated recording."
+binds_to = "system"
+rationale = "A refused edit never costs a take."
+
+[[requirement]]
+id = "EU-0012-136"
+level = "MUST"
+polarity = "forbidden"
+statement = "Resource pressure MUST NOT lose an edit."
+binds_to = "system"
+rationale = "Preparation waits for capacity instead."
+
+[[requirement]]
+id = "EU-0012-137"
+level = "MUST"
+polarity = "required"
+statement = "A saved project MUST keep its routes and its original automation apart."
+binds_to = "system"
+rationale = "Modulation stays editable and removable after a save."
+
+[[requirement]]
+id = "EU-0012-138"
+level = "MUST"
+polarity = "required"
+statement = "Importing a project from another workstation MUST bring its sidechains and automation into routes of the native graph."
+binds_to = "system"
+rationale = "An imported project keeps the relationships it had."
+
+[[requirement]]
+id = "EU-0012-139"
+level = "MUST"
+polarity = "required"
+statement = "Imported track and region automation MUST become the base of its target."
+binds_to = "system"
+rationale = "Imported curves stay drawn automation that modulation adds to."
+
+[[requirement]]
+id = "EU-0012-140"
+level = "MUST"
+polarity = "required"
+statement = "A sidechain MUST be imported only where the mapping of its source and target processors is verified."
+binds_to = "system"
+rationale = "An import never invents a connection that sounds different."
+
+[[requirement]]
+id = "EU-0012-141"
+level = "MUST"
+polarity = "required"
+statement = "An automation mode of another workstation MUST map onto a combination mode only where their equations are verified to match."
+binds_to = "system"
+rationale = "Similar names never stand in for the same arithmetic."
+
+[[requirement]]
+id = "EU-0012-142"
+level = "MUST"
+polarity = "forbidden"
+statement = "An import MUST NOT discard an unsupported connection silently."
+binds_to = "system"
+rationale = "The musician learns of every connection the import couldn't carry."
+
+[[requirement]]
+id = "EU-0012-143"
+level = "MUST"
+polarity = "required"
+statement = "The import report MUST list each imported connection as imported or unsupported, and each unsupported one with its source, target and reason."
+binds_to = "system"
+rationale = "The musician can rebuild what the import couldn't map."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-038"
+
+[[spec]]
+level = "MUST"
+quote = "A bake MUST write a target's effective value into its automation and disable the routes it covers in the same change."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-099"
+
+[[spec]]
+level = "MUST"
+quote = "The parameter registry MUST declare for each control whether it accepts per-voice modulation."

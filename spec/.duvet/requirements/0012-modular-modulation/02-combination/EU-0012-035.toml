@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-035"
+
+[[spec]]
+level = "MUST"
+quote = "A value that isn't finite MUST NOT reach the renderer."

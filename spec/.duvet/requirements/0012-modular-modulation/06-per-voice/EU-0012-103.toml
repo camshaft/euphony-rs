@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-103"
+
+[[spec]]
+level = "MUST"
+quote = "A voice MUST exist from its note-on until its processor reports its end after the release tail."

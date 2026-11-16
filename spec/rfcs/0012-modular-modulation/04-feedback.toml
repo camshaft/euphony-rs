@@ -1,0 +1,177 @@
+[section]
+anchor = "feedback"
+title = "Feedback and delay"
+problem = "A route that reaches its own source forms a loop, and without a defined delay its result depends on the order in which a renderer evaluates it or on the device's block size; a loop can also grow without bound and harm listeners and devices."
+motivation = "Allowing feedback only through a delay the musician sets in whole samples, evaluating a loop in a fixed order and protecting the output keep feedback a sound the musician designs rather than an accident."
+prose = """
+The cycle check reads the combined graph of audio, notes and controls, including reads of effective
+values and the state of conversions. A processor that doesn't declare which of its inputs reach its
+outputs without delay counts as passing every input to every output at once. Only a dependency that
+an explicit delay of D project samples breaks is removed, where D is a positive integer, and the rest
+of the graph is required to be acyclic. A loop renders as one unit: at each step it reads its delayed
+values, evaluates the graph within the loop, then commits the new delay state, in steps no longer
+than its smallest delay, so a delay of one sample is one sample rather than one device block.
+Converter and processor latencies are further declared delays. A loop can be causally valid and
+still unstable, so the system warns of growing gain, keeps every target within its domain and
+protects the output."""
+
+[[requirement]]
+id = "EU-0012-057"
+level = "MUST"
+polarity = "required"
+statement = "A cycle in the graph of audio, notes and controls MUST be refused unless a delay the musician sets breaks it."
+binds_to = "system"
+rationale = "A loop never depends on the order in which a renderer evaluates it."
+
+[[requirement]]
+id = "EU-0012-058"
+level = "MUST"
+polarity = "required"
+statement = "The refusal of a cycle MUST name the path of the cycle."
+binds_to = "system"
+rationale = "The musician finds the loop to break."
+relations = [ { kind = "depends_on", target = "EU-0012-057" } ]
+
+[[requirement]]
+id = "EU-0012-059"
+level = "MUST"
+polarity = "required"
+statement = "A feedback delay MUST be a positive integer number of project samples."
+binds_to = "system"
+rationale = "A delay means the same on every computer and at every block size."
+
+[[requirement]]
+id = "EU-0012-060"
+level = "MUST"
+polarity = "required"
+statement = "The cycle check MUST count reads of effective values and the state of conversions as dependencies."
+binds_to = "system"
+rationale = "A loop through an effective value or a follower is still a loop."
+
+[[requirement]]
+id = "EU-0012-061"
+level = "MUST"
+polarity = "required"
+statement = "The cycle check MUST treat a processor that doesn't declare its feedthrough as passing every input to every output without delay."
+binds_to = "system"
+rationale = "A processor whose behavior is unknown never hides a loop."
+
+[[requirement]]
+id = "EU-0012-062"
+level = "MUST"
+polarity = "required"
+statement = "A feedback loop MUST return a signal after exactly its declared total delay, whatever the device's block size."
+binds_to = "system"
+rationale = "An impulse returns after D samples, not after a device block."
+
+[[requirement]]
+id = "EU-0012-063"
+level = "MUST"
+polarity = "required"
+statement = "Each step of a feedback loop MUST read the delayed values, then evaluate the loop, then commit the new delay state."
+binds_to = "system"
+rationale = "Every renderer computes a loop the same way."
+
+[[requirement]]
+id = "EU-0012-064"
+level = "MUST"
+polarity = "forbidden"
+statement = "A converter's or processor's latency MUST NOT stand in for a loop's explicit feedback delay."
+binds_to = "system"
+rationale = "The delay of a loop is the one the musician set."
+
+[[requirement]]
+id = "EU-0012-065"
+level = "MUST"
+polarity = "required"
+statement = "A change of a feedback delay MUST make a new revision of the graph."
+binds_to = "system"
+rationale = "A delay edit is a state transition every renderer sees at the same point."
+
+[[requirement]]
+id = "EU-0012-066"
+level = "MUST"
+polarity = "required"
+statement = "The buffers of a feedback delay MUST start at zero unless a saved checkpoint supplies them."
+binds_to = "system"
+rationale = "A loop starts from the same state on every render."
+
+[[requirement]]
+id = "EU-0012-067"
+level = "MUST"
+polarity = "required"
+statement = "A loop MUST keep or reset its state at a transport change as its stored policy says, the same in offline and live playback."
+binds_to = "system"
+rationale = "Stopping, starting and looping playback leave a loop in the same state however it is played."
+
+[[requirement]]
+id = "EU-0012-068"
+level = "MUST"
+polarity = "required"
+statement = "A change of the project's sample rate MUST restate each feedback delay in samples."
+binds_to = "system"
+rationale = "A delay never changes its length silently with the sample rate."
+
+[[requirement]]
+id = "EU-0012-069"
+level = "MUST"
+polarity = "required"
+statement = "The interface MUST warn of each feedback loop whose gain around the loop can exceed one, at any frequency or for any value it carries, or whose gain around the loop the analysis can't bound."
+binds_to = "system"
+rationale = "The musician sees an unstable loop before hearing it, and a check decides from the loop's gain which loops the warning covers."
+
+[[requirement]]
+id = "EU-0012-070"
+level = "MUST"
+polarity = "required"
+statement = "The output MUST stay within the safe gain that the output device's profile stores."
+binds_to = "system"
+rationale = "An unstable loop never harms a listener or a device."
+
+[[requirement]]
+id = "EU-0012-071"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to bypass any route at once."
+binds_to = "system"
+rationale = "A runaway loop stops in one action."
+
+[[requirement]]
+id = "EU-0012-072"
+level = "MUST"
+polarity = "required"
+statement = "An output that isn't finite MUST fault the rendering of the part of the project that produced it."
+binds_to = "system"
+rationale = "A broken loop is stopped where it starts."
+
+[[requirement]]
+id = "EU-0012-156"
+level = "MUST"
+polarity = "forbidden"
+statement = "An output value that isn't finite MUST NOT reach the audio device."
+binds_to = "system"
+rationale = "A fault never reaches a listener or a device."
+
+[[requirement]]
+id = "EU-0012-073"
+level = "MUST"
+polarity = "forbidden"
+statement = "An output that isn't finite MUST NOT become cached audio."
+binds_to = "system"
+rationale = "A fault never plays again from the cache."
+
+[[requirement]]
+id = "EU-0012-074"
+level = "MUST"
+polarity = "required"
+statement = "Any limiting of the output MUST be an explicit processor of the project."
+binds_to = "system"
+rationale = "The rendered sound never changes without the musician seeing why."
+
+[[requirement]]
+id = "EU-0012-075"
+level = "MUST"
+polarity = "required"
+statement = "A live feedback loop MUST render on one computer."
+binds_to = "system"
+rationale = "Network delay never changes the delay of an instrument."

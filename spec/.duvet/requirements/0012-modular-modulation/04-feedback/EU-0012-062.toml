@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-062"
+
+[[spec]]
+level = "MUST"
+quote = "A feedback loop MUST return a signal after exactly its declared total delay, whatever the device's block size."

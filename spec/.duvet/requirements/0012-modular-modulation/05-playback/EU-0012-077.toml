@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-077"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of a cached result MUST include every route, tap, selector, conversion and curve version, mode, base, parameter mapping, rate, filter latency, tempo, seed, checkpoint and upstream input it depends on."

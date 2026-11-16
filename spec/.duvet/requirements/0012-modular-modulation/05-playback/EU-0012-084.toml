@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-084"
+
+[[spec]]
+level = "MUST"
+quote = "Prepared playback MUST NOT send control updates for each sample over the network."

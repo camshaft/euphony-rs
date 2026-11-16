@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-028"
+
+[[spec]]
+level = "MUST"
+quote = "Each target MUST apply exactly one combination mode, Add, Scale or Replace, to its summed contribution."

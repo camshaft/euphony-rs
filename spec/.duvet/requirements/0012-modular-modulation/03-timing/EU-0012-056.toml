@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-056"
+
+[[spec]]
+level = "MUST"
+quote = "A change of the device's buffer size MUST NOT change what a stored route does."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-021"
+
+[[spec]]
+level = "MUST"
+quote = "The fallback of a new route MUST be a contribution of zero, offset included."

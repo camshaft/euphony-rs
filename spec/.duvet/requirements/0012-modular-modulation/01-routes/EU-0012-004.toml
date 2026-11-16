@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-004"
+
+[[spec]]
+level = "MUST"
+quote = "Each track MUST offer its audio before its effects, after its effects and after its fader as sources."

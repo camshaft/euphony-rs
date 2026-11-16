@@ -1,0 +1,170 @@
+[section]
+anchor = "per-voice"
+title = "Per-voice modulation"
+problem = "In an instrument that plays several notes at once, a route that reaches the whole instrument can't shape each note on its own, and without defined rules a source of one note reaching the whole instrument, or a source of the whole instrument reaching each note, yields a result that each renderer chooses."
+motivation = "A scope on each route, a fixed identity for each voice, and rules for summing global and per-voice contributions and for aggregating voices let a route shape each note while a route to the whole instrument still reaches every note, the same in every playback."
+prose = """
+A route's scope is global or per-voice. A per-voice route reads a source of one voice, such as a
+note's velocity, key, release velocity or expression, or an envelope or oscillator that starts with
+the note, and reaches a control of one voice of a processor that plays several notes at once. A
+voice is identified by the port, channel, key and note identifier of the note that started it, and
+lives from its note-on until its processor reports its end after the release tail. For each voice,
+the summed contribution is the global contribution plus that voice's own contributions, and the
+target's combination mode, clamp and mapping then apply to it."""
+
+[[requirement]]
+id = "EU-0012-096"
+level = "MUST"
+polarity = "required"
+statement = "Each route MUST store its scope, global or per-voice."
+binds_to = "system"
+rationale = "A route says whether it shapes each note or the whole instrument."
+
+[[requirement]]
+id = "EU-0012-097"
+level = "MUST"
+polarity = "required"
+statement = "The source of a per-voice route MUST be a source of one voice: a note's velocity, key, release velocity or expression, or an envelope or oscillator that starts with the note."
+binds_to = "system"
+rationale = "A per-voice route reads a value that belongs to one note."
+relations = [ { kind = "depends_on", target = "EU-0012-096" } ]
+
+[[requirement]]
+id = "EU-0012-098"
+level = "MUST"
+polarity = "required"
+statement = "The target of a per-voice route MUST be a control of one voice of a processor that plays several notes at once."
+binds_to = "system"
+rationale = "A per-voice route shapes one note."
+relations = [ { kind = "depends_on", target = "EU-0012-096" } ]
+
+[[requirement]]
+id = "EU-0012-099"
+level = "MUST"
+polarity = "required"
+statement = "The parameter registry MUST declare for each control whether it accepts per-voice modulation."
+binds_to = "system"
+rationale = "A route knows before it plays whether a control can vary by note."
+
+[[requirement]]
+id = "EU-0012-100"
+level = "MUST"
+polarity = "required"
+statement = "A preview MUST refuse a per-voice route to a control that doesn't accept it, with that reason, unless the musician chooses the global scope."
+binds_to = "system"
+rationale = "A route never pretends to shape notes it can't reach."
+relations = [ { kind = "depends_on", target = "EU-0012-099" } ]
+
+[[requirement]]
+id = "EU-0012-101"
+level = "MUST"
+polarity = "required"
+statement = "A voice MUST be identified by the port, channel, key and note identifier of the note that started it."
+binds_to = "system"
+rationale = "Two overlapping notes of the same key are still two voices."
+
+[[requirement]]
+id = "EU-0012-102"
+level = "MUST"
+polarity = "forbidden"
+statement = "A note identifier MUST NOT depend on the order in which notes arrive from several computers."
+binds_to = "system"
+rationale = "Every renderer assigns a note to the same voice."
+
+[[requirement]]
+id = "EU-0012-103"
+level = "MUST"
+polarity = "required"
+statement = "A voice MUST exist from its note-on until its processor reports its end after the release tail."
+binds_to = "system"
+rationale = "A note's modulation lasts as long as its sound."
+
+[[requirement]]
+id = "EU-0012-104"
+level = "MUST"
+polarity = "required"
+statement = "The per-voice modulator state of a voice MUST end when the voice ends, including when the voice is stolen."
+binds_to = "system"
+rationale = "A new note never inherits another note's modulation."
+
+[[requirement]]
+id = "EU-0012-105"
+level = "MUST"
+polarity = "required"
+statement = "Voice allocation and stealing MUST follow the processor's declared deterministic policy over the note events."
+binds_to = "system"
+rationale = "Prepared and live renders allocate the same voices."
+
+[[requirement]]
+id = "EU-0012-106"
+level = "MUST"
+polarity = "required"
+statement = "For each voice, the summed contribution MUST be the global contribution plus the voice's own contributions, summed in the order of their route identifiers."
+binds_to = "system"
+rationale = "A route to the whole instrument still reaches every note."
+
+[[requirement]]
+id = "EU-0012-107"
+level = "MUST"
+polarity = "required"
+statement = "A source of the whole instrument that reaches a per-voice target MUST reach every voice with the same value."
+binds_to = "system"
+rationale = "A single oscillator moves every note together."
+
+[[requirement]]
+id = "EU-0012-108"
+level = "MUST"
+polarity = "required"
+statement = "A per-voice source that reaches a global target MUST be aggregated to one value by the route's stored aggregation: sum, maximum, mean or newest voice."
+binds_to = "system"
+rationale = "Several notes driving one control yield a defined value."
+
+[[requirement]]
+id = "EU-0012-109"
+level = "MUST"
+polarity = "required"
+statement = "The aggregation of a new route MUST be the sum."
+binds_to = "system"
+rationale = "The default matches the common practice of summing voices."
+relations = [ { kind = "depends_on", target = "EU-0012-108" } ]
+
+[[requirement]]
+id = "EU-0012-110"
+level = "MUST"
+polarity = "required"
+statement = "With no active voice, an aggregation MUST return the neutral contribution."
+binds_to = "system"
+rationale = "A silent instrument leaves its target at its base."
+relations = [ { kind = "depends_on", target = "EU-0012-108" } ]
+
+[[requirement]]
+id = "EU-0012-111"
+level = "MUST"
+polarity = "required"
+statement = "The modulator state of each voice MUST be kept under the route's stored reset policy."
+binds_to = "system"
+rationale = "Each note's envelope and oscillator behave the same on every render."
+
+[[requirement]]
+id = "EU-0012-112"
+level = "MUST"
+polarity = "required"
+statement = "A checkpoint MUST hold the per-voice state of each active voice."
+binds_to = "system"
+rationale = "A render that starts from a checkpoint matches one that played through."
+
+[[requirement]]
+id = "EU-0012-113"
+level = "MUST"
+polarity = "required"
+statement = "The renderer MUST send per-voice modulation to a hosted processor as events addressed by voice, with the global contribution already included."
+binds_to = "system"
+rationale = "A hosted instrument receives each note's complete value."
+
+[[requirement]]
+id = "EU-0012-114"
+level = "MUST"
+polarity = "required"
+statement = "Voice allocation and per-voice values MUST match in prepared playback, in live playback and after a checkpoint is restored."
+binds_to = "system"
+rationale = "Per-voice modulation sounds the same however the project is played."

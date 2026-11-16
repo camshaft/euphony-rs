@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/08-access.md#EU-0012-146"
+
+[[spec]]
+level = "MUST"
+quote = "A participant who listens or comments MUST NOT edit routes."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-033"
+
+[[spec]]
+level = "MUST"
+quote = "The combined value MUST be clamped once to the target's domain, before it is mapped to physical units."
