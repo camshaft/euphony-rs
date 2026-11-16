@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/03-content.md#EU-0014-075"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST convert the latency compensation of each track's effects, so that each track keeps the alignment it had in the source project."

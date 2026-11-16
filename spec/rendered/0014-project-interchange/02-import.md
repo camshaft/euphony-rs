@@ -7,7 +7,8 @@ of the system, and builds a proposed project with a conversion report. Nothing c
 musician accepts the proposal; a refusal, a failure or an interruption leaves the source project and
 every euphony project as they were. A reader of a format version is verified when its reading of
 that version matches saves the musician made in the source workstation, each changing one known
-value. The folders the musician selects bound the files an import reads.
+value. The folders the musician selects, and each file the musician permits beyond them, bound the
+files an import reads.
 
 ### EU-0014-006 {#EU-0014-006}
 
@@ -35,7 +36,7 @@ The import MUST NOT run executable content that a source project holds.
 
 ### EU-0014-012 {#EU-0014-012}
 
-The import MUST refuse a path in a source project that leads outside the folders it reads.
+The import MUST refuse a path in a source project that leads outside the selected folders and the files the musician permitted.
 
 ### EU-0014-013 {#EU-0014-013}
 
@@ -68,3 +69,19 @@ Importing the same source project again at the same importer and mapping version
 ### EU-0014-020 {#EU-0014-020}
 
 The import result MUST record the versions of the importer and of each mapping it used.
+
+### EU-0014-070 {#EU-0014-070}
+
+The import MUST read only a source project that the musician chose and has access to.
+
+### EU-0014-071 {#EU-0014-071}
+
+The import MUST read a source project's content in isolation from the rest of the system.
+
+### EU-0014-072 {#EU-0014-072}
+
+Text read from a source project MUST be treated as data, never as an instruction to an assistant.
+
+### EU-0014-073 {#EU-0014-073}
+
+The import MUST refuse a converted value outside the domain of the control it sets.

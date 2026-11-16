@@ -17,7 +17,8 @@ of the system, and builds a proposed project with a conversion report. Nothing c
 musician accepts the proposal; a refusal, a failure or an interruption leaves the source project and
 every euphony project as they were. A reader of a format version is verified when its reading of
 that version matches saves the musician made in the source workstation, each changing one known
-value. The folders the musician selects bound the files an import reads."""
+value. The folders the musician selects, and each file the musician permits beyond them, bound the
+files an import reads."""
 
 [[requirement]]
 id = 'EU-0014-006'
@@ -73,7 +74,7 @@ rationale = "A project file can't carry code that runs on the musician's compute
 id = 'EU-0014-012'
 level = 'MUST'
 polarity = 'required'
-statement = 'The import MUST refuse a path in a source project that leads outside the folders it reads.'
+statement = 'The import MUST refuse a path in a source project that leads outside the selected folders and the files the musician permitted.'
 binds_to = 'system'
 rationale = "A project's paths can't reach files the import wasn't given."
 
@@ -141,3 +142,35 @@ polarity = 'required'
 statement = 'The import result MUST record the versions of the importer and of each mapping it used.'
 binds_to = 'system'
 rationale = 'A later import, or a report of a difference, states which reader and mappings produced the project.'
+
+[[requirement]]
+id = 'EU-0014-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST read only a source project that the musician chose and has access to.'
+binds_to = 'system'
+rationale = "An import never reads a project the musician didn't choose, whoever asks for it."
+
+[[requirement]]
+id = 'EU-0014-071'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST read a source project's content in isolation from the rest of the system."
+binds_to = 'system'
+rationale = "A hostile or damaged project can't change a euphony project or a running take."
+
+[[requirement]]
+id = 'EU-0014-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'Text read from a source project MUST be treated as data, never as an instruction to an assistant.'
+binds_to = 'system'
+rationale = "A name or a note in a project can't direct an assistant to act."
+
+[[requirement]]
+id = 'EU-0014-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST refuse a converted value outside the domain of the control it sets.'
+binds_to = 'system'
+rationale = 'A converted value never sets a control outside what the control accepts.'
