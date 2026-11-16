@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/01-project.md#EU-0004-091"
 
 [[spec]]
 level = "MUST"
-quote = "Where the command that creates a project fails the check against the command schema, euphony MUST refuse the command as invalid input."
+quote = "Where the command that creates a project passes the checks of EU-0004-074 and EU-0004-076 and fails the check against the command schema, euphony MUST refuse the command as invalid input."

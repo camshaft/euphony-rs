@@ -13,8 +13,9 @@ schema defines that is sent alone and not in a batch, since no project exists ye
 name. The command names the sample rate of the new project, its actor, which is the caller that
 euphony authenticated and the party the first revision records as having made the change, and a
 key that identifies it across retries; it doesn't name an identity.
-euphony checks the command against the command schema before it creates the project, and refuses
-as invalid input a creation that fails the check, such as one whose sample rate is 0.
+Once a creation passes the checks of who may create a project and of its actor, euphony checks the
+command against the command schema before it creates the project, and refuses as invalid input a
+creation that fails that check.
 euphony chooses the identity of the new project without regard to the identities other projects
 hold, and the outcome of the command identifies the project and its first revision, which the
 first batch sent to the project names as its expected revision. A creation sent again with the same
@@ -64,7 +65,7 @@ euphony MUST check the command that creates a project against the command schema
 
 ### EU-0004-091 {#EU-0004-091}
 
-Where the command that creates a project fails the check against the command schema, euphony MUST refuse the command as invalid input.
+Where the command that creates a project passes the checks of EU-0004-074 and EU-0004-076 and fails the check against the command schema, euphony MUST refuse the command as invalid input.
 
 ### EU-0004-077 {#EU-0004-077}
 
