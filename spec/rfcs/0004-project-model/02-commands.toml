@@ -23,8 +23,8 @@ gesture in an interface, a line of a script, the result of a composition program
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
 subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
-to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
-other commands is refused."""
+to one project: a retry of a committed batch on the same branch receives that batch's outcome, and a
+key used again for another branch or other commands is refused."""
 
 [[requirement]]
 id = 'EU-0004-009'
@@ -150,7 +150,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-020'
 level = 'MUST'
 polarity = 'required'
-statement = 'A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.'
+statement = 'A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.'
 binds_to = 'system'
 rationale = 'A sender whose answer was lost learns what happened.'
 
@@ -158,7 +158,7 @@ rationale = 'A sender whose answer was lost learns what happened.'
 id = 'EU-0004-046'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where a batch has the project, actor and idempotency key of a committed batch and other commands, euphony MUST refuse the batch as invalid input.'
+statement = 'Where a batch has the project, actor and idempotency key of a committed batch and names another branch or other commands, euphony MUST refuse the batch as invalid input.'
 binds_to = 'system'
 rationale = 'A key used again for another change is never read as a retry, and is never applied as a new batch.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
