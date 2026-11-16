@@ -1,0 +1,135 @@
+[section]
+anchor = 'revisions'
+title = 'Revisions, branches and reads'
+problem = """\
+  A history that one leader holds stops everyone when that leader is lost, a musician who is offline \
+  can't edit, and a reader can't tell which state an answer shows or whether a revision was altered \
+  after it was made."""
+motivation = """\
+  Signed revisions that never change, linked in a graph, branches that each copy holds for itself, \
+  and reads that name their revision let every copy edit offline, keep working when another copy is \
+  lost, and check each revision it receives."""
+prose = """
+Each committed batch makes a revision. A revision names the revisions it follows, its parents, so the
+revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
+its head. Each copy holds its working branches and is the only copy that commits to them, so a
+musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
+How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
+read of a project answers with a view of one revision and names that revision; a long answer comes in
+pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
+subscription resumes from."""
+
+[[requirement]]
+id = 'EU-0004-032'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A revision MUST NOT change once it is committed.'
+binds_to = 'system'
+rationale = 'A citation of a revision always reads the same project.'
+
+[[requirement]]
+id = 'EU-0004-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each revision MUST name each revision it follows.'
+binds_to = 'system'
+rationale = 'Every copy reconstructs the history of a revision from its revisions alone.'
+
+[[requirement]]
+id = 'EU-0004-034'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The revisions of a project MUST NOT form a cycle.'
+binds_to = 'system'
+rationale = 'Every history has a beginning and an order.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-033' } ]
+
+[[requirement]]
+id = 'EU-0004-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each revision MUST carry a signature by which any copy verifies which copy committed it.'
+binds_to = 'system'
+rationale = 'A revision altered or forged on its way to another copy is found.'
+
+[[requirement]]
+id = 'EU-0004-036'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT accept a revision whose signature it cannot verify.'
+binds_to = 'system'
+rationale = 'A forged revision never enters a history.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' } ]
+
+[[requirement]]
+id = 'EU-0004-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each branch MUST point at exactly one revision.'
+binds_to = 'system'
+rationale = 'A branch always names one state of the project.'
+
+[[requirement]]
+id = 'EU-0004-038'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT commit to a working branch that another copy holds.'
+binds_to = 'system'
+rationale = 'Two copies never commit different revisions as the same next step of one branch.'
+
+[[requirement]]
+id = 'EU-0004-039'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Committing a batch MUST NOT need any other copy of the project to be reachable.'
+binds_to = 'system'
+rationale = 'A musician edits offline.'
+
+[[requirement]]
+id = 'EU-0004-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The loss of one copy MUST NOT stop another copy from committing to its branches.'
+binds_to = 'system'
+rationale = 'No copy is a leader that the others wait on.'
+
+[[requirement]]
+id = 'EU-0004-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each answer to a read of a project MUST name the revision it shows.'
+binds_to = 'system'
+rationale = 'A reader knows which state an answer describes, and sends it as the expected revision of its next batch.'
+
+[[requirement]]
+id = 'EU-0004-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each page of a paged answer MUST show the revision that its first page shows.'
+binds_to = 'system'
+rationale = 'A long answer never mixes two states of the project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
+
+[[requirement]]
+id = 'EU-0004-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor.'
+binds_to = 'system'
+rationale = 'A subscriber that reconnects misses nothing.'
+
+[[requirement]]
+id = 'EU-0004-044'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A subscription resumed from a cursor MUST NOT deliver an event at or before that cursor.'
+binds_to = 'system'
+rationale = 'A subscriber that reconnects sees each event once.'
+
+[[requirement]]
+id = 'EU-0004-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A subscriber MUST learn of each committed revision of the project without asking for it.'
+binds_to = 'system'
+rationale = 'A reader stays current without polling.'

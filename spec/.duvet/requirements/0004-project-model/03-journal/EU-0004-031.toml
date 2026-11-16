@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-031"
+
+[[spec]]
+level = "MUST"
+quote = "A restore MUST NOT take a revision from a copy that the owner did not choose."

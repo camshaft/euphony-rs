@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-001"
+
+[[spec]]
+level = "MUST"
+quote = "Each project MUST have an identity that no other project has."

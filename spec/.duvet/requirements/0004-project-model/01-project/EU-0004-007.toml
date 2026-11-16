@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-007"
+
+[[spec]]
+level = "MUST"
+quote = "A processor MUST refer to the definition it runs by the identity and version of that definition."

@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-014"
+
+[[spec]]
+level = "MUST"
+quote = "A committed batch MUST produce exactly one new revision."

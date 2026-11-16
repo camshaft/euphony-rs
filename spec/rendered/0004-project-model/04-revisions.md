@@ -1,0 +1,66 @@
+## Revisions, branches and reads {#revisions}
+
+Each committed batch makes a revision. A revision names the revisions it follows, its parents, so the
+revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
+its head. Each copy holds its working branches and is the only copy that commits to them, so a
+musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
+How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
+read of a project answers with a view of one revision and names that revision; a long answer comes in
+pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
+subscription resumes from.
+
+### EU-0004-032 {#EU-0004-032}
+
+A revision MUST NOT change once it is committed.
+
+### EU-0004-033 {#EU-0004-033}
+
+Each revision MUST name each revision it follows.
+
+### EU-0004-034 {#EU-0004-034}
+
+The revisions of a project MUST NOT form a cycle.
+
+### EU-0004-035 {#EU-0004-035}
+
+Each revision MUST carry a signature by which any copy verifies which copy committed it.
+
+### EU-0004-036 {#EU-0004-036}
+
+A copy MUST NOT accept a revision whose signature it cannot verify.
+
+### EU-0004-037 {#EU-0004-037}
+
+Each branch MUST point at exactly one revision.
+
+### EU-0004-038 {#EU-0004-038}
+
+A copy MUST NOT commit to a working branch that another copy holds.
+
+### EU-0004-039 {#EU-0004-039}
+
+Committing a batch MUST NOT need any other copy of the project to be reachable.
+
+### EU-0004-040 {#EU-0004-040}
+
+The loss of one copy MUST NOT stop another copy from committing to its branches.
+
+### EU-0004-041 {#EU-0004-041}
+
+Each answer to a read of a project MUST name the revision it shows.
+
+### EU-0004-042 {#EU-0004-042}
+
+Each page of a paged answer MUST show the revision that its first page shows.
+
+### EU-0004-043 {#EU-0004-043}
+
+A subscription resumed from a cursor MUST deliver every event after that cursor.
+
+### EU-0004-044 {#EU-0004-044}
+
+A subscription resumed from a cursor MUST NOT deliver an event at or before that cursor.
+
+### EU-0004-045 {#EU-0004-045}
+
+A subscriber MUST learn of each committed revision of the project without asking for it.

@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-028"
+
+[[spec]]
+level = "MUST"
+quote = "Anyone who may read a project MUST be able to read, for each of its revisions, the changes it made and its actor."

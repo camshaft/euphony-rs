@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-036"
+
+[[spec]]
+level = "MUST"
+quote = "A copy MUST NOT accept a revision whose signature it cannot verify."

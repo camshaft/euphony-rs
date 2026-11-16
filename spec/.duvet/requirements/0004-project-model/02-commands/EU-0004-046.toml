@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-046"
+
+[[spec]]
+level = "MUST"
+quote = "Where a batch has the project, actor and idempotency key of a committed batch and other commands, euphony MUST refuse the batch as invalid input."
