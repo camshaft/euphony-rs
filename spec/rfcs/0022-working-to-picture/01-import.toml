@@ -152,3 +152,11 @@ polarity = 'forbidden'
 statement = "Euphony MUST NOT edit, color or re-encode the picture of a video."
 binds_to = 'system'
 rationale = "Picture editing belongs to the editor, and every export keeps the delivered picture."
+
+[[requirement]]
+id = 'EU-0022-169'
+level = 'MUST'
+polarity = 'required'
+statement = "Each frame of the scrub copy MUST match the original's decoded frame, scaled to the scrub copy's size, within the tolerance of the scrub copy's format."
+binds_to = 'system'
+rationale = "A musician who scrubs to a frame sees the same picture as in normal playback of the original."
