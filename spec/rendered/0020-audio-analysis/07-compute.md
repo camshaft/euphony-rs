@@ -6,8 +6,9 @@ isolation and publishes a candidate result, which the session host validates bef
 result to a revision of the project. The live audio path only emits meter observations it prepared
 ahead of time and reads control curves that were already admitted. An offline analysis can read the
 whole song; a streaming method declares the context it reads, the lookahead it needs and its
-delay, and its conformance tests compare the declared delay with the delay they measure. Musical
-inference runs offline while recording continues. A browser shows results the host computed, and
+delay, and its conformance tests compare the declared delay with the delay they measure. While
+recording continues, musical inference waits until the take ends and reads the whole take. A browser
+shows results the host computed, and
 measures material it already holds only where its runtime passed the conformance tests; a phone used
 as a controller doesn't run analysis for that reason alone. Analysis is admitted against
 the capacity the system measures, and each job's completion records its measurements. The relative
@@ -48,7 +49,7 @@ The conformance tests of a streaming method MUST compare its declared delay with
 
 ### EU-0020-071 {#EU-0020-071}
 
-Musical inference SHOULD run offline while recording continues.
+While recording continues, musical inference SHOULD wait until the take ends and read the whole take.
 
 ### EU-0020-072 {#EU-0020-072}
 
