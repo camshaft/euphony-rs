@@ -83,9 +83,9 @@ rationale = 'Events are never scheduled against a clock mapping that no longer h
 id = 'EU-0016-081'
 level = 'MUST'
 polarity = 'required'
-statement = 'A host MUST send and read the loss recovery journal of the network MIDI session protocol.'
+statement = 'A host MUST send the loss recovery journal of the network MIDI session protocol with the events it sends.'
 binds_to = 'system'
-rationale = 'A note lost on the network is recovered where the other end can resend it.'
+rationale = 'A peer can rebuild a note lost on the network.'
 
 [[requirement]]
 id = 'EU-0016-082'
@@ -94,7 +94,7 @@ polarity = 'required'
 statement = 'Where a peer sends a recovery journal, the receiving host MUST rebuild a lost note-off from it.'
 binds_to = 'system'
 rationale = 'A lost release never leaves a note sounding when the journal holds it.'
-relations = [ { kind = 'depends_on', target = 'EU-0016-081' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0016-127' } ]
 
 [[requirement]]
 id = 'EU-0016-083'
@@ -173,7 +173,7 @@ rationale = 'Gear that speaks only the plain protocol works at home and stays of
 id = 'EU-0016-092'
 level = 'MUST'
 polarity = 'required'
-statement = 'The transport boundary MUST be enforced where events enter and leave euphony, not only in the user interface.'
+statement = "The transport boundary MUST be enforced by the session host where events enter and leave it, and by each MIDI host's network service, not only in the user interface."
 binds_to = 'system'
 rationale = 'A client that skips the interface cannot cross the boundary.'
 
@@ -189,9 +189,9 @@ rationale = 'A transport is trusted to bind packets to their peer only once a te
 id = 'EU-0016-094'
 level = 'MUST'
 polarity = 'required'
-statement = 'A missing, failed or mismatched verification record MUST produce an unverified transport result and an event.'
+statement = 'A missing, failed or mismatched verification record MUST produce an unverified transport result.'
 binds_to = 'system'
-rationale = 'An owner sees why a transport stays off.'
+rationale = 'A transport without passing evidence is never shown as verified.'
 relations = [ { kind = 'depends_on', target = 'EU-0016-093' } ]
 
 [[requirement]]
@@ -217,3 +217,28 @@ polarity = 'forbidden'
 statement = 'A passing verification record MUST NOT grant access.'
 binds_to = 'system'
 rationale = 'Evidence about a transport is never a permission.'
+
+[[requirement]]
+id = 'EU-0016-127'
+level = 'MUST'
+polarity = 'required'
+statement = 'A host MUST read the loss recovery journal that a peer sends.'
+binds_to = 'system'
+rationale = 'A note lost on the network is recovered where the other end resends it.'
+
+[[requirement]]
+id = 'EU-0016-128'
+level = 'MUST'
+polarity = 'required'
+statement = "A host MUST keep a history of each peer's clock drift from successive clock exchanges."
+binds_to = 'system'
+rationale = 'A drifting clock is found before it moves events off time.'
+
+[[requirement]]
+id = 'EU-0016-129'
+level = 'MUST'
+polarity = 'required'
+statement = 'A missing, failed or mismatched verification record MUST raise an event that says why the transport is unverified.'
+binds_to = 'system'
+rationale = 'An owner sees why a transport stays off.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-094' } ]

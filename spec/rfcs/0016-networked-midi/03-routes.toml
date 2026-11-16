@@ -118,7 +118,7 @@ rationale = "External MIDI doesn't carry a dependable loop marker, so an undecla
 id = 'EU-0016-038'
 level = 'MUST'
 polarity = 'required'
-statement = 'A declared routing loop MUST carry an explicit delay and a tested feedback policy.'
+statement = 'A declared routing loop MUST carry an explicit delay.'
 binds_to = 'system'
 rationale = 'An intentional loop stays bounded and predictable.'
 
@@ -241,3 +241,11 @@ polarity = 'forbidden'
 statement = 'The session host MUST NOT send events to a host after the owner unpairs it.'
 binds_to = 'system'
 rationale = 'Unpairing takes effect at once, whatever routes are saved.'
+
+[[requirement]]
+id = 'EU-0016-140'
+level = 'MUST'
+polarity = 'required'
+statement = 'A declared routing loop MUST carry a declared feedback policy.'
+binds_to = 'system'
+rationale = 'An intentional loop never feeds back without a rule that says what happens.'

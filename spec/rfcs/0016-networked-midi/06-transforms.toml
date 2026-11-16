@@ -105,9 +105,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0016-105' } ]
 id = 'EU-0016-107'
 level = 'MUST'
 polarity = 'required'
-statement = "Moving a route's transforms to another execution site MUST release the notes they own and start them with clean state."
+statement = "Moving a route's transforms to another execution site MUST release the notes they own."
 binds_to = 'system'
-rationale = 'A move is a clean restart, not a transfer of a held performance.'
+rationale = 'A move never leaves a note sounding.'
 
 [[requirement]]
 id = 'EU-0016-108'
@@ -169,7 +169,7 @@ rationale = 'A program too heavy to play live still makes music.'
 id = 'EU-0016-115'
 level = 'MUST'
 polarity = 'required'
-statement = 'A missed transform deadline or exhausted event capacity MUST suspend the affected route and release the notes it owns.'
+statement = 'A missed transform deadline or exhausted event capacity MUST suspend the affected route.'
 binds_to = 'system'
 rationale = 'An overloaded transform stops cleanly instead of blocking playback.'
 
@@ -188,3 +188,84 @@ polarity = 'required'
 statement = "A recording of transformed output MUST hold the transform's identity, parameters, seed, route generation and timing mapping."
 binds_to = 'system'
 rationale = 'An offline replay reproduces the recorded output.'
+
+[[requirement]]
+id = 'EU-0016-130'
+level = 'MUST'
+polarity = 'required'
+statement = "After a move of execution site, a route's transforms MUST start with clean state."
+binds_to = 'system'
+rationale = 'A move is a clean restart, not a transfer of a held performance.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-107' } ]
+
+[[requirement]]
+id = 'EU-0016-131'
+level = 'MUST'
+polarity = 'required'
+statement = "When a route's transform stops, for any reason, the session host MUST release each note the route owns wherever its instrument is still reachable."
+binds_to = 'system'
+rationale = 'A crashed, suspended or overloaded transform never leaves a note sounding.'
+
+[[requirement]]
+id = 'EU-0016-132'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transform MUST accept one timestamped event, its declared typed parameters and bounded state, and return validated events or a typed diagnostic.'
+binds_to = 'system'
+rationale = 'Every transform has the same contract, so the session host can run and check any of them.'
+
+[[requirement]]
+id = 'EU-0016-133'
+level = 'MUST'
+polarity = 'required'
+statement = "A transform's compile result MUST hold the digests of its source, library and runtime, its parameters, the event classes it supports, its greatest output expansion inferred from the validated program, and its resource needs."
+binds_to = 'system'
+rationale = 'Admission, recording and replay read what a transform is and needs from one record.'
+
+[[requirement]]
+id = 'EU-0016-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'The route editor MUST let a person preview a transform against recorded input before they commit the route.'
+binds_to = 'system'
+rationale = 'A musician tries a transform on recorded input before it plays live.'
+
+[[requirement]]
+id = 'EU-0016-135'
+level = 'MUST'
+polarity = 'required'
+statement = "The route editor MUST show a transform's destinations and measured readiness before the route is committed."
+binds_to = 'system'
+rationale = 'A musician knows where a transform sends its events and whether it can play in time.'
+
+[[requirement]]
+id = 'EU-0016-136'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transform that projects chromatic input onto C major by nearest note, with a note equally far from two scale notes going to the lower one, and maps the result onto D Dorian keeping scale degree and octave, MUST map MIDI notes 60 through 71 to 62, 62, 64, 64, 65, 67, 67, 69, 69, 71, 71 and 72.'
+binds_to = 'system'
+rationale = 'The example is a test whose inputs and expected results are fixed.'
+
+[[requirement]]
+id = 'EU-0016-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'The projection, the change of tonic and the change of mode MUST be separate typed operations.'
+binds_to = 'system'
+rationale = 'Each step of a transform can be changed or checked on its own.'
+
+[[requirement]]
+id = 'EU-0016-138'
+level = 'MUST'
+polarity = 'required'
+statement = 'The interface MUST show the projection rule and the source and target tonic and mode of each transform that projects onto a scale.'
+binds_to = 'system'
+rationale = 'A musician sees what rule changes the notes they play.'
+
+[[requirement]]
+id = 'EU-0016-139'
+level = 'MUST'
+polarity = 'required'
+statement = 'The interface MUST let a musician choose an explicit projection rule other than nearest note.'
+binds_to = 'system'
+rationale = 'A musician picks how notes between scale notes move.'
