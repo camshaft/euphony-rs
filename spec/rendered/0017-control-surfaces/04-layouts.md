@@ -129,3 +129,15 @@ A surface's snapshot and the changes that follow it MUST share one revision boun
 ### EU-0017-068 {#EU-0017-068}
 
 An assistant MAY arrange a surface's layout.
+
+### EU-0017-154 {#EU-0017-154}
+
+The desktop interface, the browser companion, every surface and the assistant interface MUST share one set of layout records.
+
+### EU-0017-155 {#EU-0017-155}
+
+Applying a layout MUST return the committed revision or one of these refusals: denied, stale revision, unknown target, incompatible capability, invalid mapping or unverified panel.
+
+### EU-0017-156 {#EU-0017-156}
+
+A shared layout template MUST NOT carry or grant a pairing.
