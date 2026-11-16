@@ -4,8 +4,11 @@ Every change a person or an assistant makes to a project is a command. Commands 
 A batch names the project, the branch it changes, the revision its sender expects to change on that
 branch, a key that identifies the batch across retries, and the actor that sends it. The actor is the
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
-before it reads any batch of that actor. euphony also refuses as denied a batch whose caller may not
-take its commands on the branch it names, before it checks the batch's expected revision or its key.
+before it reads any batch of that actor. euphony refuses as invalid input a batch that doesn't name
+an actor it can compare with the caller, and a batch of the caller that leaves out its project, its
+branch, its expected revision or its idempotency key. euphony also refuses as denied a batch whose
+caller may not take its commands on the branch it names, before it checks the batch's expected
+revision or its key.
 It refuses a batch that names a project that doesn't exist in the same way, so that a refusal doesn't
 tell a caller whether the project exists. euphony then refuses as invalid input a batch whose expected
 revision isn't in the history of the branch it names. euphony answers that check with a fixed number
@@ -40,6 +43,10 @@ A batch MUST name its project, the branch it changes, its expected revision, its
 ### EU-0004-049 {#EU-0004-049}
 
 Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
+
+### EU-0004-063 {#EU-0004-063}
+
+Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, its branch, its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input.
 
 ### EU-0004-056 {#EU-0004-056}
 
