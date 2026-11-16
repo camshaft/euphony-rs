@@ -5,7 +5,7 @@ problem = """\
   A cache that keys a result on less than every input of its calculation serves audio rendered from \
   other inputs, and a host that trusts a result by its name alone plays corrupt or foreign audio."""
 motivation = """\
-  Two identities, one for the requested calculation and one for the bytes of its result, let any \
+  Two identities, one for the requested calculation and one for its result, let any \
   worker render any request, let equal requests render once, and let the host accept a result only \
   once it is checked."""
 prose = """
@@ -14,7 +14,8 @@ version, the digest of each source, the transforms of each region, the tempo map
 the routing, the descriptor of every upstream calculation, the version of each processor and of its
 parameters, the sample rate, the channel layout, the precision of each internal stage, each random
 seed, the render mode, the identity of the checkpoint the calculation starts from, and the requested
-range with its preroll and its tails. A result is identified by a cryptographic digest of its bytes. A render
+range with its preroll and its tails. A result is an item of the content store, and its identity is
+the digest RFC 0008 computes for that item. A render
 profile names one executable and numerical behavior, since different processors, vector
 instructions and browser builds don't yield the same floating-point bytes; workers share a profile
 only where they yield the same bytes for the same descriptor. The repeatability suite of a render
@@ -49,21 +50,13 @@ binds_to = 'system'
 rationale = 'The same calculation has the same descriptor wherever and whenever it runs.'
 
 [[requirement]]
-id = 'EU-0006-014'
-level = 'MUST'
-polarity = 'required'
-statement = 'Each result MUST be identified by a cryptographic digest of its bytes.'
-binds_to = 'system'
-rationale = 'A result is checked against its identity wherever it is read.'
-
-[[requirement]]
 id = 'EU-0006-015'
 level = 'MUST'
 polarity = 'required'
 statement = 'A request whose descriptor and render profile equal those of a held validated result MUST be served from that result without rendering again.'
 binds_to = 'system'
 rationale = 'Equal calculations render once.'
-relations = [ { kind = 'depends_on', target = 'EU-0006-011' }, { kind = 'depends_on', target = 'EU-0006-014' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0006-011' } ]
 
 [[requirement]]
 id = 'EU-0006-016'
@@ -145,4 +138,3 @@ polarity = 'required'
 statement = 'A result MUST be accepted only once its descriptor, format, length and digest pass their checks.'
 binds_to = 'system'
 rationale = 'A corrupt or stale result never enters the cache.'
-relations = [ { kind = 'depends_on', target = 'EU-0006-014' } ]
