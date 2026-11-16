@@ -9,8 +9,8 @@ range with its preroll and its tails. A result is identified by a digest of its 
 profile names one executable and numerical behavior, since different processors, vector
 instructions and browser builds don't yield the same floating-point bytes; workers share a profile
 only where they yield the same bytes for the same descriptor. The manifest of a revision maps each
-descriptor the revision needs to one validated result and pins that result. A digest establishes a
-result's identity, not trust in it.
+descriptor the revision needs to at most one validated result and pins that result. A digest
+establishes a result's identity, not trust in it.
 
 ### EU-0006-011 {#EU-0006-011}
 
@@ -54,7 +54,7 @@ An export MUST use exactly one render profile.
 
 ### EU-0006-021 {#EU-0006-021}
 
-The manifest of a revision MUST pin exactly one validated result for each descriptor the revision needs.
+The manifest of a revision MUST pin at most one validated result for each descriptor the revision needs.
 
 ### EU-0006-022 {#EU-0006-022}
 
