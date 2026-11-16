@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/05-retention.md#EU-0013-075"
+
+[[spec]]
+level = "MUST"
+quote = "A fetch MUST NOT return silence in place of a missing object."

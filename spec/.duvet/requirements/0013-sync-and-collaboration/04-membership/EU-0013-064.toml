@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/04-membership.md#EU-0013-064"
+
+[[spec]]
+level = "MUST"
+quote = "Revocation MUST stop new transfers to and commands from the revoked peer once the applying peer learns of it."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/04-membership.md#EU-0013-065"
+
+[[spec]]
+level = "MUST"
+quote = "Revocation MUST rotate the keys of objects made after it."

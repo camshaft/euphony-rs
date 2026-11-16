@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/05-retention.md#EU-0013-088"
+
+[[spec]]
+level = "MAY"
+quote = "The owner MAY back up a project's small history and manifests to a destination they choose."
