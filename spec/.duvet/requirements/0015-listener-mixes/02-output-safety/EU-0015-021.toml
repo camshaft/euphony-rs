@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-021"
+
+[[spec]]
+level = "MUST"
+quote = "A performer's monitoring of their own instrument MUST play from the computer that records that instrument."

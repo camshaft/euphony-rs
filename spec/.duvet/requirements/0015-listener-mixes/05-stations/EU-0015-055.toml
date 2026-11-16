@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-055"
+
+[[spec]]
+level = "SHOULD"
+quote = "A station SHOULD connect to the session over a wired network."

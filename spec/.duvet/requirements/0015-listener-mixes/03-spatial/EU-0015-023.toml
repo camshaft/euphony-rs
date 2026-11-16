@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-023"
+
+[[spec]]
+level = "MUST"
+quote = "The identity, source, position, trajectory, spread, gain and spatial automation of each sound object MUST be versioned data of the project, placed on its sample timeline."

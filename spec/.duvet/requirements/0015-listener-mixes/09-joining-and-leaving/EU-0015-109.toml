@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-109"
+
+[[spec]]
+level = "MUST"
+quote = "When a station leaves, the host MUST make its sink unavailable and stop calculating its output."

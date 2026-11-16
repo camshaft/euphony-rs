@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-058"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST treat a station's network advertisement as an untrusted hint."

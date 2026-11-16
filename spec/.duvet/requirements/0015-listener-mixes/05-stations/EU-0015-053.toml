@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-053"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT give a station any record other than its own sink's stream, meters, mix parameters, mix revision and control map."

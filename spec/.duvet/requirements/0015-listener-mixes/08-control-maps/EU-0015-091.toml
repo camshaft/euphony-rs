@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-091"
+
+[[spec]]
+level = "MUST"
+quote = "Control maps MUST be kept in the project's session configuration, keyed by station identity and listener."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-046"
+
+[[spec]]
+level = "MUST"
+quote = "A station's hardware description MUST list each of its encoders, switches and light groups by a stable identity."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-054"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT accept a station's command for anything other than its own sink's mix parameters."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-042"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST calculate a station's sink mix as it calculates every other sink mix."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-086"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to set a station's control map from the desktop interface, a phone or an assistant with the same command."

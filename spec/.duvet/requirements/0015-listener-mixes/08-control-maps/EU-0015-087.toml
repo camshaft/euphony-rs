@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-087"
+
+[[spec]]
+level = "MAY"
+quote = "A person MAY bind a station control by a learn gesture on the station."

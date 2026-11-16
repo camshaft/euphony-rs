@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-059"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT address audio or meters to a station that isn't paired."

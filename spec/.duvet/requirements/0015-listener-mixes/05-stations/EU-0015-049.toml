@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-049"
+
+[[spec]]
+level = "MUST"
+quote = "Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and jack state."

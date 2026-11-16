@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-026"
+
+[[spec]]
+level = "MUST"
+quote = "The playback layout of a spatial mix MUST be a property of the sink that plays it."

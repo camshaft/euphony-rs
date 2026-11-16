@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-066"
+
+[[spec]]
+level = "MUST"
+quote = "Pairing MUST bind the station to one sink and that sink's gain limit."

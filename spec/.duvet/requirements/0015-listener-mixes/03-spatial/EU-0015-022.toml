@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-022"
+
+[[spec]]
+level = "MUST"
+quote = "The project MUST hold speaker beds and independently positioned sound objects."

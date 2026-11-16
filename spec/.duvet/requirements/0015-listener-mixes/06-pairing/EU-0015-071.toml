@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-071"
+
+[[spec]]
+level = "MUST"
+quote = "By default, a station's audio stream MUST be encrypted so that only the paired station can decode it."

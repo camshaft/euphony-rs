@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-061"
+
+[[spec]]
+level = "MUST"
+quote = "During pairing, the owner's desktop or phone MUST show the station's key fingerprint and a short confirmation number."

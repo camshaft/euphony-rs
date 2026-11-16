@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/04-licensed-delivery.md#EU-0015-038"
+
+[[spec]]
+level = "MUST"
+quote = "Spatial mixing, object history and public export formats MUST stay usable without any proprietary integration."
