@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-064"
+
+[[spec]]
+level = "MUST"
+quote = "Where the expected revision of a batch is neither the head of the branch that the batch names nor a revision that this head follows, directly or through other revisions, euphony MUST refuse the batch as invalid input after the check of EU-0004-056 and before it checks the batch's idempotency key."

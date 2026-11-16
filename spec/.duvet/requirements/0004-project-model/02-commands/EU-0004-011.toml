@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-011"
 
 [[spec]]
 level = "MUST"
-quote = "A batch MUST name its project, its expected revision, its idempotency key and its actor."
+quote = "A batch MUST name its project, the branch it changes, its expected revision, its idempotency key and its actor."
