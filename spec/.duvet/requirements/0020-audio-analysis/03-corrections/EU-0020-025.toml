@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-025"
+
+[[spec]]
+level = "MUST"
+quote = "Each correction MUST record the person or the assistant that made it."

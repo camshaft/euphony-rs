@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-069"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse a streaming method whose declaration lacks its context, its lookahead or its delay."

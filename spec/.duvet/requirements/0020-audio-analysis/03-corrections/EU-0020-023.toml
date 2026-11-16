@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-023"
+
+[[spec]]
+level = "MUST"
+quote = "A result MUST NOT change the music of a project unless the musician applies it."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-053"
+
+[[spec]]
+level = "MUST"
+quote = "A consumer MUST NOT turn a candidate key or meter into a fixed constraint until someone chooses one candidate."

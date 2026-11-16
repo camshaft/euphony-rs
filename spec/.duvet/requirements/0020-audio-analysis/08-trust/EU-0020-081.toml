@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-081"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT reveal to a reader whether a result exists that the reader cannot read."

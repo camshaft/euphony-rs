@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-047"
+
+[[spec]]
+level = "MUST"
+quote = "A reader that cannot hold a subscription MUST be able to resume from a durable continuation instead of polling."

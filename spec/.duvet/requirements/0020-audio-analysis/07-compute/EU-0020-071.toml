@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-071"
+
+[[spec]]
+level = "SHOULD"
+quote = "Musical inference SHOULD run offline while recording continues."

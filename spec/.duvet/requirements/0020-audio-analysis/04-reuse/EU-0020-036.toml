@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-036"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT reuse the result of a window inside a larger request unless its method declares that its results over a window depend on that window alone."

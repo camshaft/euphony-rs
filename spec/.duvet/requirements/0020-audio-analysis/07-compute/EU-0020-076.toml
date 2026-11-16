@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-076"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT impose a fixed limit on the number of workers, the duration of audio or the number of jobs."

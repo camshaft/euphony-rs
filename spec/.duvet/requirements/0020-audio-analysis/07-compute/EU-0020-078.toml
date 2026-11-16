@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-078"
+
+[[spec]]
+level = "MUST"
+quote = "A browser MUST run a measurement of its own material only where its runtime has passed the conformance tests."

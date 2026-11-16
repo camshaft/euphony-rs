@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/01-scope.md#EU-0020-005"
+
+[[spec]]
+level = "MUST"
+quote = "Each measurement MUST state the definition it computes and the revision of that definition."

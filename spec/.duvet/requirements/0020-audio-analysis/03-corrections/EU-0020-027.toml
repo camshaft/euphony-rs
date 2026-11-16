@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-027"
+
+[[spec]]
+level = "MUST"
+quote = "The command that applies an accepted interpretation MUST be previewable before it is applied."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-089"
+
+[[spec]]
+level = "MUST"
+quote = "A local analysis MUST NOT ask for an approval beyond the owner's existing device trust and collaboration boundaries."

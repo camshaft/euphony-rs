@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-024"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST keep a method's output, each correction of it and the accepted interpretation as distinct records."

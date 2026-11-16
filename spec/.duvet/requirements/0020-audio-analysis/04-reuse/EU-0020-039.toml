@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-039"
+
+[[spec]]
+level = "MUST"
+quote = "A stale result MUST remain inspectable and marked as stale."
