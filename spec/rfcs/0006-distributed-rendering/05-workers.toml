@@ -132,3 +132,11 @@ polarity = 'forbidden'
 statement = 'An accepted render job MUST NOT be dropped for want of capacity.'
 binds_to = 'system'
 rationale = 'An accepted job waits durably until a worker can take it.'
+
+[[requirement]]
+id = 'EU-0006-079'
+level = 'MUST'
+polarity = 'required'
+statement = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, or the connection to that worker closes."
+binds_to = 'system'
+rationale = 'A lease ends on an event and never on an expiry timer, so a slow worker keeps its work and the work of a lost worker moves at once.'

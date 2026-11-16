@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-079"
+
+[[spec]]
+level = "MUST"
+quote = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, or the connection to that worker closes."
