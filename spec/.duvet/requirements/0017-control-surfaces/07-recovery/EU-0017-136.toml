@@ -2,4 +2,4 @@ target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-136"
 
 [[spec]]
 level = "MUST"
-quote = "A reconnected surface MUST resume changes only from a verified compatible cursor, and replace its local view otherwise."
+quote = "A reconnected surface MUST resume changes only from a verified compatible cursor."

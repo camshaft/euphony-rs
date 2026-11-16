@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-164"
+
+[[spec]]
+level = "MUST"
+quote = "When a surface is lost, the session host MUST close each gesture the surface owns."

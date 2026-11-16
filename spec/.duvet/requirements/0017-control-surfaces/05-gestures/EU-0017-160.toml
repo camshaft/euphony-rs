@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-160"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST show a layout edit that waits for a gesture's release as waiting."

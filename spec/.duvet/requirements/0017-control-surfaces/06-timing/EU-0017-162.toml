@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-162"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST keep the original events of a refused scheduled performance for inspection."

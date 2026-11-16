@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-156"
+
+[[spec]]
+level = "MUST"
+quote = "A shared layout template MUST NOT carry or grant a pairing."

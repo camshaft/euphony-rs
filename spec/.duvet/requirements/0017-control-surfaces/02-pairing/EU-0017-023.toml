@@ -2,4 +2,4 @@ target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-023"
 
 [[spec]]
 level = "MUST"
-quote = "An unpaired device MUST NOT receive anything beyond the public connection information."
+quote = "A device that is neither paired nor joined by link MUST NOT receive anything beyond the public connection information."

@@ -2,4 +2,4 @@ target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-110"
 
 [[spec]]
 level = "MUST"
-quote = "A scheduled sample-accurate performance that misses its deadline MUST be refused, with the gap recorded and its original events kept for inspection."
+quote = "A scheduled sample-accurate performance that misses its deadline MUST be refused."
