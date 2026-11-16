@@ -125,6 +125,15 @@ rationale = "Deleted data stays deleted."
 relations = [ { kind = 'depends_on', target = 'EU-0021-111' } ]
 
 [[requirement]]
+id = 'EU-0021-173'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The service MUST NOT restore from a backup any data of an identity that has a tombstone."
+binds_to = 'system'
+rationale = "A backup copy kept until its expiry can't bring deleted data back."
+relations = [ { kind = 'depends_on', target = 'EU-0021-111' } ]
+
+[[requirement]]
 id = 'EU-0021-113'
 level = 'MUST'
 polarity = 'required'

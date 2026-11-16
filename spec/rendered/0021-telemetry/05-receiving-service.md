@@ -62,6 +62,10 @@ The service MUST record a tombstone for an identity before it deletes the identi
 
 The service MUST refuse every later upload, retry or grouping job of an identity that has a tombstone.
 
+### EU-0021-173 {#EU-0021-173}
+
+The service MUST NOT restore from a backup any data of an identity that has a tombstone.
+
 ### EU-0021-113 {#EU-0021-113}
 
 The receipt of a deletion MUST say which stores are deleted and which still hold a copy, with the time each remaining copy ends.
