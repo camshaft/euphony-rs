@@ -176,3 +176,13 @@ polarity = 'forbidden'
 statement = 'A deletion by the owner MUST NOT delete a copy that a collaborator holds.'
 binds_to = 'system'
 rationale = 'What a collaborator received stays theirs.'
+
+[[requirement]]
+id = 'EU-0008-139'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each computer MUST release its barrier for an intent once the recorded outcome of that intent reaches it.'
+binds_to = 'system'
+rationale = 'A settled deletion never holds back new references.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-101' } ]
+

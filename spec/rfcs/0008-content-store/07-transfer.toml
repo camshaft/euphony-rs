@@ -90,3 +90,4 @@ polarity = 'required'
 statement = 'Each connection of the store MUST be authenticated and encrypted on every network.'
 binds_to = 'system'
 rationale = 'Content between the computers of the owner is private on any network.'
+
