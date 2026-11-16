@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-058"
+
+[[spec]]
+level = "MUST"
+quote = "Video decoding on the computer that plays the audio MUST count against that computer's measured capacity for audio work."

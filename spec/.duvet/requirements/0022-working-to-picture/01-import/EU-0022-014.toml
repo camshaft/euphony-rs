@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-014"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST derive thumbnails of the video at several zoom levels for its track."

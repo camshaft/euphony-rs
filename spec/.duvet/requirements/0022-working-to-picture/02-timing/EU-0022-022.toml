@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-022"
+
+[[spec]]
+level = "MUST"
+quote = "The track of a video whose frame rate varies MUST show that the rate varies."

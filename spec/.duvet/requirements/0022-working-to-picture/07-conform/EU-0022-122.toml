@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-122"
+
+[[spec]]
+level = "MUST"
+quote = "The project MUST keep each change list, so that a conform can be compared and repeated."

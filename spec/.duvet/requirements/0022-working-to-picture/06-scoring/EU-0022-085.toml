@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-085"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to accept each candidate cut marker at or above a confidence threshold they set for the project."

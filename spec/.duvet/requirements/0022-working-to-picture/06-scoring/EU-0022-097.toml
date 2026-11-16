@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-097"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST number cues by default by reel and music, such as 1M1 for the first cue of reel 1, where reels are known, and as M1, M2 and on otherwise."

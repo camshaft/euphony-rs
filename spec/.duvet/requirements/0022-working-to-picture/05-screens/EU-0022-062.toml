@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-062"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to show the picture full screen on a second display of the same computer."

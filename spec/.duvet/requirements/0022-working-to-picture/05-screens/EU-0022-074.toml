@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-074"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST check a link's picture option before it delivers each frame to its participant."

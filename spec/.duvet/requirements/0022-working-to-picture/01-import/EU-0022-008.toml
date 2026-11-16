@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-008"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST refuse, with the reason, a stream whose presentation times are missing or go backward."

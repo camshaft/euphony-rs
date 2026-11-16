@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-007"
+
+[[spec]]
+level = "MUST"
+quote = "Audio decoded from a lossy compressed stream MUST be marked as coming from a lossy source."

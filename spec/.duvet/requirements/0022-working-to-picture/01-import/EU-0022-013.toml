@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-013"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST be able to show any frame of an imported video from its scrub copy without decoding any other frame."

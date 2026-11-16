@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-049"
+
+[[spec]]
+level = "MUST"
+quote = "Looping MUST snap the ends of a loop to frames by default."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-051"
+
+[[spec]]
+level = "MUST"
+quote = "Scrubbing MUST show the frame for the scrub position while the scrubbed sound plays."

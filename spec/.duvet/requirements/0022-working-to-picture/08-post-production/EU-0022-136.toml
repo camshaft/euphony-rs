@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-136"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST find a sound effect by words, by category and by similar sound."

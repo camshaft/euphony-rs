@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-045"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to adjust a display's offset in fractions of a frame."

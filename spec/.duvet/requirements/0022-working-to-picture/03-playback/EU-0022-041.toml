@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-041"
+
+[[spec]]
+level = "MUST"
+quote = "At each display refresh during playback, a screen MUST show the frame whose interval holds the sample heard at that refresh's presentation time."

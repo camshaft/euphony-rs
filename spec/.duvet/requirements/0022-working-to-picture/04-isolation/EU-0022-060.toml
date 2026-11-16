@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-060"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to move the picture from the computer that plays the audio to another of their computers."

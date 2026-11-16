@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-140"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to define a delivery with each field this section lists."

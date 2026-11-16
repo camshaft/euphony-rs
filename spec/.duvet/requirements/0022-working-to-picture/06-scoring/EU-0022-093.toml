@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-093"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to preview each candidate tempo map before applying it."

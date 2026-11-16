@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-027"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to read every position as timecode at the project's timecode rate."

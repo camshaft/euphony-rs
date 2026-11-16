@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-064"
+
+[[spec]]
+level = "MUST"
+quote = "Each computer that shows the picture MUST decode it from its own copy of the video."

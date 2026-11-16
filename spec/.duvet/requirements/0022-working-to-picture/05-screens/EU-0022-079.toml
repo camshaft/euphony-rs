@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-079"
+
+[[spec]]
+level = "MUST"
+quote = "The dialog that makes a link with the picture option MUST say that revoking the link can't recall frames already received."

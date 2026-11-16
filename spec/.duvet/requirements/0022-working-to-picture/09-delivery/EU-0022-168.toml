@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-168"
+
+[[spec]]
+level = "MUST"
+quote = "Sending an export to another person MUST take the owner's approval of what leaves their computers."

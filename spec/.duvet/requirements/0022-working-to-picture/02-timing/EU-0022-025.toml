@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-025"
+
+[[spec]]
+level = "MUST"
+quote = "Drop-frame labeling MUST skip exactly the labels this section states."

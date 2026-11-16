@@ -1,0 +1,243 @@
+[section]
+anchor = 'scoring'
+title = 'Scoring tools'
+problem = "A composer writes each cue to the cuts and moments of the picture, and without marks that stay on their frames, tempos fitted to them, visual countdowns and a list of every cue, the work moves to other programs and is copied between them by hand."
+motivation = "Picture markers, suggested cuts, tempo fitting with each miss shown, streamers, punches, a click, cues and a cue sheet in the same project let the composer spot, write and list a score where its sound is."
+prose = """
+A composer marks the cuts and moments the music must hit, chooses a tempo that puts those moments on
+beats, and writes each cue to them. A picture marker holds its position and lock, its kind, a
+priority for a hit, text and a color. Its kind is a cut, a hit, a sync point, a cue start or a cue
+end, and the priority of a hit is must hit or may miss. Cut detection finds hard cuts and gradual
+transitions, such as dissolves and fades, in the picture. Tempo fitting takes a range, the hits in
+it, the measure and beat each hit falls on or the nearest beat, and its constraints: one constant
+tempo, or tempo changes only at chosen bars, a range of tempos and the meter. The miss of a hit is
+the time between the hit and its beat. A cue holds its number, title, start and end, the tracks and
+regions it covers, its usage, such as background or visual, and the names and shares of its
+composer and publisher. A streamer is a vertical line drawn over the picture that moves from the
+left edge to the right over its length and ends on its hit's frame, where a punch, a bright circle,
+shows for one frame. A countdown pop is a one-frame tone two seconds before the first frame of
+action."""
+
+[[requirement]]
+id = 'EU-0022-082'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to place a picture marker of each kind this section lists."
+binds_to = 'system'
+rationale = "Spotting a picture records every cut, hit and cue boundary."
+
+[[requirement]]
+id = 'EU-0022-083'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST suggest the picture's cuts as candidate cut markers, each with its confidence."
+binds_to = 'system'
+rationale = "The composer doesn't mark every cut by hand."
+
+[[requirement]]
+id = 'EU-0022-084'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to accept a candidate cut marker with one action."
+binds_to = 'system'
+rationale = "Each suggestion costs one action to keep."
+
+[[requirement]]
+id = 'EU-0022-085'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to accept each candidate cut marker at or above a confidence threshold they set for the project."
+binds_to = 'system'
+rationale = "A long picture's cuts are accepted at once."
+
+[[requirement]]
+id = 'EU-0022-086'
+level = 'MUST'
+polarity = 'required'
+statement = "Cut detection MUST find hard cuts and gradual transitions."
+binds_to = 'system'
+rationale = "Dissolves and fades are moments the music hits too."
+
+[[requirement]]
+id = 'EU-0022-087'
+level = 'MUST'
+polarity = 'required'
+statement = "Analysis of a video MUST find its black frames and its countdown pop."
+binds_to = 'system'
+rationale = "The start offset can be checked against the countdown."
+
+[[requirement]]
+id = 'EU-0022-088'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to fit a tempo map to the hits of a range under the constraints this section lists."
+binds_to = 'system'
+rationale = "The composer finds a tempo that puts the hits on beats."
+
+[[requirement]]
+id = 'EU-0022-089'
+level = 'MUST'
+polarity = 'required'
+statement = "Tempo fitting MUST return candidate tempo maps ranked by their largest miss and then by their mean miss."
+binds_to = 'system'
+rationale = "The best candidates come first."
+
+[[requirement]]
+id = 'EU-0022-090'
+level = 'MUST'
+polarity = 'required'
+statement = "Each candidate tempo map MUST show each hit's miss in milliseconds and in frames."
+binds_to = 'system'
+rationale = "The composer sees what each choice costs before applying it."
+
+[[requirement]]
+id = 'EU-0022-091'
+level = 'MUST'
+polarity = 'required'
+statement = "A fit to one constant tempo MUST find the tempo and the first downbeat position whose largest miss is the smallest."
+binds_to = 'system'
+rationale = "A constant tempo misses its hits by as little as possible."
+
+[[requirement]]
+id = 'EU-0022-092'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a fit allows a tempo change at each hit, each segment MUST take the tempo that puts its hit exactly on its beat."
+binds_to = 'system'
+rationale = "A fit that may change tempo at every hit misses none of them."
+
+[[requirement]]
+id = 'EU-0022-093'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to preview each candidate tempo map before applying it."
+binds_to = 'system'
+rationale = "The composer listens to a candidate with the picture before choosing it."
+
+[[requirement]]
+id = 'EU-0022-094'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST list the tempos of a range at which most hits fall on beats or subdivisions within a tolerance, one frame by default."
+binds_to = 'system'
+rationale = "A composer chooses among tempos as a click table lists them."
+
+[[requirement]]
+id = 'EU-0022-095'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a candidate tempo map MUST change the tempo map within its range alone."
+binds_to = 'system'
+rationale = "The music outside the range stays as it was."
+
+[[requirement]]
+id = 'EU-0022-096'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a candidate tempo map MUST be one command that can be undone."
+binds_to = 'system'
+rationale = "The composer can try a tempo and go back."
+
+[[requirement]]
+id = 'EU-0022-097'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST number cues by default by reel and music, such as 1M1 for the first cue of reel 1, where reels are known, and as M1, M2 and on otherwise."
+binds_to = 'system'
+rationale = "Cues carry the numbers a production uses."
+
+[[requirement]]
+id = 'EU-0022-098'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to export a cue sheet that lists each cue's number, title, start and end timecode, duration in minutes and seconds, usage, composer and publisher."
+binds_to = 'system'
+rationale = "A production's music cue sheet comes from the project."
+
+[[requirement]]
+id = 'EU-0022-099'
+level = 'MUST'
+polarity = 'required'
+statement = "A cue sheet MUST export both as a table that spreadsheet programs read and as a printable document."
+binds_to = 'system'
+rationale = "Productions file cue sheets in both forms."
+
+[[requirement]]
+id = 'EU-0022-100'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Euphony MUST NOT fill in the names or shares of a cue's composer or publisher."
+binds_to = 'system'
+rationale = "Euphony computes the timing, and the person supplies the names and shares."
+
+[[requirement]]
+id = 'EU-0022-101'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to give a hit a streamer."
+binds_to = 'system'
+rationale = "A conductor or a player sees each hit coming."
+
+[[requirement]]
+id = 'EU-0022-102'
+level = 'MUST'
+polarity = 'required'
+statement = "A streamer MUST be two seconds long by default."
+binds_to = 'system'
+rationale = "Two seconds is the warning a player commonly expects."
+
+[[requirement]]
+id = 'EU-0022-103'
+level = 'MUST'
+polarity = 'required'
+statement = "A streamer MUST end on its hit's frame, where a punch shows for one frame."
+binds_to = 'system'
+rationale = "The punch marks the frame the music hits."
+
+[[requirement]]
+id = 'EU-0022-104'
+level = 'MUST'
+polarity = 'required'
+statement = "The colors of streamers MUST tell a warning from a cue's start and from its end."
+binds_to = 'system'
+rationale = "A player reads what each streamer announces."
+
+[[requirement]]
+id = 'EU-0022-105'
+level = 'MUST'
+polarity = 'required'
+statement = "Streamers and punches MUST show in the picture window, on a second display and on another of the owner's computers that shows the picture."
+binds_to = 'system'
+rationale = "Players on second displays and the owner's other computers see the same countdowns."
+
+[[requirement]]
+id = 'EU-0022-106'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to show a timecode overlay on the picture."
+binds_to = 'system'
+rationale = "A video that doesn't print its timecode still shows it."
+
+[[requirement]]
+id = 'EU-0022-107'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An export MUST NOT carry a streamer, a punch or the timecode overlay."
+binds_to = 'system'
+rationale = "Every export keeps the picture unchanged."
+
+[[requirement]]
+id = 'EU-0022-108'
+level = 'MUST'
+polarity = 'required'
+statement = "The click MUST follow the fitted tempo, with a count-in before each cue."
+binds_to = 'system'
+rationale = "Players record to the tempo that puts the hits on their beats."
+
+[[requirement]]
+id = 'EU-0022-109'
+level = 'MAY'
+polarity = 'required'
+statement = "A person MAY add warning clicks before a cue."
+binds_to = 'system'
+rationale = "Some players want a warning before the count-in."

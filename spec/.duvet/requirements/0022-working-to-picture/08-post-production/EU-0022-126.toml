@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-126"
+
+[[spec]]
+level = "MUST"
+quote = "Foley and background tracks MUST feed the effects stem by default."

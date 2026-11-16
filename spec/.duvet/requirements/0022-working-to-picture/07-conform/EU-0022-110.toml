@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-110"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to make a change list from the editor's lists of both cuts."

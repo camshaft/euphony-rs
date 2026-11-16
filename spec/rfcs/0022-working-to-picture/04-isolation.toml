@@ -1,0 +1,74 @@
+[section]
+anchor = 'isolation'
+title = 'Keeping the sound safe from the picture'
+problem = "Decoding video takes processing time and can fail, and where it delays or stops the work that plays and records the sound, a take is lost or the musician listens to a different sound."
+motivation = "Keeping video decoding apart from the sound, counting its cost, and falling back to the lighter scrub copy where the sound suffers let the picture slow down or fail while the sound never does."
+prose = """
+Video decoding on a computer runs apart from the work that plays and records the sound, and reads
+only the session's published positions and the video's items in the local store. On the computer
+that plays the audio, it runs below the priority of the audio work. A missed audio deadline is a
+buffer of audio that isn't ready when the audio device needs it, as RFC 0021 measures locally."""
+
+[[requirement]]
+id = 'EU-0022-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Showing video MUST NOT cause a missed audio deadline on the computer that plays the audio."
+binds_to = 'system'
+rationale = "The picture never costs the musician a clean take."
+
+[[requirement]]
+id = 'EU-0022-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Showing video MUST NOT interrupt a recording."
+binds_to = 'system'
+rationale = "A take survives anything that happens to the picture."
+
+[[requirement]]
+id = 'EU-0022-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Showing video MUST NOT change the sound that the computer plays."
+binds_to = 'system'
+rationale = "The musician listens to the same mix with the picture shown or hidden."
+
+[[requirement]]
+id = 'EU-0022-057'
+level = 'MUST'
+polarity = 'required'
+statement = "A failure of video decoding MUST leave recording and the audio output running."
+binds_to = 'system'
+rationale = "A decoder that crashes takes only the picture down."
+
+[[requirement]]
+id = 'EU-0022-058'
+level = 'MUST'
+polarity = 'required'
+statement = "Video decoding on the computer that plays the audio MUST count against that computer's measured capacity for audio work."
+binds_to = 'system'
+rationale = "Work admitted to that computer leaves room for the picture."
+
+[[requirement]]
+id = 'EU-0022-059'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead and say so."
+binds_to = 'system'
+rationale = "The lighter copy keeps the picture without costing the sound."
+
+[[requirement]]
+id = 'EU-0022-060'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to move the picture from the computer that plays the audio to another of their computers."
+binds_to = 'system'
+rationale = "The audio computer can be left to the sound alone."
+
+[[requirement]]
+id = 'EU-0022-061'
+level = 'MUST'
+polarity = 'required'
+statement = "On each supported computer, a playback and recording test with video playing MUST show no more missed audio deadlines than the same test without video."
+binds_to = 'system'
+rationale = "The safety of the sound is measured on every computer euphony supports."

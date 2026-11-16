@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-127"
+
+[[spec]]
+level = "MUST"
+quote = "A project MUST be able to hold a music-and-effects bus that sums the music and effects stems."

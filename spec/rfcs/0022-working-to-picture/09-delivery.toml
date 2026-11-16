@@ -1,0 +1,265 @@
+[section]
+anchor = 'delivery'
+title = 'Mixing and delivery'
+problem = "Video editors and broadcasters require separate mixes that add up to the full mix, files that meet a loudness specification, and files and exchange projects their own programs place at the right time, and a delivery that misses any of these is sent back."
+motivation = "A delivery record, an explicit check of every sum with each break of it handled, loudness measured on the files themselves against cited profiles, and exports that keep the picture and the timecode let a mixer deliver what each client asks and know it passes."
+prose = """
+A delivery holds the stems to make, by default dialogue, music, effects, music-and-effects and the
+full mix, each as a set of stem buses; its channel layout, such as stereo, 5.1 or 7.1, or a spatial
+bed; its sample rate and bit depth; its file format, by default an audio file whose metadata holds
+its starting timecode; a file naming pattern; its loudness profile; and the program's range, from
+its first frame of action to its last, with any head and tail pops its specification asks for.
+
+The sums of a delivery are explicit: dialogue, music and effects add up to the full mix, and
+music-and-effects is the sum of music and effects, a separate file that isn't added to the first sum
+a second time. Three things break the sums. A send that reaches a return of another stem mixes two
+stems. Gain-only processing on the main output, such as a compressor or a limiter, changes the full
+mix by a gain that the stems don't carry. Other nonlinear processing on the main output, such as
+saturation or clipping, can't be reproduced on each stem.
+
+A loudness profile is versioned data that names its source and version and sets targets for
+integrated loudness, true peak and loudness range. The built-in profiles are EBU R128, the European
+broadcast profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP, and
+ATSC A/85, the North American broadcast profile, an integrated loudness of -24 LKFS. Integrated
+loudness and true peak are measured as ITU-R BS.1770 states, and loudness range as EBU Tech 3342
+states. Sending an export to another person follows the approval of what leaves the owner's
+computers that RFC 0001 states.
+
+Exchange reaches two kinds of video editing program. The first kind opens an open project
+interchange format, one with a published specification and a public software development kit, which
+carries each track's clips with their handles, fades and clip gain at their timecode. The second kind
+doesn't open that format without another program, and opens its own timeline description file, which
+the adapters of an open-source timeline interchange format write. Both kinds write edit decision
+lists, which serve conform."""
+
+[[requirement]]
+id = 'EU-0022-140'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to define a delivery with each field this section lists."
+binds_to = 'system'
+rationale = "A delivery states everything a client's specification asks for."
+
+[[requirement]]
+id = 'EU-0022-141'
+level = 'MUST'
+polarity = 'required'
+statement = "One export MUST render every stem of a delivery from the same revision of the project and the same numerical profile."
+binds_to = 'system'
+rationale = "The stems of one delivery can add up."
+
+[[requirement]]
+id = 'EU-0022-142'
+level = 'MUST'
+polarity = 'required'
+statement = "The delivery check MUST test that dialogue, music and effects add up to the full mix within the profile's numerical tolerance."
+binds_to = 'system'
+rationale = "The separate mixes rebuild the full mix."
+
+[[requirement]]
+id = 'EU-0022-143'
+level = 'MUST'
+polarity = 'required'
+statement = "The delivery check MUST test that music-and-effects equals music plus effects within the profile's numerical tolerance."
+binds_to = 'system'
+rationale = "The mix without dialogue is exactly the music and the effects."
+
+[[requirement]]
+id = 'EU-0022-144'
+level = 'MUST'
+polarity = 'required'
+statement = "A delivery MUST call its stems complete only while its check holds."
+binds_to = 'system'
+rationale = "A client never receives stems that are called complete and don't add up."
+
+[[requirement]]
+id = 'EU-0022-145'
+level = 'MUST'
+polarity = 'required'
+statement = "A failed delivery check MUST say which sum failed, by how much and where."
+binds_to = 'system'
+rationale = "The mixer can find and fix what breaks the sum."
+
+[[requirement]]
+id = 'EU-0022-146'
+level = 'MUST'
+polarity = 'required'
+statement = "The delivery check MUST report each send that reaches a return of another stem, with its track, the return and the stems."
+binds_to = 'system'
+rationale = "A shared reverb that mixes two stems is found."
+
+[[requirement]]
+id = 'EU-0022-147'
+level = 'MUST'
+polarity = 'required'
+statement = "Gain-only processing on the main output MUST apply to each stem the gain it computes from the full mix, sample by sample and channel by channel."
+binds_to = 'system'
+rationale = "The processed stems add up to the processed full mix."
+
+[[requirement]]
+id = 'EU-0022-148'
+level = 'MUST'
+polarity = 'required'
+statement = "Other nonlinear processing on the main output MUST fail the delivery check."
+binds_to = 'system'
+rationale = "No process on each stem reproduces it."
+
+[[requirement]]
+id = 'EU-0022-149'
+level = 'MUST'
+polarity = 'required'
+statement = "Where nonlinear processing on the main output fails the check, the delivery MUST offer to deliver the stems and a reference mix taken before that processing, beside the processed full mix as a separate labeled file, or to move that processing onto the stems."
+binds_to = 'system'
+rationale = "The mixer has a way to deliver stems that add up."
+
+[[requirement]]
+id = 'EU-0022-150'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A delivery MUST NOT apply nonlinear main-output processing to each stem and report the sum as passing."
+binds_to = 'system'
+rationale = "A sum that doesn't hold is never reported as holding."
+
+[[requirement]]
+id = 'EU-0022-151'
+level = 'MUST'
+polarity = 'required'
+statement = "Integrated loudness, true peak and loudness range MUST be measured on each exported file."
+binds_to = 'system'
+rationale = "The values reported are the values of the files the client receives."
+
+[[requirement]]
+id = 'EU-0022-152'
+level = 'MUST'
+polarity = 'required'
+statement = "Each loudness profile MUST name its source and version."
+binds_to = 'system'
+rationale = "Targets change, and a report says which targets it checked."
+
+[[requirement]]
+id = 'EU-0022-153'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST hold the built-in loudness profiles this section lists."
+binds_to = 'system'
+rationale = "Broadcast deliveries check against their published targets at once."
+
+[[requirement]]
+id = 'EU-0022-154'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to enter a loudness profile from a delivery specification they received."
+binds_to = 'system'
+rationale = "Streaming services and theatrical releases publish targets of their own that change."
+
+[[requirement]]
+id = 'EU-0022-155'
+level = 'MAY'
+polarity = 'required'
+statement = "A loudness profile MAY measure dialogue alone, on the dialogue stem or on the passages with speech."
+binds_to = 'system'
+rationale = "Some specifications set their targets on dialogue."
+
+[[requirement]]
+id = 'EU-0022-156'
+level = 'MUST'
+polarity = 'required'
+statement = "The loudness report MUST list each file's values and whether it meets the profile."
+binds_to = 'system'
+rationale = "The mixer sees pass or fail for each file."
+
+[[requirement]]
+id = 'EU-0022-157'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A loudness correction MUST NOT change the mix until the person applies it."
+binds_to = 'system'
+rationale = "A correction is a proposal, and the mix changes only on request."
+
+[[requirement]]
+id = 'EU-0022-158'
+level = 'MUST'
+polarity = 'required'
+statement = "A delivery MUST offer stereo, 5.1 and 7.1 channel layouts."
+binds_to = 'system'
+rationale = "Streaming, broadcast and theatrical clients ask for each of them."
+
+[[requirement]]
+id = 'EU-0022-159'
+level = 'MUST'
+polarity = 'required'
+statement = "An immersive master MUST show as unavailable until a licensed integration provides it."
+binds_to = 'system'
+rationale = "The mixer knows that the format isn't delivered yet."
+
+[[requirement]]
+id = 'EU-0022-160'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to export the mix inside a copy of the video whose picture stream is copied byte for byte."
+binds_to = 'system'
+rationale = "A client watches the mix with the exact picture the editor delivered."
+
+[[requirement]]
+id = 'EU-0022-161'
+level = 'MUST'
+polarity = 'required'
+statement = "The copy of the video MUST hold the mix as uncompressed audio tracks."
+binds_to = 'system'
+rationale = "The mix in the copy loses nothing."
+
+[[requirement]]
+id = 'EU-0022-162'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to keep or replace the original audio tracks of the video in its copy."
+binds_to = 'system'
+rationale = "A client listens to the new mix alone or beside the guide track."
+
+[[requirement]]
+id = 'EU-0022-163'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to export the stems and the mix as audio files whose metadata holds their starting timecode, so that a video editing program places each at its time."
+binds_to = 'system'
+rationale = "An editor drops the files in and they sit in place."
+
+[[requirement]]
+id = 'EU-0022-164'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to export a project exchange file that carries each track's clips with their handles, fades and clip gain at their timecode, with the media embedded or referenced."
+binds_to = 'system'
+rationale = "A finishing editor receives the tracks as editable clips."
+
+[[requirement]]
+id = 'EU-0022-165'
+level = 'MUST'
+polarity = 'required'
+statement = "Exchange MUST offer a format that each kind of video editing program this section lists opens."
+binds_to = 'system'
+rationale = "A musician's collaborators use several editing programs, none more than the others."
+
+[[requirement]]
+id = 'EU-0022-166'
+level = 'MUST'
+polarity = 'required'
+statement = "An exchange export MUST report each element that doesn't transfer."
+binds_to = 'system'
+rationale = "The mixer knows what the editor won't receive."
+
+[[requirement]]
+id = 'EU-0022-167'
+level = 'MUST'
+polarity = 'required'
+statement = "A delivery MUST report each item whose license is unknown."
+binds_to = 'system'
+rationale = "A delivery doesn't carry a sound the production can't clear unseen."
+
+[[requirement]]
+id = 'EU-0022-168'
+level = 'MUST'
+polarity = 'required'
+statement = "Sending an export to another person MUST take the owner's approval of what leaves their computers."
+binds_to = 'system'
+rationale = "A finished mix leaves the owner's computers only by their choice."

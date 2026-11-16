@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-036"
+
+[[spec]]
+level = "MUST"
+quote = "Each marker and each region MUST have a musical lock or a picture lock."
