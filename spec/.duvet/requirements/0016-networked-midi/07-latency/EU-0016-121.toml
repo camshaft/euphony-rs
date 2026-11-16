@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-121"
+
+[[spec]]
+level = "MUST"
+quote = "A one-way delay MUST NOT be claimed from clock round trips alone."

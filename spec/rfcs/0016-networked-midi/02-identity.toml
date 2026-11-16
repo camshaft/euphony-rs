@@ -1,0 +1,136 @@
+[section]
+anchor = 'identity'
+title = 'Device identity and bindings'
+problem = """\
+  Network addresses change, operating systems reorder ports and two identical devices carry the same \
+  name, so a device known by any of these can come back with another device's routes."""
+motivation = """\
+  A binding to the paired host's key and to the device's own identity, with an explicit state for a \
+  device that can't be told apart from another, lets a returning device keep its own mapping and keeps \
+  an ambiguous device from taking another device's mapping."""
+prose = """
+A device binding is the project record that ties routes to a device. It holds the key identity of
+the paired host the device is on; the physical identity of the device, where the host supplies one;
+the identity and direction of the port; the version of the port description; and an ambiguity
+state, resolved or unresolved. A host advertises each identifier that its backend reports for a
+device, with the identifier's source and a confidence: an identifier the operating system assigns,
+a product, vendor and serial number, or an instance identifier the device reports. The name of a
+port is a display coordinate. The current network address, the enumeration index the operating
+system assigns a port and the generation of a transport session are coordinates too, kept apart
+from identity. Where a device has no stable identity, the owner confirms which physical connector
+of the host it is on, and that confirmation counts as its identity. A device has a default mapping,
+and each project can hold an override of it."""
+
+[[requirement]]
+id = 'EU-0016-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each device binding MUST hold the key identity of the paired host the device is on.'
+binds_to = 'system'
+rationale = 'A device is never matched across two hosts.'
+
+[[requirement]]
+id = 'EU-0016-014'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the host supplies a physical identity for a device, the device binding MUST hold that identity with each identifier's source and confidence."
+binds_to = 'system'
+rationale = 'Two identical devices on one host are told apart where their hardware allows it.'
+
+[[requirement]]
+id = 'EU-0016-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each device binding MUST hold the identity and direction of its port.'
+binds_to = 'system'
+rationale = 'A device with several ports keeps a route on each one apart.'
+
+[[requirement]]
+id = 'EU-0016-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each device binding MUST hold an ambiguity state, resolved or unresolved.'
+binds_to = 'system'
+rationale = 'A device that cannot be told apart is visible as such rather than guessed.'
+
+[[requirement]]
+id = 'EU-0016-017'
+level = 'MUST'
+polarity = 'required'
+statement = "A host MUST advertise, for each port, each identifier its backend reports for the port's device, with the identifier's source and a confidence."
+binds_to = 'system'
+rationale = 'The session host can bind only to an identity that the host passes on.'
+
+[[requirement]]
+id = 'EU-0016-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A device binding MUST NOT be matched by a network address, an enumeration index, a session generation or a display name alone.'
+binds_to = 'system'
+rationale = 'Each of these changes, or repeats across devices, without the device changing.'
+
+[[requirement]]
+id = 'EU-0016-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'A device that returns with a verified identity MUST receive the routes of its own saved binding.'
+binds_to = 'system'
+rationale = 'A device keeps its routing across an address change, a reboot or a reordering of ports.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-013' }, { kind = 'depends_on', target = 'EU-0016-014' } ]
+
+[[requirement]]
+id = 'EU-0016-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'A device that cannot be told apart from another device MUST stay unresolved until the owner confirms its physical connector.'
+binds_to = 'system'
+rationale = 'The owner settles what the hardware cannot.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-016' } ]
+
+[[requirement]]
+id = 'EU-0016-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An unresolved device MUST NOT receive the routes of another device's binding."
+binds_to = 'system'
+rationale = 'Two identical devices are never cross-routed.'
+
+[[requirement]]
+id = 'EU-0016-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'Changed hardware on a confirmed connector MUST stay unresolved until the owner confirms it again.'
+binds_to = 'system'
+rationale = 'A device swapped onto a connector never inherits the routes of the device it replaced.'
+
+[[requirement]]
+id = 'EU-0016-023'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST keep a device's saved bindings and routes while the device is absent."
+binds_to = 'system'
+rationale = 'A device unplugged for a while comes back with its mapping.'
+
+[[requirement]]
+id = 'EU-0016-024'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A host that presents a different key MUST NOT hold a binding saved for another key until the owner pairs it.'
+binds_to = 'system'
+rationale = 'A replacement host cannot claim an old mapping by copying a label.'
+
+[[requirement]]
+id = 'EU-0016-025'
+level = 'MUST'
+polarity = 'required'
+statement = "Each device MUST have a default mapping that applies in each project that doesn't override it."
+binds_to = 'system'
+rationale = 'A device plays the same way in every project until a project asks otherwise.'
+
+[[requirement]]
+id = 'EU-0016-026'
+level = 'MUST'
+polarity = 'required'
+statement = "Each project MUST keep its own override of a device's default mapping."
+binds_to = 'system'
+rationale = 'A change of mapping in one project leaves every other project as it was.'

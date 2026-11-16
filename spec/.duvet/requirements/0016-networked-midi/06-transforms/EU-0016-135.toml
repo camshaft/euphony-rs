@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-135"
+
+[[spec]]
+level = "MUST"
+quote = "The route editor MUST show a transform's destinations and measured readiness before the route is committed."

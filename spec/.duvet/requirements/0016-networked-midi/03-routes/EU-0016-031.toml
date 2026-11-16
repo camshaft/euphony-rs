@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-031"
+
+[[spec]]
+level = "MUST"
+quote = "The command gateway MUST refuse a route mutation whose expected revision isn't the route's current revision."

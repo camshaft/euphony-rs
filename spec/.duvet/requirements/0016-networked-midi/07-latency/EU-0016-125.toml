@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-125"
+
+[[spec]]
+level = "MUST"
+quote = "Delay results over wired and wireless networks MUST be reported separately."

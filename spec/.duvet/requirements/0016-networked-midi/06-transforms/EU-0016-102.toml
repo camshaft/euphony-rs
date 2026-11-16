@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-102"
+
+[[spec]]
+level = "MUST"
+quote = "A transform MUST run apart from audio playback, so that its failure or delay leaves playback and recording running."

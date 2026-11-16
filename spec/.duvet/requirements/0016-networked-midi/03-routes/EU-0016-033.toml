@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-033"
+
+[[spec]]
+level = "MUST"
+quote = "The command gateway MUST refuse a route made over a port description that isn't current."

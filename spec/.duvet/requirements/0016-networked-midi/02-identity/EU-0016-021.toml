@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-021"
+
+[[spec]]
+level = "MUST"
+quote = "An unresolved device MUST NOT receive the routes of another device's binding."

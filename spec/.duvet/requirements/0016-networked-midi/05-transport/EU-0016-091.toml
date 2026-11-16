@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-091"
+
+[[spec]]
+level = "MUST"
+quote = "An unencrypted interoperable transport MUST run only on an interface whose network the owner marks as theirs."

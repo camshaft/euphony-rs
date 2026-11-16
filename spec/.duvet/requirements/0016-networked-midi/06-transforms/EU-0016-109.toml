@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-109"
+
+[[spec]]
+level = "MUST"
+quote = "A failure MUST NOT bypass a route's transforms."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-117"
+
+[[spec]]
+level = "MUST"
+quote = "A recording of transformed output MUST hold the transform's identity, parameters, seed, route generation and timing mapping."

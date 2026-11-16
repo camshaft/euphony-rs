@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-092"
+
+[[spec]]
+level = "MUST"
+quote = "The transport boundary MUST be enforced by the session host where events enter and leave it, and by each MIDI host's network service, not only in the user interface."

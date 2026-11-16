@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-063"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of a port, a transport or a host MUST NOT stop other routes, audio playback or capture."

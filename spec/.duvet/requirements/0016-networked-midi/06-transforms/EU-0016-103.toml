@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-103"
+
+[[spec]]
+level = "MUST"
+quote = "A route's transforms MUST run on the session host unless the owner selects a host execution profile that has passed the same output, isolation and timing tests on that host's hardware."

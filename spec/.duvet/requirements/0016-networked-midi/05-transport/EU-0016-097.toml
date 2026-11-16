@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-097"
+
+[[spec]]
+level = "MUST"
+quote = "A passing verification record MUST NOT grant access."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/01-hosts.md#EU-0016-011"
+
+[[spec]]
+level = "MUST"
+quote = "A port that has no verified physical-port description MUST be shown as a session port, not as a device port."

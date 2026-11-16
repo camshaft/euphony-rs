@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-041"
+
+[[spec]]
+level = "MUST"
+quote = "A route edit MUST take part in the project's undo and merge as other musical edits do."

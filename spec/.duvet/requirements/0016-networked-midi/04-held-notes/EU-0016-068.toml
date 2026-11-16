@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-068"
+
+[[spec]]
+level = "MUST"
+quote = "Where a remote synthesizer is unreachable, the session host MUST record that its sounding notes can't be cleared remotely."

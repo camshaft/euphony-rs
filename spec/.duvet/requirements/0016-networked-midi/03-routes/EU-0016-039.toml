@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-039"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface, each phone client that supports routes and each assistant MUST read the same revisioned view of a project's routes."

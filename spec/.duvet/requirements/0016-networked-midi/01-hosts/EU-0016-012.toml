@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/01-hosts.md#EU-0016-012"
+
+[[spec]]
+level = "MUST"
+quote = "A virtual mirror of a remote source and that source MUST NOT both deliver the same events to a project."

@@ -1,0 +1,119 @@
+[section]
+anchor = 'hosts'
+title = 'MIDI hosts and automatic appearance'
+problem = """\
+  A musician's keyboards, controllers and synthesizers sit at small networked computers in other \
+  rooms, and a device that has to be connected by address and session can't play until someone sets \
+  it up by hand."""
+motivation = """\
+  Devices that appear by themselves, and that send into a project only once the owner has paired \
+  their computer, let a musician plug in and play without setup and without letting an unknown \
+  computer into the project."""
+prose = """
+A MIDI host is a networked computer, other than the session host, that the owner provisions to
+carry MIDI for euphony. A device is a keyboard, controller, synthesizer or interface plugged into a
+MIDI host, and each device has one or more ports, each a source of events, a sink of events, or
+both. The session host finds MIDI hosts and their ports through service discovery on the network and
+through each host's port change events, and shows each port in its device browser with its
+connection state. A host can be found by more than one discovery path, and its ports are shown once
+whichever path found them. Pairing a host with euphony belongs to the system overview RFC; this RFC
+reads only whether a host is paired. Plugging a device and a network cable into a provisioned host
+needs neither a network address nor a manual session connection. A MIDI host captures and forwards
+events with their timing, recovers lost events and releases held notes. It doesn't hold the project
+or render audio, and it runs a musician's programs only as the section on live transforms states."""
+
+[[requirement]]
+id = 'EU-0016-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST show each port of each device on a discovered MIDI host in its device browser without manual configuration.'
+binds_to = 'system'
+rationale = 'A musician plugs a device in and sees it, with no address or session to set up.'
+
+[[requirement]]
+id = 'EU-0016-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The device browser MUST show the connection state of each port it shows.'
+binds_to = 'system'
+rationale = 'A musician sees at once whether a port can play.'
+
+[[requirement]]
+id = 'EU-0016-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'The device browser MUST show a port once, whichever discovery path found its host.'
+binds_to = 'system'
+rationale = 'Two advertisements of one device never become two devices.'
+
+[[requirement]]
+id = 'EU-0016-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'The device browser MUST show the arrival and the removal of a port as its host reports them.'
+binds_to = 'system'
+rationale = 'The browser follows the devices that are plugged in, with no refresh.'
+
+[[requirement]]
+id = 'EU-0016-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST show each device on an unpaired host as unpaired.'
+binds_to = 'system'
+rationale = 'Automatic appearance never pairs a host, and the musician sees which hosts still need pairing.'
+
+[[requirement]]
+id = 'EU-0016-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A device on an unpaired host MUST NOT send events into a project.'
+binds_to = 'system'
+rationale = 'Only computers the owner paired play into a project.'
+
+[[requirement]]
+id = 'EU-0016-007'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A device on an unpaired host MUST NOT receive events or material from a project.'
+binds_to = 'system'
+rationale = 'An unknown computer on the network learns nothing of the project.'
+
+[[requirement]]
+id = 'EU-0016-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'Once the owner pairs a host, the session host MUST connect each port that a saved automatic connection rule matches, without further setup.'
+binds_to = 'system'
+rationale = 'Every endpoint on a paired host belongs to the owner, and a newly plugged device plays at once.'
+
+[[requirement]]
+id = 'EU-0016-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST validate each port description a host advertises before it shows or connects the port.'
+binds_to = 'system'
+rationale = 'A malformed or hostile description, such as one with a bad path or length, never reaches the project.'
+
+[[requirement]]
+id = 'EU-0016-010'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The session host MUST NOT infer a host's pairing from its label or its network address."
+binds_to = 'system'
+rationale = 'Anyone can copy a label or take over an address, and only pairing admits a host.'
+
+[[requirement]]
+id = 'EU-0016-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'A port that has no verified physical-port description MUST be shown as a session port, not as a device port.'
+binds_to = 'system'
+rationale = 'A musician is never told that a port is a physical device before its host says so.'
+
+[[requirement]]
+id = 'EU-0016-012'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A virtual mirror of a remote source and that source MUST NOT both deliver the same events to a project.'
+binds_to = 'system'
+rationale = 'A mirrored device never records twice or feeds back into itself.'

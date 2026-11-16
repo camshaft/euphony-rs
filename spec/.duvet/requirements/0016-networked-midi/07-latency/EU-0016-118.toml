@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-118"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST measure each route's delay end to end on the hardware in use, with rendering under way."

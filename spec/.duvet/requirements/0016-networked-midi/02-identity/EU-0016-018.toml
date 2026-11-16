@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-018"
+
+[[spec]]
+level = "MUST"
+quote = "A device binding MUST NOT be matched by a network address, an enumeration index, a session generation or a display name alone."

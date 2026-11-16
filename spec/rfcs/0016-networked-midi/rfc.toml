@@ -1,0 +1,9 @@
+number = 16
+title = 'Networked MIDI and live transforms'
+area = 'euphony'
+abstract = """\
+  How euphony finds MIDI devices on the owner's networked computers, binds each device to a stable \
+  identity, routes its notes and controls, keeps their timing, releases every note a route started, \
+  and transforms what is played with composition programs whose delay it measures."""
+retired = []
+sources = []
