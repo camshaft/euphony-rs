@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-091"
 
 [[spec]]
 level = "MUST"
-quote = "The host MUST cancel an attempt and start a replacing attempt of its job on another worker once the progress that attempt reports falls behind what its worker's measured rate of progress predicts."
+quote = "Once the progress an attempt reports falls behind what its worker's measured rate of progress predicts by more than the variation that worker's own progress reports have shown, and another present worker renders the job's render profile, the host MUST cancel that attempt and start a replacing attempt of its job on such a worker."

@@ -77,4 +77,4 @@ A worker's lease on a job MUST end only when the attempt it holds answers or is 
 
 ### EU-0006-091 {#EU-0006-091}
 
-The host MUST cancel an attempt and start a replacing attempt of its job on another worker once the progress that attempt reports falls behind what its worker's measured rate of progress predicts.
+Once the progress an attempt reports falls behind what its worker's measured rate of progress predicts by more than the variation that worker's own progress reports have shown, and another present worker renders the job's render profile, the host MUST cancel that attempt and start a replacing attempt of its job on such a worker.
