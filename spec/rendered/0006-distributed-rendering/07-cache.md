@@ -1,7 +1,7 @@
 ## Cache retention and recovery {#cache}
 
 A cached result can be rendered again, while an original recording or an accepted command can't.
-Original material is kept durable and backed up under the owner's policy. Active playback and
+Original material is kept durable and backed up as RFC 0008 states. Active playback and
 export manifests pin the results they use. A full volume holds new fetches and preparation on that
 volume, frees only unpinned results that can be rendered again, keeps its verified chunks, and
 resumes once space returns, while playback goes on reading the audio already on the computer. A
