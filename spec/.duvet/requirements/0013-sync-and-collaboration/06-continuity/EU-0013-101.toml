@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-101"
+
+[[spec]]
+level = "MUST"
+quote = "Exclusive control of transport and recording MUST move by a conditional change of the control epoch."

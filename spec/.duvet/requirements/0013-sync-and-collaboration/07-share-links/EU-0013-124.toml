@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-124"
+
+[[spec]]
+level = "MUST"
+quote = "The policy stream MUST record an edit level only after the owner approves the exact device identity of the person who joins."

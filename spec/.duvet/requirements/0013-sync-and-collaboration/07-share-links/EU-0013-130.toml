@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-130"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to revoke a link, or one participant, from the sharing view of the session, the phone client or the assistant interface."

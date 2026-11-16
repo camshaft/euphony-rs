@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-142"
+
+[[spec]]
+level = "MUST"
+quote = "While transport control is off, the host MUST show the owner each participant request for play or stop."
