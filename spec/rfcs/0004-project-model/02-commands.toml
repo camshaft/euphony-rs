@@ -14,9 +14,9 @@ A batch names the project, the revision its sender expects to change, a key that
 across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
 euphony refuses as denied a batch that names another actor before it reads any batch of that actor.
 euphony also refuses as denied a batch from a caller who may not change the project, before it
-checks the batch's expected revision or its key.
-It refuses a batch that names a project that doesn't exist in the same way, so that a refusal
-doesn't tell a caller whether the project exists.
+checks the batch's commands against the project schema, its expected revision or its key.
+It refuses a batch that names a project that doesn't exist in the same way and at the same point of
+its checks, so that a refusal doesn't tell a caller whether the project exists.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -64,16 +64,16 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-056'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the caller that euphony authenticated may not change the project that a batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key."
+statement = "Where the caller that euphony authenticated may not change the project that a batch names, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
 binds_to = 'system'
-rationale = "A caller that may not change a project doesn't learn from a conflict or from a retry that the project exists, that its head moved or which keys its actors used."
+rationale = "A caller that may not change a project doesn't learn from a conflict, from a refusal of invalid input or from a retry that the project exists, that its head moved or which keys its actors used."
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 
 [[requirement]]
 id = 'EU-0004-059'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project.'
+statement = "Where the project that a batch names does not exist, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key, with a refusal whose kind and content, apart from the values the batch itself supplies, are those of its refusal of a batch from a caller who may not change an existing project."
 binds_to = 'system'
 rationale = "A refusal of a batch doesn't tell its sender which projects exist."
 relations = [ { kind = 'depends_on', target = 'EU-0004-056' } ]
