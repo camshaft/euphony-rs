@@ -12,6 +12,8 @@ attempt at a job replaces the earlier attempts of that job. A local authority or
 each branch of a project, and independent branches, render jobs and transfers proceed beside it.
 Each attempt reports its progress over the job protocol, and the scheduler measures each
 worker's rate of progress from those reports as it measures its other capacity signals.
+While a worker holds a lease, the job protocol closes the connection to that worker once the
+transport reports that the worker stopped acknowledging what is sent on it, which ends that lease.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states.
 
@@ -78,3 +80,7 @@ A worker's lease on a job MUST end only when the attempt it holds answers or is 
 ### EU-0006-091 {#EU-0006-091}
 
 Once the progress an attempt reports falls behind what its worker's measured rate of progress predicts by more than the variation that worker's own progress reports have shown, and another present worker renders the job's render profile, the host MUST cancel that attempt and start a replacing attempt of its job on such a worker.
+
+### EU-0006-092 {#EU-0006-092}
+
+While a worker holds a lease on a job, the job protocol MUST close the connection to that worker once the transport reports that the worker stopped acknowledging the data and the liveness probes sent on that connection.
