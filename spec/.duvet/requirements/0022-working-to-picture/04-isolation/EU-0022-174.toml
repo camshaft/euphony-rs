@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-174"
+
+[[spec]]
+level = "MUST"
+quote = "While Euphony shows the scrub copy instead of the original file to protect the sound, it MUST tell the person on that computer that the scrub copy is shown."

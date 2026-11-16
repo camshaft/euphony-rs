@@ -27,7 +27,11 @@ Video decoding on the computer that plays the audio MUST count against that comp
 
 ### EU-0022-059 {#EU-0022-059}
 
-Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead and say so.
+Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead.
+
+### EU-0022-174 {#EU-0022-174}
+
+While Euphony shows the scrub copy instead of the original file to protect the sound, it MUST tell the person on that computer that the scrub copy is shown.
 
 ### EU-0022-060 {#EU-0022-060}
 

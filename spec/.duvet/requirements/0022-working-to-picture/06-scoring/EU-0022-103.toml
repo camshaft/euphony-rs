@@ -2,4 +2,4 @@ target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-103"
 
 [[spec]]
 level = "MUST"
-quote = "A streamer MUST end on its hit's frame, where a punch shows for one frame."
+quote = "A streamer MUST end on its hit's frame."

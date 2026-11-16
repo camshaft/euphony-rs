@@ -2,4 +2,4 @@ target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-059"
 
 [[spec]]
 level = "MUST"
-quote = "Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead and say so."
+quote = "Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead."
