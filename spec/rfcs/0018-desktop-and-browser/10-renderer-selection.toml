@@ -111,7 +111,7 @@ level = 'MUST'
 polarity = 'required'
 statement = 'The evidence of the selection MUST be typed records from configured publishers and deciders.'
 binds_to = 'system'
-rationale = 'The selection reads facts, not prose, and its code doesn't name a person.'
+rationale = "The selection reads facts, not prose, and its code doesn't name a person."
 
 [[requirement]]
 id = 'EU-0018-092'
