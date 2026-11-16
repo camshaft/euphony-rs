@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-077"
+
+[[spec]]
+level = "MUST"
+quote = "A load failure or memory pressure MUST lower the capacity the system offers while keeping the queued work."

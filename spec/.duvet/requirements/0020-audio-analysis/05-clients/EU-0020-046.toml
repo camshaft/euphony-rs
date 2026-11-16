@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-046"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST notify each subscribed reader of the progress, completion, invalidation and correction of the results it follows."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-088"
+
+[[spec]]
+level = "MUST"
+quote = "A local analysis MUST NOT count as permission for telemetry or for training."

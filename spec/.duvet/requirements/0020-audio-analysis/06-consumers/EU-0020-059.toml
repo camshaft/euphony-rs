@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-059"
+
+[[spec]]
+level = "MUST"
+quote = "A result that depends on audio after the current moment MUST NOT drive modulation in a live performance."

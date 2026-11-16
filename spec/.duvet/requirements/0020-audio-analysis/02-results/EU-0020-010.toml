@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/02-results.md#EU-0020-010"
+
+[[spec]]
+level = "MUST"
+quote = "Each interval of source audio MUST be a half-open range of whole sample frames at a stated sample rate."

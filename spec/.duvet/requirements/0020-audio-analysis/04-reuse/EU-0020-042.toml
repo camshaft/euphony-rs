@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-042"
+
+[[spec]]
+level = "MUST"
+quote = "Each accepted result and its dependencies MUST be retained for as long as the project that accepted the result is retained."

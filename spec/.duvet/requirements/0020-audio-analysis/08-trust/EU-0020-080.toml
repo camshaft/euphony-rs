@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-080"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST check the requester's boundary again before it dispatches a job and before it delivers a result."

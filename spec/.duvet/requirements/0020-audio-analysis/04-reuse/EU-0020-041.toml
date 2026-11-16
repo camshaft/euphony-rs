@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-041"
+
+[[spec]]
+level = "MUST"
+quote = "A new method or method version MUST NOT rewrite an existing result, correction or accepted interpretation."

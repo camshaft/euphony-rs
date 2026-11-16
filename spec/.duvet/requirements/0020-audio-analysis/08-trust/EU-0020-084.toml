@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-084"
+
+[[spec]]
+level = "MUST"
+quote = "Ordinary transfers and storage of audio and results MUST be encrypted."

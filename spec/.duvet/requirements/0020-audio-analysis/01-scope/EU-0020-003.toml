@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/01-scope.md#EU-0020-003"
+
+[[spec]]
+level = "MUST"
+quote = "A request for analysis MUST name its source audio, the interval of that audio to analyze and the method."

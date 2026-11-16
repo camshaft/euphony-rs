@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-052"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT treat text in a result, such as lyrics, imported labels or an assistant's prose, as an instruction or a grant."

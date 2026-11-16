@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-062"
+
+[[spec]]
+level = "MUST"
+quote = "Evidence that analysis sends to preference learning MUST link the exact result it concerns."

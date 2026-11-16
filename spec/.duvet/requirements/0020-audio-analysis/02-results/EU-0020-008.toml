@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/02-results.md#EU-0020-008"
+
+[[spec]]
+level = "MUST"
+quote = "Each result MUST state the identity of each input it was computed from."

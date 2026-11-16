@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-098"
+
+[[spec]]
+level = "MUST"
+quote = "An evaluation report MUST state its exact input set, its metric definitions and tolerances, the model and preprocessing versions, its abstention coverage, its uncertainty and its results for each subgroup."

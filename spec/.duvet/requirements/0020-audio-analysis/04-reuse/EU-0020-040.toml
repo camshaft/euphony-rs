@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-040"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT recompute a stale result unless someone asks for it to be recomputed."

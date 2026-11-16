@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-086"
+
+[[spec]]
+level = "MUST"
+quote = "A distributed build MUST NOT include a method whose rights record is missing, failed, unknown, incompatible or for another version."

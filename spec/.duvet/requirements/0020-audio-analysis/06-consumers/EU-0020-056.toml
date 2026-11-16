@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-056"
+
+[[spec]]
+level = "MUST"
+quote = "New analysis MUST NOT retune or remap notes that are held during a performance."

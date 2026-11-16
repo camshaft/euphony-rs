@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-051"
+
+[[spec]]
+level = "MUST"
+quote = "Selecting a passage of a result MUST show its source range, its method, the kind of its confidence and its alternatives."

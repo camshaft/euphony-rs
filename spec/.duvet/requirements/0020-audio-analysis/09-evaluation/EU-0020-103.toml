@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-103"
+
+[[spec]]
+level = "MUST"
+quote = "A comparison that shows a regression past a method's acceptance criterion, or a disagreement between methods, MUST open or join one work item for its project, method, profile, corpus and metric."

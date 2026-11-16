@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-033"
+
+[[spec]]
+level = "MUST"
+quote = "Each method MUST declare the context its results depend on beyond the analyzed interval."

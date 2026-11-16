@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-090"
+
+[[spec]]
+level = "MUST"
+quote = "Each public test of analysis MUST use synthetic or explicitly licensed audio."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-068"
+
+[[spec]]
+level = "MUST"
+quote = "A streaming method MUST declare the context it reads, the lookahead it needs and its delay."

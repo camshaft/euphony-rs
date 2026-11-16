@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-026"
+
+[[spec]]
+level = "MUST"
+quote = "Each correction MUST link the evidence it is based on."

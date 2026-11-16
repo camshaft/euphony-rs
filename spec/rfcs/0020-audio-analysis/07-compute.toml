@@ -1,0 +1,156 @@
+[section]
+anchor = 'compute'
+title = 'Running analysis'
+problem = """\
+  Analysis is heavy work that can take time the live audio needs and drop out a recording, can be \
+  stopped by a malformed file or model, and can lose a musician's work where a machine fails \
+  partway through a job."""
+motivation = """\
+  Running analysis apart from the live audio, on the musician's machines as their measured capacity \
+  allows, with each job durable and measured, keeps recording and playback safe and lets the system \
+  learn what each machine can do."""
+prose = """
+Analysis runs on workers, apart from the process that drives live audio. The session host prepares
+each request and keeps authority over the project; a worker decodes the input, runs the method in
+isolation and publishes a candidate result, which the session host validates before it links the
+result to a revision of the project. The live audio path only emits meter observations it prepared
+ahead of time and reads control curves that were already admitted. An offline analysis can read the
+whole song; a streaming method declares the context it reads, the lookahead it needs and its
+delay, and its conformance tests compare the declared delay with the delay they measure. While
+recording continues, musical inference waits until the take ends and reads the whole take. A browser
+shows results the host computed, and
+measures material it already holds only where its runtime passed the conformance tests; a phone used
+as a controller doesn't run analysis for that reason alone. Analysis is admitted against
+the capacity the system measures, and each job's completion records its measurements. The relative
+cost of a method varies with the channels, the sample rate, the duration, the hardware, the model
+and its precision, so it is measured on each job rather than assumed."""
+
+[[requirement]]
+id = 'EU-0020-063'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Analysis MUST NOT run in the process that drives live audio.'
+binds_to = 'system'
+rationale = 'The live audio meets its deadlines whatever analysis is running.'
+
+[[requirement]]
+id = 'EU-0020-064'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Analysis MUST NOT interrupt recording or playback.'
+binds_to = 'system'
+rationale = 'A musician never loses a take to an analysis.'
+
+[[requirement]]
+id = 'EU-0020-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where live meter observations overflow, the system MUST record a gap in their coverage instead of holding up the audio.'
+binds_to = 'system'
+rationale = 'Capture never waits on a meter, and the meter shows where it missed audio.'
+
+[[requirement]]
+id = 'EU-0020-066'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A worker MUST NOT change a project.'
+binds_to = 'system'
+rationale = 'Only the session host, which keeps authority over the project, changes it.'
+
+[[requirement]]
+id = 'EU-0020-067'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST validate a result's request, source identities, schema, authority and completeness before it links the result to a project revision."
+binds_to = 'system'
+rationale = 'A wrong, partial or unauthorized result from a worker never reaches a project.'
+
+[[requirement]]
+id = 'EU-0020-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'A streaming method MUST declare the context it reads, the lookahead it needs and its delay.'
+binds_to = 'system'
+rationale = 'A consumer aligns a streaming result with the audio it describes.'
+
+[[requirement]]
+id = 'EU-0020-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse a streaming method whose declaration lacks its context, its lookahead or its delay.'
+binds_to = 'system'
+rationale = 'An undeclared delay never misaligns a live result.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-068' } ]
+
+[[requirement]]
+id = 'EU-0020-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'The conformance tests of a streaming method MUST compare its declared delay with the delay they measure.'
+binds_to = 'system'
+rationale = 'The declared delay is a measured fact, not a claim.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-068' } ]
+
+[[requirement]]
+id = 'EU-0020-071'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'While recording continues, musical inference SHOULD wait until the take ends and read the whole take.'
+binds_to = 'system'
+rationale = 'Recording keeps every resource it needs, and the inference reads the whole take once it ends.'
+
+[[requirement]]
+id = 'EU-0020-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'An analysis job MUST resume after an interruption of its machine without losing its accepted work.'
+binds_to = 'system'
+rationale = 'A failed machine costs time, never a result or a correction.'
+
+[[requirement]]
+id = 'EU-0020-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'Cancelling an analysis job MUST leave every accepted edit as it was.'
+binds_to = 'system'
+rationale = 'A cancel stops work and changes nothing the musician accepted.'
+
+[[requirement]]
+id = 'EU-0020-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Each job's completion MUST record its time for each second of audio, its peak memory, the bytes it transferred, the storage it added, its wait in the queue and the audio deadlines missed while it ran."
+binds_to = 'system'
+rationale = 'The cost of each method on each machine is measured, not assumed.'
+
+[[requirement]]
+id = 'EU-0020-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST admit analysis work against the capacity it measures on each machine.'
+binds_to = 'system'
+rationale = 'Each machine takes as much analysis as it can do.'
+
+[[requirement]]
+id = 'EU-0020-076'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT impose a fixed limit on the number of workers, the duration of audio or the number of jobs.'
+binds_to = 'system'
+rationale = 'Capacity is discovered from the machines, never set by hand.'
+
+[[requirement]]
+id = 'EU-0020-077'
+level = 'MUST'
+polarity = 'required'
+statement = 'A load failure or memory pressure MUST lower the capacity the system offers while keeping the queued work.'
+binds_to = 'system'
+rationale = 'An overloaded machine slows analysis down and loses none of it.'
+
+[[requirement]]
+id = 'EU-0020-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'A browser MUST run a measurement of its own material only where its runtime has passed the conformance tests.'
+binds_to = 'system'
+rationale = 'A browser result is as trustworthy as a host result, or the browser shows the host result.'

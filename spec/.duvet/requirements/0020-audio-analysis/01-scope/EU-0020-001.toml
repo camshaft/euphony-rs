@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/01-scope.md#EU-0020-001"
+
+[[spec]]
+level = "MUST"
+quote = "Analysis MUST accept as its input any audio a project holds, including a sample, a take, a stem, a selected region and a prepared mix."

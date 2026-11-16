@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-048"
+
+[[spec]]
+level = "MUST"
+quote = "A query of an analysis that has not finished MUST return the part it covers so far and a cursor to continue from."

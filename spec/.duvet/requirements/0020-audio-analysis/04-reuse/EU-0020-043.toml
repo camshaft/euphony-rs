@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-043"
+
+[[spec]]
+level = "MUST"
+quote = "An upgrade of a method MUST NOT change the sound of a project that uses the results of an earlier version."

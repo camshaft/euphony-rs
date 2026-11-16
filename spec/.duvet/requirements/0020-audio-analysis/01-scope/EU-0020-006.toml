@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/01-scope.md#EU-0020-006"
+
+[[spec]]
+level = "MUST"
+quote = "A result about effects or sound sources MUST NOT be presented as the identification of the original chain or its settings."

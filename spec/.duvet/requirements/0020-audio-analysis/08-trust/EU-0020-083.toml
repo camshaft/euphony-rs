@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-083"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST verify the identity of each method and model artifact before a worker loads it."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-108"
+
+[[spec]]
+level = "MUST"
+quote = "Where a method runs on more than one kind of hardware, its results on each kind MUST be compared for accuracy as well as for speed."

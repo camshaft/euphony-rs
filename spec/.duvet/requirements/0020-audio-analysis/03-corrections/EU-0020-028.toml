@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-028"
+
+[[spec]]
+level = "MUST"
+quote = "The command that applies an accepted interpretation MUST name the project revision it expects."

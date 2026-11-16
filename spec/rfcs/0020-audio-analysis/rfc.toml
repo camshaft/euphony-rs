@@ -1,0 +1,11 @@
+number = 20
+title = 'Audio analysis'
+area = 'euphony'
+abstract = """\
+  How euphony analyzes audio: the estimates of musical content and the measurements of sound it \
+  produces, with their uncertainty and their provenance; how musicians and their assistants \
+  correct, accept and apply results without music changing silently; reuse and staleness; how other \
+  components use results; how analysis runs beside live audio; access, rights and trust; and how \
+  each method is evaluated before it is released."""
+retired = []
+sources = []

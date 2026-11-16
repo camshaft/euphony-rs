@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-054"
+
+[[spec]]
+level = "MUST"
+quote = "Each conversion of a result into a musical value MUST state the unit system and the vocabulary it converts between."

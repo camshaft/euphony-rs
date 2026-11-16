@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-093"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse to apply a result automatically without a passing release record for its method version, model digest, execution profile and build."

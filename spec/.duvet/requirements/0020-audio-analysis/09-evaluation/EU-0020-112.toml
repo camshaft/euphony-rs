@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-112"
+
+[[spec]]
+level = "MUST"
+quote = "A comparison whose publication was interrupted MUST open or join its work item once the system recovers."

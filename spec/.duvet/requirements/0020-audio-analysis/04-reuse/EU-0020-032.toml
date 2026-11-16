@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-032"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of a request MUST include every input that can change its result."

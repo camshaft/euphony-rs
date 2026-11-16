@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-092"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse to include a method version in a build without a passing release record for that version, model digest, execution profile and build."
