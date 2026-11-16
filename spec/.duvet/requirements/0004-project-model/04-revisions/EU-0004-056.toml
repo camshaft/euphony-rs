@@ -1,5 +1,0 @@
-target = "rendered/0004-project-model/04-revisions.md#EU-0004-056"
-
-[[spec]]
-level = "MUST"
-quote = "euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project."
