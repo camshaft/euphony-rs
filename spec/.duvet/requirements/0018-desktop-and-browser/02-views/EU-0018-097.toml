@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-097"
+
+[[spec]]
+level = "MUST"
+quote = "The mixer MUST show one channel strip for each track, in the order of the track list."

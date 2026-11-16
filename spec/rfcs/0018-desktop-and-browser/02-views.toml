@@ -9,12 +9,14 @@ motivation = """\
   Views and navigation that follow those conventions, over commands every interface shares, let a \
   musician work from habit, while original artwork keeps the product its own."""
 prose = """
-The main views follow the arrangement, mixer, piano roll and automation conventions that musicians
-learned on established professional workstations, with a track list, an inspector, a transport,
-rulers, an asset browser and the composition editor around them. Recording, punching in, looping,
-routing, selection, undo and export are commands that every interface of euphony shares: a view
-sends them, and doesn't define them. Familiar workflows are the aim; pixel identity with another
-product isn't."""
+The main views follow the conventions that musicians learned on established professional
+workstations: the arrangement view, the piano roll and the automation view lay time out from left to
+right under a ruler that marks the playhead; the mixer shows a channel strip for each track in the
+order of the track list; and one command opens any main view from another at the selected track and
+the playhead. A track list, an inspector, a transport, rulers, an asset browser and the composition
+editor surround the main views. Recording, punching in, looping, routing, selection, undo and export
+are commands that every interface of euphony shares: a view sends them, and doesn't define them.
+Familiar workflows are the aim; pixel identity with another product isn't."""
 
 [[requirement]]
 id = 'EU-0018-008'
@@ -28,9 +30,9 @@ rationale = 'These are the views a musician arranges, mixes and edits in.'
 id = 'EU-0018-009'
 level = 'MUST'
 polarity = 'required'
-statement = 'The main views MUST follow the layout and navigation conventions of established professional music workstations.'
+statement = 'From any main view, one command MUST open each other main view at the selected track and the playhead position.'
 binds_to = 'system'
-rationale = 'A musician finds each view and each control where they expect it.'
+rationale = 'A musician moves between the views as established workstations taught them, without losing their place.'
 
 [[requirement]]
 id = 'EU-0018-010'
@@ -64,3 +66,19 @@ statement = 'A view MUST NOT define a command of its own that changes a project.
 binds_to = 'system'
 rationale = 'Every change to a project goes through the shared commands, with their checks and history.'
 relations = [ { kind = 'depends_on', target = 'EU-0018-012' } ]
+
+[[requirement]]
+id = 'EU-0018-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The arrangement view, the piano roll and the automation view MUST lay time out from left to right under a ruler that marks the playhead.'
+binds_to = 'system'
+rationale = 'Every timeline reads the same way, so a position in one view is the same position in the others.'
+
+[[requirement]]
+id = 'EU-0018-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'The mixer MUST show one channel strip for each track, in the order of the track list.'
+binds_to = 'system'
+rationale = 'A musician finds the strip of a track where the track list puts the track.'
