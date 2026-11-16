@@ -7,7 +7,8 @@ capabilities it supports, and the two use the newest version both support. Clien
 different releases meet: computers of the person that run different releases, phone controllers
 installed from an application store, and scripts. Each project configures the oldest client release
 it still supports, and each release of the engine serves every minor version of its major version
-from that release on.
+from that release on. RFC 0001 states that an interface which cannot work with an engine says which
+release it needs.
 
 ### EU-0003-065 {#EU-0003-065}
 
@@ -40,10 +41,6 @@ A client MUST hide each action that the engine does not serve, with the reason.
 ### EU-0003-072 {#EU-0003-072}
 
 The engine MUST refuse a major version it does not speak with a typed error that lists the versions it serves.
-
-### EU-0003-073 {#EU-0003-073}
-
-A client that cannot work with the release of an engine MUST state which release it needs.
 
 ### EU-0003-074 {#EU-0003-074}
 
