@@ -3,15 +3,13 @@ anchor = 'transfer'
 title = 'Resumable transfer'
 problem = """\
   Render inputs and results that move by a path of their own skip the checks every other stored \
-  item passes, a result shown before it is checked can be played as corrupt audio, a bulk transfer \
-  can hold up the preparation a person is waiting for, and a computer that answers any request for \
-  a chunk exposes the owner's project audio to whoever asks."""
+  item passes, a result shown before it is checked can be played as corrupt audio, and a bulk \
+  transfer can hold up the preparation a person is waiting for."""
 motivation = """\
   Moving every input and result through the one content store resumes and checks render work as \
   any stored item is resumed and checked. Showing a result only once it is complete and checked \
-  keeps playback on sound audio, running each transfer at the priority level of the work it serves \
-  keeps interactive preparation ahead of speculative preparation, and sending chunks only to the \
-  owner's paired computers keeps the owner's audio on the owner's trusted computers."""
+  keeps playback on sound audio, and running each transfer at the priority level of the work it \
+  serves keeps interactive preparation ahead of speculative preparation."""
 prose = """
 Every render input and every result moves between computers as an item of the content store, in
 chunks, as RFC 0008 states: the chunk list of each item, the fetch of only the chunks a receiver
