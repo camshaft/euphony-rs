@@ -60,7 +60,7 @@ Each participant MUST estimate the offset and drift of its clock from the host m
 
 ### EU-0013-154 {#EU-0013-154}
 
-The timestamp exchanges of clock sync MUST be carried in the stream packets and the loss and arrival reports of the session.
+Clock sync MUST NOT add a message or a timer of its own to the session.
 
 ### EU-0013-155 {#EU-0013-155}
 

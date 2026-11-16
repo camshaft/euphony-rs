@@ -107,10 +107,10 @@ rationale = 'Each output places the timeline on its own clock.'
 [[requirement]]
 id = 'EU-0013-154'
 level = 'MUST'
-polarity = 'required'
-statement = 'The timestamp exchanges of clock sync MUST be carried in the stream packets and the loss and arrival reports of the session.'
+polarity = 'forbidden'
+statement = 'Clock sync MUST NOT add a message or a timer of its own to the session.'
 binds_to = 'system'
-rationale = 'Clock sync does not add traffic or a timer of its own.'
+rationale = "Measuring the clocks doesn't add traffic or a wake to the session."
 
 [[requirement]]
 id = 'EU-0013-155'

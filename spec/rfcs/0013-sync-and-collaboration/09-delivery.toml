@@ -197,10 +197,10 @@ rationale = 'Lossy listening never degrades saved or exchanged audio.'
 [[requirement]]
 id = 'EU-0013-197'
 level = 'MUST'
-polarity = 'required'
-statement = 'The host MUST encode once for each distinct sink and send one encrypted copy to each participant.'
+polarity = 'forbidden'
+statement = 'The encoding work of the host MUST NOT grow with the number of participants that share a sink.'
 binds_to = 'system'
-rationale = 'Encoding cost grows with sinks, and each participant gets their own encrypted stream.'
+rationale = 'Encoding cost grows with the number of sinks, not with the size of the audience.'
 
 [[requirement]]
 id = 'EU-0013-198'
@@ -217,3 +217,11 @@ polarity = 'required'
 statement = 'The host MUST admit participants while its measured upload carries them.'
 binds_to = 'system'
 rationale = 'Admission follows the measured capacity of the host.'
+
+[[requirement]]
+id = 'EU-0013-219'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each participant MUST receive the listening stream encrypted for that participant alone.'
+binds_to = 'system'
+rationale = 'No participant can read the stream another participant receives.'

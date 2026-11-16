@@ -102,7 +102,7 @@ Project objects, cached renders and audio that peers exchange MUST stay exact in
 
 ### EU-0013-197 {#EU-0013-197}
 
-The host MUST encode once for each distinct sink and send one encrypted copy to each participant.
+The encoding work of the host MUST NOT grow with the number of participants that share a sink.
 
 ### EU-0013-198 {#EU-0013-198}
 
@@ -111,3 +111,7 @@ The session MUST NOT cap the number of participants.
 ### EU-0013-199 {#EU-0013-199}
 
 The host MUST admit participants while its measured upload carries them.
+
+### EU-0013-219 {#EU-0013-219}
+
+Each participant MUST receive the listening stream encrypted for that participant alone.
