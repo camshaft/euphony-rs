@@ -159,12 +159,21 @@ binds_to = 'system'
 rationale = 'The owner decides who edits, one identity at a time.'
 
 [[requirement]]
-id = 'EU-0013-125'
+id = 'EU-0013-239'
 level = 'MUST'
 polarity = 'required'
-statement = 'An edit link MUST be single use and bind to the first identity the owner approves.'
+statement = 'An edit link MUST be single use.'
 binds_to = 'system'
 rationale = 'An edit link admits one person.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
+
+[[requirement]]
+id = 'EU-0013-240'
+level = 'MUST'
+polarity = 'required'
+statement = 'An edit link MUST bind to the first identity the owner approves.'
+binds_to = 'system'
+rationale = 'Only the person the owner approved edits through the link.'
 relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
 
 [[requirement]]
@@ -269,12 +278,20 @@ binds_to = 'system'
 rationale = "Widening who can hear a project is always the owner's choice."
 
 [[requirement]]
-id = 'EU-0013-140'
+id = 'EU-0013-241'
 level = 'MUST'
 polarity = 'required'
-statement = 'Transport control for participants MUST be a setting of the session that is off by default and applies to every participant.'
+statement = 'The session setting of transport control for participants MUST be off by default.'
 binds_to = 'system'
 rationale = "Shared control is the owner's deliberate choice."
+
+[[requirement]]
+id = 'EU-0013-242'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session setting of transport control for participants MUST apply to every participant.'
+binds_to = 'system'
+rationale = 'Each participant has the same transport control as every other.'
 
 [[requirement]]
 id = 'EU-0013-141'

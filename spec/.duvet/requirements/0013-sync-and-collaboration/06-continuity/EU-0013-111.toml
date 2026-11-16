@@ -1,5 +1,0 @@
-target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-111"
-
-[[spec]]
-level = "MUST"
-quote = "A reopened replica MUST reconcile the completion of capture and establish a new control epoch before recording resumes."

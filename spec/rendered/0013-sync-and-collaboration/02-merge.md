@@ -46,9 +46,13 @@ A merge MUST make a typed conflict of competing tempo changes.
 
 A merge MUST make a typed conflict of a program regenerating material that the other side edited by hand.
 
-### EU-0013-025 {#EU-0013-025}
+### EU-0013-231 {#EU-0013-231}
 
-A merge preview MUST show both versions of each conflict and offer musical alternatives for it.
+A merge preview MUST show both versions of each conflict.
+
+### EU-0013-232 {#EU-0013-232}
+
+A merge preview MUST offer musical alternatives for each conflict.
 
 ### EU-0013-026 {#EU-0013-026}
 

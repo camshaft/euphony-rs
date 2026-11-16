@@ -35,10 +35,18 @@ binds_to = 'system'
 rationale = 'Moving a session never changes a revision, and a revision never carries a session.'
 
 [[requirement]]
-id = 'EU-0013-220'
+id = 'EU-0013-233'
 level = 'MUST'
 polarity = 'required'
-statement = "Computers paired with the owner's MUST subscribe to the changes of a session and prefetch its selected manifest, recent edits and media."
+statement = "Computers paired with the owner's MUST subscribe to the changes of a session."
+binds_to = 'system'
+rationale = 'A paired computer learns of each change to the session as it is made.'
+
+[[requirement]]
+id = 'EU-0013-234'
+level = 'MUST'
+polarity = 'required'
+statement = "Computers paired with the owner's MUST prefetch the selected manifest, recent edits and media of a session."
 binds_to = 'system'
 rationale = 'The next room is ready before the person reaches it.'
 
@@ -131,12 +139,20 @@ binds_to = 'system'
 rationale = 'An output is switched only to a computer that can play it.'
 
 [[requirement]]
-id = 'EU-0013-106'
+id = 'EU-0013-235'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where readiness fails, the session MUST keep the previous output and recording active and show what is missing.'
+statement = 'Where readiness fails, the session MUST keep the previous output and recording active.'
 binds_to = 'system'
 rationale = 'A failed switch never interrupts what is playing or recording.'
+
+[[requirement]]
+id = 'EU-0013-236'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where readiness fails, the session MUST show what is missing.'
+binds_to = 'system'
+rationale = 'A person sees what keeps the switch from happening.'
 
 [[requirement]]
 id = 'EU-0013-107'
@@ -171,9 +187,17 @@ binds_to = 'system'
 rationale = 'Authority moves only at a checkpoint, never mid-take.'
 
 [[requirement]]
-id = 'EU-0013-111'
+id = 'EU-0013-237'
 level = 'MUST'
 polarity = 'required'
-statement = 'A reopened replica MUST reconcile the completion of capture and establish a new control epoch before recording resumes.'
+statement = 'A reopened replica MUST reconcile the completion of capture before recording resumes.'
+binds_to = 'system'
+rationale = 'The take that was interrupted is settled before another starts.'
+
+[[requirement]]
+id = 'EU-0013-238'
+level = 'MUST'
+polarity = 'required'
+statement = 'A reopened replica MUST establish a new control epoch before recording resumes.'
 binds_to = 'system'
 rationale = 'A recovered computer never becomes a second active recorder.'

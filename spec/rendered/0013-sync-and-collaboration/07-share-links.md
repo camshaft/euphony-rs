@@ -83,9 +83,13 @@ A link alone MUST NOT admit an editor.
 
 The policy stream MUST record an edit level only after the owner approves the exact device identity of the person who joins.
 
-### EU-0013-125 {#EU-0013-125}
+### EU-0013-239 {#EU-0013-239}
 
-An edit link MUST be single use and bind to the first identity the owner approves.
+An edit link MUST be single use.
+
+### EU-0013-240 {#EU-0013-240}
+
+An edit link MUST bind to the first identity the owner approves.
 
 ### EU-0013-127 {#EU-0013-127}
 
@@ -135,9 +139,13 @@ The command gateway MUST check every action of a participant against the record 
 
 An assistant MUST NOT make a link without the owner approving its exact effect.
 
-### EU-0013-140 {#EU-0013-140}
+### EU-0013-241 {#EU-0013-241}
 
-Transport control for participants MUST be a setting of the session that is off by default and applies to every participant.
+The session setting of transport control for participants MUST be off by default.
+
+### EU-0013-242 {#EU-0013-242}
+
+The session setting of transport control for participants MUST apply to every participant.
 
 ### EU-0013-141 {#EU-0013-141}
 

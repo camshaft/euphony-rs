@@ -89,10 +89,18 @@ binds_to = 'system'
 rationale = 'A hand edit is never overwritten by a regeneration, nor a regeneration by a hand edit, unseen.'
 
 [[requirement]]
-id = 'EU-0013-025'
+id = 'EU-0013-231'
 level = 'MUST'
 polarity = 'required'
-statement = 'A merge preview MUST show both versions of each conflict and offer musical alternatives for it.'
+statement = 'A merge preview MUST show both versions of each conflict.'
+binds_to = 'system'
+rationale = 'A person hears both sides of a clash before choosing.'
+
+[[requirement]]
+id = 'EU-0013-232'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge preview MUST offer musical alternatives for each conflict.'
 binds_to = 'system'
 rationale = 'A person resolves a conflict by hearing and choosing, not by reading data.'
 

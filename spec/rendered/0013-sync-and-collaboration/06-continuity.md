@@ -20,9 +20,13 @@ A person MUST be able to continue a recording session on another paired computer
 
 An active session MUST be a record separate from every project revision.
 
-### EU-0013-220 {#EU-0013-220}
+### EU-0013-233 {#EU-0013-233}
 
-Computers paired with the owner's MUST subscribe to the changes of a session and prefetch its selected manifest, recent edits and media.
+Computers paired with the owner's MUST subscribe to the changes of a session.
+
+### EU-0013-234 {#EU-0013-234}
+
+Computers paired with the owner's MUST prefetch the selected manifest, recent edits and media of a session.
 
 ### EU-0013-095 {#EU-0013-095}
 
@@ -68,9 +72,13 @@ Views of a session MAY stay attached on several computers at once.
 
 Before it switches a computer's monitor output, the session MUST check its device format, prepared buffers, live subscriptions and clock quality.
 
-### EU-0013-106 {#EU-0013-106}
+### EU-0013-235 {#EU-0013-235}
 
-Where readiness fails, the session MUST keep the previous output and recording active and show what is missing.
+Where readiness fails, the session MUST keep the previous output and recording active.
+
+### EU-0013-236 {#EU-0013-236}
+
+Where readiness fails, the session MUST show what is missing.
 
 ### EU-0013-107 {#EU-0013-107}
 
@@ -88,6 +96,10 @@ The session MUST NOT claim an uninterrupted transfer where the hardware or the n
 
 A room switch MUST NOT move the session authority during a take.
 
-### EU-0013-111 {#EU-0013-111}
+### EU-0013-237 {#EU-0013-237}
 
-A reopened replica MUST reconcile the completion of capture and establish a new control epoch before recording resumes.
+A reopened replica MUST reconcile the completion of capture before recording resumes.
+
+### EU-0013-238 {#EU-0013-238}
+
+A reopened replica MUST establish a new control epoch before recording resumes.
