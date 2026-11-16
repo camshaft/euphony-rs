@@ -22,6 +22,8 @@ schema defines that is sent alone and not in a batch, since no project exists ye
 name. The command names the sample rate of the new project, its actor, which is the caller that
 euphony authenticated and the party the first revision records as having made the change, and a
 key that identifies it across retries; it doesn't name an identity.
+euphony checks the command against the command schema before it creates the project, and refuses
+as invalid input a creation that fails the check, such as one whose sample rate is 0.
 euphony chooses the identity of the new project without regard to the identities other projects
 hold, and the outcome of the command identifies the project and its first revision, which the
 first batch sent to the project names as its expected revision. A creation sent again with the same
@@ -107,6 +109,24 @@ statement = 'Where the actor that a command creating a project names is not the 
 binds_to = 'system'
 rationale = 'No sender creates a project as another actor, or learns from a retry which keys another actor used.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-075' } ]
+
+[[requirement]]
+id = 'EU-0004-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST check the command that creates a project against the command schema before it creates the project.'
+binds_to = 'system'
+rationale = 'A creation is checked as every command of a batch is, so a project never starts from an invalid command.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-010' }, { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the command that creates a project fails the check against the command schema, euphony MUST refuse the command as invalid input.'
+binds_to = 'system'
+rationale = 'A creation with an invalid sample rate, such as 0, never makes a project, and its sender acts on a typed reason.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-090' }, { kind = 'depends_on', target = 'EU-0004-080' } ]
 
 [[requirement]]
 id = 'EU-0004-077'

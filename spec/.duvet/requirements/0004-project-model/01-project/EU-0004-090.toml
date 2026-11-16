@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-090"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST check the command that creates a project against the command schema before it creates the project."
