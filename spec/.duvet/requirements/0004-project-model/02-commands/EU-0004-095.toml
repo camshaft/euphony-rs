@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-095"
 
 [[spec]]
 level = "MUST"
-quote = "Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key."
+quote = "Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
