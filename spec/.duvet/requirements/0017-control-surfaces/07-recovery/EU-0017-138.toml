@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-138"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST reject a message of an earlier generation, including one that arrives after reconnection."

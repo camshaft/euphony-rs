@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-128"
+
+[[spec]]
+level = "MUST"
+quote = "A capacity failure while performance is being captured MUST end its admission visibly and record the gap."

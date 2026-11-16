@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-141"
+
+[[spec]]
+level = "MUST"
+quote = "Contention among the surfaces of one session MUST NOT serialize unrelated projects."

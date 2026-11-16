@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-126"
+
+[[spec]]
+level = "MUST"
+quote = "Under congestion, the system MUST reduce only replaceable display traffic."

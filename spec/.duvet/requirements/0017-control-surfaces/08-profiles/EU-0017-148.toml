@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-148"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST hold passing evidence for each surface category the project's configuration requires."

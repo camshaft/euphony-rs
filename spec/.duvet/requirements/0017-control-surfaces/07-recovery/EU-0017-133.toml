@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-133"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of the main host MUST make its remote controls unavailable."

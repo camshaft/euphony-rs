@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-140"
+
+[[spec]]
+level = "MUST"
+quote = "The adapter and the audio device MUST keep control values within the device's and the output's ranges."

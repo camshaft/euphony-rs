@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-122"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT claim sample accuracy for a network gesture without measured clock and delivery bounds."

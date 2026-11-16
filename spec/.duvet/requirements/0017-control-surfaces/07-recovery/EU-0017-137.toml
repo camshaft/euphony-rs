@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-137"
+
+[[spec]]
+level = "MUST"
+quote = "Control input made before a surface disconnected MUST NOT take effect after it reconnects."

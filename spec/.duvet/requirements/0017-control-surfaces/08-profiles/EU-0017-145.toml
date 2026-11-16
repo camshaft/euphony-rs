@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-145"
+
+[[spec]]
+level = "MUST"
+quote = "Simulated evidence MUST NOT stand in for a physical conformance record."

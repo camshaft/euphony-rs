@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-112"
+
+[[spec]]
+level = "MUST"
+quote = "Stop MUST stay responsive on the local host while a remote surface is unavailable."

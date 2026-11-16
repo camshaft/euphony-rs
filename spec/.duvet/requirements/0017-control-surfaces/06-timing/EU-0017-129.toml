@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-129"
+
+[[spec]]
+level = "MUST"
+quote = "The real-time audio path MUST NOT perform network, layout or journal work."

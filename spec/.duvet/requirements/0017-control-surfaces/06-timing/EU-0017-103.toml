@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-103"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST measure the response and jitter from contact to applied sample of expressive controls for each device and path."

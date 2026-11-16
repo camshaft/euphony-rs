@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-108"
+
+[[spec]]
+level = "MUST"
+quote = "A block-only target MUST report the interval at which it applies control events."

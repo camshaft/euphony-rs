@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-125"
+
+[[spec]]
+level = "MUST"
+quote = "Ending a gesture, cancelling one and safety commands MUST stay serviceable while display traffic is overloaded."
