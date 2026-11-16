@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-070"
+
+[[spec]]
+level = "MUST"
+quote = "The command that creates a project MUST be sent alone, and not in a batch."

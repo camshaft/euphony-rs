@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-073"
+
+[[spec]]
+level = "MUST"
+quote = "The outcome of a command that creates a project MUST identify the new project and its first revision."

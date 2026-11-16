@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-079"
+
+[[spec]]
+level = "MUST"
+quote = "Where a command that creates a project has the actor and idempotency key of a committed creation and another sample rate, euphony MUST refuse it as invalid input."
