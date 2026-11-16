@@ -108,7 +108,7 @@ rationale = "A surface shows where transport actually started or stopped."
 id = 'EU-0017-112'
 level = 'MUST'
 polarity = 'required'
-statement = "While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface."
+statement = "While a remote surface is unavailable, the local host MUST apply a stop made on the local host without waiting for an acknowledgement from any remote surface."
 binds_to = 'system'
 rationale = "The room can always stop playback."
 

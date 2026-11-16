@@ -2,4 +2,4 @@ target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-112"
 
 [[spec]]
 level = "MUST"
-quote = "While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface."
+quote = "While a remote surface is unavailable, the local host MUST apply a stop made on the local host without waiting for an acknowledgement from any remote surface."
