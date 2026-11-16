@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-102"
+
+[[spec]]
+level = "MUST"
+quote = "Accepted performance records, converter state and their timing MUST be inputs to later bounces."

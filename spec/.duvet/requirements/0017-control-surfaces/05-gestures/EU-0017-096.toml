@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-096"
+
+[[spec]]
+level = "MUST"
+quote = "Moving a finger over a widget MUST NOT arm automation."

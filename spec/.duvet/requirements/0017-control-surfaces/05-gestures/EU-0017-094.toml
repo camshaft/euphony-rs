@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-094"
+
+[[spec]]
+level = "MUST"
+quote = "Touch-down and release on an automated parameter MUST be recorded as distinct events."

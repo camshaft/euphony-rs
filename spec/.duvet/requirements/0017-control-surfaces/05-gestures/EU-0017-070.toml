@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-070"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST acknowledge each surface command with the state that actually resulted."

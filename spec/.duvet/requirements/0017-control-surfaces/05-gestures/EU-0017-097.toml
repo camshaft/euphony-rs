@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-097"
+
+[[spec]]
+level = "MUST"
+quote = "Cancelling or losing a gesture during automation recording MUST record a forced end at the last accepted sample, with the reason it ended."

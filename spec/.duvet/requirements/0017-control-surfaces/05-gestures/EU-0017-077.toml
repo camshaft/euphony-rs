@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-077"
+
+[[spec]]
+level = "MUST"
+quote = "Cancelling a gesture or losing its surface MUST NOT invent a value for its targets."

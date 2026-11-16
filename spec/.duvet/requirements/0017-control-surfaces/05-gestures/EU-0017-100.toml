@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-100"
+
+[[spec]]
+level = "MUST"
+quote = "On the loss of its surface, an external control source MUST fall to its neutral contribution unless its stored route chooses to hold its last value."

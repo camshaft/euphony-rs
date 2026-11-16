@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-093"
+
+[[spec]]
+level = "MUST"
+quote = "A layout edit that affects an active target MUST wait visibly for the gesture's release or cancel the gesture before it commits."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-072"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST validate the control epoch, the map and the pairing at every update of a gesture."

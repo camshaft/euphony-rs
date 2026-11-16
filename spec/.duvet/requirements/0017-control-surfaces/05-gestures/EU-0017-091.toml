@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-091"
+
+[[spec]]
+level = "MUST"
+quote = "A two-contact gesture such as zoom or pan MUST act on the view unless the layout maps it to sound."
