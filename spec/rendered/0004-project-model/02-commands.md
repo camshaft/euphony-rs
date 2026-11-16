@@ -7,17 +7,17 @@ euphony refuses as denied a batch that names another actor before it makes any o
 batch but the check that it names an actor that euphony can compare with the caller: before it
 checks the batch's commands against the project schema, its expected revision or its idempotency
 key. euphony refuses as invalid input a batch that doesn't name an actor it can compare with the
-caller, a batch of the caller that leaves out its project, and a batch of the caller that names a
-project the caller may change and leaves out its expected revision or its idempotency key. euphony
-checks every other
-batch against the project schema and the access rules that the overview RFC states, and then
-commits it whole as a new revision, or refuses it whole with a typed reason: a conflict, a denial,
-invalid input or unavailable storage. A gesture in an interface, a line of a script, the result of
-a composition program and the call of an assistant all reach the project as such batches. A change
-of presentation that leaves the project as it was, such as scrolling, isn't a command. The protocol
-that carries batches to euphony is the subject of the client protocol RFC. A key identifies a batch
-only among the batches one actor sends to one project: a retry of a committed batch receives that
-batch's outcome, and a key used again for other commands is refused.
+caller, a batch of the caller that leaves out its project, and a batch of the caller that leaves out
+its expected revision or its idempotency key and holds only commands that the caller may take on the
+branch that the batch changes. euphony checks every other batch against the project schema and the
+access rules that the overview RFC states, and then commits it whole as a new revision, or refuses
+it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A gesture
+in an interface, a line of a script, the result of a composition program and the call of an
+assistant all reach the project as such batches. A change of presentation that leaves the project as
+it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
+subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
+to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
+other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -37,7 +37,7 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 
 ### EU-0004-063 {#EU-0004-063}
 
-Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, or names that caller and a project that the caller may change and leaves out its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input.
+Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, or names that caller, leaves out its expected revision or its idempotency key, and holds only commands that the caller may take on the branch that the batch changes, euphony MUST refuse the batch as invalid input.
 
 ### EU-0004-012 {#EU-0004-012}
 
