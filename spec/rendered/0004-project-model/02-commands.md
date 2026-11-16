@@ -22,11 +22,14 @@ read the branch, and the sender reads the rest of the project in pages, as the r
 states. A gesture in an interface, a line of a script, the result of a composition program and the
 call of an assistant all reach the project as such batches. A change of presentation that leaves the
 project as it was, such as scrolling, isn't a command. The protocol that carries batches to euphony
-is the subject of the client protocol RFC. A key identifies a batch only among the batches one actor
-sends to one project: a retry of a committed batch on the same branch receives that batch's outcome,
-unless one of the checks that euphony makes before it checks the key refuses it first, as a denial
-does once its caller may no longer change the project, and a key used again for another branch or
-other commands is refused.
+is the subject of the client protocol RFC. The command gateway of the overview RFC refuses a batch
+from an unpaired device, beyond the level of its link, or over an expired or revoked link, with the
+reason the overview RFC sets for it, before euphony makes any check of this RFC, and asks for the
+owner's approval only of a batch that the key check doesn't answer as a retry. A key identifies a
+batch only among the batches one actor sends to one project: a retry of a committed batch on the
+same branch receives that batch's outcome without a new approval, unless one of the checks that
+euphony makes before it checks the key refuses it first, as a denial does once its caller may no
+longer change the project, and a key used again for another branch or other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -86,7 +89,7 @@ The outcome of a committed batch MUST identify the revision it committed and the
 
 ### EU-0004-016 {#EU-0004-016}
 
-The outcome of a refused batch MUST be one of conflict, denied, invalid input or unavailable storage.
+The outcome of a batch that the command gateway of the overview RFC accepted and euphony refused MUST be one of conflict, denied, invalid input or unavailable storage.
 
 ### EU-0004-017 {#EU-0004-017}
 
@@ -106,7 +109,7 @@ A batch with the project, actor and idempotency key of a committed batch MUST NO
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056, EU-0004-059 or EU-0004-095, or as invalid input by EU-0004-096 or EU-0004-064, such as a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.
+A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, without a new approval by the owner, except where the command gateway of the overview RFC refuses it as unpaired, outside link level, or link expired or revoked before euphony makes the checks of EU-0004-049, EU-0004-056, EU-0004-059 and EU-0004-095, or where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056, EU-0004-059 or EU-0004-095, or as invalid input by EU-0004-096 or EU-0004-064, such as a retry from a device the owner unpaired or over a share link the owner revoked after that batch committed, a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.
 
 ### EU-0004-046 {#EU-0004-046}
 
