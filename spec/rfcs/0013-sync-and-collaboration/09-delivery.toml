@@ -14,9 +14,11 @@ diverge as soon as the host edits, so it is not a way of delivery. The lossy str
 lossy codec for music, and the lossless stream carries the exact samples of the mix. Each session
 has a listening-quality policy, which the owner chooses: lossless required, lossless preferred or
 lossy. Lossy audio suits discussion of an arrangement, and judging a mix needs the lossless stream or
-the prepared copy. The listening stream is playback delivery alone. A forwarding peer, which
-receives one copy and sends it on, is a later addition for audiences larger than the upload of one
-host."""
+the prepared copy. The listening stream is playback delivery alone. A participant the measured
+upload of the host can't carry waits to be admitted, in the order participants asked to join, and
+sees its place in that order. When the upload shrinks, the host lowers the rates of the lossy
+streams before it stops the participant admitted last. A forwarding peer, which receives one copy
+and sends it on, is a later addition for audiences larger than the upload of one host."""
 
 [[requirement]]
 id = 'EU-0013-175'
@@ -218,6 +220,70 @@ polarity = 'required'
 statement = 'The host MUST admit participants while its measured upload carries them.'
 binds_to = 'system'
 rationale = 'Admission follows the measured capacity of the host.'
+
+[[requirement]]
+id = 'EU-0013-243'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant whose join the measured upload of the host cannot carry MUST wait to be admitted instead of being refused.'
+binds_to = 'system'
+rationale = 'A join past the capacity of the host waits rather than fails, because the limit is the measured upload, not a refusal.'
+
+[[requirement]]
+id = 'EU-0013-244'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST keep waiting participants in the order they asked to join.'
+binds_to = 'system'
+rationale = 'The first to ask is the first admitted.'
+
+[[requirement]]
+id = 'EU-0013-245'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each waiting participant MUST see that it waits for the upload of the host and its place in the waiting order.'
+binds_to = 'system'
+rationale = 'A waiting participant knows why its playback has not started and how far it is from the front.'
+
+[[requirement]]
+id = 'EU-0013-246'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST see the waiting participants in their waiting order.'
+binds_to = 'system'
+rationale = 'The owner can see who waits and decide whether to free capacity.'
+
+[[requirement]]
+id = 'EU-0013-247'
+level = 'MUST'
+polarity = 'required'
+statement = 'Once the measured upload of the host carries one more stream, the host MUST admit the first waiting participant, unless that participant was stopped for a shrinking upload and the congestion control is not raising the rates of the remaining streams.'
+binds_to = 'system'
+rationale = 'Capacity that frees is used at once.'
+
+[[requirement]]
+id = 'EU-0013-248'
+level = 'MUST'
+polarity = 'required'
+statement = 'When the measured upload of the host shrinks below what the streams of the admitted participants need, the host MUST lower the rates of the lossy streams, and under lossless preferred move streams to lossy, before it stops the playback of any admitted participant.'
+binds_to = 'system'
+rationale = 'Lowering quality comes before cutting anyone off.'
+
+[[requirement]]
+id = 'EU-0013-249'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the measured upload still cannot carry every admitted participant, the host MUST stop the playback of the participant admitted last, with the reason shown, return it to the front of the waiting order, and repeat this until the remaining streams fit, while the participants still admitted keep playing.'
+binds_to = 'system'
+rationale = 'The newest participant leaves first, and is the next one back.'
+
+[[requirement]]
+id = 'EU-0013-250'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant stopped for a shrinking upload MUST be admitted again only once the measured upload carries its stream while the congestion control is raising the rates of the remaining streams.'
+binds_to = 'system'
+rationale = 'A participant is not readmitted on a reading that still shows the congestion, so it is not stopped again on the next dip.'
 
 [[requirement]]
 id = 'EU-0013-219'

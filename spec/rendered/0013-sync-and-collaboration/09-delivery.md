@@ -8,9 +8,11 @@ diverge as soon as the host edits, so it is not a way of delivery. The lossy str
 lossy codec for music, and the lossless stream carries the exact samples of the mix. Each session
 has a listening-quality policy, which the owner chooses: lossless required, lossless preferred or
 lossy. Lossy audio suits discussion of an arrangement, and judging a mix needs the lossless stream or
-the prepared copy. The listening stream is playback delivery alone. A forwarding peer, which
-receives one copy and sends it on, is a later addition for audiences larger than the upload of one
-host.
+the prepared copy. The listening stream is playback delivery alone. A participant the measured
+upload of the host can't carry waits to be admitted, in the order participants asked to join, and
+sees its place in that order. When the upload shrinks, the host lowers the rates of the lossy
+streams before it stops the participant admitted last. A forwarding peer, which receives one copy
+and sends it on, is a later addition for audiences larger than the upload of one host.
 
 ### EU-0013-175 {#EU-0013-175}
 
@@ -111,6 +113,38 @@ The session MUST NOT cap the number of participants.
 ### EU-0013-199 {#EU-0013-199}
 
 The host MUST admit participants while its measured upload carries them.
+
+### EU-0013-243 {#EU-0013-243}
+
+A participant whose join the measured upload of the host cannot carry MUST wait to be admitted instead of being refused.
+
+### EU-0013-244 {#EU-0013-244}
+
+The host MUST keep waiting participants in the order they asked to join.
+
+### EU-0013-245 {#EU-0013-245}
+
+Each waiting participant MUST see that it waits for the upload of the host and its place in the waiting order.
+
+### EU-0013-246 {#EU-0013-246}
+
+The owner MUST see the waiting participants in their waiting order.
+
+### EU-0013-247 {#EU-0013-247}
+
+Once the measured upload of the host carries one more stream, the host MUST admit the first waiting participant, unless that participant was stopped for a shrinking upload and the congestion control is not raising the rates of the remaining streams.
+
+### EU-0013-248 {#EU-0013-248}
+
+When the measured upload of the host shrinks below what the streams of the admitted participants need, the host MUST lower the rates of the lossy streams, and under lossless preferred move streams to lossy, before it stops the playback of any admitted participant.
+
+### EU-0013-249 {#EU-0013-249}
+
+Where the measured upload still cannot carry every admitted participant, the host MUST stop the playback of the participant admitted last, with the reason shown, return it to the front of the waiting order, and repeat this until the remaining streams fit, while the participants still admitted keep playing.
+
+### EU-0013-250 {#EU-0013-250}
+
+A participant stopped for a shrinking upload MUST be admitted again only once the measured upload carries its stream while the congestion control is raising the rates of the remaining streams.
 
 ### EU-0013-219 {#EU-0013-219}
 

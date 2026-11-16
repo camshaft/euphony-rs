@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-248"
+
+[[spec]]
+level = "MUST"
+quote = "When the measured upload of the host shrinks below what the streams of the admitted participants need, the host MUST lower the rates of the lossy streams, and under lossless preferred move streams to lossy, before it stops the playback of any admitted participant."
