@@ -8,7 +8,9 @@ How copies exchange revisions and merge branches is the subject of the sync and 
 read of a project answers with a view of one revision and names that revision; a long answer comes in
 pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
 subscription resumes from. euphony answers a read or a subscription only for a caller who may read the
-project, and refuses any other as denied.
+project, and refuses any other as denied. Access can end while a paged read or a subscription is open,
+such as when a link is revoked: from then on euphony refuses each later page of that read as denied,
+ends the subscription as denied, and delivers nothing more of the project to that caller.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -64,8 +66,16 @@ A subscription resumed from a cursor MUST NOT deliver an event at or before that
 
 ### EU-0004-045 {#EU-0004-045}
 
-A subscriber MUST learn of each committed revision of the project without asking for it.
+A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.
 
 ### EU-0004-050 {#EU-0004-050}
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
+
+### EU-0004-056 {#EU-0004-056}
+
+euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.
+
+### EU-0004-057 {#EU-0004-057}
+
+euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.

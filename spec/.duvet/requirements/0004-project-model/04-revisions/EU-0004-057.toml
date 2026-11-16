@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-057"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project."
