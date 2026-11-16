@@ -24,6 +24,8 @@ Each attempt reports its progress over the job protocol, and the scheduler measu
 worker's rate of progress from those reports as it measures its other capacity signals.
 While a worker holds a lease, the job protocol closes the connection to that worker once the
 transport reports that the worker stopped acknowledging what is sent on it, which ends that lease.
+While the lease is held, the job protocol keeps sending liveness probes on that connection, at a
+pace the transport discovers, so that the transport can report a worker that stops acknowledging.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states."""
 
@@ -162,3 +164,11 @@ polarity = 'required'
 statement = 'While a worker holds a lease on a job, the job protocol MUST close the connection to that worker once the transport reports that the worker stopped acknowledging the data and the liveness probes sent on that connection.'
 binds_to = 'system'
 rationale = "A worker that stays connected but stops answering never holds a job: the transport's report is the event that closes the connection, and EU-0006-079 then ends the lease, with no timer of the scheduler's own."
+
+[[requirement]]
+id = 'EU-0006-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'While a worker holds a lease on a job, the job protocol MUST send liveness probes on the connection to that worker, at a pace the transport discovers from that connection rather than at a fixed interval.'
+binds_to = 'system'
+rationale = "The transport reports a worker silent only once something sent to it stays unacknowledged, so a host that sends nothing while an attempt runs would never learn that the worker went silent, and EU-0006-092 would never close the connection; a pace the transport discovers doesn't add a fixed interval of the scheduler's own."

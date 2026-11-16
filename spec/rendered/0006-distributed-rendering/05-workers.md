@@ -14,6 +14,8 @@ Each attempt reports its progress over the job protocol, and the scheduler measu
 worker's rate of progress from those reports as it measures its other capacity signals.
 While a worker holds a lease, the job protocol closes the connection to that worker once the
 transport reports that the worker stopped acknowledging what is sent on it, which ends that lease.
+While the lease is held, the job protocol keeps sending liveness probes on that connection, at a
+pace the transport discovers, so that the transport can report a worker that stops acknowledging.
 Render work and its answers travel over the job protocol's connections. Inputs and results travel
 over the content store's connections, whose pairing and encryption rules RFC 0008 states.
 
@@ -84,3 +86,7 @@ Once the progress an attempt reports falls behind what its worker's measured rat
 ### EU-0006-092 {#EU-0006-092}
 
 While a worker holds a lease on a job, the job protocol MUST close the connection to that worker once the transport reports that the worker stopped acknowledging the data and the liveness probes sent on that connection.
+
+### EU-0006-093 {#EU-0006-093}
+
+While a worker holds a lease on a job, the job protocol MUST send liveness probes on the connection to that worker, at a pace the transport discovers from that connection rather than at a fixed interval.
