@@ -1,7 +1,7 @@
 ## Revisions, branches and reads {#revisions}
 
 The creation of a project makes its first revision, which doesn't follow any revision, carries the
-signature of the copy that created the project, and is the head of a working branch that copy holds;
+signature of the copy that created the project, and becomes the head of a working branch that copy holds;
 the outcome of the creation identifies that branch. Each committed batch then makes a revision. A
 revision names the revisions it follows, its parents, so the revisions of a project form a graph
 without a cycle. A branch is a name that points at one revision, its head. Each copy holds its
@@ -47,7 +47,7 @@ Each branch MUST point at exactly one revision.
 
 ### EU-0004-085 {#EU-0004-085}
 
-The first revision of a project MUST be the head of a working branch that the copy which created the project holds.
+The creation of a project MUST make its first revision the head of a working branch that the copy which created the project holds.
 
 ### EU-0004-086 {#EU-0004-086}
 
