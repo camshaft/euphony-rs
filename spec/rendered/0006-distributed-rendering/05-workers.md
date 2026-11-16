@@ -67,6 +67,6 @@ A computer that isn't one of the owner's paired computers MUST NOT be given rend
 
 An accepted render job MUST NOT be dropped for want of capacity.
 
-### EU-0006-081 {#EU-0006-081}
+### EU-0006-079 {#EU-0006-079}
 
 A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, or the connection to that worker closes.
