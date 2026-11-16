@@ -1,5 +1,0 @@
-target = "rendered/0018-desktop-and-browser/07-second-screens.md#EU-0018-053"
-
-[[spec]]
-level = "MUST"
-quote = "A touch monitor MUST capture and cancel each contact separately."

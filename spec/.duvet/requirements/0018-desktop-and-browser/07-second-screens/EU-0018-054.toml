@@ -1,5 +1,0 @@
-target = "rendered/0018-desktop-and-browser/07-second-screens.md#EU-0018-054"
-
-[[spec]]
-level = "MUST"
-quote = "A touch monitor MUST use the same atomic gestures as phones and tablets."
