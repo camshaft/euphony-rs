@@ -73,7 +73,7 @@ The outcome of a refused batch MUST be one of conflict, denied, invalid input or
 
 ### EU-0004-017 {#EU-0004-017}
 
-Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.
+Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, directly or through other revisions, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.
 
 ### EU-0004-018 {#EU-0004-018}
 

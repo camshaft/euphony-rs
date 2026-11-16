@@ -143,7 +143,7 @@ rationale = 'A sender acts on a typed reason, not on the words of a message.'
 id = 'EU-0004-017'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.'
+statement = 'Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, directly or through other revisions, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.'
 binds_to = 'system'
 rationale = 'An edit made against an old state never overwrites a newer one, and a retry of a batch whose first send committed after the head moved never reads as a conflict.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
