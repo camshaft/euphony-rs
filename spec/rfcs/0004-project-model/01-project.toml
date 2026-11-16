@@ -11,7 +11,8 @@ motivation = """\
 prose = """
 A project is a piece of music as euphony holds it: its tracks, regions, events, automation, routing
 and processors with their settings, and the links between them. Each project has an identity and a
-sample rate. Every time in a project is a whole number of samples at that rate from the start of its
+sample rate, a whole number of samples per second greater than 0. Every time in a project is a
+whole number of samples at that rate from the start of its
 timeline, whatever the clock of the computer that edits, plays or renders it. Each link from one part
 of a project to another is a typed field: a region refers to the audio it plays by the content
 identity of that audio, and a processor refers to the definition it runs by the identity and version
@@ -46,6 +47,15 @@ polarity = 'required'
 statement = 'Each project MUST have exactly one sample rate.'
 binds_to = 'system'
 rationale = 'Every time in the project is counted at one rate.'
+
+[[requirement]]
+id = 'EU-0004-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command schema MUST define the sample rate that the command creating a project names as a whole number of samples per second greater than 0.'
+binds_to = 'system'
+rationale = 'A creation whose sample rate is 0 fails the check against the command schema, and the rates a device plays at come from that device, not from a list fixed in the project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-002' }, { kind = 'depends_on', target = 'EU-0004-010' }, { kind = 'depends_on', target = 'EU-0004-090' } ]
 
 [[requirement]]
 id = 'EU-0004-070'

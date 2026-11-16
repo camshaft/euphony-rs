@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-092"
+
+[[spec]]
+level = "MUST"
+quote = "The command schema MUST define the sample rate that the command creating a project names as a whole number of samples per second greater than 0."
