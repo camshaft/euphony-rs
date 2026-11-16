@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-020"
 
 [[spec]]
 level = "MUST"
-quote = "A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where EU-0004-049 or EU-0004-056 refuses it as denied, such as a retry from a caller who lost change access after that batch committed."
+quote = "A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it as denied before it checks its idempotency key, as EU-0004-049 and EU-0004-056 do, such as a retry from a caller who lost change access after that batch committed."
