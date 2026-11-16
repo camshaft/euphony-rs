@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/04-revisions.md#EU-0004-085"
 
 [[spec]]
 level = "MUST"
-quote = "The first revision of a project MUST be the head of a working branch that the copy which created the project holds."
+quote = "The creation of a project MUST make its first revision the head of a working branch that the copy which created the project holds."

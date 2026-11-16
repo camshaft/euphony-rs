@@ -11,7 +11,7 @@ motivation = """\
   lost, and check each revision it receives."""
 prose = """
 The creation of a project makes its first revision, which doesn't follow any revision, carries the
-signature of the copy that created the project, and is the head of a working branch that copy holds;
+signature of the copy that created the project, and becomes the head of a working branch that copy holds;
 the outcome of the creation identifies that branch. Each committed batch then makes a revision. A
 revision names the revisions it follows, its parents, so the
 revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
@@ -100,7 +100,7 @@ rationale = 'A branch always names one state of the project.'
 id = 'EU-0004-085'
 level = 'MUST'
 polarity = 'required'
-statement = 'The first revision of a project MUST be the head of a working branch that the copy which created the project holds.'
+statement = 'The creation of a project MUST make its first revision the head of a working branch that the copy which created the project holds.'
 binds_to = 'system'
 rationale = 'The creating copy commits the first batch of the project to that branch without waiting on another copy.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-037' }, { kind = 'depends_on', target = 'EU-0004-084' } ]
