@@ -49,7 +49,7 @@ A batch MUST name its project, the branch it changes, its expected revision, its
 
 ### EU-0004-049 {#EU-0004-049}
 
-Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch that this RFC states: before the checks of EU-0004-056, EU-0004-059, EU-0004-095, EU-0004-096 and EU-0004-064, and the checks of the batch's commands against the project schema and of its idempotency key.
+Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch that this RFC states: before the checks of EU-0004-056, EU-0004-059, EU-0004-095, EU-0004-096, EU-0004-064 and EU-0004-017, and the checks of the batch's commands against the project schema and of its idempotency key.
 
 ### EU-0004-056 {#EU-0004-056}
 

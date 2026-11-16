@@ -72,7 +72,7 @@ rationale = 'euphony knows what the batch changes, on which branch, against whic
 id = 'EU-0004-049'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch that this RFC states: before the checks of EU-0004-056, EU-0004-059, EU-0004-095, EU-0004-096 and EU-0004-064, and the checks of the batch's commands against the project schema and of its idempotency key."
+statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch that this RFC states: before the checks of EU-0004-056, EU-0004-059, EU-0004-095, EU-0004-096, EU-0004-064 and EU-0004-017, and the checks of the batch's commands against the project schema and of its idempotency key."
 binds_to = 'system'
 rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used, and a batch that names another actor is refused as denied whichever other check it would fail.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
