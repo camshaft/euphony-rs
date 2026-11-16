@@ -25,8 +25,9 @@ gesture in an interface, a line of a script, the result of a composition program
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
 subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
-to one project: a retry of a committed batch on the same branch receives that batch's outcome, and a
-key used again for another branch or other commands is refused."""
+to one project: a retry of a committed batch on the same branch that passes every check euphony
+makes before it checks the key receives that batch's outcome, and a key used again for another
+branch or other commands is refused."""
 
 [[requirement]]
 id = 'EU-0004-009'
@@ -170,9 +171,10 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-020'
 level = 'MUST'
 polarity = 'required'
-statement = 'A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.'
+statement = 'A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056 or EU-0004-092, or as invalid input by EU-0004-093 or EU-0004-064, such as a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.'
 binds_to = 'system'
-rationale = 'A sender whose answer was lost learns what happened.'
+rationale = 'A sender whose answer was lost learns what happened, and a retry meets every check that comes before the key check as any other batch does, so each case has one outcome.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-049' }, { kind = 'depends_on', target = 'EU-0004-056' }, { kind = 'depends_on', target = 'EU-0004-064' }, { kind = 'depends_on', target = 'EU-0004-092' }, { kind = 'depends_on', target = 'EU-0004-093' } ]
 
 [[requirement]]
 id = 'EU-0004-046'
