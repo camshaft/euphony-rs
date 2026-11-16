@@ -15,9 +15,10 @@ revisions of a project form a graph without a cycle. A branch is a name that poi
 its head. Each copy holds its working branches and is the only copy that commits to them, so a
 musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
 How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
-read of a project answers with a view of one revision and names that revision; a long answer comes in
-pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
-subscription resumes from."""
+read of a project answers with a view of one revision and names that revision. Each answer holds at
+most one page: a longer answer names the token that reads its next page, each page shows that same
+revision, and reading one page costs no more in a project with a long history than in a new one. A
+subscriber to the events of a project holds a cursor that a later subscription resumes from."""
 
 [[requirement]]
 id = 'EU-0004-032'
@@ -133,3 +134,30 @@ polarity = 'required'
 statement = 'A subscriber MUST learn of each committed revision of the project without asking for it.'
 binds_to = 'system'
 rationale = 'A reader stays current without polling.'
+
+[[requirement]]
+id = 'EU-0004-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each answer to a read of a project MUST hold at most one page.'
+binds_to = 'system'
+rationale = 'A reader never has to receive or hold a whole long history or a whole large project in one answer.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
+
+[[requirement]]
+id = 'EU-0004-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'An answer to a read that does not hold its last page MUST name the token that reads its next page.'
+binds_to = 'system'
+rationale = 'A reader reaches every page of a long answer, one page at a time.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-048' } ]
+
+[[requirement]]
+id = 'EU-0004-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The cost of reading one page MUST NOT grow with the length of the history or the size of the project.'
+binds_to = 'system'
+rationale = 'A project with years of history reads as quickly, page by page, as a new one.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-048' } ]

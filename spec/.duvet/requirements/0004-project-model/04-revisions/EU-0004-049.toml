@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-049"
+
+[[spec]]
+level = "MUST"
+quote = "An answer to a read that does not hold its last page MUST name the token that reads its next page."

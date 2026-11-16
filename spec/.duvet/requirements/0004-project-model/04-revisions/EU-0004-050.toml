@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-050"
+
+[[spec]]
+level = "MUST"
+quote = "The cost of reading one page MUST NOT grow with the length of the history or the size of the project."
