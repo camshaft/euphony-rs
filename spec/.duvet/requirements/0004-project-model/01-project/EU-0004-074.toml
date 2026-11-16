@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-074"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST refuse as denied a command that creates a project from a caller other than the owner, a paired owner device or an assistant the owner connected, before it checks the command's idempotency key."

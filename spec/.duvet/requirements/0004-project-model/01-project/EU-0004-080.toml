@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-080"
+
+[[spec]]
+level = "MUST"
+quote = "The outcome of a refused command that creates a project MUST be one of denied, invalid input or unavailable storage."
