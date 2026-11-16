@@ -34,10 +34,12 @@ rhythm patterns, whatever their transposition and tempo. People search in a view
 arrangement, with audition and drag into a track; the owner's assistants search through the same
 actions: search, get an item, list its uses, set metadata and license, preview and place, keep and
 release a keep mark, and subscribe. Placing an item adds a reference to it through the project's
-previewable, undoable command; it never copies the item, and editing a placed note sequence or
-curve in the new project makes a new item. An entry stays searchable whatever tier holds its item,
-with a waveform overview, and an item that was pruned keeps its entry as absent. Collaborators
-reach none of the owner's catalog; each collaborator's catalog indexes what they hold."""
+previewable, undoable command, and its provenance records the project the item was found in; it
+never copies the item, and editing a placed note sequence or curve in the new project makes a new
+item. An entry stays searchable whatever tier holds its item, with a waveform overview of its
+audio, and auditioning an item held only on storage computers fetches its first chunks first. An
+item that was pruned keeps its entry as absent. Collaborators reach none of the owner's catalog;
+each collaborator's catalog indexes what they hold."""
 
 [[requirement]]
 id = 'EU-0008-067'
@@ -192,6 +194,14 @@ binds_to = 'system'
 rationale = 'A placement is an ordinary edit that the owner sees and can undo.'
 
 [[requirement]]
+id = 'EU-0008-128'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placing an item MUST record, in the provenance of the new reference, the project in which the item was found.'
+binds_to = 'system'
+rationale = 'The owner sees which project a reused item came from.'
+
+[[requirement]]
 id = 'EU-0008-086'
 level = 'MUST'
 polarity = 'forbidden'
@@ -214,6 +224,22 @@ polarity = 'required'
 statement = 'An entry MUST stay searchable whatever tier holds its item.'
 binds_to = 'system'
 rationale = 'Archived material is found as easily as material on the working computer.'
+
+[[requirement]]
+id = 'EU-0008-129'
+level = 'MUST'
+polarity = 'required'
+statement = 'An entry of an audio item MUST keep a waveform overview of the item, whatever tier holds the item.'
+binds_to = 'system'
+rationale = 'The owner sees the shape of archived audio without fetching it.'
+
+[[requirement]]
+id = 'EU-0008-130'
+level = 'MUST'
+polarity = 'required'
+statement = 'Auditioning an item that is not held locally MUST fetch its first chunks before the rest of it.'
+binds_to = 'system'
+rationale = 'Audition starts as soon as the beginning of the item arrives.'
 
 [[requirement]]
 id = 'EU-0008-089'

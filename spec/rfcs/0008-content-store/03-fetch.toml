@@ -142,3 +142,19 @@ polarity = 'forbidden'
 statement = 'Opening a project held only on storage computers and playing it SHOULD NOT cause a missed audio deadline from waiting for its content.'
 binds_to = 'system'
 rationale = 'Cold storage costs time before playback, and never a glitch during it.'
+
+[[requirement]]
+id = 'EU-0008-126'
+level = 'MUST'
+polarity = 'required'
+statement = 'An item that the owner places from the catalog MUST be fetched while the preview of its placement is shown.'
+binds_to = 'system'
+rationale = 'The item is held locally by the time the owner confirms the placement.'
+
+[[requirement]]
+id = 'EU-0008-127'
+level = 'MUST'
+polarity = 'required'
+statement = 'The placement policy MUST be able to keep a working copy of each item whose project is open on another computer of the owner.'
+binds_to = 'system'
+rationale = 'The owner moves to another computer without waiting for the content of an open project.'

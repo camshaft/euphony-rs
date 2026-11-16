@@ -30,6 +30,78 @@ place; holders, which are the owner's paired computers, reach the storage operat
 collaborators reach none of them."""
 
 [[requirement]]
+id = 'EU-0008-131'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST offer an operation that lists the holders and the receipts of an item.'
+binds_to = 'system'
+rationale = 'The owner and the planner see where each copy of an item is and who vouches for it.'
+
+[[requirement]]
+id = 'EU-0008-132'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST offer an operation that verifies the copy of an item that a holder keeps.'
+binds_to = 'system'
+rationale = 'The owner checks a copy whenever they doubt it.'
+
+[[requirement]]
+id = 'EU-0008-133'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placement MUST offer an operation that reads the actions the planner has yet to take.'
+binds_to = 'system'
+rationale = 'The owner sees what placement will do before it happens.'
+
+[[requirement]]
+id = 'EU-0008-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placement MUST offer an operation that reads the items whose verified copies are fewer than their policy sets.'
+binds_to = 'system'
+rationale = 'A view or an assistant finds the material at risk in one call.'
+
+[[requirement]]
+id = 'EU-0008-135'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placement MUST offer an operation by which the owner declares a computer lost.'
+binds_to = 'system'
+rationale = 'Copies on a computer that will never return stop counting, and their repair starts.'
+
+[[requirement]]
+id = 'EU-0008-136'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST offer an operation that sets the metadata of an item.'
+binds_to = 'system'
+rationale = 'The owner corrects or adds what an item says about itself.'
+
+[[requirement]]
+id = 'EU-0008-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST offer an operation that sets the license of an item.'
+binds_to = 'system'
+rationale = 'The terms of an item are recorded where the catalog shows them.'
+
+[[requirement]]
+id = 'EU-0008-138'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST offer an operation by which the owner marks an item to keep.'
+binds_to = 'system'
+rationale = 'An item the owner wants is kept though no project refers to it.'
+
+[[requirement]]
+id = 'EU-0008-139'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST offer an operation by which the owner releases a keep mark.'
+binds_to = 'system'
+rationale = 'An item the owner no longer wants can be collected once nothing else keeps it.'
+
+[[requirement]]
 id = 'EU-0008-119'
 level = 'MUST'
 polarity = 'required'

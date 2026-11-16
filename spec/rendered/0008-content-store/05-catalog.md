@@ -25,10 +25,12 @@ rhythm patterns, whatever their transposition and tempo. People search in a view
 arrangement, with audition and drag into a track; the owner's assistants search through the same
 actions: search, get an item, list its uses, set metadata and license, preview and place, keep and
 release a keep mark, and subscribe. Placing an item adds a reference to it through the project's
-previewable, undoable command; it never copies the item, and editing a placed note sequence or
-curve in the new project makes a new item. An entry stays searchable whatever tier holds its item,
-with a waveform overview, and an item that was pruned keeps its entry as absent. Collaborators
-reach none of the owner's catalog; each collaborator's catalog indexes what they hold.
+previewable, undoable command, and its provenance records the project the item was found in; it
+never copies the item, and editing a placed note sequence or curve in the new project makes a new
+item. An entry stays searchable whatever tier holds its item, with a waveform overview of its
+audio, and auditioning an item held only on storage computers fetches its first chunks first. An
+item that was pruned keeps its entry as absent. Collaborators reach none of the owner's catalog;
+each collaborator's catalog indexes what they hold.
 
 ### EU-0008-067 {#EU-0008-067}
 
@@ -106,6 +108,10 @@ A person and the assistants of the owner MUST reach the same catalog actions wit
 
 Placing an item MUST add a reference to its identity through the previewable, undoable command of the project.
 
+### EU-0008-128 {#EU-0008-128}
+
+Placing an item MUST record, in the provenance of the new reference, the project in which the item was found.
+
 ### EU-0008-086 {#EU-0008-086}
 
 Placing an item MUST NOT copy it.
@@ -117,6 +123,14 @@ Editing a placed note sequence or automation curve MUST leave the item in its so
 ### EU-0008-088 {#EU-0008-088}
 
 An entry MUST stay searchable whatever tier holds its item.
+
+### EU-0008-129 {#EU-0008-129}
+
+An entry of an audio item MUST keep a waveform overview of the item, whatever tier holds the item.
+
+### EU-0008-130 {#EU-0008-130}
+
+Auditioning an item that is not held locally MUST fetch its first chunks before the rest of it.
 
 ### EU-0008-089 {#EU-0008-089}
 

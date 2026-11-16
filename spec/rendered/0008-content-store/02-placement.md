@@ -17,10 +17,12 @@ copy, or release a working copy. A holder that has stored and verified an item s
 names the item, its chunk list, the holder and the storage volume. A storage volume carries a random
 identifier its holder writes when it enrolls it, and a volume on network storage also names its
 server, so copies on one volume or on one server count as one copy. A copy is released only through
-reservations that other holders record for that release: each reserving holder keeps its copy, and
-the release commits only while the policy and the pairing are those it recorded. Each release has
+reservations that other holders record for that release: each reserving holder keeps its copy, a
+holder releasing its own copy doesn't reserve the item for another release, and the release
+commits only while the policy and the pairing are those it recorded. Each release has
 an epoch, so that a release planned by a computer the owner declares lost is settled once and its
-late messages change nothing. A holder verifies a copy by reading each chunk, checking its digest,
+late messages change nothing, and a release that recovery can't settle keeps its reservations and
+is shown to the owner as unresolved. A holder verifies a copy by reading each chunk, checking its digest,
 decoding it and checking the item's identity. Where the verified copies of an item fall below its
 policy, the planner copies it again from the remaining copies; where no verified copy remains, the
 item is unavailable and each project shows the regions that can't sound. Holders don't encrypt what
@@ -74,6 +76,10 @@ A copy MUST be released only where other holders on separate computers and indep
 
 A holder that holds a reservation on an item MUST NOT release its own copy of that item.
 
+### EU-0008-125 {#EU-0008-125}
+
+A holder that is releasing its own copy of an item MUST NOT reserve that item for another release.
+
 ### EU-0008-033 {#EU-0008-033}
 
 A release MUST be cancelled where the policy or the pairing of the computers of the owner changes before it commits.
@@ -93,6 +99,10 @@ Where the computer that planned a release is declared lost, recovery MUST settle
 ### EU-0008-037 {#EU-0008-037}
 
 Once recovery has settled a release, the releasing holder MUST refuse every later message of that release.
+
+### EU-0008-141 {#EU-0008-141}
+
+A release that recovery cannot settle MUST keep its reservations and be shown to the owner as an unresolved release.
 
 ### EU-0008-038 {#EU-0008-038}
 

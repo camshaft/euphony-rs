@@ -27,10 +27,12 @@ copy, or release a working copy. A holder that has stored and verified an item s
 names the item, its chunk list, the holder and the storage volume. A storage volume carries a random
 identifier its holder writes when it enrolls it, and a volume on network storage also names its
 server, so copies on one volume or on one server count as one copy. A copy is released only through
-reservations that other holders record for that release: each reserving holder keeps its copy, and
-the release commits only while the policy and the pairing are those it recorded. Each release has
+reservations that other holders record for that release: each reserving holder keeps its copy, a
+holder releasing its own copy doesn't reserve the item for another release, and the release
+commits only while the policy and the pairing are those it recorded. Each release has
 an epoch, so that a release planned by a computer the owner declares lost is settled once and its
-late messages change nothing. A holder verifies a copy by reading each chunk, checking its digest,
+late messages change nothing, and a release that recovery can't settle keeps its reservations and
+is shown to the owner as unresolved. A holder verifies a copy by reading each chunk, checking its digest,
 decoding it and checking the item's identity. Where the verified copies of an item fall below its
 policy, the planner copies it again from the remaining copies; where no verified copy remains, the
 item is unavailable and each project shows the regions that can't sound. Holders don't encrypt what
@@ -133,6 +135,14 @@ binds_to = 'system'
 rationale = 'A reserved copy stays until the release it serves is settled.'
 
 [[requirement]]
+id = 'EU-0008-125'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A holder that is releasing its own copy of an item MUST NOT reserve that item for another release.'
+binds_to = 'system'
+rationale = 'Of two releases of one item that conflict, at most one gathers the reservations it needs, and the other is planned again.'
+
+[[requirement]]
 id = 'EU-0008-033'
 level = 'MUST'
 polarity = 'required'
@@ -173,6 +183,14 @@ statement = 'Once recovery has settled a release, the releasing holder MUST refu
 binds_to = 'system'
 rationale = 'A delayed commit from a lost planner changes nothing.'
 relations = [ { kind = 'depends_on', target = 'EU-0008-036' } ]
+
+[[requirement]]
+id = 'EU-0008-141'
+level = 'MUST'
+polarity = 'required'
+statement = 'A release that recovery cannot settle MUST keep its reservations and be shown to the owner as an unresolved release.'
+binds_to = 'system'
+rationale = 'A lost planner never frees a reserved copy, and the owner sees the release that waits.'
 
 [[requirement]]
 id = 'EU-0008-038'

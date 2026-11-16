@@ -19,6 +19,42 @@ owner, reach the placement, catalog and deletion operations over content they ca
 place; holders, which are the owner's paired computers, reach the storage operations; and
 collaborators reach none of them.
 
+### EU-0008-131 {#EU-0008-131}
+
+The store MUST offer an operation that lists the holders and the receipts of an item.
+
+### EU-0008-132 {#EU-0008-132}
+
+The store MUST offer an operation that verifies the copy of an item that a holder keeps.
+
+### EU-0008-133 {#EU-0008-133}
+
+Placement MUST offer an operation that reads the actions the planner has yet to take.
+
+### EU-0008-134 {#EU-0008-134}
+
+Placement MUST offer an operation that reads the items whose verified copies are fewer than their policy sets.
+
+### EU-0008-135 {#EU-0008-135}
+
+Placement MUST offer an operation by which the owner declares a computer lost.
+
+### EU-0008-136 {#EU-0008-136}
+
+The catalog MUST offer an operation that sets the metadata of an item.
+
+### EU-0008-137 {#EU-0008-137}
+
+The catalog MUST offer an operation that sets the license of an item.
+
+### EU-0008-138 {#EU-0008-138}
+
+The catalog MUST offer an operation by which the owner marks an item to keep.
+
+### EU-0008-139 {#EU-0008-139}
+
+The catalog MUST offer an operation by which the owner releases a keep mark.
+
 ### EU-0008-119 {#EU-0008-119}
 
 Each operation of the store, of placement and of the catalog MUST answer a failure with one error of its typed set.

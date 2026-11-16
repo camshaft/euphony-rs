@@ -122,6 +122,14 @@ rationale = 'No chunk is removed on a deletion that could still be cancelled.'
 relations = [ { kind = 'depends_on', target = 'EU-0008-101' } ]
 
 [[requirement]]
+id = 'EU-0008-140'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each computer MUST release its barrier for an intent once the recorded outcome of that intent reaches it.'
+binds_to = 'system'
+rationale = 'A barrier holds back new references only while the deletion is undecided.'
+
+[[requirement]]
 id = 'EU-0008-104'
 level = 'MUST'
 polarity = 'required'

@@ -68,6 +68,10 @@ The decision point MUST NOT record an intent as deleted before every computer it
 
 A holder MUST NOT remove a chunk of an intent before the deleted outcome of that intent is recorded.
 
+### EU-0008-140 {#EU-0008-140}
+
+Each computer MUST release its barrier for an intent once the recorded outcome of that intent reaches it.
+
 ### EU-0008-104 {#EU-0008-104}
 
 Where the computer of a decision point is declared lost, each holder of its intent MUST refuse every later message of the lost decision point for that intent.
