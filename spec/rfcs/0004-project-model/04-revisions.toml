@@ -136,7 +136,7 @@ polarity = 'required'
 statement = 'A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.'
 binds_to = 'system'
 rationale = 'A reader stays current without polling.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-056' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0004-060' } ]
 
 [[requirement]]
 id = 'EU-0004-050'
@@ -147,7 +147,7 @@ binds_to = 'system'
 rationale = 'The state and the history of a project reach only the parties that may read it.'
 
 [[requirement]]
-id = 'EU-0004-056'
+id = 'EU-0004-060'
 level = 'MUST'
 polarity = 'forbidden'
 statement = 'euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.'
@@ -156,10 +156,10 @@ rationale = 'A caller whose access ends, such as by a revoked link, receives not
 relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
 
 [[requirement]]
-id = 'EU-0004-057'
+id = 'EU-0004-061'
 level = 'MUST'
 polarity = 'required'
 statement = 'euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.'
 binds_to = 'system'
 rationale = 'A subscriber learns that its access ended, and doesn't wait for events that never come.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-056' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0004-060' } ]

@@ -72,10 +72,10 @@ A subscriber that may read the project MUST learn of each committed revision of 
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
 
-### EU-0004-056 {#EU-0004-056}
+### EU-0004-060 {#EU-0004-060}
 
 euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.
 
-### EU-0004-057 {#EU-0004-057}
+### EU-0004-061 {#EU-0004-061}
 
 euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.
