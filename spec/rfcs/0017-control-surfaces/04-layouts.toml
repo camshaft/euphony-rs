@@ -245,3 +245,27 @@ polarity = 'required'
 statement = "An assistant MAY arrange a surface's layout."
 binds_to = 'system'
 rationale = "A person asks an assistant to set up their devices."
+
+[[requirement]]
+id = 'EU-0017-154'
+level = 'MUST'
+polarity = 'required'
+statement = "The desktop interface, the browser companion, every surface and the assistant interface MUST share one set of layout records."
+binds_to = 'system'
+rationale = "A change made through any of them is the same change for all of them."
+
+[[requirement]]
+id = 'EU-0017-155'
+level = 'MUST'
+polarity = 'required'
+statement = "Applying a layout MUST return the committed revision or one of these refusals: denied, stale revision, unknown target, incompatible capability, invalid mapping or unverified panel."
+binds_to = 'system'
+rationale = "A surface knows whether its layout took effect and, where it didn't, why."
+
+[[requirement]]
+id = 'EU-0017-156'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A shared layout template MUST NOT carry or grant a pairing."
+binds_to = 'system'
+rationale = "Sharing an arrangement of controls never shares access to a session."
