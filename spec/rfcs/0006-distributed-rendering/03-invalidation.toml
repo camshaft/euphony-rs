@@ -105,7 +105,7 @@ rationale = "A bus never mixes audio that its sources haven't produced yet, so i
 id = 'EU-0006-035'
 level = 'MUST'
 polarity = 'required'
-statement = 'An edit MUST create a new revision without changing any result of an earlier revision.'
+statement = 'An edit MUST create a new revision.'
 binds_to = 'system'
 rationale = 'An earlier revision still plays as it did, and its results stay reusable.'
 

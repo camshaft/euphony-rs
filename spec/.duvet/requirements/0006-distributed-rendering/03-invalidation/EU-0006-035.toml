@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-035"
 
 [[spec]]
 level = "MUST"
-quote = "An edit MUST create a new revision without changing any result of an earlier revision."
+quote = "An edit MUST create a new revision."

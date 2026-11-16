@@ -54,7 +54,7 @@ A send, a sidechain or a bus MUST render a time range only after each of its ups
 
 ### EU-0006-035 {#EU-0006-035}
 
-An edit MUST create a new revision without changing any result of an earlier revision.
+An edit MUST create a new revision.
 
 ### EU-0006-036 {#EU-0006-036}
 

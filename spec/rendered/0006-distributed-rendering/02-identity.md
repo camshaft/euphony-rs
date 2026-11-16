@@ -58,7 +58,7 @@ The manifest of a revision MUST pin at most one validated result for each descri
 
 ### EU-0006-083 {#EU-0006-083}
 
-Once a descriptor that a revision needs has a validated result, the manifest of that revision MUST pin a validated result for that descriptor.
+Once a descriptor that a revision needs has a validated result of the project's render profile, the manifest of that revision MUST pin a validated result of that profile for that descriptor.
 
 ### EU-0006-022 {#EU-0006-022}
 
