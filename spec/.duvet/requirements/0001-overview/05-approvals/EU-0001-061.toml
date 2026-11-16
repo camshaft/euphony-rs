@@ -2,4 +2,4 @@ target = "rendered/0001-overview/05-approvals.md#EU-0001-061"
 
 [[spec]]
 level = "MUST"
-quote = "The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices."
+quote = "The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices or from the local console of the owner's first computer."
