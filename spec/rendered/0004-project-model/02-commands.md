@@ -39,13 +39,13 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 
 Where the caller that euphony authenticated may not take every command of a batch on the branch that the batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
 
-### EU-0004-081 {#EU-0004-081}
+### EU-0004-092 {#EU-0004-092}
 
 Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key.
 
-### EU-0004-082 {#EU-0004-082}
+### EU-0004-093 {#EU-0004-093}
 
-Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-081 and before it checks the batch's expected revision or its idempotency key.
+Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-092 and before it checks the batch's expected revision or its idempotency key.
 
 ### EU-0004-064 {#EU-0004-064}
 
