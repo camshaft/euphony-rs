@@ -7,7 +7,8 @@ musician edits their branch offline, and the loss of one copy leaves every other
 How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
 read of a project answers with a view of one revision and names that revision; a long answer comes in
 pages, each of that same revision. A subscriber to the events of a project holds a cursor that a later
-subscription resumes from.
+subscription resumes from. euphony answers a read or a subscription only for a caller who may read the
+project, and refuses any other as denied.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -64,3 +65,7 @@ A subscription resumed from a cursor MUST NOT deliver an event at or before that
 ### EU-0004-045 {#EU-0004-045}
 
 A subscriber MUST learn of each committed revision of the project without asking for it.
+
+### EU-0004-050 {#EU-0004-050}
+
+euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
