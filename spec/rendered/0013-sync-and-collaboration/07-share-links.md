@@ -115,6 +115,10 @@ On revocation, the host MUST rotate the stream keys of the session so that a rem
 
 The dialog that makes a link MUST say that revocation cannot recall audio a listener already heard or recorded on their own device.
 
+### EU-0013-230 {#EU-0013-230}
+
+The host MUST NOT run a public web server for a shared session.
+
 ### EU-0013-136 {#EU-0013-136}
 
 The approval that makes a link MUST show the application origin, the signaling and relay services the session uses and the metadata they see.

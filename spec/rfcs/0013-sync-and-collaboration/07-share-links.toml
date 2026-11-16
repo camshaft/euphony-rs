@@ -228,6 +228,15 @@ binds_to = 'system'
 rationale = 'A person does not expect revocation to undo what was heard.'
 
 [[requirement]]
+id = 'EU-0013-230'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The host MUST NOT run a public web server for a shared session.'
+binds_to = 'system'
+rationale = 'Sharing never exposes the host to the internet.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-052' } ]
+
+[[requirement]]
 id = 'EU-0013-136'
 level = 'MUST'
 polarity = 'required'
