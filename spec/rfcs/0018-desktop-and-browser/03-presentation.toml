@@ -150,3 +150,11 @@ polarity = 'required'
 statement = 'The desktop interface MUST refuse as stale any input made against a view generation or a map revision that is no longer current.'
 binds_to = 'system'
 rationale = 'A touch or a key press acts on the controls the person saw, never on a layout that changed under it.'
+
+[[requirement]]
+id = 'EU-0018-099'
+level = 'MUST'
+polarity = 'required'
+statement = "The desktop interface MUST refuse as invalid or unsupported any input it can't interpret against the current view."
+binds_to = 'system'
+rationale = "Input that the interface can't interpret is never acted on, so it never changes the project by a guess."
