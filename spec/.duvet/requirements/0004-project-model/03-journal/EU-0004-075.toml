@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-075"
+
+[[spec]]
+level = "MUST"
+quote = "A copy MUST record the creation of a project, the actor of the creation and the first revision of the project durably in its journal before the outcome of the creation reports the project created."
