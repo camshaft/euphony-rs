@@ -38,7 +38,8 @@ owner's approval only of a batch that the key check doesn't answer as a retry. A
 batch only among the batches one actor sends to one project: a retry of a committed batch on the
 same branch receives that batch's outcome without a new approval, unless one of the checks that
 euphony makes before it checks the key refuses it first, as a denial does once its caller may no
-longer change the project, and a key used again for another branch or other commands is refused."""
+longer change the project, and a key used again for another branch or other commands is refused.
+A batch of another actor or another project with the same key is a new batch under its own key."""
 
 [[requirement]]
 id = 'EU-0004-009'
@@ -231,6 +232,15 @@ statement = 'euphony MUST NOT answer a batch with the outcome of a committed bat
 binds_to = 'system'
 rationale = "A sender that learns the key of another actor never reads that actor's changes through a retry."
 relations = [ { kind = 'depends_on', target = 'EU-0004-020' } ]
+
+[[requirement]]
+id = 'EU-0004-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a batch has the idempotency key of a committed batch of another actor or another project, and no committed batch of the same project and actor holds that key, euphony MUST handle it as a new batch.'
+binds_to = 'system'
+rationale = 'A sender never learns from a refusal that another actor or another project used the key.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 
 [[requirement]]
 id = 'EU-0004-021'
