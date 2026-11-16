@@ -10,6 +10,8 @@ levels, interactive preparation for what the musician is about to hear, then spe
 preparation, and the messages that start, cancel and answer an attempt come ahead of both. Each new
 attempt at a job replaces the earlier attempts of that job. A local authority orders the edits of
 each branch of a project, and independent branches, render jobs and transfers proceed beside it.
+Each attempt reports its progress over the job protocol, and the scheduler measures each
+worker's rate of progress from those reports as it measures its other capacity signals.
 
 ### EU-0006-046 {#EU-0006-046}
 
@@ -69,4 +71,8 @@ An accepted render job MUST NOT be dropped for want of capacity.
 
 ### EU-0006-079 {#EU-0006-079}
 
-A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, or the connection to that worker closes.
+A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker.
+
+### EU-0006-091 {#EU-0006-091}
+
+The host MUST cancel an attempt and start a replacing attempt of its job on another worker once the progress that attempt reports falls behind what its worker's measured rate of progress predicts.
