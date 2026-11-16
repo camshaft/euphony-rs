@@ -11,7 +11,9 @@ revision, and reading one page costs no more in a project with a long history th
 subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
 answers a read or a subscription only for a caller who may read the project, and refuses any other
 as denied. It refuses a read or a subscription of a project that doesn't exist in the same way, so
-that a refusal doesn't tell a caller whether the project exists.
+that a refusal doesn't tell a caller whether the project exists. Access can end while a paged read or a subscription is open, such as when a link is
+revoked: from then on euphony refuses each later page of that read as denied, ends the subscription
+as denied, and delivers nothing more of the project to that caller.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -63,7 +65,7 @@ Each page of a paged answer MUST show the revision that its first page shows.
 
 ### EU-0004-043 {#EU-0004-043}
 
-A subscription resumed from a cursor MUST deliver every event after that cursor.
+A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.
 
 ### EU-0004-044 {#EU-0004-044}
 
@@ -71,7 +73,7 @@ A subscription resumed from a cursor MUST NOT deliver an event at or before that
 
 ### EU-0004-045 {#EU-0004-045}
 
-A subscriber MUST learn of each committed revision of the project without asking for it.
+A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.
 
 ### EU-0004-052 {#EU-0004-052}
 
@@ -92,3 +94,15 @@ euphony MUST refuse as denied each read of a project, of its history or of its e
 ### EU-0004-057 {#EU-0004-057}
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with a refusal whose kind and content, apart from the values the request itself supplies, are those of its refusal of a caller who may not read an existing project.
+
+### EU-0004-060 {#EU-0004-060}
+
+euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.
+
+### EU-0004-061 {#EU-0004-061}
+
+euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.
+
+### EU-0004-062 {#EU-0004-062}
+
+euphony MUST refuse as denied each later page of a paged read of a project once its caller may no longer read the project.
