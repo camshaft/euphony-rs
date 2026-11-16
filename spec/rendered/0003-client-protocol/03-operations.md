@@ -16,7 +16,7 @@ capability. A command that decodes but fails validation, such as one that sets a
 range its target takes, is an invalid command; a command that has an unknown target, whether the
 session doesn't hold its object or the client may not see it, is never refused as an invalid
 command. Where a command meets more than one of these cases, its refusal is the first that applies
-in this order: denied, unknown target, unsupported capability, conflict, invalid command. The
+in this order: unknown target, denied, unsupported capability, conflict, invalid command. The
 state of the session reaches a client as a snapshot of the part the client may see and then as an
 ordered stream of deltas, each at a revision, which the client resumes from a cursor. A gesture,
 such as a fader drag, is a token that begins, is updated in sequence with the
