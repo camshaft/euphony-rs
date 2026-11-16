@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-063"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to show the picture on another of their computers in step with the session's sound."

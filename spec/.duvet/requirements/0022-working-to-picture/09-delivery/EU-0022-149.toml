@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-149"
+
+[[spec]]
+level = "MUST"
+quote = "Where nonlinear processing on the main output fails the check, the delivery MUST offer to deliver the stems and a reference mix taken before that processing, beside the processed full mix as a separate labeled file, or to move that processing onto the stems."

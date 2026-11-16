@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-120"
+
+[[spec]]
+level = "MUST"
+quote = "Conforming MUST report each cue whose picture changed inside its range, with the choices to cut it at a bar, fit its tempo again to the moved hits, or leave it."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-106"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to show a timecode overlay on the picture."

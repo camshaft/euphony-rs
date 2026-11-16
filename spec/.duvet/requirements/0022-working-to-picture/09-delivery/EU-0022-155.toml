@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-155"
+
+[[spec]]
+level = "MAY"
+quote = "A loudness profile MAY measure dialogue alone, on the dialogue stem or on the passages with speech."

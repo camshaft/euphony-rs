@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-040"
+
+[[spec]]
+level = "MUST"
+quote = "A marker placed on the ruler of bars and beats MUST have a musical lock by default."

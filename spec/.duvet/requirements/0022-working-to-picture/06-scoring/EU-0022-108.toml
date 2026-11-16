@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-108"
+
+[[spec]]
+level = "MUST"
+quote = "The click MUST follow the fitted tempo, with a count-in before each cue."

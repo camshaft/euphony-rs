@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-009"
+
+[[spec]]
+level = "MUST"
+quote = "Each computer MUST report the video formats that its decoders read."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-042"
+
+[[spec]]
+level = "MUST"
+quote = "The choice of frame MUST take into account the audio output's delay, the refresh time and the display's delay as the platform reports them."

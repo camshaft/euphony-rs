@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-031"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to set the project's starting timecode."

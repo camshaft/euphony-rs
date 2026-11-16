@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-157"
+
+[[spec]]
+level = "MUST"
+quote = "A loudness correction MUST NOT change the mix until the person applies it."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-083"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST suggest the picture's cuts as candidate cut markers, each with its confidence."

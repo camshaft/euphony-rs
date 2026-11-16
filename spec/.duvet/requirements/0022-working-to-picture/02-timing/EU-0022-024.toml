@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-024"
+
+[[spec]]
+level = "MUST"
+quote = "At 29.97 and 59.94 frames per second, a project MUST offer both labeling without dropped labels and drop-frame labeling."

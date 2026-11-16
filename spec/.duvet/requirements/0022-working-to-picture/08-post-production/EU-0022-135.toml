@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-135"
+
+[[spec]]
+level = "MUST"
+quote = "Analysis MUST find where speech is present on the guide track and on dialogue tracks."

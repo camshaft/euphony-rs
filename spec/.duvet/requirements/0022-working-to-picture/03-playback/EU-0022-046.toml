@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-046"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST show a display's measured offset beside any adjustment of it."

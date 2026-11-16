@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-017"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT edit, color or re-encode the picture of a video."

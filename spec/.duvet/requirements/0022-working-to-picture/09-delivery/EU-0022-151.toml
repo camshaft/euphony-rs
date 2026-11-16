@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-151"
+
+[[spec]]
+level = "MUST"
+quote = "Integrated loudness, true peak and loudness range MUST be measured on each exported file."

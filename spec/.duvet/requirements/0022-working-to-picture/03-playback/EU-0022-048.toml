@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-048"
+
+[[spec]]
+level = "MUST"
+quote = "Over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub."

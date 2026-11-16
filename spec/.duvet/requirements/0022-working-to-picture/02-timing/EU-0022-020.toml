@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-020"
+
+[[spec]]
+level = "MUST"
+quote = "The audio streams, the scrub copy, the thumbnails and the picture-locked positions of a video MUST use the same frame mapping as its picture."

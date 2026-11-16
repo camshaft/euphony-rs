@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-164"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to export a project exchange file that carries each track's clips with their handles, fades and clip gain at their timecode, with the media embedded or referenced."

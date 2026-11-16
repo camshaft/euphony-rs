@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-065"
+
+[[spec]]
+level = "MUST"
+quote = "A video's items MUST reach each computer that shows its picture before playback reaches them."

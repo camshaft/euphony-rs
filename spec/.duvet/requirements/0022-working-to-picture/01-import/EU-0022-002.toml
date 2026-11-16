@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-002"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST NOT change or re-encode the video file it stores."

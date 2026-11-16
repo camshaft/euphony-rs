@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-146"
+
+[[spec]]
+level = "MUST"
+quote = "The delivery check MUST report each send that reaches a return of another stem, with its track, the return and the stems."

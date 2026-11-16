@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-123"
+
+[[spec]]
+level = "MUST"
+quote = "A malformed video, edit list or exchange file MUST be refused without an effect on the session."

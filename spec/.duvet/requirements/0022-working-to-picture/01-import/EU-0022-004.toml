@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-004"
+
+[[spec]]
+level = "MUST"
+quote = "The video record MUST hold the starting timecode that the file holds, or that the person enters where the file holds none."

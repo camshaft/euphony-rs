@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-015"
+
+[[spec]]
+level = "MUST"
+quote = "An item derived from a video MUST be computed again only where its inputs differ from those of an item already computed."

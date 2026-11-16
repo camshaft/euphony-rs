@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-096"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a candidate tempo map MUST be one command that can be undone."

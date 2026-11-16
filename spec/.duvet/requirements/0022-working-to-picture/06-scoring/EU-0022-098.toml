@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-098"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to export a cue sheet that lists each cue's number, title, start and end timecode, duration in minutes and seconds, usage, composer and publisher."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-153"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST hold the built-in loudness profiles this section lists."

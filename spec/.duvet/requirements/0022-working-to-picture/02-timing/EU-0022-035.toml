@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-035"
+
+[[spec]]
+level = "MUST"
+quote = "Pull-up and pull-down MUST NOT change the stored sample rate of any audio."

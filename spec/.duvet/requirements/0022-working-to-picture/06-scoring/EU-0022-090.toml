@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-090"
+
+[[spec]]
+level = "MUST"
+quote = "Each candidate tempo map MUST show each hit's miss in milliseconds and in frames."

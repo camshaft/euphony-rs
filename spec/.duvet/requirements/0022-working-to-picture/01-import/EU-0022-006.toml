@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-006"
+
+[[spec]]
+level = "MUST"
+quote = "Each audio stream of an imported video MUST become a region on a track of its own, placed by the same timing as the picture."

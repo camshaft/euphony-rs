@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-001"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to import a video in any container and codec that a decoder of the computer showing it reads."
