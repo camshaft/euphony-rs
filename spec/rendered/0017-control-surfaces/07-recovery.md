@@ -14,7 +14,11 @@ that the pairing screen shows.
 
 ### EU-0017-130 {#EU-0017-130}
 
-When a surface is lost, the session host MUST invalidate its gesture tokens and close the gestures they own.
+When a surface is lost, the session host MUST invalidate its gesture tokens.
+
+### EU-0017-164 {#EU-0017-164}
+
+When a surface is lost, the session host MUST close each gesture the surface owns.
 
 ### EU-0017-131 {#EU-0017-131}
 
@@ -38,7 +42,11 @@ A reconnection MUST begin with a fresh generation, an authorized snapshot and a 
 
 ### EU-0017-136 {#EU-0017-136}
 
-A reconnected surface MUST resume changes only from a verified compatible cursor, and replace its local view otherwise.
+A reconnected surface MUST resume changes only from a verified compatible cursor.
+
+### EU-0017-165 {#EU-0017-165}
+
+A reconnected surface whose cursor isn't compatible MUST replace its local view with a fresh authorized snapshot.
 
 ### EU-0017-137 {#EU-0017-137}
 
