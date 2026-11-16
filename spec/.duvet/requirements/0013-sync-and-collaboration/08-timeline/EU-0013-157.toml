@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-157"
+
+[[spec]]
+level = "MUST"
+quote = "Where the exchange windows of a participant do not intersect, the session MUST start its clock estimate again."

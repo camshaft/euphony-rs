@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-151"
+
+[[spec]]
+level = "MUST"
+quote = "A participant MUST see its transport request as pending until the time the host schedules for it."

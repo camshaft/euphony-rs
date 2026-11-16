@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/10-voice.md#EU-0013-205"
+
+[[spec]]
+level = "MUST"
+quote = "The voice built into the session MUST cancel echo against the program audio and the voices that the output of each participant plays."

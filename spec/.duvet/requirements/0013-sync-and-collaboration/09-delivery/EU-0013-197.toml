@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-197"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST encode once for each distinct sink and send one encrypted copy to each participant."
