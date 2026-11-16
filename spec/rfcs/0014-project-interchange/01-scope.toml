@@ -50,7 +50,6 @@ polarity = 'required'
 statement = 'A request for a project in the format of a source workstation MUST be answered with an error.'
 binds_to = 'system'
 rationale = 'A client never receives a file that claims to be a project in that format.'
-relations = [ { kind = 'depends_on', target = 'EU-0014-003' } ]
 
 [[requirement]]
 id = 'EU-0014-005'

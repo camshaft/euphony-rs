@@ -99,7 +99,6 @@ polarity = 'required'
 statement = "An effect whose settings can't be read without running it MUST import as its identity, slot position and preset name, with its settings kept unchanged."
 binds_to = 'system'
 rationale = 'The musician sees which effect stood in the slot, and its settings wait for a later conversion.'
-relations = [ { kind = 'depends_on', target = 'EU-0014-058' } ]
 
 [[requirement]]
 id = 'EU-0014-060'
