@@ -2,4 +2,4 @@ target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-098"
 
 [[spec]]
 level = "MUST"
-quote = "The desktop interface MUST refuse as stale any input made against a view generation or a map revision that is no longer current."
+quote = "A file selection MUST NOT grant an assistant access to any file beyond the files selected."

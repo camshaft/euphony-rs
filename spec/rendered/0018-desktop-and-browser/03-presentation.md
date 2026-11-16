@@ -64,18 +64,18 @@ A gesture on a continuous control MUST reach the session host as a begin, update
 
 Coalescing display work MUST NOT drop an accepted automation value or a forced end of a gesture.
 
-### EU-0018-096 {#EU-0018-096}
+### EU-0018-098 {#EU-0018-098}
 
 A file selection MUST NOT grant an assistant access to any file beyond the files selected.
 
-### EU-0018-097 {#EU-0018-097}
+### EU-0018-099 {#EU-0018-099}
 
 Each request to a platform service MUST return a cancellation, a denial, an unsupported result or a validated result.
 
-### EU-0018-098 {#EU-0018-098}
+### EU-0018-100 {#EU-0018-100}
 
 The desktop interface MUST refuse as stale any input made against a view generation or a map revision that is no longer current.
 
-### EU-0018-099 {#EU-0018-099}
+### EU-0018-101 {#EU-0018-101}
 
 The desktop interface MUST refuse as invalid or unsupported any input it can't interpret against the current view.

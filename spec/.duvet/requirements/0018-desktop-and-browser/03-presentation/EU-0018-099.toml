@@ -2,4 +2,4 @@ target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-099"
 
 [[spec]]
 level = "MUST"
-quote = "The desktop interface MUST refuse as invalid or unsupported any input it can't interpret against the current view."
+quote = "Each request to a platform service MUST return a cancellation, a denial, an unsupported result or a validated result."
