@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-076"
+
+[[spec]]
+level = "MUST"
+quote = "The run command MUST return worker lost when a worker of the run is lost."

@@ -61,7 +61,7 @@ rationale = 'The musician follows a rebuild as it runs and sees each candidate a
 id = 'EU-0023-063'
 level = 'MUST'
 polarity = 'required'
-statement = "Where a run doesn't finish, the run command MUST return one of cancelled, failed fit and worker lost."
+statement = "Where a run doesn't finish, the run command MUST return one of cancelled and failed fit."
 binds_to = 'system'
 rationale = 'A caller learns why a run stopped.'
 
@@ -129,3 +129,11 @@ polarity = 'forbidden'
 statement = "A worker's result MUST NOT change the project."
 binds_to = 'system'
 rationale = 'Only the accept command changes the project.'
+
+[[requirement]]
+id = 'EU-0023-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'The run command MUST return worker lost when a worker of the run is lost.'
+binds_to = 'system'
+rationale = 'A caller learns of each lost worker, whether or not its queued work resumes on another worker.'
