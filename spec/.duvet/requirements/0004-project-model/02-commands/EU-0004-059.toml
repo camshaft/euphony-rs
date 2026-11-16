@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-059"
+
+[[spec]]
+level = "MUST"
+quote = "Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project."
