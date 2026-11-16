@@ -79,6 +79,15 @@ binds_to = 'system'
 rationale = 'Two copies never commit different revisions as the same next step of one branch.'
 
 [[requirement]]
+id = 'EU-0004-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT accept a revision on a working branch unless the copy that holds that branch signed it.'
+binds_to = 'system'
+rationale = 'A copy that may sign revisions never moves a working branch that another copy holds.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' }, { kind = 'depends_on', target = 'EU-0004-038' } ]
+
+[[requirement]]
 id = 'EU-0004-039'
 level = 'MUST'
 polarity = 'forbidden'
