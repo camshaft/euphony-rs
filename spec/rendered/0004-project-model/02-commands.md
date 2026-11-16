@@ -5,12 +5,14 @@ A batch names the project, the revision its sender expects to change, a key that
 across retries, and the actor that sends it. euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
-gesture in an interface, a line of a script, the result of a composition program and the call of an
-assistant all reach the project as such batches. A change of presentation that leaves the project as
-it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
-subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
-to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
-other commands is refused.
+conflict identifies the head of the batch's branch and carries, at that head, the view of the parts
+of the project that the batch's commands touch and that its actor may read; the sender reads the
+rest of the project in pages, as the revisions section states. A gesture in an interface, a line of
+a script, the result of a composition program and the call of an assistant all reach the project as
+such batches. A change of presentation that leaves the project as it was, such as scrolling, isn't a
+command. The protocol that carries batches to euphony is the subject of the client protocol RFC. A
+key identifies a batch only among the batches one actor sends to one project: a retry of a committed
+batch receives that batch's outcome, and a key used again for other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -50,7 +52,11 @@ Where the expected revision of a batch is not the head of its branch, and no com
 
 ### EU-0004-018 {#EU-0004-018}
 
-A conflict MUST include the current view of the project that the actor of the batch may read.
+A conflict MUST include the view, at the head of the batch's branch, of the parts of the project that the commands of the batch touch and that the actor of the batch may read.
+
+### EU-0004-048 {#EU-0004-048}
+
+A conflict MUST identify the head revision of the batch's branch.
 
 ### EU-0004-019 {#EU-0004-019}
 
