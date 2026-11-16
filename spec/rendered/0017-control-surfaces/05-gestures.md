@@ -48,7 +48,15 @@ Recovery after a crash MUST NOT restore a reservation held by a connection that 
 
 ### EU-0017-077 {#EU-0017-077}
 
-Cancelling a gesture or losing its surface MUST NOT invent a value for its targets.
+Cancelling a gesture or losing its surface MUST NOT set its targets to a value other than its last accepted value or the loss behavior its control states.
+
+### EU-0017-157 {#EU-0017-157}
+
+Ending a gesture MUST commit its last accepted value.
+
+### EU-0017-158 {#EU-0017-158}
+
+Ending a gesture MUST release the reservation of its target set.
 
 ### EU-0017-078 {#EU-0017-078}
 
@@ -60,7 +68,11 @@ A surface that doesn't own the gesture on a target MUST show who owns it and the
 
 ### EU-0017-080 {#EU-0017-080}
 
-A takeover MUST invalidate the earlier owner's gesture token and report the change to both surfaces.
+A takeover MUST invalidate the earlier owner's gesture token.
+
+### EU-0017-159 {#EU-0017-159}
+
+The session host MUST report a takeover to the surface of the earlier owner and to the surface of the new owner.
 
 ### EU-0017-081 {#EU-0017-081}
 
@@ -112,7 +124,11 @@ Pointer cancellation, suspending the app, locking the device, replacing the map 
 
 ### EU-0017-093 {#EU-0017-093}
 
-A layout edit that affects an active target MUST wait visibly for the gesture's release or cancel the gesture before it commits.
+A layout edit that affects an active target MUST wait for the gesture's release before it commits.
+
+### EU-0017-160 {#EU-0017-160}
+
+A surface MUST show a layout edit that waits for a gesture's release as waiting.
 
 ### EU-0017-094 {#EU-0017-094}
 
