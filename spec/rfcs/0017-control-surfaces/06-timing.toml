@@ -76,9 +76,25 @@ rationale = "A late edit still applies, and its delay is visible."
 id = 'EU-0017-110'
 level = 'MUST'
 polarity = 'required'
-statement = "A scheduled sample-accurate performance that misses its deadline MUST be refused, with the gap recorded and its original events kept for inspection."
+statement = "A scheduled sample-accurate performance that misses its deadline MUST be refused."
 binds_to = 'system'
 rationale = "A performance is never silently moved in time."
+
+[[requirement]]
+id = 'EU-0017-161'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST record the gap that a refused scheduled performance leaves."
+binds_to = 'system'
+rationale = "A person sees where the take is missing playing."
+
+[[requirement]]
+id = 'EU-0017-162'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST keep the original events of a refused scheduled performance for inspection."
+binds_to = 'system'
+rationale = "A person can see what was played and decide what to do with it."
 
 [[requirement]]
 id = 'EU-0017-111'
@@ -92,7 +108,7 @@ rationale = "A surface shows where transport actually started or stopped."
 id = 'EU-0017-112'
 level = 'MUST'
 polarity = 'required'
-statement = "Stop MUST stay responsive on the local host while a remote surface is unavailable."
+statement = "While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface."
 binds_to = 'system'
 rationale = "The room can always stop playback."
 
@@ -196,7 +212,7 @@ rationale = "Capacity follows what each device and host can take, measured as th
 id = 'EU-0017-125'
 level = 'MUST'
 polarity = 'required'
-statement = "Ending a gesture, cancelling one and safety commands MUST stay serviceable while display traffic is overloaded."
+statement = "While display traffic is overloaded, the system MUST admit ending a gesture, cancelling one and safety commands ahead of display traffic."
 binds_to = 'system'
 rationale = "A person can always let go and stop."
 
@@ -220,9 +236,17 @@ rationale = "Accepted edits and recorded gestures stay durable."
 id = 'EU-0017-128'
 level = 'MUST'
 polarity = 'required'
-statement = "A capacity failure while performance is being captured MUST end its admission visibly and record the gap."
+statement = "A capacity failure while performance is being captured MUST end its admission visibly."
 binds_to = 'system'
 rationale = "Accepted automation is never thinned silently."
+
+[[requirement]]
+id = 'EU-0017-163'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST record the gap that a capacity failure leaves in captured performance."
+binds_to = 'system'
+rationale = "A take shows where its captured performance stops and starts again."
 
 [[requirement]]
 id = 'EU-0017-129'
