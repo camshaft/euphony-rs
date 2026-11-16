@@ -2,4 +2,4 @@ target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-086
 
 [[spec]]
 level = "MUST"
-quote = "A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites and keep the current renderer."
+quote = "A selection with missing, failed, stale or mismatched evidence MUST return its unmet prerequisites."

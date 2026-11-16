@@ -102,7 +102,7 @@ rationale = 'A musician sees how current a meter is, and a smooth meter never hi
 id = 'EU-0018-024'
 level = 'MUST'
 polarity = 'required'
-statement = 'A continuous control MUST show local feedback at once, distinct from the value the session host acknowledged.'
+statement = 'A continuous control MUST show local feedback within the tolerance of the selected profile, distinct from the value the session host acknowledged.'
 binds_to = 'system'
 rationale = 'A control responds to the hand at once, and a musician sees which values the host has taken.'
 

@@ -50,7 +50,7 @@ A meter MUST show the newest authorized level snapshot with its age.
 
 ### EU-0018-024 {#EU-0018-024}
 
-A continuous control MUST show local feedback at once, distinct from the value the session host acknowledged.
+A continuous control MUST show local feedback within the tolerance of the selected profile, distinct from the value the session host acknowledged.
 
 ### EU-0018-025 {#EU-0018-025}
 
