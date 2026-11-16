@@ -20,7 +20,15 @@ that the pairing screen shows.'''
 id = 'EU-0017-130'
 level = 'MUST'
 polarity = 'required'
-statement = "When a surface is lost, the session host MUST invalidate its gesture tokens and close the gestures they own."
+statement = "When a surface is lost, the session host MUST invalidate its gesture tokens."
+binds_to = 'system'
+rationale = "A lost surface can't send another update that applies."
+
+[[requirement]]
+id = 'EU-0017-164'
+level = 'MUST'
+polarity = 'required'
+statement = "When a surface is lost, the session host MUST close each gesture the surface owns."
 binds_to = 'system'
 rationale = "A lost surface owns nothing."
 
@@ -68,9 +76,17 @@ rationale = "A reconnected surface shows the session's current state before any 
 id = 'EU-0017-136'
 level = 'MUST'
 polarity = 'required'
-statement = "A reconnected surface MUST resume changes only from a verified compatible cursor, and replace its local view otherwise."
+statement = "A reconnected surface MUST resume changes only from a verified compatible cursor."
 binds_to = 'system'
 rationale = "A surface never applies changes onto a view they don't follow."
+
+[[requirement]]
+id = 'EU-0017-165'
+level = 'MUST'
+polarity = 'required'
+statement = "A reconnected surface whose cursor isn't compatible MUST replace its local view with a fresh authorized snapshot."
+binds_to = 'system'
+rationale = "A surface that can't resume starts again from the session's current state."
 
 [[requirement]]
 id = 'EU-0017-137'
