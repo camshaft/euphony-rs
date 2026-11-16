@@ -27,6 +27,10 @@ Each listener MUST be shown the measured monitoring delay of their sink.
 
 A sink whose measured delay is longer than the monitoring mode its listener accepted MUST NOT be described as live monitoring.
 
+### EU-0015-113 {#EU-0015-113}
+
+A sink whose measured delay is longer than the monitoring mode its listener accepted MUST stay available.
+
 ### EU-0015-019 {#EU-0015-019}
 
 Output protection MUST act on the computer that plays the output, without waiting on the network.
