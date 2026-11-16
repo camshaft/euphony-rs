@@ -30,6 +30,7 @@ batch only among the batches one actor sends to one project: a retry of a commit
 same branch receives that batch's outcome without a new approval, unless one of the checks that
 euphony makes before it checks the key refuses it first, as a denial does once its caller may no
 longer change the project, and a key used again for another branch or other commands is refused.
+A batch of another actor or another project with the same key is a new batch under its own key.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -118,6 +119,10 @@ Where a batch has the project, actor and idempotency key of a committed batch an
 ### EU-0004-047 {#EU-0004-047}
 
 euphony MUST NOT answer a batch with the outcome of a committed batch of another actor or another project.
+
+### EU-0004-048 {#EU-0004-048}
+
+Where a batch has the idempotency key of a committed batch of another actor or another project, and no committed batch of the same project and actor holds that key, euphony MUST handle it as a new batch.
 
 ### EU-0004-021 {#EU-0004-021}
 
