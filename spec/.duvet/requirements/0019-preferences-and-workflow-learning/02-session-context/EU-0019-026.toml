@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-026"
+
+[[spec]]
+level = "MUST"
+quote = "A context read that returns part of the context MUST say that it is incomplete."

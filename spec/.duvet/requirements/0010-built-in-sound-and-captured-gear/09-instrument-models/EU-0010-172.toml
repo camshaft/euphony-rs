@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-172"
+
+[[spec]]
+level = "MUST"
+quote = "A voice state MUST hold oscillator phase, envelope stage, filter memory, note identity, pedal state, glide and random-process state."

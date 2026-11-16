@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/01-programs.md#EU-0009-003"
+
+[[spec]]
+level = "MUST"
+quote = "Each version of a composition program MUST declare every asset it imports and every musical input it reads."

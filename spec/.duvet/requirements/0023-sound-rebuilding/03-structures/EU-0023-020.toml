@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-020"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant the musician connects MUST be able to propose structures for a rebuild."

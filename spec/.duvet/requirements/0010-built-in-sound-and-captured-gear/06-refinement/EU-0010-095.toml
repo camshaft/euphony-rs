@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-095"
+
+[[spec]]
+level = "MUST"
+quote = "Each refinement round MUST offer the assistant the measurements, the validation errors with their intervals, the residual over time, the measured cost and delay of each candidate, and the development listening results, as typed data."

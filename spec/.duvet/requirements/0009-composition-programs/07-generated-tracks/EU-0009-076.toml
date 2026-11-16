@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-076"
+
+[[spec]]
+level = "MUST"
+quote = "The command that replaces the edits of a musician with generated events MUST be undoable."

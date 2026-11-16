@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-082"
+
+[[spec]]
+level = "MUST"
+quote = "The random part of a model MUST be a random process with a stored seed, not a copy of one recorded pass."

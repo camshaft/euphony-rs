@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-082"
+
+[[spec]]
+level = "MUST"
+quote = "An integer export MUST state its bit depth and its conversion policy."

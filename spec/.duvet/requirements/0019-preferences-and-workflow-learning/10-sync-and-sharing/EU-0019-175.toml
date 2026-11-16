@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-175"
+
+[[spec]]
+level = "MUST"
+quote = "The pairing screen MUST state that unpairing can't erase copies a device already received or reach a disconnected device at once."

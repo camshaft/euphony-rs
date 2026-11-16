@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-039"
+
+[[spec]]
+level = "MUST"
+quote = "A blind result in which the musician could not tell the two apart MUST NOT be reported as proof that they are the same."

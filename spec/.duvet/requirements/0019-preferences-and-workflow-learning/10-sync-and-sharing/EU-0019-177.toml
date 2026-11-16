@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-177"
+
+[[spec]]
+level = "MUST"
+quote = "The owner's subject authority MUST order the owner's acceptance, withdrawal, reset, activation, suspension and retirement changes within each learning scope."

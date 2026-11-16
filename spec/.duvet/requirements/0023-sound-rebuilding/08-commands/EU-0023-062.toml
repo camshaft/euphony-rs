@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-062"
+
+[[spec]]
+level = "MUST"
+quote = "The run command MUST return durable state events and each candidate as it finishes."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-174"
+
+[[spec]]
+level = "MUST"
+quote = "A device's unpairing MUST apply before euphony serves that device any new context or proposal on its reconnection."

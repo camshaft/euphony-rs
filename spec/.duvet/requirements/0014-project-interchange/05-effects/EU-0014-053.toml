@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/05-effects.md#EU-0014-053"
+
+[[spec]]
+level = "MUST"
+quote = "A mapping MUST NOT match a control by its display label or its knob position."

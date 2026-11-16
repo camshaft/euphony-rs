@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-125"
+
+[[spec]]
+level = "MUST"
+quote = "A reader MUST verify the encoded digest of each chunk before it decodes that chunk."

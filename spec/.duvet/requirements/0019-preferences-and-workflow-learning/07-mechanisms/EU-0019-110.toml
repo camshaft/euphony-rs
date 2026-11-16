@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-110"
+
+[[spec]]
+level = "MUST"
+quote = "A mechanism version MUST hold its kind, its schemas, its predicates, its trigger event types, its definition digest, its required capabilities, its effect preview, its tests and results, its baseline metrics, its proposer, its approval, its prior version and its rollback operation."

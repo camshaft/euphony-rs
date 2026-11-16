@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-075"
+
+[[spec]]
+level = "MUST"
+quote = "A regeneration MUST NOT replace the edits of a musician except through an explicit command."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/12-observability.md#EU-0019-193"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST refuse a supported learning profile that lacks conformance, privacy and rollback results for its exact build, or whose results fail or don't match that profile."

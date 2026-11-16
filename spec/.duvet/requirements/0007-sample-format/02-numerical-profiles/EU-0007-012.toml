@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-012"
+
+[[spec]]
+level = "MUST"
+quote = "Render descriptors and checkpoints MUST keep the processor and profile identities they were made with."

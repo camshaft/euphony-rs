@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-036"
+
+[[spec]]
+level = "MUST"
+quote = "Before it publishes an encoded object, the store MUST verify its decoded length and its semantic digest."

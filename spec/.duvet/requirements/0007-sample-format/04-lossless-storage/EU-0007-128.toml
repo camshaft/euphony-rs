@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-128"
+
+[[spec]]
+level = "MUST"
+quote = "The inverse of a byte rearrangement applied before compression MUST restore each bit of every chunk the rearrangement encodes."

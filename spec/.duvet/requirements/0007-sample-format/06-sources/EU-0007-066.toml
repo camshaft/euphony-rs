@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-066"
+
+[[spec]]
+level = "MUST"
+quote = "Before it publishes a capture journal's encoded object, capture MUST verify that the object decodes to exactly the journal's samples."

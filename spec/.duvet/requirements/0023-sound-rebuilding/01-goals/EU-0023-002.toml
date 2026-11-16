@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/01-goals.md#EU-0023-002"
+
+[[spec]]
+level = "MUST"
+quote = "A musician MUST be able to rebuild the sound of an instrument or an effect they own from its captures."

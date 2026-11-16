@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-031"
+
+[[spec]]
+level = "MUST"
+quote = "Automation anchored to a region MUST stay separate from its track's automation."

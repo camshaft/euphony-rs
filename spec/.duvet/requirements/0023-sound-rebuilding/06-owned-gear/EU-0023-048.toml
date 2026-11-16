@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/06-owned-gear.md#EU-0023-048"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuilt synthesizer voice MUST list each measured control of the synthesizer that it doesn't reproduce."

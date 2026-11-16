@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-205"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT accept a verification record that a writer other than the configured publisher wrote."

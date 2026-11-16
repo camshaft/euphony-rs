@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-244"
+
+[[spec]]
+level = "MUST"
+quote = "Where the gear recalls its control settings digitally, the capture rig MUST step the settings between captures."

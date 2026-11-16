@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-185"
+
+[[spec]]
+level = "MUST"
+quote = "A listening result of mixed quality or without level alignment MUST NOT establish a calibrated preference about sound."

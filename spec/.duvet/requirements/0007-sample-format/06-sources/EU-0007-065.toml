@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-065"
+
+[[spec]]
+level = "MAY"
+quote = "Capture MAY write an uncompressed journal first where encoding can't meet its deadline."

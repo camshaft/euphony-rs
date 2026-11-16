@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-105"
+
+[[spec]]
+level = "MUST"
+quote = "Each held import, archive or peer exchange MUST record the decoder or the schema or profile version it waits for."

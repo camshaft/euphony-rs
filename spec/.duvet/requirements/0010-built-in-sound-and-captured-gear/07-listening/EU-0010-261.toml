@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-261"
+
+[[spec]]
+level = "MUST"
+quote = "The clips of the hardware and of the model MUST be trimmed and faded the same way."

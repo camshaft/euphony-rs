@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-016"
+
+[[spec]]
+level = "MUST"
+quote = "A processor's accuracy record MUST hold its identity, the reference precision, the error bound its test allows and the result."

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-069"
+
+[[spec]]
+level = "MAY"
+quote = "An imported project MAY keep the musician's own render of an unresolved part, so that the part can still be heard."

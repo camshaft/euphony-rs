@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-035"
+
+[[spec]]
+level = "MUST"
+quote = "The measurement of a raw object MUST hold the compressed size and the encoding cost on that chunk, or the deadline that encoding missed."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-085"
+
+[[spec]]
+level = "MUST"
+quote = "A purge MUST remove exactly the retained evidence and exports it names."

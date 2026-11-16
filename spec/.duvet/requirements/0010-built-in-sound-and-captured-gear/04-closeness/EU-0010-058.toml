@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-058"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST hold a null test, error measures on held-out material and the results of blind listening, each apart from the others."

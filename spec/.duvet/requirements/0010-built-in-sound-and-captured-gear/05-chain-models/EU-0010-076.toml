@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-076"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST measure the total delay of each candidate model at each device period of each target computer."

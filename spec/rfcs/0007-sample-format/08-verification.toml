@@ -1,0 +1,94 @@
+[section]
+anchor = 'verification'
+title = 'Verified codecs, file formats and adapters'
+problem = """\
+  A codec, a file format reader or writer, a network audio implementation or an export adapter that \
+  nobody verified can change samples or reject a delivery, and a check that depends on a developer \
+  remembering it is skipped sooner or later."""
+motivation = """\
+  A typed verification record for each exact version of each such dependency, and a build and an \
+  export that refuse without one, make the verification a check instead of a reminder."""
+prose = """
+A codec, a file format and a network audio implementation are adopted only with a typed
+verification record, keyed by the exact locked version of the dependency, its source digest and
+the target and features it builds for. The record links public evidence and conformance results to
+the checks the project configuration requires; authorized maintainers record the evidence, and the
+build checks its binding and its passing results. An export adapter target has a record of the
+same kind, keyed by the exact version of the adapter, that declares the sample formats, rates and
+layouts the target accepts. The choice of working format doesn't by itself show that any codec
+saves space or that any algorithm is accurate enough."""
+
+[[requirement]]
+id = 'EU-0007-087'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each adopted codec, file-format and network audio dependency MUST have a typed verification record keyed by its exact locked version, its source digest and its target and features.'
+binds_to = 'system'
+rationale = 'The verification describes exactly the code the build uses.'
+
+[[requirement]]
+id = 'EU-0007-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'A verification record MUST link its public evidence and its conformance results to the checks the project configuration requires.'
+binds_to = 'system'
+rationale = 'Anyone can read what the verification is based on.'
+
+[[requirement]]
+id = 'EU-0007-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The build MUST NOT adopt a dependency whose verification record is missing, failed or doesn't match it."
+binds_to = 'system'
+rationale = 'An unverified dependency never reaches a release.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-087' } ]
+
+[[requirement]]
+id = 'EU-0007-090'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A verification record for one version of a dependency MUST NOT satisfy another version.'
+binds_to = 'system'
+rationale = 'An upgrade is verified again.'
+
+[[requirement]]
+id = 'EU-0007-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Each export adapter target MUST have a verification record keyed by the adapter's exact version that declares the sample formats, rates and layouts it accepts."
+binds_to = 'system'
+rationale = 'Export reads what a target accepts instead of promising floating-point acceptance.'
+
+[[requirement]]
+id = 'EU-0007-092'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Export MUST NOT deliver to an adapter target whose record is missing, failed or doesn't declare the formats the delivery needs."
+binds_to = 'system'
+rationale = 'A delivery never goes to a target that may not accept it.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-091' } ]
+
+[[requirement]]
+id = 'EU-0007-093'
+level = 'MUST'
+polarity = 'required'
+statement = "The export preview MUST list, from the adapter's record, each format the delivery needs that the record doesn't declare."
+binds_to = 'system'
+rationale = 'The musician sees why a target refuses a delivery before choosing it.'
+
+[[requirement]]
+id = 'EU-0007-122'
+level = 'MUST'
+polarity = 'required'
+statement = 'The evidence of a verification record MUST be recorded by an authorized maintainer.'
+binds_to = 'system'
+rationale = 'Only the people the project trusts can mark a dependency as verified.'
+
+[[requirement]]
+id = 'EU-0007-123'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The build MUST NOT accept a verification record whose evidence was recorded by a principal that is not an authorized maintainer.'
+binds_to = 'system'
+rationale = 'A project member or a syncing peer cannot open the verification gate by writing a record.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-122' } ]

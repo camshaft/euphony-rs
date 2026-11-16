@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-008"
+
+[[spec]]
+level = "MUST"
+quote = "Each processor MUST declare a numerical profile that states its internal precision, rounding, fused operations, vector behavior and subnormal handling."

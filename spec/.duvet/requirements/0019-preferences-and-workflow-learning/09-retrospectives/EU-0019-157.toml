@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-157"
+
+[[spec]]
+level = "MUST"
+quote = "An interrupted retrospective MUST resume from its cursor."

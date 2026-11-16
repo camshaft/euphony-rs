@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-038"
+
+[[spec]]
+level = "MUST"
+quote = "A decoder MUST bound the memory it allocates by the sizes a verified manifest declares."

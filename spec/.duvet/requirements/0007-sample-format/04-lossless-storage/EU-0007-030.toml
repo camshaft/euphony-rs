@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-030"
+
+[[spec]]
+level = "MUST"
+quote = "Saved, cached and synced working audio MUST be stored in a verified lossless encoding unless a measured raw exception covers it."

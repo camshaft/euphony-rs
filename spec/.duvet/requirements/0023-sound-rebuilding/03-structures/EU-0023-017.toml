@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-017"
+
+[[spec]]
+level = "MUST"
+quote = "Each proposed structure MUST be a typed graph of processors that the built-in processor catalog holds."

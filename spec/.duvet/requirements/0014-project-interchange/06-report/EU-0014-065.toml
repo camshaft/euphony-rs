@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-065"
+
+[[spec]]
+level = "MUST"
+quote = "An imported project MUST show in its arrangement each item that didn't convert completely."

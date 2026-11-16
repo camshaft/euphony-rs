@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/01-goals.md#EU-0023-009"
+
+[[spec]]
+level = "MUST"
+quote = "Rebuilt sounds MUST NOT be published or distributed as presets."

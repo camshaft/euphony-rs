@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-019"
+
+[[spec]]
+level = "MUST"
+quote = "The encoding of a musical value MUST carry a tag of its kind."

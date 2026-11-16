@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-182"
+
+[[spec]]
+level = "MUST"
+quote = "An experimental preview outside the supported domain of an instrument model MUST NOT acquire a fidelity claim."

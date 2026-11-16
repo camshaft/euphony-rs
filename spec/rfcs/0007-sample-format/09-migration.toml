@@ -1,0 +1,227 @@
+[section]
+anchor = 'migration'
+title = 'Decoder migration and retirement'
+problem = """\
+  A store that retires a decoder while some object, pin or rollback still needs it, or that \
+  publishes an object for a decoder already retired, makes saved work unreadable, and an import \
+  that waits for a decoder can wait forever or lose its bytes."""
+motivation = """\
+  Typed codec dependencies, publication and retirement decided against each other in one atomic \
+  step, and held items that the registration they wait for marks ready and that then run one at a \
+  time, keep every retained revision readable, every held item moving, and the registration's step \
+  small however many items wait."""
+prose = """
+A store can hold objects written for an earlier decoder, such as an earlier integer working cache.
+A new decoder and writer are added beside the old ones, new manifests are published atomically,
+and old pins stay until their verified replacements exist. Exactly representable integer originals
+convert once, and earlier quantized prepared results are rendered again from their original inputs
+where those exist, since a conversion can't restore lost precision. The store keeps typed codec
+dependencies for retained objects, revision pins and migration and rollback manifests, and decides
+publication and decoder retirement in one atomic step against each other. This is a guarantee of
+the local store, not a claim that offline peers have migrated. An import, an archive or a peer
+exchange that waits for a decoder or a version is held with its bytes. The registration of what it
+waits for marks every such hold ready in one atomic step of a fixed size, without any other prompt,
+and each ready item is then read a page at a time and negotiated, verified and published as
+durable work of its own, which survives an interruption; a decoder isn't retired while a ready item
+depends on it."""
+
+[[requirement]]
+id = 'EU-0007-094'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Adding a decoder or a writer MUST NOT overwrite existing objects.'
+binds_to = 'system'
+rationale = 'Old revisions stay readable while a migration runs.'
+
+[[requirement]]
+id = 'EU-0007-095'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST publish each new manifest atomically.'
+binds_to = 'system'
+rationale = 'A reader sees either the old manifest or the new one, never a mix.'
+
+[[requirement]]
+id = 'EU-0007-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST keep each old pin until a verified replacement of it exists.'
+binds_to = 'system'
+rationale = 'A revision stays reachable through the whole migration.'
+
+[[requirement]]
+id = 'EU-0007-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'An earlier quantized prepared result MUST be rendered again from its original inputs where they exist, instead of being converted.'
+binds_to = 'system'
+rationale = 'A conversion cannot restore precision a quantization lost.'
+
+[[requirement]]
+id = 'EU-0007-098'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST keep a typed codec dependency for each retained object, revision pin and migration or rollback manifest.'
+binds_to = 'system'
+rationale = 'The store knows which decoders its retained data needs.'
+
+[[requirement]]
+id = 'EU-0007-099'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The store MUST NOT retire a decoder while a retained dependency requires it.'
+binds_to = 'system'
+rationale = 'Saved work never becomes unreadable.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-098' } ]
+
+[[requirement]]
+id = 'EU-0007-100'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The store MUST NOT publish an object or a pin that references a retired decoder.'
+binds_to = 'system'
+rationale = 'Nothing new depends on a decoder that is gone.'
+
+[[requirement]]
+id = 'EU-0007-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'Publication of an object or a pin and retirement of a decoder MUST be decided atomically against each other.'
+binds_to = 'system'
+rationale = 'A publication and a retirement that race never leave an object without its decoder; the decision covers a publication and the retirement of the decoders it references, not the whole store.'
+
+[[requirement]]
+id = 'EU-0007-102'
+level = 'MUST'
+polarity = 'required'
+statement = 'Migration MUST verify the replacement bytes before it releases an old dependency.'
+binds_to = 'system'
+rationale = 'An old dependency is released only for a replacement that decodes to the same samples.'
+
+[[requirement]]
+id = 'EU-0007-127'
+level = 'MUST'
+polarity = 'required'
+statement = 'Migration MUST update the manifests atomically before it releases an old dependency.'
+binds_to = 'system'
+rationale = 'An interrupted migration leaves the old data readable.'
+
+[[requirement]]
+id = 'EU-0007-103'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the inventory of dependencies is uncertain or incomplete, the store MUST keep the decoder available.'
+binds_to = 'system'
+rationale = 'Doubt keeps a decoder instead of losing data.'
+
+[[requirement]]
+id = 'EU-0007-104'
+level = 'MUST'
+polarity = 'required'
+statement = 'An import or a restored archive without a verified decoder MUST stay unavailable with its bytes kept.'
+binds_to = 'system'
+rationale = 'A missing decoder delays the item without discarding it.'
+
+[[requirement]]
+id = 'EU-0007-105'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each held import, archive or peer exchange MUST record the decoder or the schema or profile version it waits for.'
+binds_to = 'system'
+rationale = 'The store knows which registration ends each hold.'
+
+[[requirement]]
+id = 'EU-0007-106'
+level = 'MUST'
+polarity = 'required'
+statement = 'The registration of a verified decoder or a supported version MUST mark each held item that waits for it ready, in an atomic step that makes a fixed number of store writes however many items wait.'
+binds_to = 'system'
+rationale = 'A hold ends on the event it waits for, with no poll or timer, and the registration holds the atomic decisions of the store for a bounded time however many items wait.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-105' } ]
+
+[[requirement]]
+id = 'EU-0007-132'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The atomic step of a registration MUST NOT negotiate, verify or publish a held item.'
+binds_to = 'system'
+rationale = 'A registration with many held items does not delay the publications and retirements decided after it.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-106' } ]
+
+[[requirement]]
+id = 'EU-0007-138'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The store MUST NOT retire a decoder while a ready item depends on it.'
+binds_to = 'system'
+rationale = 'A retirement between a registration and the publication of an item does not leave the item waiting on a decoder that is gone.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-106' } ]
+
+[[requirement]]
+id = 'EU-0007-133'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST negotiate and verify each ready item as durable work of its own, started by the registration that marks it ready.'
+binds_to = 'system'
+rationale = 'The work of each item runs, fails and resumes apart from the others.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-106' } ]
+
+[[requirement]]
+id = 'EU-0007-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST read the ready items a page at a time.'
+binds_to = 'system'
+rationale = 'No read of the ready work grows with the number of held items.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-133' } ]
+
+[[requirement]]
+id = 'EU-0007-107'
+level = 'MUST'
+polarity = 'required'
+statement = 'A ready item that passes verification MUST be published in an atomic step of its own.'
+binds_to = 'system'
+rationale = 'The work the hold delayed becomes available as soon as it can be, and EU-0007-101 decides each publication against retirement for that item alone.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-133' } ]
+
+[[requirement]]
+id = 'EU-0007-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'A ready item MUST stay recorded as ready until it is published or fails verification.'
+binds_to = 'system'
+rationale = 'An interruption between two items loses neither of them.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-106' } ]
+
+[[requirement]]
+id = 'EU-0007-135'
+level = 'MUST'
+polarity = 'required'
+statement = 'When the store reopens, it MUST resume the work of each ready item that is not yet published.'
+binds_to = 'system'
+rationale = 'Interrupted work goes on from the reopening, an event, and not from a timer.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-134' }, { kind = 'depends_on', target = 'EU-0007-137' } ]
+
+[[requirement]]
+id = 'EU-0007-136'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A timer MUST NOT start the work of a ready item.'
+binds_to = 'system'
+rationale = 'The registration and the reopening are the events that start the work.'
+
+[[requirement]]
+id = 'EU-0007-108'
+level = 'MUST'
+polarity = 'required'
+statement = 'A ready item that fails verification MUST stay held, with its bytes kept and its failure recorded against that registration, until the next registration of what it waits for marks it ready again.'
+binds_to = 'system'
+rationale = 'A failed item can pass at the next registration, and it does not run again before one.'
+
+[[requirement]]
+id = 'EU-0007-109'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A release that removes a decoder MUST NOT be published without passing migration, interruption, rollback and old-revision tests for that exact commit.'
+binds_to = 'system'
+rationale = 'Removing a decoder is proven safe before anyone receives it, and EU-0007-099 still refuses the retirement at run time.'

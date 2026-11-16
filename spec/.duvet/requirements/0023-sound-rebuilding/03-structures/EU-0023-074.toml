@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-074"
+
+[[spec]]
+level = "MUST"
+quote = "A run MUST end when the interval of each of its measures lies within the tolerance the musician declares."

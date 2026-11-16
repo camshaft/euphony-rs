@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-019"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild MUST refuse a proposed structure that holds a processor the catalog doesn't hold."

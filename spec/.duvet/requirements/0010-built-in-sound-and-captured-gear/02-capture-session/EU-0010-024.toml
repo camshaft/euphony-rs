@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-024"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST mute every output of the session that its approval does not name."

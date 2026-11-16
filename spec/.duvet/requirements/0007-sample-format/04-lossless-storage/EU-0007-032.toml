@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-032"
+
+[[spec]]
+level = "MUST"
+quote = "The record of a stored object MUST state its representation, its codec and its codec version."

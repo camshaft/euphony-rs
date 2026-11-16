@@ -1,0 +1,10 @@
+number = 19
+title = 'Preferences and workflow learning'
+area = 'euphony'
+abstract = """\
+  How euphony keeps a person's approved musical preferences and workflow improvements: the session \
+  context an assistant reads, evidence and preference records, the owner's control, privacy and \
+  disclosure, tested workflow mechanisms and their measured effects, retrospectives, synchronization \
+  and sharing, listening results, and the events and conformance of learning."""
+retired = []
+sources = []

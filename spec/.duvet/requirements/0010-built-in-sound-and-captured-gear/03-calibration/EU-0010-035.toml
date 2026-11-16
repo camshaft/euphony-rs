@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-035"
+
+[[spec]]
+level = "MUST"
+quote = "Calibration MUST measure the delay of the gear to a fraction of a sample."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-055"
+
+[[spec]]
+level = "MUST"
+quote = "A proposal that narrows or replaces a preference MUST link the version it supersedes."

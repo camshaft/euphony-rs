@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-082"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to reset the preferences of selected scopes."

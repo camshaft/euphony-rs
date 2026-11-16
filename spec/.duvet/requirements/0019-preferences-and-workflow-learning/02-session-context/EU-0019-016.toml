@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-016"
+
+[[spec]]
+level = "MUST"
+quote = "A mutating command in an assisted session that doesn't carry a context handle MUST be refused as context-required."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-270"
+
+[[spec]]
+level = "MUST"
+quote = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST keep the raw timing."

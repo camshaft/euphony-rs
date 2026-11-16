@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-065"
+
+[[spec]]
+level = "MUST"
+quote = "Each fitted parameter of a built-in processor in a structured model MUST be readable and adjustable by the musician."

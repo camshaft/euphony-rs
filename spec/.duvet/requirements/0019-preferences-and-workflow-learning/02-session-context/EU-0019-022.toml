@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-022"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT require an assistant to poll for changes to its context."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-103"
+
+[[spec]]
+level = "MUST"
+quote = "Where the inventory of dependencies is uncertain or incomplete, the store MUST keep the decoder available."

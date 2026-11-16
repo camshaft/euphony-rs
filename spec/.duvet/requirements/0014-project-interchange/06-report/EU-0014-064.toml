@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-064"
+
+[[spec]]
+level = "MUST"
+quote = "The conversion report MUST give each item one of the states complete mapping, known lossy conversion, unsupported feature and missing file."

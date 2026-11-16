@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-178"
+
+[[spec]]
+level = "MUST"
+quote = "Writes in two projects of the same owner MUST NOT wait on each other."

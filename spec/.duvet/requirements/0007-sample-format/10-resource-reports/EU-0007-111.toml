@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-111"
+
+[[spec]]
+level = "MUST"
+quote = "A resource report MUST compare the same project, software profile, hardware and failure scenario before and after each optimization."

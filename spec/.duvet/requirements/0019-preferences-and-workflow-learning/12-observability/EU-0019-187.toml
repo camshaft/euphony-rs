@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/12-observability.md#EU-0019-187"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST publish an event for each evidence capture or omission, proposal state change, context freshness change, activation or refusal, invocation, suspension, retirement, synchronization conflict and retrospective completion."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-038"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST check a confirmation or a journal link for its exact content, subject, scope and current access before it stores the evidence."

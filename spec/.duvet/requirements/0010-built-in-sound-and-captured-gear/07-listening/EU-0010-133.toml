@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-133"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a final evaluation MUST state for each listener whether an exact binomial test rejects guessing, as the result detected."

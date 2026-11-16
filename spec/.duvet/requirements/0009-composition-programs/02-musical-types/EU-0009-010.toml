@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-010"
+
+[[spec]]
+level = "MUST"
+quote = "The musical model MUST define each kind of musical value that this section lists as a distinct type."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-065"
+
+[[spec]]
+level = "MUST"
+quote = "The output of a random source of the composition runtime MUST NOT depend on how its seed was written."

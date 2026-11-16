@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-129"
+
+[[spec]]
+level = "MUST"
+quote = "An invocation whose effect needs the owner's approval of the exact effect MUST wait for that approval of that invocation."

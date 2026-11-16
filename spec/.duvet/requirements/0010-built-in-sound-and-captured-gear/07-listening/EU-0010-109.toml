@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-109"
+
+[[spec]]
+level = "MUST"
+quote = "The results of development listening MUST become development data for the next refinement round."

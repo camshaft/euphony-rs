@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/05-execution.md#EU-0009-051"
+
+[[spec]]
+level = "MUST"
+quote = "A program MUST read randomness and time only from the services the host supplies."

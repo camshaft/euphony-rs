@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-096"
+
+[[spec]]
+level = "MUST"
+quote = "The assistant MUST NOT read the final partition or the trials of the final evaluation before the musician records that evaluation."

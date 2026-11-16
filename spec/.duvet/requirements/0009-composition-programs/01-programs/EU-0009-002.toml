@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/01-programs.md#EU-0009-002"
+
+[[spec]]
+level = "MUST"
+quote = "Each version of a composition program MUST record its text, the version of the musical type library it is written against and the version of the runtime that runs it."

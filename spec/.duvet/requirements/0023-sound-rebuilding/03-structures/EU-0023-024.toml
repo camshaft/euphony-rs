@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-024"
+
+[[spec]]
+level = "MUST"
+quote = "Where the passage holds enough notes to hold some back, a run MUST end when its held-back measures stop improving beyond their intervals."

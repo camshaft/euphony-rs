@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-041"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to undo an acceptance in one step."

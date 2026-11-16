@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-045"
+
+[[spec]]
+level = "MUST"
+quote = "A capture MUST split each kind of test signal into a training partition, a validation partition and a final partition."

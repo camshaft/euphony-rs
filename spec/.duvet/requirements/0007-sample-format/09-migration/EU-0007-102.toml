@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-102"
+
+[[spec]]
+level = "MUST"
+quote = "Migration MUST verify the replacement bytes before it releases an old dependency."

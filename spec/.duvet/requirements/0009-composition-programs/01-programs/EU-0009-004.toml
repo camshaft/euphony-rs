@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/01-programs.md#EU-0009-004"
+
+[[spec]]
+level = "MUST"
+quote = "Each run of a composition program MUST use an explicit random seed."

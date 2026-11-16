@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-067"
+
+[[spec]]
+level = "MUST"
+quote = "A partial import MUST NOT be reported as preserving the sound completely."

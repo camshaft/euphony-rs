@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-069"
+
+[[spec]]
+level = "MUST"
+quote = "An audio device or a network audio endpoint MUST receive samples in the external format it negotiated."

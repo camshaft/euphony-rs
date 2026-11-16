@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-141"
+
+[[spec]]
+level = "MUST"
+quote = "A synthesizer capture MUST NOT send a device-specific message other than a read request or a nonpersistent edit of the edit buffer that the chart of the device verifies."

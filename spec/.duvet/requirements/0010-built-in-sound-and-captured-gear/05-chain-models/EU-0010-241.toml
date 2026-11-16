@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-241"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST offer, for an external chain captured at several settings of its controls, a model conditioned on those settings."

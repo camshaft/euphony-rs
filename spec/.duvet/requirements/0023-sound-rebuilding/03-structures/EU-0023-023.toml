@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-023"
+
+[[spec]]
+level = "MUST"
+quote = "Each fit MUST record its seed, its starting values, the versions of its processors and the version of its measurements."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/05-execution.md#EU-0009-059"
+
+[[spec]]
+level = "MUST"
+quote = "The owner of a project MUST be able to cancel a running program."

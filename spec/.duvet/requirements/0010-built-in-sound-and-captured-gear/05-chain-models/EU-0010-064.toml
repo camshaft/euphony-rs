@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-064"
+
+[[spec]]
+level = "MUST"
+quote = "A structured model MUST be a typed graph of built-in processors with fitted parameters."

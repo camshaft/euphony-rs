@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-201"
+
+[[spec]]
+level = "MUST"
+quote = "A browser companion MUST NOT capture from a device or run model inference on its own."

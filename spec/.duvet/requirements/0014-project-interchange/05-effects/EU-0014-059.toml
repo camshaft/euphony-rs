@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/05-effects.md#EU-0014-059"
+
+[[spec]]
+level = "MUST"
+quote = "An effect whose settings can't be read without running it MUST import as its identity, slot position and preset name, with its settings kept unchanged."

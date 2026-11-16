@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-112"
+
+[[spec]]
+level = "MUST"
+quote = "A macro or a composition program MUST use the same typed commands and the same restricted runner as every other client."

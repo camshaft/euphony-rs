@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/02-source.md#EU-0023-015"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild whose target is a separated stem MUST show in its comparison what separation left in the target."

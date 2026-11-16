@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-035"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuilt sound MUST NOT be called a match of its original before its measurements and the musician's blind listening result exist."

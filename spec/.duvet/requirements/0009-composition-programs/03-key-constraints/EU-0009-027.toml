@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/03-key-constraints.md#EU-0009-027"
+
+[[spec]]
+level = "MUST"
+quote = "An ordinary note that breaks the declared key of its phrase MUST fail validation."

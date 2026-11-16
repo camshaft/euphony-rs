@@ -1,0 +1,119 @@
+[section]
+anchor = 'resource-reports'
+title = 'Resource reports and release refusals'
+problem = """\
+  An optimization can claim to save memory, processor work, disk or transfer while it changes the \
+  sound, misses playback deadlines or moves the cost to another resource, and nobody can tell \
+  without the same measurement before and after."""
+motivation = """\
+  A resource report for each release, measured on stated workloads before and after each \
+  optimization, and a release step that refuses a commit the report doesn't support, show every \
+  saving and every tradeoff."""
+prose = """
+Every release shows that its optimizations save resources without changing the sound or missing
+playback deadlines. Euphony reduces repeated processing, copies and retained bytes before it adds
+machines. Each optimization states the resource it targets and the workload it is measured on, and
+the report compares the same project, software profile, hardware and failure scenario before and
+after it. A report holds measured values alone: a compression ratio or a memory target is never
+set before measurement, and the sample format alone doesn't promise a saving. Where an
+optimization trades one resource for another, the report states the other resources beside the
+targeted one."""
+
+[[requirement]]
+id = 'EU-0007-110'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each release MUST hold a resource report of processor time for rendering, encoding and decoding, peak and steady resident memory, allocation and copy counts, persistent and temporary disk bytes, transferred bytes, cache reuse and playback underruns.'
+binds_to = 'system'
+rationale = 'Every resource an optimization can change is measured in every release.'
+
+[[requirement]]
+id = 'EU-0007-111'
+level = 'MUST'
+polarity = 'required'
+statement = 'A resource report MUST compare the same project, software profile, hardware and failure scenario before and after each optimization.'
+binds_to = 'system'
+rationale = 'A difference in the report comes from the change, not from the setup.'
+
+[[requirement]]
+id = 'EU-0007-112'
+level = 'MUST'
+polarity = 'required'
+statement = 'The workloads of a resource report MUST include cold and warm playback, edits, many listeners, spatial outputs, resumed wide-area sync and high-entropy audio.'
+binds_to = 'system'
+rationale = 'An optimization is measured where it can fail as well as where it helps.'
+
+[[requirement]]
+id = 'EU-0007-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'A resource report MUST state only measured values.'
+binds_to = 'system'
+rationale = 'No invented ratio or target stands in for a measurement.'
+
+[[requirement]]
+id = 'EU-0007-114'
+level = 'MUST'
+polarity = 'required'
+statement = "Each optimization's change record MUST state its targeted resource, one of memory, processor work, disk and transfer."
+binds_to = 'system'
+rationale = 'The release step knows which resource has to show a reduction.'
+
+[[requirement]]
+id = 'EU-0007-115'
+level = 'MUST'
+polarity = 'required'
+statement = "Each optimization's change record MUST state its workload, from the representative projects the project configures."
+binds_to = 'system'
+rationale = 'The reduction is read on the workload the optimization is for.'
+
+[[requirement]]
+id = 'EU-0007-116'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The build MUST NOT accept an optimization's change record that lacks its targeted resource or its workload."
+binds_to = 'system'
+rationale = 'The release check never depends on a developer remembering the fields.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-114' }, { kind = 'depends_on', target = 'EU-0007-115' } ]
+
+[[requirement]]
+id = 'EU-0007-117'
+level = 'MUST'
+polarity = 'required'
+statement = 'A resource report MUST state the change of each other resource beside the targeted one.'
+binds_to = 'system'
+rationale = 'A tradeoff is shown instead of claimed away.'
+
+[[requirement]]
+id = 'EU-0007-118'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The release step MUST NOT publish a commit that has no resource report for that exact commit.'
+binds_to = 'system'
+rationale = 'Every release is measured as it is released.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-110' } ]
+
+[[requirement]]
+id = 'EU-0007-119'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The release step MUST NOT publish a commit whose resource report shows a missed playback deadline.'
+binds_to = 'system'
+rationale = 'An optimization never costs live playback.'
+
+[[requirement]]
+id = 'EU-0007-120'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The release step MUST NOT publish a commit whose resource report shows a changed decoded sample.'
+binds_to = 'system'
+rationale = 'An optimization never changes the sound.'
+
+[[requirement]]
+id = 'EU-0007-121'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The release step MUST NOT publish a commit whose resource report doesn't show a reduction of each resource its optimizations target on their workloads."
+binds_to = 'system'
+rationale = 'An optimization is released only where it saves what it claims to save.'
+relations = [ { kind = 'depends_on', target = 'EU-0007-114' } ]

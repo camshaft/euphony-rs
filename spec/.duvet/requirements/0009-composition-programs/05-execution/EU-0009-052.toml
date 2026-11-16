@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/05-execution.md#EU-0009-052"
+
+[[spec]]
+level = "MUST"
+quote = "A program MUST NOT change the project directly."

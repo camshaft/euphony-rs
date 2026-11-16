@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-061"
+
+[[spec]]
+level = "MUST"
+quote = "The prepare command MUST return a plan, or one of denied, missing asset, unsupported source, not enough material and interval outside the item."

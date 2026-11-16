@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-032"
+
+[[spec]]
+level = "MUST"
+quote = "Where the passage holds too few notes to hold some back, the final measurement MUST say that it measured the fitted notes alone."

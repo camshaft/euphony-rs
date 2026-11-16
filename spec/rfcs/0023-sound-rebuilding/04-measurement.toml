@@ -1,0 +1,105 @@
+[section]
+anchor = 'measurement'
+title = 'Measuring and offering candidates'
+problem = """\
+  A rebuilt sound that is called close without a measurement, or measured on the notes it was \
+  fitted to, tells the musician nothing they can rely on."""
+motivation = """\
+  Measures that each show their value and interval, taken on notes the fit didn't read, and \
+  candidates kept as immutable records, tell the musician how close each rebuilt sound is and why."""
+prose = """
+The comparison aligns the rebuilt render and the original by their onsets and matches their levels,
+then measures their difference in spectra at several resolutions, in the spectral envelope, in the
+attack and decay of each note, in pitch in cents and in the noise between notes. Some notes of the
+passage are held back from fitting where the passage holds enough of them, and the final
+measurement reads them. A candidate is a rebuilt sound that a rebuild offers the musician, with its
+measurements. Different structures can measure equally close and sound different, which only the
+musician's listening decides, so a rebuild offers several candidates."""
+
+[[requirement]]
+id = 'EU-0023-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The comparison MUST align the rebuilt render and the original by their onsets before it measures them.'
+binds_to = 'system'
+rationale = "A difference in timing doesn't count as a difference in sound."
+
+[[requirement]]
+id = 'EU-0023-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The comparison MUST match the levels of the rebuilt render and the original before it measures them.'
+binds_to = 'system'
+rationale = "A difference in loudness doesn't count as a difference in sound."
+
+[[requirement]]
+id = 'EU-0023-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch and in the noise between notes.'
+binds_to = 'system'
+rationale = 'Each kind of difference the musician listens for is measured on its own.'
+
+[[requirement]]
+id = 'EU-0023-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each measure MUST show its value together with its interval.'
+binds_to = 'system'
+rationale = 'The musician knows how far to trust each number.'
+
+[[requirement]]
+id = 'EU-0023-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The comparison MUST NOT present its measures as a single perceptual score.'
+binds_to = 'system'
+rationale = "No single number stands for the musician's listening."
+
+[[requirement]]
+id = 'EU-0023-031'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the passage holds enough notes, the final measurement MUST use notes that the fit didn't read."
+binds_to = 'system'
+rationale = 'A measure on unseen notes shows how the sound plays new notes.'
+
+[[requirement]]
+id = 'EU-0023-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the passage holds too few notes to hold some back, the final measurement MUST say that it measured the fitted notes alone.'
+binds_to = 'system'
+rationale = 'The musician knows when the result was measured on the fitted notes alone.'
+
+[[requirement]]
+id = 'EU-0023-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuild MUST offer the musician the several candidates that measure closest to the original.'
+binds_to = 'system'
+rationale = "Only the musician's listening decides between candidates that measure alike."
+
+[[requirement]]
+id = 'EU-0023-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each candidate MUST be an immutable record of its structure, its settings, each measure for the whole passage and for each note, its held-back result, its measured processing cost and its declared added delay.'
+binds_to = 'system'
+rationale = 'A candidate can be compared, cited and accepted as it was measured.'
+
+[[requirement]]
+id = 'EU-0023-035'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A rebuilt sound MUST NOT be called a match of its original before its measurements and the musician's blind listening result exist."
+binds_to = 'system'
+rationale = "Rebuilding doesn't promise a match it hasn't shown."
+
+[[requirement]]
+id = 'EU-0023-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each candidate offered MUST have a recorded comparison with its original passage.'
+binds_to = 'system'
+rationale = 'Every candidate comes with its comparison.'

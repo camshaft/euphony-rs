@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-098"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST keep a typed codec dependency for each retained object, revision pin and migration or rollback manifest."

@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/02-musical-types.md#EU-0009-023"
+
+[[spec]]
+level = "MUST"
+quote = "Pitch spelling and interval quality MUST be kept apart from sounding pitch."

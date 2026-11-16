@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-135"
+
+[[spec]]
+level = "MUST"
+quote = "When the store reopens, it MUST resume the work of each ready item that is not yet published."

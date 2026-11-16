@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-071"
+
+[[spec]]
+level = "MUST"
+quote = "Each generated event MUST have an explicit start and an explicit end."

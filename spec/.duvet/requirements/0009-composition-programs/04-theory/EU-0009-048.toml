@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-048"
+
+[[spec]]
+level = "MUST"
+quote = "A theory operation MUST answer a typed error for an input that is not a finite number."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-212"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST NOT share a model beyond its project before a recorded legal review and an export decision allow it."

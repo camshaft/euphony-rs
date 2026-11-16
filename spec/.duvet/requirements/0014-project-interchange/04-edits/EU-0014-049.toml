@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-049"
+
+[[spec]]
+level = "MUST"
+quote = "Each automation event inside a region, timing or pitch edit, comp section and loop cell of a source project MUST be converted at its original position or reported as not converted with its track, region and position."

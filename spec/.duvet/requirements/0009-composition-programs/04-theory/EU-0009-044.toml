@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-044"
+
+[[spec]]
+level = "MUST"
+quote = "A theory operation MUST answer either a canonical value or a typed error that states its cause."

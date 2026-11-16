@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-059"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST keep a source's bit depth, alignment and channel metadata."

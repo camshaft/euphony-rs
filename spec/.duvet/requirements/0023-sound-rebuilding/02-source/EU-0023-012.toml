@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/02-source.md#EU-0023-012"
+
+[[spec]]
+level = "MUST"
+quote = "Where the musician entered or corrected notes for the passage, the rebuild MUST use them instead of the estimated notes."

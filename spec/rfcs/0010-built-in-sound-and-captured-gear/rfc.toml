@@ -1,0 +1,12 @@
+number = 10
+title = 'Built-in sound and captured gear'
+area = 'euphony'
+abstract = """\
+  The built-in instruments and effects of euphony, and the capture of a musician's external effect \
+  chains and synthesizers into models that euphony plays without the hardware: the processor \
+  contract, the capture session and its safety, calibration and test signals, how closely a model \
+  matches its hardware, models of a chain and how they load, refinement by an assistant, blind \
+  listening and acceptance, synthesizer capture, instrument models, and who holds and shares \
+  captures and models."""
+retired = []
+sources = []

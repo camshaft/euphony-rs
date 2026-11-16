@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/03-canonical-audio.md#EU-0007-025"
+
+[[spec]]
+level = "MUST"
+quote = "Storage, caching and sync MUST NOT change the value of any sample of working audio."

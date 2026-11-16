@@ -1,0 +1,128 @@
+[section]
+anchor = 'effects'
+title = 'Measured effects of a mechanism'
+problem = """\
+  A mechanism can look helpful because a session was shorter or had fewer undos while the music got worse, and without a comparison against comparable earlier work an improvement can't be told from chance."""
+motivation = """\
+  A typed effect report against a comparable workload, with its coverage and uncertainty, and a trial whose acceptance predicates the owner accepted, let a mechanism stay only while it shows the benefit it was adopted for, and report unverified benefit as unverified."""
+prose = """
+Each adopted mechanism is measured before and after its activation on a comparable workflow,
+project size and device profile: its corrections, undo and revert outcomes, explicit usefulness
+ratings and active task time. Time spent waiting or listening is kept apart from editing time. The
+effect report records the event definitions, the eligible counts, the observation coverage, the
+mechanism and runtime versions and any concurrent changes, and shows its uncertainty and the
+owner's own assessment. The trial the owner approved states its acceptance predicates; euphony
+doesn't set a product-wide threshold of its own. A mechanism is retired through a proposal that
+explains the result and the owner's acceptance of it, and its history stays."""
+
+[[requirement]]
+id = 'EU-0019-140'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST measure each adopted mechanism's corrections, undo and revert outcomes, usefulness ratings, active task time and, where it changes audio, listening outcome before and after its activation, on a comparable workflow, project size and device profile."
+binds_to = 'system'
+rationale = 'An improvement is shown against comparable earlier work.'
+
+[[requirement]]
+id = 'EU-0019-141'
+level = 'MUST'
+polarity = 'required'
+statement = 'The measurement MUST keep time spent waiting or listening apart from editing time.'
+binds_to = 'system'
+rationale = 'Listening longer is never counted as working slower.'
+
+[[requirement]]
+id = 'EU-0019-142'
+level = 'MUST'
+polarity = 'required'
+statement = 'An effect report MUST record its event definitions, eligible counts, observation coverage, mechanism and runtime versions and concurrent changes.'
+binds_to = 'system'
+rationale = 'A reader can judge what the report measured and what else changed.'
+
+[[requirement]]
+id = 'EU-0019-143'
+level = 'MUST'
+polarity = 'required'
+statement = "An effect report MUST show its uncertainty and the owner's assessment."
+binds_to = 'system'
+rationale = "The owner's judgment of the music stands beside the numbers."
+
+[[requirement]]
+id = 'EU-0019-144'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An effect report MUST NOT claim from an uncontrolled comparison that a mechanism caused a change.'
+binds_to = 'system'
+rationale = 'A coincidence is never reported as a cause.'
+
+[[requirement]]
+id = 'EU-0019-145'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A shorter session or fewer undos alone MUST NOT count as evidence of better music.'
+binds_to = 'system'
+rationale = 'Speed is not quality.'
+
+[[requirement]]
+id = 'EU-0019-146'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each trial MUST state the acceptance predicates the owner accepted with it.'
+binds_to = 'system'
+rationale = 'The owner decides what counts as helpful for each trial.'
+
+[[requirement]]
+id = 'EU-0019-147'
+level = 'MUST'
+polarity = 'required'
+statement = "Where an observed report fails its trial's acceptance predicates or shows a safety failure, euphony MUST suspend the mechanism and restore its prior safe configuration."
+binds_to = 'system'
+rationale = "A mechanism that doesn't help, or that is unsafe, stops on its own evidence."
+
+[[requirement]]
+id = 'EU-0019-148'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the evidence is incomplete, an effect report MUST mark the benefit as unverified.'
+binds_to = 'system'
+rationale = 'Missing evidence is never read as a failure or as a success.'
+
+[[requirement]]
+id = 'EU-0019-149'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An effect report MUST NOT report missing efficacy evidence as a success.'
+binds_to = 'system'
+rationale = 'A benefit is claimed only where it was shown.'
+
+[[requirement]]
+id = 'EU-0019-150'
+level = 'MUST'
+polarity = 'required'
+statement = "Retiring a mechanism MUST be the owner's acceptance of a retirement proposal that explains the result."
+binds_to = 'system'
+rationale = 'The owner decides when a mechanism goes, with the reason in view.'
+
+[[requirement]]
+id = 'EU-0019-151'
+level = 'MUST'
+polarity = 'required'
+statement = 'A retired mechanism version MUST keep its history.'
+binds_to = 'system'
+rationale = 'What was learned from a retired mechanism stays available.'
+
+[[requirement]]
+id = 'EU-0019-152'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to disable a mechanism at any time, with immediate effect.'
+binds_to = 'system'
+rationale = 'The owner can always stop learned behavior at once.'
+
+[[requirement]]
+id = 'EU-0019-153'
+level = 'MUST'
+polarity = 'required'
+statement = 'A replacement mechanism MUST be tested on its own before the owner accepts it.'
+binds_to = 'system'
+rationale = 'A better proposal earns its place like any other.'

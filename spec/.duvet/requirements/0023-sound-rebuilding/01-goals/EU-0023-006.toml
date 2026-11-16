@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/01-goals.md#EU-0023-006"
+
+[[spec]]
+level = "MUST"
+quote = "Rebuilding MUST NOT name the product, preset or chain that made the original sound."

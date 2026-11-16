@@ -1,0 +1,157 @@
+[section]
+anchor = 'theory'
+title = 'Musical theory operations'
+problem = """\
+  A conversion between musical values, such as a scale degree to a pitch, a pitch to a frequency or \
+  a musical duration to samples, has different answers under different scales, tunings, tempo \
+  maps and rounding, so a conversion that hides its context, or rounds without saying so, changes \
+  the music without anyone knowing."""
+motivation = """\
+  Operations that receive every definition and context they depend on, say how they round, and \
+  answer a canonical value or a typed error make each conversion repeatable and its failures \
+  visible."""
+prose = """
+The theory operations receive a tagged musical value, the version of each definition they use and an
+explicit conversion context. They validate a value; transpose it; expand a scale degree to a pitch
+and collapse a pitch to a scale degree under a declared rounding policy; resolve a pitch to a
+frequency through a tuning and a reference frequency; and convert a musical position or duration,
+through a revision of the tempo and meter map, to a position or a duration on the sample grid under
+a declared rounding. Each operation answers a canonical value, with a report of any quantization it
+made, or a typed error: an invalid ratio, an overflow, an unknown definition, an unsupported tuning,
+a note out of the scale, an ambiguous interpretation or an incompatible time basis. A duration in
+whole notes and a count of tempo beats are different quantities: a quarter note is one tempo beat
+only in a meter whose beat unit is the quarter note. Time stays exact while a program composes, and
+only the conversion to the sample grid rounds. Every client can read which theory operations and
+which definition versions the project supports, and every client sees the same diagnostics and
+conversions. A typed error states where its cause is: the span of the program text, where a program
+reached the operation, or the field of the command, where a command reached it."""
+
+[[requirement]]
+id = 'EU-0009-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each theory operation MUST receive the version of each definition it uses.'
+binds_to = 'system'
+rationale = 'A later change of a scale or a tuning never changes the answer for an earlier version.'
+
+[[requirement]]
+id = 'EU-0009-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each theory operation MUST receive its conversion context explicitly.'
+binds_to = 'system'
+rationale = 'An operation never reads a context its caller did not state.'
+
+[[requirement]]
+id = 'EU-0009-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'The expansion of a scale degree to a pitch and the collapse of a pitch to a scale degree MUST follow a rounding policy that the caller declares.'
+binds_to = 'system'
+rationale = 'A pitch outside the scale goes to the degree the caller chose, every time.'
+
+[[requirement]]
+id = 'EU-0009-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'The resolution of a pitch to a frequency MUST use a tuning and a reference frequency that the caller states.'
+binds_to = 'system'
+rationale = 'The same pitch sounds the same under the same tuning and reference.'
+
+[[requirement]]
+id = 'EU-0009-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conversion of a musical position or duration to the sample grid MUST read a revision of the tempo and meter map that the caller states.'
+binds_to = 'system'
+rationale = 'A change of the tempo map never changes an earlier conversion.'
+
+[[requirement]]
+id = 'EU-0009-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conversion to the sample grid MUST follow a rounding that the caller declares.'
+binds_to = 'system'
+rationale = 'Two conversions of the same value under the same rounding give the same sample.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-041' } ]
+
+[[requirement]]
+id = 'EU-0009-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'A theory operation that rounds a value MUST report the quantization it made.'
+binds_to = 'system'
+rationale = 'A caller sees how far the answer is from the exact value.'
+
+[[requirement]]
+id = 'EU-0009-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'A theory operation MUST answer either a canonical value or a typed error that states its cause.'
+binds_to = 'system'
+rationale = 'A failure is never silent and never a value that only looks valid.'
+
+[[requirement]]
+id = 'EU-0009-045'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A duration in whole notes MUST NOT be read as a count of tempo beats without the beat unit of the meter.'
+binds_to = 'system'
+rationale = 'A quarter note and a tempo beat are equal only in a meter whose beat unit is the quarter note.'
+
+[[requirement]]
+id = 'EU-0009-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A conversion across a change of tempo MUST integrate the tempo map over the interval it converts.'
+binds_to = 'system'
+rationale = 'One tempo is never applied to an interval in which the tempo changes.'
+
+[[requirement]]
+id = 'EU-0009-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each musical event a program generates MUST be placed at an exact rational position.'
+binds_to = 'system'
+rationale = 'A sequence of triplets or other durations that a binary fraction cannot hold never drifts.'
+
+[[requirement]]
+id = 'EU-0009-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'A theory operation MUST answer a typed error for an input that is not a finite number.'
+binds_to = 'system'
+rationale = 'An invalid number has a defined result on every computer and in every build.'
+
+[[requirement]]
+id = 'EU-0009-049'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A theory operation MUST NOT grant access to an asset or a device, or a way to run native code.'
+binds_to = 'system'
+rationale = 'Musical arithmetic is never a path to authority.'
+
+[[requirement]]
+id = 'EU-0009-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'The theory operations MUST include the transposition of a musical value by an interval.'
+binds_to = 'system'
+rationale = 'A program and every client transpose a value through one operation, under the same definitions and context.'
+
+[[requirement]]
+id = 'EU-0009-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every client MUST be able to discover the theory operations and the definition versions the project supports.'
+binds_to = 'system'
+rationale = 'An agent and an editor see the same operations and conversions, and neither guesses which definitions exist.'
+
+[[requirement]]
+id = 'EU-0009-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'A typed error of a theory operation reached through a command MUST identify the field of the command at fault.'
+binds_to = 'system'
+rationale = 'A caller that sends a command finds the value to correct, as a program finds the span of its text.'
+relations = [ { kind = 'depends_on', target = 'EU-0009-044' } ]

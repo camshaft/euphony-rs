@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-163"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT consider learning complete because an assistant stopped receiving corrections."

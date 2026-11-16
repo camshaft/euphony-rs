@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-057"
+
+[[spec]]
+level = "MUST"
+quote = "A signed integer source of up to 24 valid bits MUST convert to working audio by division by 2 to the power of one less than its valid bits."

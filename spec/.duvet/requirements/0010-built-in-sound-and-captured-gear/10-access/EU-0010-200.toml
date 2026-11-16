@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-200"
+
+[[spec]]
+level = "MUST"
+quote = "Each capture, cancellation, fit, report and attachment of a model MUST be a typed command available alike to the interface and to assistants."

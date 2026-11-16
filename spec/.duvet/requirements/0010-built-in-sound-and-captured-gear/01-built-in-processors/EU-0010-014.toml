@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-014"
+
+[[spec]]
+level = "MUST"
+quote = "The code of each built-in processor MUST be distributable under the license of the code of euphony."
