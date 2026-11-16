@@ -42,7 +42,15 @@ A late ordinary adjustment MUST apply at the next admitted boundary with its lat
 
 ### EU-0017-110 {#EU-0017-110}
 
-A scheduled sample-accurate performance that misses its deadline MUST be refused, with the gap recorded and its original events kept for inspection.
+A scheduled sample-accurate performance that misses its deadline MUST be refused.
+
+### EU-0017-161 {#EU-0017-161}
+
+The system MUST record the gap that a refused scheduled performance leaves.
+
+### EU-0017-162 {#EU-0017-162}
+
+The system MUST keep the original events of a refused scheduled performance for inspection.
 
 ### EU-0017-111 {#EU-0017-111}
 
@@ -50,7 +58,7 @@ The session host MUST acknowledge play, stop, locate and recording commands with
 
 ### EU-0017-112 {#EU-0017-112}
 
-Stop MUST stay responsive on the local host while a remote surface is unavailable.
+While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface.
 
 ### EU-0017-113 {#EU-0017-113}
 
@@ -102,7 +110,7 @@ The system MUST NOT cap surfaces at a fixed surface count or event rate.
 
 ### EU-0017-125 {#EU-0017-125}
 
-Ending a gesture, cancelling one and safety commands MUST stay serviceable while display traffic is overloaded.
+While display traffic is overloaded, the system MUST admit ending a gesture, cancelling one and safety commands ahead of display traffic.
 
 ### EU-0017-126 {#EU-0017-126}
 
@@ -114,7 +122,11 @@ The system MUST NOT coalesce anything other than superseded, unaccepted preview 
 
 ### EU-0017-128 {#EU-0017-128}
 
-A capacity failure while performance is being captured MUST end its admission visibly and record the gap.
+A capacity failure while performance is being captured MUST end its admission visibly.
+
+### EU-0017-163 {#EU-0017-163}
+
+The system MUST record the gap that a capacity failure leaves in captured performance.
 
 ### EU-0017-129 {#EU-0017-129}
 
