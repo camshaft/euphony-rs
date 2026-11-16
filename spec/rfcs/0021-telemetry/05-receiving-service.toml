@@ -7,9 +7,8 @@ prose = """
 The receiving service is the service the project runs to take in what people send. It ingests
 signed batches and problem reports, stores them, groups their records into findings, holds the
 findings and their aggregates, shows them to the maintainers, and files tracker issues. A tombstone
-is the record that an identity's data was deleted. The service's keys and the accounts of its
-maintainers are configuration data, and deploying it is an act that people outside the project can
-see."""
+is the record that an identity's data was deleted. Deploying the service is an act that people
+outside the project can see."""
 
 [[requirement]]
 id = 'EU-0021-099'
@@ -171,7 +170,7 @@ level = 'MUST'
 polarity = 'forbidden'
 statement = "The client MUST NOT drop a batch for want of capacity at the service."
 binds_to = 'system'
-rationale = "A batch leaves the outbox only when it is sent or the person deletes it."
+rationale = "A busy service delays a batch, and the client doesn't drop it for that reason."
 
 [[requirement]]
 id = 'EU-0021-119'
@@ -188,3 +187,11 @@ polarity = 'required'
 statement = "The performance and problems view MUST say when the outbox removed batches under storage pressure."
 binds_to = 'system'
 rationale = "The person knows which batches never went."
+
+[[requirement]]
+id = 'EU-0021-172'
+level = 'MUST'
+polarity = 'required'
+statement = "The receiving service's keys and the accounts of its maintainers MUST be configuration data."
+binds_to = 'system'
+rationale = "A key or a maintainer changes without a new release of the service."

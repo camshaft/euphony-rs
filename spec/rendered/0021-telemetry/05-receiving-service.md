@@ -3,9 +3,8 @@
 The receiving service is the service the project runs to take in what people send. It ingests
 signed batches and problem reports, stores them, groups their records into findings, holds the
 findings and their aggregates, shows them to the maintainers, and files tracker issues. A tombstone
-is the record that an identity's data was deleted. The service's keys and the accounts of its
-maintainers are configuration data, and deploying it is an act that people outside the project can
-see.
+is the record that an identity's data was deleted. Deploying the service is an act that people
+outside the project can see.
 
 ### EU-0021-099 {#EU-0021-099}
 
@@ -94,3 +93,7 @@ Under storage pressure on the computer, the outbox MUST remove the oldest teleme
 ### EU-0021-120 {#EU-0021-120}
 
 The performance and problems view MUST say when the outbox removed batches under storage pressure.
+
+### EU-0021-172 {#EU-0021-172}
+
+The receiving service's keys and the accounts of its maintainers MUST be configuration data.

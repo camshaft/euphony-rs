@@ -2,4 +2,4 @@ target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-047"
 
 [[spec]]
 level = "MUST"
-quote = "Where the consent has narrowed, changed or been turned off, the client MUST delete the batch or rebuild it under the current consent."
+quote = "Where the consent has narrowed or changed while sending is still on, the client MUST delete the batch or rebuild it under the current consent."
