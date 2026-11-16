@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-003"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of an audio item MUST be computed from its decoded sample values and a canonical description of their format."

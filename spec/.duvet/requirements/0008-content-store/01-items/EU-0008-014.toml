@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-014"
+
+[[spec]]
+level = "MUST"
+quote = "A take group MUST list each take of its recording with its start position, its track, its input and its markers."

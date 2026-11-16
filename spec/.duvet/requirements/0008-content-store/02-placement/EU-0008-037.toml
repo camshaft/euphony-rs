@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-037"
+
+[[spec]]
+level = "MUST"
+quote = "Once recovery has settled a release, the releasing holder MUST refuse every later message of that release."

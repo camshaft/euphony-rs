@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-027"
+
+[[spec]]
+level = "MUST"
+quote = "Two copies on one storage volume, or on volumes of one network storage server, MUST count as one copy."

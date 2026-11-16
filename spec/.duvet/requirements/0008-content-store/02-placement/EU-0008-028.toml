@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-028"
+
+[[spec]]
+level = "MUST"
+quote = "A holder MUST sign a receipt for each item it has stored and verified."

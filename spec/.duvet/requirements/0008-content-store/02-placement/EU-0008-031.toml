@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-031"
+
+[[spec]]
+level = "MUST"
+quote = "A copy MUST be released only where other holders on separate computers and independent storage have reserved the item for that release, covering the copies the policy requires."

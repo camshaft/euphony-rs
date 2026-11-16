@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-034"
+
+[[spec]]
+level = "MUST"
+quote = "Each release MUST reach exactly one terminal state, committed or cancelled, which never changes afterwards."

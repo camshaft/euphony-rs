@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-044"
+
+[[spec]]
+level = "MUST"
+quote = "Where no verified copy of an item remains, each project that refers to it MUST show which regions cannot sound."

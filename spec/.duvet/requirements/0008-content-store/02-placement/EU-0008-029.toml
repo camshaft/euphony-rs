@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-029"
+
+[[spec]]
+level = "MUST"
+quote = "A receipt MUST count as stale once its holder restarts, reports a storage error on its volume or is unpaired, until the holder verifies the item again."

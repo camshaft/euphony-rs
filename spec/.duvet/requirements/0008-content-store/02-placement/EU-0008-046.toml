@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-046"
+
+[[spec]]
+level = "MUST"
+quote = "An event of the store MUST NOT hold the file name or the project of an item."
