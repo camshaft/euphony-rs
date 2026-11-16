@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-096"
+
+[[spec]]
+level = "MUST"
+quote = "While lease requests wait at the host, the host MUST offer a job whose running attempt meets the condition of EU-0006-094 to one waiting request of a worker that EU-0006-094 would offer it to, chosen by the priority levels of EU-0006-052 and the fair shares of EU-0006-053, on the first event the host handles after that attempt meets the condition, where an event is a liveness probe the job protocol sends under EU-0006-093, or a progress report, an answer or a lease request the host receives."
