@@ -2,4 +2,4 @@ target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-033"
 
 [[spec]]
 level = "MUST"
-quote = "While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send."
+quote = "While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send or a deletion request that the person made."
