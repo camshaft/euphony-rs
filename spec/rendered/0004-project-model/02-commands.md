@@ -24,8 +24,9 @@ call of an assistant all reach the project as such batches. A change of presenta
 project as it was, such as scrolling, isn't a command. The protocol that carries batches to euphony
 is the subject of the client protocol RFC. A key identifies a batch only among the batches one actor
 sends to one project: a retry of a committed batch on the same branch receives that batch's outcome,
-unless euphony refuses it as denied first, as it does once its caller may no longer change the
-project, and a key used again for another branch or other commands is refused.
+unless one of the checks that euphony makes before it checks the key refuses it first, as a denial
+does once its caller may no longer change the project, and a key used again for another branch or
+other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -105,7 +106,7 @@ A batch with the project, actor and idempotency key of a committed batch MUST NO
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it as denied before it checks its idempotency key, as EU-0004-049 and EU-0004-056 do, such as a retry from a caller who lost change access after that batch committed.
+A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056, EU-0004-059 or EU-0004-095, or as invalid input by EU-0004-096 or EU-0004-064, such as a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.
 
 ### EU-0004-046 {#EU-0004-046}
 
