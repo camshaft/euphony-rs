@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-068"
+
+[[spec]]
+level = "MUST"
+quote = "Where a batch names the caller that euphony authenticated, its project and its branch, and leaves out its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-059."
