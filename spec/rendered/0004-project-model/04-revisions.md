@@ -1,6 +1,9 @@
 ## Revisions, branches and reads {#revisions}
 
-Each committed batch makes a revision. A revision names the revisions it follows, its parents, so the
+The creation of a project makes its first revision, which doesn't follow any revision, carries the
+signature of the copy that created the project, and is the head of a working branch that copy holds;
+the outcome of the creation identifies that branch. Each committed batch then makes a revision. A
+revision names the revisions it follows, its parents, so the
 revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
 its head. Each copy holds its working branches and is the only copy that commits to them, so a
 musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
@@ -27,9 +30,17 @@ Each revision MUST name each revision it follows.
 
 The revisions of a project MUST NOT form a cycle.
 
+### EU-0004-083 {#EU-0004-083}
+
+The first revision of a project MUST NOT follow any revision.
+
 ### EU-0004-035 {#EU-0004-035}
 
 Each revision MUST carry a signature by which any copy verifies which copy committed it.
+
+### EU-0004-084 {#EU-0004-084}
+
+The first revision of a project MUST carry the signature of the copy that created the project.
 
 ### EU-0004-036 {#EU-0004-036}
 
@@ -38,6 +49,14 @@ A copy MUST NOT accept a revision whose signature it cannot verify.
 ### EU-0004-037 {#EU-0004-037}
 
 Each branch MUST point at exactly one revision.
+
+### EU-0004-085 {#EU-0004-085}
+
+The first revision of a project MUST be the head of a working branch that the copy which created the project holds.
+
+### EU-0004-086 {#EU-0004-086}
+
+The outcome of the creation of a project MUST identify the working branch whose head is the first revision of the project.
 
 ### EU-0004-038 {#EU-0004-038}
 
