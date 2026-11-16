@@ -132,7 +132,7 @@ polarity = 'required'
 statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.'
 binds_to = 'system'
 rationale = 'A subscriber that reconnects misses nothing.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0004-061' } ]
 
 [[requirement]]
 id = 'EU-0004-044'
@@ -149,7 +149,7 @@ polarity = 'required'
 statement = 'A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.'
 binds_to = 'system'
 rationale = 'A reader stays current without polling.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0004-061' } ]
 
 [[requirement]]
 id = 'EU-0004-052'
