@@ -7,8 +7,8 @@ traffic where it does not, including through networks that allow only encrypted 
 signaling service and the relay are connection infrastructure, public or self-hosted, which the
 owner chooses when first turning on internet collaboration; neither is a project host or an
 authority over history, and neither is trusted with project contents. Each computer holds a
-long-term device key, separate from the keys of any one connection. A browser connection carries
-companion control and selected prepared audio, and full collaboration on a project takes place
+long-term device key, separate from the keys of any one connection. A browser connection doesn't
+carry a full copy of a project or its history, and full collaboration on a project takes place
 between native copies. Existing standards for local discovery, local audio streams and MIDI stay
 local-network features, and project sync across the internet is not sample-synchronous performance.
 An offline bundle stays a separate way to recover a project's history.
