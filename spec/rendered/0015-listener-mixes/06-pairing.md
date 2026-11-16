@@ -17,7 +17,7 @@ back audio already played.
 
 ### EU-0015-057 {#EU-0015-057}
 
-A station MUST make its device key pair on its first start and keep the private key on the station.
+A station MUST make its device key pair on its first start.
 
 ### EU-0015-058 {#EU-0015-058}
 
@@ -90,3 +90,7 @@ The host MUST stop an unencrypted station stream when the network's identity no 
 ### EU-0015-075 {#EU-0015-075}
 
 Control traffic between a station and the host MUST be authenticated and encrypted on every network.
+
+### EU-0015-113 {#EU-0015-113}
+
+A station MUST keep the private key of its device key pair on the station.

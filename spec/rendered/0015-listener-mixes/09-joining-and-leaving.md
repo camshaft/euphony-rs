@@ -24,7 +24,7 @@ On a new connection or a headphone insertion, a station's output MUST start mute
 
 ### EU-0015-109 {#EU-0015-109}
 
-When a station leaves, the host MUST make its sink unavailable and stop calculating its output.
+When a station leaves, the host MUST make its sink unavailable.
 
 ### EU-0015-110 {#EU-0015-110}
 
@@ -36,4 +36,12 @@ A station that reconnects MUST restore its sink's mix once it is validated again
 
 ### EU-0015-112 {#EU-0015-112}
 
-A headphone removal MUST mute the station's output until headphones are inserted again, without ending its connection.
+A headphone removal MUST mute the station's output until headphones are inserted again.
+
+### EU-0015-114 {#EU-0015-114}
+
+When a station leaves, the host MUST stop calculating its output.
+
+### EU-0015-115 {#EU-0015-115}
+
+A headphone removal MUST NOT end the station's connection.

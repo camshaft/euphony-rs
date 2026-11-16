@@ -81,4 +81,4 @@ level = 'MUST'
 polarity = 'forbidden'
 statement = 'The system MUST NOT label a route to an external renderer, or its result, as licensed delivery.'
 binds_to = 'system'
-rationale = 'The workstation claims only the delivery it validates itself.'
+rationale = "The workstation claims only a delivery its licensor's validation accepts."
