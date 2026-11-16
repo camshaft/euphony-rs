@@ -36,6 +36,7 @@ polarity = 'required'
 statement = 'The secret of a link MUST hold at least 128 random bits from the secure random source of the operating system.'
 binds_to = 'system'
 rationale = 'A link cannot be guessed.'
+params = [ { name = 'link_secret_length', type = 'integer', unit = 'bits', bound = '>= 128' } ]
 
 [[requirement]]
 id = 'EU-0013-114'
