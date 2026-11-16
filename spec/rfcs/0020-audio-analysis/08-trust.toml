@@ -97,9 +97,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0020-085' } ]
 id = 'EU-0020-087'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "The system MUST NOT download a model or send material to an outside provider without the person's explicit choice of that destination and that material."
+statement = 'The system MUST NOT download a model, send material to an outside provider or upload material publicly unless the applicable terms permit it and the person explicitly chose that destination and that material.'
 binds_to = 'system'
-rationale = 'Analysis is local unless the person decides otherwise for each destination and material.'
+rationale = 'Analysis is local unless the terms permit otherwise and the person decides for each destination and material.'
 
 [[requirement]]
 id = 'EU-0020-088'
