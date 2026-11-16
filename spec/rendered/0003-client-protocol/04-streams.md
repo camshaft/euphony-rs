@@ -9,10 +9,9 @@ where a client falls behind further than that, it ends the subscription rather t
 waveform tile holds the peak data of one audio item at one zoom level and position; since the
 content of an item never changes, neither does its tile. Content transfer covers the imports,
 exports and recordings that a client sends or receives. A client on the same computer hands the
-engine the file the person chose, so that the choice reaches the engine without granting it a path,
-and a client on another computer sends the content into the content store of the session. No client
-writes the memory of the engine, and the engine treats every message from a client as untrusted
-until it has checked it.
+engine the file the person chose, as RFC 0002 states, and a client on another computer sends the
+content into the content store of the session. No client writes the memory of the engine, and the
+engine treats every message from a client as untrusted until it has checked it.
 
 ### EU-0003-049 {#EU-0003-049}
 
@@ -57,14 +56,6 @@ A waveform tile MUST be identified by the identity of its audio item, its zoom l
 ### EU-0003-059 {#EU-0003-059}
 
 A client MAY keep a waveform tile by its identity without ever invalidating it.
-
-### EU-0003-060 {#EU-0003-060}
-
-A client on the computer running the session MUST pass a file the person chose to the engine as an open file rather than as a path.
-
-### EU-0003-061 {#EU-0003-061}
-
-Passing a file the person chose MUST NOT grant the engine access to any other file.
 
 ### EU-0003-062 {#EU-0003-062}
 
