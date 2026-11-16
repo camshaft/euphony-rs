@@ -19,10 +19,11 @@ once it has decoded, validated and recorded it. The state of the session reaches
 snapshot of the part the client may see and then as an ordered stream of deltas, each at a revision,
 which the client resumes from a cursor. A gesture, such as a fader drag, is a token that begins, is
 updated in sequence with the time each update was captured, and ends or is cancelled. Undo and redo
-are commands on the one history of the session. The state of a view has shared parts, which belong
-to the session, and transient parts, such as scrolling, which stay with each client. A client draws
-the effect of its own command at once, as a predicted value, until the command is acknowledged or
-refused."""
+are commands on the one history of the session, and RFC 0002 states how the session host keeps that
+history, applies each command once and resumes a subscription from its cursor. The state of a view
+has shared parts, which belong to the session, and transient parts, such as scrolling, which stay
+with each client. A client draws the effect of its own command at once, as a predicted value, until
+the command is acknowledged or refused."""
 
 [[requirement]]
 id = 'EU-0003-026'
@@ -82,28 +83,12 @@ binds_to = 'system'
 rationale = 'A client that reconnects never applies a command twice and never loses one.'
 
 [[requirement]]
-id = 'EU-0003-033'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'Two commands with the same idempotency key MUST NOT both be applied.'
-binds_to = 'system'
-rationale = 'A command sent again after a lost acknowledgement changes nothing more.'
-
-[[requirement]]
 id = 'EU-0003-034'
 level = 'MUST'
 polarity = 'required'
 statement = 'The state of a session MUST reach a client as a snapshot followed by a stream of deltas, each at a revision of the session.'
 binds_to = 'system'
 rationale = 'A client always shows a state that the session held.'
-
-[[requirement]]
-id = 'EU-0003-035'
-level = 'MUST'
-polarity = 'required'
-statement = 'A subscription MUST be resumable from its cursor.'
-binds_to = 'system'
-rationale = 'A client that reconnects receives only the changes it missed.'
 
 [[requirement]]
 id = 'EU-0003-036'
@@ -147,20 +132,12 @@ rationale = 'A late update never moves a control back.'
 relations = [ { kind = 'depends_on', target = 'EU-0003-039' } ]
 
 [[requirement]]
-id = 'EU-0003-041'
-level = 'MUST'
-polarity = 'required'
-statement = 'Undo and redo MUST act on one history of the session, whichever client sent the command undone.'
-binds_to = 'system'
-rationale = 'A person working with several controls undoes what they did, wherever they did it.'
-
-[[requirement]]
 id = 'EU-0003-042'
 level = 'MUST'
 polarity = 'required'
-statement = 'Undo MUST undo a transaction or a gesture as one step.'
+statement = 'Undo MUST undo a gesture as one step.'
 binds_to = 'system'
-rationale = 'One undo reverses one action as the person saw it.'
+rationale = 'One undo reverses a whole fader drag, as the person made it.'
 
 [[requirement]]
 id = 'EU-0003-043'
