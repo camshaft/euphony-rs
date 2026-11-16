@@ -102,7 +102,7 @@ binds_to = 'system'
 rationale = 'Each sound comes from the speaker the layout says it does.'
 
 [[requirement]]
-id = 'EU-0015-113'
+id = 'EU-0015-116'
 level = 'MUST'
 polarity = 'required'
 statement = 'A spatial render that downmixes a mix to a layout with fewer speakers than the one it was made for MUST keep the loudness of each speaker bed and sound object, measured on the calibrated smaller layout, equal to its loudness on the layout it was made for.'
