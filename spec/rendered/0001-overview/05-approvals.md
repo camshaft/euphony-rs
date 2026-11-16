@@ -13,8 +13,8 @@ Unpairing a device, revoking a share link, and every edit, render, recording, ro
 layout change are not approval-held. Adopting a learned preference or a workflow mechanism is an
 ordinary command that can be undone.
 
-An owner-interaction record is the record a paired owner device makes of the owner's own input
-there, such as a press of an approve control, for one exact effect. A command's origin is the party
+An owner-interaction record is the record that a paired owner device, or the local console of the
+owner's first computer, makes of the owner's own input there, such as a press of an approve control, for one exact effect. A command's origin is the party
 whose client session first sent the command.
 
 The command gateway is the one place in the engine that accepts or refuses each command. It refuses
@@ -25,7 +25,7 @@ command.
 
 ### EU-0001-059 {#EU-0001-059}
 
-An approval-held action that an assistant, a script, a workflow mechanism, a collaborator or any party other than the owner's own input on a paired owner device starts MUST wait for the owner's approval of its exact effect.
+An approval-held action that an assistant, a script, a workflow mechanism, a collaborator or anything other than the owner's own input on a paired owner device or on the local console of the owner's first computer starts MUST wait for the owner's approval of its exact effect.
 
 ### EU-0001-060 {#EU-0001-060}
 
@@ -33,11 +33,11 @@ The party that starts an approval-held action MUST NOT be able to approve it.
 
 ### EU-0001-061 {#EU-0001-061}
 
-The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices.
+The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices or from the local console of the owner's first computer.
 
 ### EU-0001-062 {#EU-0001-062}
 
-An approval-held action that the owner's own input on a paired owner device starts, with the owner-interaction record of that input, MUST NOT wait for a further approval.
+An approval-held action that the owner's own input on a paired owner device or on the local console of the owner's first computer starts, with the owner-interaction record of that input, MUST NOT wait for a further approval.
 
 ### EU-0001-063 {#EU-0001-063}
 
@@ -65,7 +65,7 @@ Forwarding, queueing or replaying a command MUST NOT change its origin.
 
 ### EU-0001-069 {#EU-0001-069}
 
-An owner-interaction record MUST be bound to the exact effect it approves and to the paired owner device that made it.
+An owner-interaction record MUST be bound to the exact effect it approves and to the paired owner device or the local console that made it.
 
 ### EU-0001-070 {#EU-0001-070}
 
