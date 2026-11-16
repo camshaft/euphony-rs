@@ -10,53 +10,20 @@ motivation = """\
   only what it lacks after a disconnect, check each piece before it counts, and survive a crash \
   without trusting a partial write."""
 prose = """
-Every render input and every result moves between computers as fixed-size immutable chunks. Each
-chunk is named by a cryptographic digest of its stored bytes, and a signed manifest lists the chunks
-of each object. After a disconnect, the receiver asks which chunks it still lacks and fetches only
-those. The transfer runs apart from the job queue, and the owner's device discovery service
-advertises and configures it without carrying its traffic. A result is written apart from the
-results the cache shows, checked, and only then shown."""
+Every render input and every result moves between computers as an item of the content store, in
+chunks, as RFC 0008 states: the chunk list of each item, the fetch of only the chunks a receiver
+lacks after a disconnect, and the check of each chunk before it counts as present. The transfer runs
+apart from the job queue, and the owner's device discovery service advertises and configures it
+without carrying its traffic. A result is written apart from the results the cache shows, checked,
+and only then shown."""
 
 [[requirement]]
 id = 'EU-0006-060'
 level = 'MUST'
 polarity = 'required'
-statement = 'Every render input and every result MUST move between computers as immutable chunks, each named by a cryptographic digest of its bytes.'
+statement = 'Every render input and every result MUST move between computers as an item of the content store.'
 binds_to = 'system'
-rationale = 'A receiver checks each piece and fetches each piece once.'
-
-[[requirement]]
-id = 'EU-0006-061'
-level = 'MUST'
-polarity = 'required'
-statement = 'The chunks of each object MUST be listed in a signed manifest.'
-binds_to = 'system'
-rationale = 'A receiver knows every chunk an object needs, and that the list came from a paired computer.'
-
-[[requirement]]
-id = 'EU-0006-062'
-level = 'MUST'
-polarity = 'required'
-statement = 'After a disconnect, a receiver MUST fetch only the chunks it still lacks.'
-binds_to = 'system'
-rationale = 'A dropped connection costs only the chunks it interrupted.'
-
-[[requirement]]
-id = 'EU-0006-063'
-level = 'MUST'
-polarity = 'required'
-statement = 'A receiver MUST check each chunk against its digest before it counts the chunk as present.'
-binds_to = 'system'
-rationale = 'A corrupt chunk is fetched again instead of played.'
-relations = [ { kind = 'depends_on', target = 'EU-0006-060' } ]
-
-[[requirement]]
-id = 'EU-0006-064'
-level = 'MUST'
-polarity = 'required'
-statement = 'A receiver MUST record a chunk as present only after its data is durable.'
-binds_to = 'system'
-rationale = 'A crash never marks an incomplete chunk present.'
+rationale = 'Render work moves and is checked as any other stored content is.'
 
 [[requirement]]
 id = 'EU-0006-065'

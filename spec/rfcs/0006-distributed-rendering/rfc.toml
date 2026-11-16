@@ -6,5 +6,5 @@ abstract = """\
   of each render request and result, invalidation through the project graph, the playback of \
   prepared audio, render workers and their scheduling, resumable transfer of inputs and results, \
   and the retention and recovery of the render cache."""
-retired = ['EU-0006-003', 'EU-0006-039', 'EU-0006-042', 'EU-0006-043']
+retired = ['EU-0006-003', 'EU-0006-014', 'EU-0006-039', 'EU-0006-042', 'EU-0006-043', 'EU-0006-061', 'EU-0006-062', 'EU-0006-063', 'EU-0006-064']
 sources = []

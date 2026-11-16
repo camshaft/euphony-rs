@@ -1,5 +1,0 @@
-target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-064"
-
-[[spec]]
-level = "MUST"
-quote = "A receiver MUST record a chunk as present only after its data is durable."
