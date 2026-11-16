@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-059"
 
 [[spec]]
 level = "MUST"
-quote = "Where the project that a batch names does not exist, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key, with a refusal whose kind and content, apart from the values the batch itself supplies, are those of its refusal of EU-0004-056 of a batch whose caller may not take its commands on the branch it names."
+quote = "Where the project that a batch names does not exist, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key, with a refusal whose kind and content, apart from the values the batch itself supplies, are those of its refusal under EU-0004-056 of a batch whose caller may not change the branch it names or may not take one of its commands there."
