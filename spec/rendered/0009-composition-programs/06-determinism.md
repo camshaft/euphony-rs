@@ -1,15 +1,15 @@
 ## Reproducing and reusing output {#determinism}
 
-The identity of the output of a program is everything that made it: the text of the program, its
-declared inputs, its seed, and the version of the runtime, the type library, each definition, each
-tuning, each rounding policy and the numerical profile it ran under. Two runs with the same identity
-produce the same events on compatible computers, those that run the same runtime and numerical
-profile, and a stored output with that identity is reused instead of run again; reused output then
-feeds the ordinary rendering and its cache. Every random source of the runtime is a specified
-algorithm with an explicit seed and a version, so its output doesn't depend on the computer, on the
-version of a dependency or on how the seed was written. The output of a program is put in canonical
-form before it is proposed. After a regeneration, only the passages whose output changed are loaded
-again.
+The identity of the output of a program is everything that made it: the text of the program, each
+asset it imports, each musical input it reads, its seed, and the version of the runtime, the type
+library, each definition, each tuning, each rounding policy and the numerical profile it ran under.
+Two runs with the same identity produce the same events on compatible computers, those that run the
+same runtime and numerical profile, and a stored output with that identity is reused instead of run
+again; reused output then feeds the ordinary rendering and its cache. Every random source of the
+runtime is a specified algorithm with an explicit seed and a version, so its output doesn't depend
+on the computer, on the version of a dependency or on how the seed was written. The output of a
+program is put in canonical form before it is proposed. After a regeneration, only the passages
+whose output changed are loaded again.
 
 ### EU-0009-062 {#EU-0009-062}
 
@@ -29,7 +29,7 @@ The output of a random source of the composition runtime MUST NOT depend on how 
 
 ### EU-0009-066 {#EU-0009-066}
 
-The identity of the output of a program MUST cover its text, inputs and seed, and the versions of the runtime, the type library, each definition, each tuning, each rounding policy and the numerical profile.
+The identity of the output of a program MUST cover its text, each asset it imports, each musical input it reads and its seed, and the versions of the runtime, the type library, each definition, each tuning, each rounding policy and the numerical profile.
 
 ### EU-0009-067 {#EU-0009-067}
 
