@@ -14,33 +14,34 @@ an existing project is sent in a batch.
 A batch names the project, the branch it changes, the revision its sender expects to change on that
 branch, a key that identifies the batch across retries, and the actor that sends it. The actor is the
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
-before it reads any batch of that actor. euphony also refuses as denied a batch whose caller may not
-take its commands on the branch it names, before it checks the batch's commands against the project
-schema, its expected revision or its key. It refuses a batch that names a project that doesn't
-exist, or a branch that the project doesn't hold, in the same way and at the same point of its
-checks, so that a refusal doesn't tell a caller whether the project or the branch exists. The
-command that creates a project is sent alone and not in a batch, as the project section states, so
-this refusal never applies to it. euphony then refuses as invalid input a batch that names a working
-branch another copy holds, and a batch whose expected revision isn't in the history of the branch it
-names. euphony answers that history check with a fixed number of reads, each bounded by an index,
-however long the branch's history is. euphony checks each batch against the access rules that the
-overview RFC states and the project schema, and then commits it whole as a new revision, or
-refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
-conflict carries, at the head of the batch's branch, the view of each part of the project that the
-batch's commands name or change and that its actor may read, with that part's own fields and the
-identities of the parts it holds that its actor may read; it names that head to an actor who may
-read the branch, and the sender reads the rest of the project in pages, as the revisions section
-states. A gesture in an interface, a line of a script, the result of a composition program and the
-call of an assistant all reach the project as such batches. A change of presentation that leaves the
-project as it was, such as scrolling, isn't a command. The protocol that carries batches to euphony
-is the subject of the client protocol RFC. The command gateway of the overview RFC refuses a batch
-from an unpaired device, beyond the level of its link, or over an expired or revoked link, with the
-reason the overview RFC sets for it, before euphony makes any check of this RFC, and asks for the
-owner's approval only of a batch that the key check doesn't answer as a retry. A key identifies a
-batch only among the batches one actor sends to one project: a retry of a committed batch on the
-same branch receives that batch's outcome without a new approval, unless one of the checks that
-euphony makes before it checks the key refuses it first, as a denial does once its caller may no
-longer change the project, and a key used again for another branch or other commands is refused.
+before any other check of the batch that this RFC states. euphony also refuses as denied a batch
+whose caller may not take its commands on the branch it names, before it checks the batch's commands
+against the project schema, its expected revision or its key. It refuses a batch that names a
+project that doesn't exist, or a branch that the project doesn't hold, in the same way and at the
+same point of its checks, so that a refusal doesn't tell a caller whether the project or the branch
+exists. The command that creates a project is sent alone and not in a batch, as the project section
+states, so this refusal never applies to it. euphony then refuses as invalid input a batch that
+names a working branch another copy holds, and a batch whose expected revision isn't in the history
+of the branch it names. euphony answers that history check with a fixed number of reads, each
+bounded by an index, however long the branch's history is. euphony checks every other batch against
+the access rules that the overview RFC states and the project schema, and then commits it whole as
+a new revision, or refuses it whole with a typed reason: a conflict, a denial, invalid input or
+unavailable storage. A conflict carries, at the head of the batch's branch, the view of each part of
+the project that the batch's commands name or change and that its actor may read, with that part's
+own fields and the identities of the parts it holds that its actor may read; it names that head to
+an actor who may read the branch, and the sender reads the rest of the project in pages, as the
+revisions section states. A gesture in an interface, a line of a script, the result of a composition
+program and the call of an assistant all reach the project as such batches. A change of
+presentation that leaves the project as it was, such as scrolling, isn't a command. The protocol
+that carries batches to euphony is the subject of the client protocol RFC. The command gateway of
+the overview RFC refuses a batch from an unpaired device, beyond the level of its link, or over an
+expired or revoked link, with the reason the overview RFC sets for it, before euphony makes any
+check of this RFC, and asks for the owner's approval only of a batch that the key check doesn't
+answer as a retry. A key identifies a batch only among the batches one actor sends to one project:
+a retry of a committed batch on the same branch receives that batch's outcome without a new
+approval, unless one of the checks that euphony makes before it checks the key refuses it first, as
+a denial does once its caller may no longer change the project, and a key used again for another
+branch or other commands is refused.
 A batch of another actor or another project with the same key is a new batch under its own key."""
 
 [[requirement]]
@@ -71,9 +72,9 @@ rationale = 'euphony knows what the batch changes, on which branch, against whic
 id = 'EU-0004-049'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key."
+statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch that this RFC states: before the checks of EU-0004-056, EU-0004-059, EU-0004-095, EU-0004-096, EU-0004-064 and EU-0004-017, and the checks of the batch's commands against the project schema and of its idempotency key."
 binds_to = 'system'
-rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used.'
+rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used, and a batch that names another actor is refused as denied whichever other check it would fail.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 
 [[requirement]]
