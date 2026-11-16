@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-047"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST show the measured difference between the picture and the sound on each screen."

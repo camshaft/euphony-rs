@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-159"
+
+[[spec]]
+level = "MUST"
+quote = "An immersive master MUST show as unavailable until a licensed integration provides it."

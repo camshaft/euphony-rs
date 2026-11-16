@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-016"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST list each item derived from a video as derived from that video."

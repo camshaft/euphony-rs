@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-088"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to fit a tempo map to the hits of a range under the constraints this section lists."

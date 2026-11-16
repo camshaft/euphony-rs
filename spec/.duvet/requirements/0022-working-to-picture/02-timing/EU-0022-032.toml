@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-032"
+
+[[spec]]
+level = "MUST"
+quote = "A video whose frame rate differs from the project's timecode rate MUST keep its own frame mapping."

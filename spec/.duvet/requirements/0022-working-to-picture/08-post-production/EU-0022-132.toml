@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-132"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to place a region's sync point at a timecode."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-089"
+
+[[spec]]
+level = "MUST"
+quote = "Tempo fitting MUST return candidate tempo maps ranked by their largest miss and then by their mean miss."

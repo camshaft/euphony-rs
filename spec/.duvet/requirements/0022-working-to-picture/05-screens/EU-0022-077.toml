@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-077"
+
+[[spec]]
+level = "MUST"
+quote = "The flash-and-tone test on a link participant's client MUST see every flash during the frame whose tone that participant's output plays, in aligned and in host-live mode."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-043"
+
+[[spec]]
+level = "MUST"
+quote = "Each display MUST have an offset that corrects the delay that neither the audio device nor the display reports."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-099"
+
+[[spec]]
+level = "MUST"
+quote = "A cue sheet MUST export both as a table that spreadsheet programs read and as a printable document."

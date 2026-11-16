@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-134"
+
+[[spec]]
+level = "MUST"
+quote = "A location recording MUST arrive at the timecode that its file's metadata records."

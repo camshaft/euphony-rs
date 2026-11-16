@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-003"
+
+[[spec]]
+level = "MUST"
+quote = "The video record MUST hold the frame rate as an exact ratio of two whole numbers."

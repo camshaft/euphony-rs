@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-067"
+
+[[spec]]
+level = "MUST"
+quote = "The session MUST show the picture alignment of each other computer and of each link participant as it shows the alignment of their sound."

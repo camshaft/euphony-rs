@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-139"
+
+[[spec]]
+level = "MUST"
+quote = "Placing a sound effect MUST align its sync point, its first strong attack by default, with the chosen frame or marker."

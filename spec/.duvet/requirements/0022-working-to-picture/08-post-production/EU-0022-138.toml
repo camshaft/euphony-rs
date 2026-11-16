@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-138"
+
+[[spec]]
+level = "MUST"
+quote = "A candidate sound effect MUST play at the playhead in step with the picture, looped over the selection, before the person places it."

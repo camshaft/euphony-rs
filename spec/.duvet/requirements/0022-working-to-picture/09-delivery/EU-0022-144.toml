@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-144"
+
+[[spec]]
+level = "MUST"
+quote = "A delivery MUST call its stems complete only while its check holds."

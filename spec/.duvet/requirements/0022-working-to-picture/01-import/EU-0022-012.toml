@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-012"
+
+[[spec]]
+level = "MUST"
+quote = "Import MUST derive the scrub copy of a video by default."

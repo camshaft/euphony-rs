@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-117"
+
+[[spec]]
+level = "MUST"
+quote = "Conforming MUST mark each new segment as a gap."

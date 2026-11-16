@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-118"
+
+[[spec]]
+level = "MUST"
+quote = "A segment whose confidence is below the project's threshold MUST be applied only after the person confirms it."

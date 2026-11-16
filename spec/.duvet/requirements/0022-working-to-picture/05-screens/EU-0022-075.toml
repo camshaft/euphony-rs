@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-075"
+
+[[spec]]
+level = "MUST"
+quote = "A link participant's client MUST show each frame at the time its own output plays that frame's sound."

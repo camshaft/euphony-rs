@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-092"
+
+[[spec]]
+level = "MUST"
+quote = "Where a fit allows a tempo change at each hit, each segment MUST take the tempo that puts its hit exactly on its beat."

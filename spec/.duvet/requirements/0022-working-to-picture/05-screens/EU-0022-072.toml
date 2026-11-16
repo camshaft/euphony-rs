@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-072"
+
+[[spec]]
+level = "MUST"
+quote = "A new link MUST NOT include the picture unless the owner chooses its picture option."

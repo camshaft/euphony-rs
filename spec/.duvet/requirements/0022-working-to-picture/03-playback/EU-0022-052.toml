@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-052"
+
+[[spec]]
+level = "MUST"
+quote = "Varispeed MUST show the frame for each position, repeating or skipping frames as the rate needs."

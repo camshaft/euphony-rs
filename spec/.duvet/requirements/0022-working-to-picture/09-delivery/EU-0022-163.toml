@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-163"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to export the stems and the mix as audio files whose metadata holds their starting timecode, so that a video editing program places each at its time."

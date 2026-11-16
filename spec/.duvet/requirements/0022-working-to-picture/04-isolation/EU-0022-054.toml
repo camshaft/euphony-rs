@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-054"
+
+[[spec]]
+level = "MUST"
+quote = "Showing video MUST NOT cause a missed audio deadline on the computer that plays the audio."

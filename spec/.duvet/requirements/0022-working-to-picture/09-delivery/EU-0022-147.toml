@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-147"
+
+[[spec]]
+level = "MUST"
+quote = "Gain-only processing on the main output MUST apply to each stem the gain it computes from the full mix, sample by sample and channel by channel."
