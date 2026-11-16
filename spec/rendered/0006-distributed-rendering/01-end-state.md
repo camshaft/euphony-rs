@@ -2,8 +2,9 @@
 
 Euphony prepares the audio of a project ahead of playback, and plays prepared audio as its normal
 input. Preparing audio is rendering, and a computer that renders is a worker. The computer that
-hosts the project always renders, and each other computer the owner has paired is offered as a
-worker. Every worker renders through one contract, so rendering on the host's own computer is one
+hosts the project is one of the owner's paired computers and always renders, and each other
+computer the owner has paired is offered as a worker. Every worker renders through one contract, so
+rendering on the host's own computer is one
 worker among the others. A render cache on each computer holds prepared results. Euphony is built
 for dozens of the owner's computers rendering one project. Live monitoring, live instruments and
 recording stay on the musician's own computer and belong to RFC 0005, and the trust model under
