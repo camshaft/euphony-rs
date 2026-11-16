@@ -18,7 +18,11 @@ A person MUST be able to make a change list from the sound of the guide tracks o
 
 ### EU-0022-112 {#EU-0022-112}
 
-Conforming MUST move each region, picture-locked marker, automation range and cue boundary with its segment, in one command.
+Conforming MUST move each region, picture-locked marker, automation range and cue boundary with its segment.
+
+### EU-0022-177 {#EU-0022-177}
+
+Conforming MUST make every move of a change list in one command.
 
 ### EU-0022-113 {#EU-0022-113}
 

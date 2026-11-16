@@ -100,7 +100,11 @@ A streamer MUST be two seconds long by default.
 
 ### EU-0022-103 {#EU-0022-103}
 
-A streamer MUST end on its hit's frame, where a punch shows for one frame.
+A streamer MUST end on its hit's frame.
+
+### EU-0022-175 {#EU-0022-175}
+
+A punch MUST show for one frame, on the hit's frame where its streamer ends.
 
 ### EU-0022-104 {#EU-0022-104}
 
@@ -120,7 +124,11 @@ An export MUST NOT carry a streamer, a punch or the timecode overlay.
 
 ### EU-0022-108 {#EU-0022-108}
 
-The click MUST follow the fitted tempo, with a count-in before each cue.
+The click MUST follow the fitted tempo.
+
+### EU-0022-176 {#EU-0022-176}
+
+The click MUST play a count-in before each cue.
 
 ### EU-0022-109 {#EU-0022-109}
 
