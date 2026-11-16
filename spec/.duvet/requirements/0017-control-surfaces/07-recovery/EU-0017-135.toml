@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-135"
+
+[[spec]]
+level = "MUST"
+quote = "A reconnection MUST begin with a fresh generation, an authorized snapshot and a validation of the layout before the surface enables its controls."

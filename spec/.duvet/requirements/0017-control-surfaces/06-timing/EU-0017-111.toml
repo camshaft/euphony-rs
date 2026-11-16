@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-111"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST acknowledge play, stop, locate and recording commands with the transport generation and the position at which they applied."

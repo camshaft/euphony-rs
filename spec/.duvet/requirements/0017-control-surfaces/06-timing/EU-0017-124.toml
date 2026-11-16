@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-124"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT cap surfaces at a fixed surface count or event rate."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/01-surfaces.md#EU-0017-007"
+
+[[spec]]
+level = "MUST"
+quote = "Surfaces attached to one session MUST share its selected branch and its transport."

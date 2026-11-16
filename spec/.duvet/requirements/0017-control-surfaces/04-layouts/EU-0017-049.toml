@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-049"
+
+[[spec]]
+level = "MUST"
+quote = "A layout target that no longer exists MUST be shown as unresolved."

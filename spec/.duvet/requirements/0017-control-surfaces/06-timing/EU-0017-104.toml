@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-104"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST mark a value it shows on contact as predicted until the session host acknowledges it."

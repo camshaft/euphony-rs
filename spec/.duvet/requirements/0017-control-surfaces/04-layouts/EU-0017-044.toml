@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-044"
+
+[[spec]]
+level = "MUST"
+quote = "A store that cannot encrypt surface records MUST NOT persist them."

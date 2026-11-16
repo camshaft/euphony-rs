@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-144"
+
+[[spec]]
+level = "MUST"
+quote = "A surface profile without a passing physical conformance record for the running build MUST be unavailable."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-080"
+
+[[spec]]
+level = "MUST"
+quote = "A takeover MUST invalidate the earlier owner's gesture token."

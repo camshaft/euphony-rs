@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-165"
+
+[[spec]]
+level = "MUST"
+quote = "A reconnected surface whose cursor isn't compatible MUST replace its local view with a fresh authorized snapshot."

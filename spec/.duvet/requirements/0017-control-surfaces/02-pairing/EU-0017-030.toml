@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-030"
+
+[[spec]]
+level = "MUST"
+quote = "A controller whose identity is ambiguous or has changed MUST NOT inherit another controller's mapping."

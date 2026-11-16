@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-056"
+
+[[spec]]
+level = "MUST"
+quote = "Editing a sound parameter from a surface MUST NOT write its modulated value into its base value."

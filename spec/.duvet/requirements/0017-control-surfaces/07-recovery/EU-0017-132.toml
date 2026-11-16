@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-132"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of a surface MUST keep its acknowledged edits and its saved layouts."

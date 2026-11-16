@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-074"
+
+[[spec]]
+level = "MUST"
+quote = "A gesture update with an older sequence number MUST NOT overwrite a newer one."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-117"
+
+[[spec]]
+level = "MUST"
+quote = "While a changed live graph is pending, the previous graph MUST keep playing with the pending state shown."

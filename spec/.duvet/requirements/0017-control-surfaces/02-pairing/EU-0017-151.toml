@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-151"
+
+[[spec]]
+level = "MUST"
+quote = "A pairing confirmation MUST NOT authorize external sharing or publication of the session's content."

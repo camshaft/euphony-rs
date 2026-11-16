@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-125"
+
+[[spec]]
+level = "MUST"
+quote = "While display traffic is overloaded, the system MUST admit ending a gesture, cancelling one and safety commands ahead of display traffic."

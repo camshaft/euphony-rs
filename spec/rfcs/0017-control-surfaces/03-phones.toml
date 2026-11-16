@@ -1,0 +1,94 @@
+[section]
+anchor = 'phones'
+title = 'Phone controllers'
+problem = "A musician by the drum kit or at a music stand can't run playback, recording where they are allowed, or their own listening mix from a phone, and a phone that loses its connection could look live or fire a stale command when it comes back."
+motivation = "A native phone controller with a small, fixed set of transport, recording and cue actions, which shows every lost connection and refuses to keep commands for later, lets a musician control the session remotely without the risk of a surprise take or stop."
+prose = '''
+The phone controller is a native app for phones and tablets, built on the session's client
+protocol with controls native to the platform. A phone is discovered, paired and reported as the
+pairing section of this RFC states, and attaches to a selected session through the session's control
+service, on the local network or through the authenticated connection between networks otherwise.
+Its default layout holds transport, cue and recording actions alone; the layouts and panels section
+of this RFC adds optional panels. Arrangement editing, program authoring, processor mapping, and
+pairing and link management stay on the desktop interface and with assistants. A phone is a
+controller, never a render worker or a microphone the session takes from automatically.'''
+
+[[requirement]]
+id = 'EU-0017-032'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST offer a native phone controller app for each mobile platform the project's configuration lists."
+binds_to = 'system'
+rationale = "A musician uses the phone they already carry, and a test reads the platforms from one place."
+
+[[requirement]]
+id = 'EU-0017-033'
+level = 'MUST'
+polarity = 'required'
+statement = "The phone controller MUST offer play, pause, stop, locating a marker, toggling the loop, reading the transport and recording state, and adjusting the click and its assigned cue levels."
+binds_to = 'system'
+rationale = "These are the actions a musician needs away from the main screen."
+
+[[requirement]]
+id = 'EU-0017-034'
+level = 'MUST'
+polarity = 'required'
+statement = "The phone controller on the owner's paired phone MUST offer arming a track and starting a recording."
+binds_to = 'system'
+rationale = "The owner records from wherever they play."
+
+[[requirement]]
+id = 'EU-0017-035'
+level = 'MUST'
+polarity = 'required'
+statement = "A collaborator's phone joined by link MUST change only its own listener mix and, where the session shares its transport, playback."
+binds_to = 'system'
+rationale = "A collaborator controls what they hear without touching the main mix or the recording."
+
+[[requirement]]
+id = 'EU-0017-036'
+level = 'MUST'
+polarity = 'required'
+statement = "Every recording and mix control on a phone MUST show the session and the output it acts on."
+binds_to = 'system'
+rationale = "A musician never records into, or changes the mix of, the wrong session or output."
+
+[[requirement]]
+id = 'EU-0017-037'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The phone controller MUST NOT offer pairing or link management."
+binds_to = 'system'
+rationale = "Granting access stays on the screen where the owner confirms it."
+
+[[requirement]]
+id = 'EU-0017-153'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The phone controller MUST NOT offer arrangement editing, program authoring or processor mapping."
+binds_to = 'system'
+rationale = "Those tasks stay on the desktop interface and with assistants, where the whole project is in view."
+
+[[requirement]]
+id = 'EU-0017-038'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The reduced set of the phone controller MUST NOT reduce what the assistant interface offers."
+binds_to = 'system'
+rationale = "A smaller phone screen never narrows what an assistant can do."
+
+[[requirement]]
+id = 'EU-0017-039'
+level = 'MUST'
+polarity = 'required'
+statement = "A disconnected phone controller MUST show its controls as unavailable."
+binds_to = 'system'
+rationale = "A musician always knows when a tap won't reach the session."
+
+[[requirement]]
+id = 'EU-0017-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Locking a device or suspending its app MUST NOT leave a gesture changing gain without end."
+binds_to = 'system'
+rationale = "A pocketed phone never keeps raising a level."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-161"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST record the gap that a refused scheduled performance leaves."

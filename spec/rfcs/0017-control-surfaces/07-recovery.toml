@@ -1,0 +1,129 @@
+[section]
+anchor = 'recovery'
+title = 'Loss, reconnection and threats'
+problem = "Devices drop off the network, lock, sleep and come back, and a surface that replays what it sent before, keeps a gesture alive, or takes over a session when the main host is lost can ruin a take or fork the session."
+motivation = "Ending every gesture of a lost surface, starting each reconnection from a fresh generation and the current state, and rejecting every earlier message keeps the session's recording and other surfaces running and guarantees that no old input applies."
+prose = '''
+A surface is lost when it detaches, is suspended, loses its transport, sees a change of authority or
+is unpaired. The session host and the audio device go on with the recording, the other surfaces
+and the other listener mixes. Reconnection begins a new generation of the surface's attachment, and
+independent offline editing on a branch of its own stays as RFC 0013 states it. The threats this
+section answers extend the threat model of RFC 0001 with surfaces: an unpaired surface that reads
+the session, a hostile layout that embeds executable input, replayed gestures that change recording
+or gain, and a busy client that disrupts audio. Its boundaries are discovery to pairing, client
+input to the session host's validation, the authorized projection to the device, and compiled
+control to the audio device. A device that was paired keeps what it displayed, and unpairing can't
+erase that copy; device unlock, physical privacy and trusted delivery of the app are assumptions
+that the pairing screen shows.'''
+
+[[requirement]]
+id = 'EU-0017-130'
+level = 'MUST'
+polarity = 'required'
+statement = "When a surface is lost, the session host MUST invalidate its gesture tokens."
+binds_to = 'system'
+rationale = "A lost surface can't send another update that applies."
+
+[[requirement]]
+id = 'EU-0017-164'
+level = 'MUST'
+polarity = 'required'
+statement = "When a surface is lost, the session host MUST close each gesture the surface owns."
+binds_to = 'system'
+rationale = "A lost surface owns nothing."
+
+[[requirement]]
+id = 'EU-0017-131'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The loss of a surface MUST NOT stop a recording, another surface or another listener mix."
+binds_to = 'system'
+rationale = "One dropped phone never interrupts anyone else."
+
+[[requirement]]
+id = 'EU-0017-132'
+level = 'MUST'
+polarity = 'required'
+statement = "The loss of a surface MUST keep its acknowledged edits and its saved layouts."
+binds_to = 'system'
+rationale = "Work a surface did is never lost with the device."
+
+[[requirement]]
+id = 'EU-0017-133'
+level = 'MUST'
+polarity = 'required'
+statement = "The loss of the main host MUST make its remote controls unavailable."
+binds_to = 'system'
+rationale = "A surface never pretends to control a session that is gone."
+
+[[requirement]]
+id = 'EU-0017-134'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A surface MUST NOT make itself the recorder or fork the active session when the main host is lost."
+binds_to = 'system'
+rationale = "Only the session's own authority records and decides."
+
+[[requirement]]
+id = 'EU-0017-135'
+level = 'MUST'
+polarity = 'required'
+statement = "A reconnection MUST begin with a fresh generation, an authorized snapshot and a validation of the layout before the surface enables its controls."
+binds_to = 'system'
+rationale = "A reconnected surface shows the session's current state before any input."
+
+[[requirement]]
+id = 'EU-0017-136'
+level = 'MUST'
+polarity = 'required'
+statement = "A reconnected surface MUST resume changes only from a verified compatible cursor."
+binds_to = 'system'
+rationale = "A surface never applies changes onto a view they don't follow."
+
+[[requirement]]
+id = 'EU-0017-165'
+level = 'MUST'
+polarity = 'required'
+statement = "A reconnected surface whose cursor isn't compatible MUST replace its local view with a fresh authorized snapshot."
+binds_to = 'system'
+rationale = "A surface that can't resume starts again from the session's current state."
+
+[[requirement]]
+id = 'EU-0017-137'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Control input made before a surface disconnected MUST NOT take effect after it reconnects."
+binds_to = 'system'
+rationale = "Coming back never replays old taps or moves."
+
+[[requirement]]
+id = 'EU-0017-138'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST reject a message of an earlier generation, including one that arrives after reconnection."
+binds_to = 'system'
+rationale = "A delayed message from before a reconnection never applies."
+
+[[requirement]]
+id = 'EU-0017-139'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A malformed or unauthorized command MUST NOT become accepted durable work."
+binds_to = 'system'
+rationale = "Only valid, permitted input changes the project."
+
+[[requirement]]
+id = 'EU-0017-140'
+level = 'MUST'
+polarity = 'required'
+statement = "The adapter and the audio device MUST keep control values within the device's and the output's ranges."
+binds_to = 'system'
+rationale = "A hostile or broken surface never drives a value past what the device or output allows."
+
+[[requirement]]
+id = 'EU-0017-141'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Contention among the surfaces of one session MUST NOT serialize unrelated projects."
+binds_to = 'system'
+rationale = "A busy session never slows another project."

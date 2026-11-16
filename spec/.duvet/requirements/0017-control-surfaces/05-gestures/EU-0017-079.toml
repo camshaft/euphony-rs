@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-079"
+
+[[spec]]
+level = "MUST"
+quote = "A surface that doesn't own the gesture on a target MUST show who owns it and the acknowledged value."

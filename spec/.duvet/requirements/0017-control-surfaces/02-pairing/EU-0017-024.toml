@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-024"
+
+[[spec]]
+level = "MUST"
+quote = "A projection sent to a link participant's surface MUST hold only what that link's level allows, filtered before it is sent."

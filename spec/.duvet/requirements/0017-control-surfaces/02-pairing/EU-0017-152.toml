@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-152"
+
+[[spec]]
+level = "MUST"
+quote = "A key provisioned to a hardware controller or its adapter MUST be kept in protected storage where the device keeps it."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-149"
+
+[[spec]]
+level = "MUST"
+quote = "A conformance record MUST NOT authorize pairing or control."

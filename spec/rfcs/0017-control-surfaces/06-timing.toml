@@ -1,0 +1,257 @@
+[section]
+anchor = 'timing'
+title = 'Timing, capacity and readiness'
+problem = "Each surface's control delay depends on its device and network path, so one promised latency for every surface is false, and a surface that hides delay, prediction or congestion lets a musician play or record on a path that can't keep time."
+motivation = "Measuring and showing each surface's timing by device, path and control class, applying events at their admitted offsets, and shedding only replaceable display traffic under load lets a musician choose what to play from where, while accepted controls and recordings are never lost."
+prose = '''
+Controls fall in four classes. Expressive controls are faders, knobs, XY pads and expressive
+parameter sources, whose response is measured from contact to applied sample, through device
+sampling, uplink, command admission, local rendering and output delay. Transport commands are play,
+stop, locate and recording, which follow the session's transport control and its shared transport
+mode. Patch edits and layout changes need responsive previews and an explicit commit or activation
+state. Meters and remote playheads need display updates fresh enough for the surface's negotiated
+display capability. Every other control counts as ordinary editing. The acceptable delay for each
+use stays with the musician after measurement, and the readiness view of RFC 0001 shows it. Input
+timestamps can't create missing samples or remove network delay. Surface traffic uses the shared
+adaptive fair queue, with control, capture and replaceable display traffic each in its own order.
+Where a remote path fails, local hardware stays the path for timing-sensitive playing.'''
+
+[[requirement]]
+id = 'EU-0017-103'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST measure the response and jitter from contact to applied sample of expressive controls for each device and path."
+binds_to = 'system'
+rationale = "A musician decides what to play from a surface on measured evidence."
+
+[[requirement]]
+id = 'EU-0017-104'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST mark a value it shows on contact as predicted until the session host acknowledges it."
+binds_to = 'system'
+rationale = "A control feels responsive and still shows what the session has taken."
+
+[[requirement]]
+id = 'EU-0017-105'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A predicted value MUST NOT change the audio."
+binds_to = 'system'
+rationale = "Only acknowledged values reach the sound."
+
+[[requirement]]
+id = 'EU-0017-106'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST show a refused value as refused instead of its prediction."
+binds_to = 'system'
+rationale = "Prediction never hides a refusal."
+
+[[requirement]]
+id = 'EU-0017-107'
+level = 'MUST'
+polarity = 'required'
+statement = "A sample-capable target MUST apply a timestamped control event at its admitted sample offset."
+binds_to = 'system'
+rationale = "Expressive playing is applied in time wherever the target can resolve it."
+
+[[requirement]]
+id = 'EU-0017-108'
+level = 'MUST'
+polarity = 'required'
+statement = "A block-only target MUST report the interval at which it applies control events."
+binds_to = 'system'
+rationale = "A musician knows the timing resolution of the control they play."
+
+[[requirement]]
+id = 'EU-0017-109'
+level = 'MUST'
+polarity = 'required'
+statement = "A late ordinary adjustment MUST apply at the next admitted boundary with its lateness reported."
+binds_to = 'system'
+rationale = "A late edit still applies, and its delay is visible."
+
+[[requirement]]
+id = 'EU-0017-110'
+level = 'MUST'
+polarity = 'required'
+statement = "A scheduled sample-accurate performance that misses its deadline MUST be refused."
+binds_to = 'system'
+rationale = "A performance is never silently moved in time."
+
+[[requirement]]
+id = 'EU-0017-161'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST record the gap that a refused scheduled performance leaves."
+binds_to = 'system'
+rationale = "A person sees where the take is missing playing."
+
+[[requirement]]
+id = 'EU-0017-162'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST keep the original events of a refused scheduled performance for inspection."
+binds_to = 'system'
+rationale = "A person can see what was played and decide what to do with it."
+
+[[requirement]]
+id = 'EU-0017-111'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST acknowledge play, stop, locate and recording commands with the transport generation and the position at which they applied."
+binds_to = 'system'
+rationale = "A surface shows where transport actually started or stopped."
+
+[[requirement]]
+id = 'EU-0017-112'
+level = 'MUST'
+polarity = 'required'
+statement = "While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface."
+binds_to = 'system'
+rationale = "The room can always stop playback."
+
+[[requirement]]
+id = 'EU-0017-113'
+level = 'MUST'
+polarity = 'required'
+statement = "A remote stop that hasn't been acknowledged MUST be shown as unconfirmed until the actual state arrives."
+binds_to = 'system'
+rationale = "A musician never believes playback stopped when it didn't."
+
+[[requirement]]
+id = 'EU-0017-114'
+level = 'MUST'
+polarity = 'required'
+statement = "A quantized start MUST be scheduled in session time."
+binds_to = 'system'
+rationale = "A start falls on the beat whenever its message arrives."
+
+[[requirement]]
+id = 'EU-0017-115'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A recording control MUST NOT become a durable offline command."
+binds_to = 'system'
+rationale = "A take never starts or stops from a command kept while a surface was away."
+
+[[requirement]]
+id = 'EU-0017-116'
+level = 'MUST'
+polarity = 'required'
+statement = "A patch edit or a layout change MUST show its preview and its commit or activation state."
+binds_to = 'system'
+rationale = "A person sees whether an edit is tried, committed or live."
+
+[[requirement]]
+id = 'EU-0017-117'
+level = 'MUST'
+polarity = 'required'
+statement = "While a changed live graph is pending, the previous graph MUST keep playing with the pending state shown."
+binds_to = 'system'
+rationale = "A patch edit never interrupts playback."
+
+[[requirement]]
+id = 'EU-0017-118'
+level = 'MUST'
+polarity = 'required'
+statement = "A meter or a remote playhead MUST report the age of what it shows."
+binds_to = 'system'
+rationale = "A person knows how current a displayed level or position is."
+
+[[requirement]]
+id = 'EU-0017-119'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Meter delivery MUST NOT decide the automation recording rate."
+binds_to = 'system'
+rationale = "A slow display never thins recorded automation."
+
+[[requirement]]
+id = 'EU-0017-120'
+level = 'MUST'
+polarity = 'required'
+statement = "The readiness view MUST show control-to-sound latency, acknowledgment latency, clock uncertainty and display age, separated by device, path and control class."
+binds_to = 'system'
+rationale = "A musician compares each surface's timing before playing from it."
+
+[[requirement]]
+id = 'EU-0017-121'
+level = 'MUST'
+polarity = 'required'
+statement = "A remote path that fails its expressive-control mode MUST stay available for editing and transport, with the limitation shown."
+binds_to = 'system'
+rationale = "A slow path stays useful for what it can do."
+
+[[requirement]]
+id = 'EU-0017-122'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The system MUST NOT claim sample accuracy for a network gesture without measured clock and delivery bounds."
+binds_to = 'system'
+rationale = "Timing claims rest on evidence."
+
+[[requirement]]
+id = 'EU-0017-123'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST order control, capture and replaceable display traffic of surfaces independently."
+binds_to = 'system'
+rationale = "A burst of display updates never delays a control or a capture."
+
+[[requirement]]
+id = 'EU-0017-124'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The system MUST NOT cap surfaces at a fixed surface count or event rate."
+binds_to = 'system'
+rationale = "Capacity follows what each device and host can take, measured as they run."
+
+[[requirement]]
+id = 'EU-0017-125'
+level = 'MUST'
+polarity = 'required'
+statement = "While display traffic is overloaded, the system MUST admit ending a gesture, cancelling one and safety commands ahead of display traffic."
+binds_to = 'system'
+rationale = "A person can always let go and stop."
+
+[[requirement]]
+id = 'EU-0017-126'
+level = 'MUST'
+polarity = 'required'
+statement = "Under congestion, the system MUST reduce only replaceable display traffic."
+binds_to = 'system'
+rationale = "Controls and captured performance keep their place in line."
+
+[[requirement]]
+id = 'EU-0017-127'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The system MUST NOT coalesce anything other than superseded, unaccepted preview samples and display frames."
+binds_to = 'system'
+rationale = "Accepted edits and recorded gestures stay durable."
+
+[[requirement]]
+id = 'EU-0017-128'
+level = 'MUST'
+polarity = 'required'
+statement = "A capacity failure while performance is being captured MUST end its admission visibly."
+binds_to = 'system'
+rationale = "Accepted automation is never thinned silently."
+
+[[requirement]]
+id = 'EU-0017-163'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST record the gap that a capacity failure leaves in captured performance."
+binds_to = 'system'
+rationale = "A take shows where its captured performance stops and starts again."
+
+[[requirement]]
+id = 'EU-0017-129'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The real-time audio path MUST NOT perform network, layout or journal work."
+binds_to = 'system'
+rationale = "Surface work never makes the audio miss a deadline."

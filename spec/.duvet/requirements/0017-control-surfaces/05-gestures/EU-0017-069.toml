@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-069"
+
+[[spec]]
+level = "MUST"
+quote = "Every command a surface sends MUST carry its expected state, the control epoch and an idempotency identity."

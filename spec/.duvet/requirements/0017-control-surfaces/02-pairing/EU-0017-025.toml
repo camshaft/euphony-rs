@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-025"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST keep its credentials in the platform's secure storage where the platform offers it."

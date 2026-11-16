@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-121"
+
+[[spec]]
+level = "MUST"
+quote = "A remote path that fails its expressive-control mode MUST stay available for editing and transport, with the limitation shown."

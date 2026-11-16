@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-088"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST track each touch contact separately."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-076"
+
+[[spec]]
+level = "MUST"
+quote = "Recovery after a crash MUST NOT restore a reservation held by a connection that has ended."

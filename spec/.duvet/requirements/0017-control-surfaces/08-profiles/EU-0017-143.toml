@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-143"
+
+[[spec]]
+level = "MUST"
+quote = "Support for hardware controllers MUST be stated for each verified profile."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-120"
+
+[[spec]]
+level = "MUST"
+quote = "The readiness view MUST show control-to-sound latency, acknowledgment latency, clock uncertainty and display age, separated by device, path and control class."

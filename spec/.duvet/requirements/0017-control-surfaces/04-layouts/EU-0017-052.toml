@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-052"
+
+[[spec]]
+level = "MUST"
+quote = "A smart control MUST map its input only to parameters it identifies explicitly, each with its unit, curve and legal range."

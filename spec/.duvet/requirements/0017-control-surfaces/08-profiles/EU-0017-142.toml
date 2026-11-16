@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-142"
+
+[[spec]]
+level = "MUST"
+quote = "A hardware adapter MUST translate its controller's protocol into the surface commands of this RFC."

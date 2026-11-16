@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-012"
+
+[[spec]]
+level = "MUST"
+quote = "Discovering a device MUST NOT pair it or let it read, control or hear the session."

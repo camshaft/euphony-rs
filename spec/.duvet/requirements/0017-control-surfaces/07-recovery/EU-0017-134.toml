@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-134"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST NOT make itself the recorder or fork the active session when the main host is lost."

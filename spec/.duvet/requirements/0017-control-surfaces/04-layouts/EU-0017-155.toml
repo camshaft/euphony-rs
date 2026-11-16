@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-155"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a layout MUST return the committed revision or one of these refusals: denied, stale revision, unknown target, incompatible capability, invalid mapping or unverified panel."

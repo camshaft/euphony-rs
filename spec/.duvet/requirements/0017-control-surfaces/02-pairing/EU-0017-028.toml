@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-028"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST validate a reconnecting surface's pairing again before it attaches."

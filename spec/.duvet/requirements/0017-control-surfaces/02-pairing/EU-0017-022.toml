@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-022"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST check a surface's pairing or link level on every attach, layout commit, control operation and delivered projection."

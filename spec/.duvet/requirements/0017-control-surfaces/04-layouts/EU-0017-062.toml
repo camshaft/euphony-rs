@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-062"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST apply a layout only where each of its panels has a passing capability and accessibility conformance record for the surface's profile, its renderer and the running build."

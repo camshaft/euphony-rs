@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-090"
+
+[[spec]]
+level = "MUST"
+quote = "An XY pad MUST send one paired update for both of its axes."

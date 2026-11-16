@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-146"
+
+[[spec]]
+level = "MUST"
+quote = "The list of supported profiles MUST be derived from the conformance records."

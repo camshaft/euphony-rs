@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-119"
+
+[[spec]]
+level = "MUST"
+quote = "Meter delivery MUST NOT decide the automation recording rate."

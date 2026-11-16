@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/01-surfaces.md#EU-0017-006"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST act through the same commands, access rules and state as every other client of the session."

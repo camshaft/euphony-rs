@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-029"
+
+[[spec]]
+level = "MUST"
+quote = "A hardware adapter MUST bind a controller's physical port identity to its paired host and its map."
