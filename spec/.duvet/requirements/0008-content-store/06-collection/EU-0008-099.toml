@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-099"
+
+[[spec]]
+level = "MUST"
+quote = "A new reference to an item whose deletion is recorded MUST be refused as unavailable, with the deletion record."

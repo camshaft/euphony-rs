@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-106"
+
+[[spec]]
+level = "MUST"
+quote = "A computer that has not answered an intent MUST NOT hold back the release of copies above the count that the policy sets."

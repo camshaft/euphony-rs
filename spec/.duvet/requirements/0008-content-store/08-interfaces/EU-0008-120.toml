@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-120"
+
+[[spec]]
+level = "MUST"
+quote = "A fetch of a frame range MUST answer not ready, with its measured readiness, where the range cannot arrive before its deadline."

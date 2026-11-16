@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-105"
+
+[[spec]]
+level = "MUST"
+quote = "An intent that recovery cannot settle MUST keep its barriers and be shown to the owner as an unresolved deletion."

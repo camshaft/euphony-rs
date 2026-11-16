@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-110"
+
+[[spec]]
+level = "MUST"
+quote = "A deletion by the owner MUST NOT delete a copy that a collaborator holds."

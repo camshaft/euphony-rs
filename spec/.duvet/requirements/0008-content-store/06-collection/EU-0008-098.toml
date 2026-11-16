@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-098"
+
+[[spec]]
+level = "MUST"
+quote = "While a computer holds a barrier for an intent, a new reference to its item MUST NOT commit before the decision point records the intent as cancelled."

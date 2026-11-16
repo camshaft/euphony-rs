@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-107"
+
+[[spec]]
+level = "MUST"
+quote = "Deleting a source original or a recording MUST wait for the approval of the owner of a preview that shows the items, the bytes freed, the revisions and projects that lose them, the copies that remain and whether anything can recreate them."

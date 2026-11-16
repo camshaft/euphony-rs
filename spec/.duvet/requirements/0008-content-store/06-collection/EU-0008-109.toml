@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-109"
+
+[[spec]]
+level = "MUST"
+quote = "Deleting a project MUST NOT delete an item that another project, an export or a keep mark refers to."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-119"
+
+[[spec]]
+level = "MUST"
+quote = "Each operation of the store, of placement and of the catalog MUST answer a failure with one error of its typed set."
