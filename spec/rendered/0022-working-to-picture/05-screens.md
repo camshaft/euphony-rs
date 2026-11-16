@@ -6,8 +6,9 @@ owner shares a session with through a link, as RFC 0013 states for links. Each c
 the picture decodes its own copy of the video. Another of the owner's computers follows the
 session's transport through the session timeline, maps each transport change to its own clock with
 the session's clock synchronization, and shows each frame at its presentation time. A link has a
-picture option, which carries the picture to its participant. A link participant's client shows
-each frame at the time its own output plays that frame's sound, with each delay applied once: in
+picture option, which carries the picture to its participant. A link participant receives the scrub
+copy unless the owner chooses the original for that link. A link participant's client shows each
+frame at the time its own output plays that frame's sound, with each delay applied once: in
 aligned mode at the time the link's shared playout sets for the frame's samples, and in host-live
 mode at that time plus the participant's own measured delay. Revoking a link ends its delivery and
 can't recall frames that a participant already received.
@@ -91,3 +92,11 @@ Revoking a link MUST end the delivery of its frames.
 ### EU-0022-081 {#EU-0022-081}
 
 A comment link MUST show and accept positions as timecode.
+
+### EU-0022-171 {#EU-0022-171}
+
+A link participant whose link carries the picture option MUST receive the picture from the scrub copy unless the owner chooses the original for that link.
+
+### EU-0022-172 {#EU-0022-172}
+
+The owner MUST be able to choose, for each link with the picture option, whether its participant receives the scrub copy or the original.

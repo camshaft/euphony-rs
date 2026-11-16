@@ -2,4 +2,4 @@ target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-165"
 
 [[spec]]
 level = "MUST"
-quote = "Exchange MUST offer a format that each video editing program in common use opens."
+quote = "Exchange MUST offer a format that each kind of video editing program this section lists opens."

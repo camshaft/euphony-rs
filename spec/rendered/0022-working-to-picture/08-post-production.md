@@ -14,7 +14,7 @@ Track roles MUST include each post-production role this section lists.
 
 ### EU-0022-125 {#EU-0022-125}
 
-Each track's output MUST go to one of the stem buses.
+In a project that holds the stem buses, each track's output MUST go to one of them.
 
 ### EU-0022-126 {#EU-0022-126}
 

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-171"
+
+[[spec]]
+level = "MUST"
+quote = "A link participant whose link carries the picture option MUST receive the picture from the scrub copy unless the owner chooses the original for that link."
