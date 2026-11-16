@@ -13,9 +13,10 @@ Unpairing a device, revoking a share link, and every edit, render, recording, ro
 layout change are not approval-held. Adopting a learned preference or a workflow mechanism is an
 ordinary command that can be undone.
 
-An owner-interaction record is the record that a paired owner device, or the local console of the
-owner's first computer, makes of the owner's own input there, such as a press of an approve control, for one exact effect. A command's origin is the party
-whose client session first sent the command.
+An owner-interaction record is the record a paired owner device makes of the owner's own input
+there, such as a press of an approve control, for one exact effect. Before the first pairing, the
+local console of the owner's first computer makes such a record for the approval of a pairing alone.
+A command's origin is the party whose client session first sent the command.
 
 The command gateway is the one place in the engine that accepts or refuses each command. It refuses
 a command with one of these reasons: unpaired, outside link level, link expired or revoked, or
@@ -25,7 +26,7 @@ command.
 
 ### EU-0001-059 {#EU-0001-059}
 
-An approval-held action that an assistant, a script, a workflow mechanism, a collaborator or anything other than the owner's own input on a paired owner device or on the local console of the owner's first computer starts MUST wait for the owner's approval of its exact effect.
+An approval-held action that an assistant, a script, a workflow mechanism, a collaborator or anything other than the owner's own input on a paired owner device starts MUST wait for the owner's approval of its exact effect.
 
 ### EU-0001-060 {#EU-0001-060}
 
@@ -33,11 +34,11 @@ The party that starts an approval-held action MUST NOT be able to approve it.
 
 ### EU-0001-061 {#EU-0001-061}
 
-The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices or from the local console of the owner's first computer.
+The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices, or, for the approval of a pairing, from the local console of the owner's first computer.
 
 ### EU-0001-062 {#EU-0001-062}
 
-An approval-held action that the owner's own input on a paired owner device or on the local console of the owner's first computer starts, with the owner-interaction record of that input, MUST NOT wait for a further approval.
+An approval-held action that the owner's own input on a paired owner device starts, with the owner-interaction record of that input, MUST NOT wait for a further approval.
 
 ### EU-0001-063 {#EU-0001-063}
 
@@ -69,7 +70,7 @@ An owner-interaction record MUST be bound to the exact effect it approves and to
 
 ### EU-0001-070 {#EU-0001-070}
 
-The engine MUST NOT accept an owner-interaction record whose effect or device doesn't match the approval, or that the engine accepted before.
+The engine MUST NOT accept an owner-interaction record whose effect, device or console doesn't match the approval, or that the engine accepted before.
 
 ### EU-0001-071 {#EU-0001-071}
 
@@ -78,3 +79,7 @@ The engine MUST accept the approval of a pairing only after the trusted device a
 ### EU-0001-072 {#EU-0001-072}
 
 An input on the new device MUST NOT authorize a pairing by itself.
+
+### EU-0001-073 {#EU-0001-073}
+
+A client session on the owner's first computer, such as a command line, a script or an assistant, MUST NOT be able to make an owner-interaction record as that computer's local console.
