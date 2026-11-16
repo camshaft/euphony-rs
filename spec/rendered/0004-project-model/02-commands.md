@@ -4,8 +4,8 @@ Every change a person or an assistant makes to a project is a command. Commands 
 A batch names the project, the revision its sender expects to change, a key that identifies the batch
 across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
 euphony refuses as denied a batch that names another actor before it reads any batch of that actor.
-euphony also refuses as denied a batch from a caller who may not change the project, before it
-checks the batch's expected revision or its key.
+euphony also refuses as denied a batch whose caller may not take its commands on the branch it
+changes, before it checks the batch's expected revision or its key.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -39,7 +39,7 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 
 ### EU-0004-056 {#EU-0004-056}
 
-Where the caller that euphony authenticated may not change the project that a batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
+Where the caller that euphony authenticated may not take every command of a batch on the branch that the batch changes, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
 
 ### EU-0004-012 {#EU-0004-012}
 
