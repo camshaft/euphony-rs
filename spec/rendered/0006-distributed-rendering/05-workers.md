@@ -12,6 +12,8 @@ attempt at a job replaces the earlier attempts of that job. A local authority or
 each branch of a project, and independent branches, render jobs and transfers proceed beside it.
 Each attempt reports its progress over the job protocol, and the scheduler measures each
 worker's rate of progress from those reports as it measures its other capacity signals.
+Render work and its answers travel over the job protocol's connections. Inputs and results travel
+over the content store's connections, whose pairing and encryption rules RFC 0008 states.
 
 ### EU-0006-046 {#EU-0006-046}
 
@@ -59,7 +61,7 @@ A message that starts, cancels or answers an attempt MUST NOT wait behind queued
 
 ### EU-0006-057 {#EU-0006-057}
 
-Every connection between two computers that carries render work, an input or a result MUST be authenticated and encrypted.
+Each connection of the job protocol MUST be authenticated and encrypted on every network.
 
 ### EU-0006-058 {#EU-0006-058}
 

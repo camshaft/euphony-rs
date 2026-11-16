@@ -1,5 +1,0 @@
-target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-090"
-
-[[spec]]
-level = "MUST"
-quote = "A computer MUST NOT send a chunk of a render input or a result to a computer that isn't one of the owner's paired computers."

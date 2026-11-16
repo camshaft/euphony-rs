@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-057"
 
 [[spec]]
 level = "MUST"
-quote = "Every connection between two computers that carries render work, an input or a result MUST be authenticated and encrypted."
+quote = "Each connection of the job protocol MUST be authenticated and encrypted on every network."
