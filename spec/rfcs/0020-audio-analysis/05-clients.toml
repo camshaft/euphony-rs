@@ -62,6 +62,14 @@ binds_to = 'system'
 rationale = 'An interrupted analysis never passes for a complete one, and its reader picks up where it stopped.'
 
 [[requirement]]
+id = 'EU-0020-113'
+level = 'MUST'
+polarity = 'required'
+statement = "A read of a result's series MUST return one page, with a cursor to the next page or, on the last page of a finished analysis, a mark that the series ends."
+binds_to = 'system'
+rationale = 'A series grows with the duration of the audio, and each read of it stays bounded however long the audio is.'
+
+[[requirement]]
 id = 'EU-0020-049'
 level = 'MUST'
 polarity = 'required'
