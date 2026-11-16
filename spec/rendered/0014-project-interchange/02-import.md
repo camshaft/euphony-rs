@@ -72,7 +72,7 @@ The import result MUST record the versions of the importer and of each mapping i
 
 ### EU-0014-070 {#EU-0014-070}
 
-The import MUST read only a source project that the musician chose and has access to.
+The import MUST read only a source project on the musician's own computer that the musician chose and has access to.
 
 ### EU-0014-071 {#EU-0014-071}
 

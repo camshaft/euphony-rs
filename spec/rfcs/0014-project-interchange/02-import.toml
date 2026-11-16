@@ -147,7 +147,7 @@ rationale = 'A later import, or a report of a difference, states which reader an
 id = 'EU-0014-070'
 level = 'MUST'
 polarity = 'required'
-statement = 'The import MUST read only a source project that the musician chose and has access to.'
+statement = "The import MUST read only a source project on the musician's own computer that the musician chose and has access to."
 binds_to = 'system'
 rationale = "An import never reads a project the musician didn't choose, whoever asks for it."
 

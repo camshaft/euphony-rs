@@ -2,4 +2,4 @@ target = "rendered/0014-project-interchange/02-import.md#EU-0014-070"
 
 [[spec]]
 level = "MUST"
-quote = "The import MUST read only a source project that the musician chose and has access to."
+quote = "The import MUST read only a source project on the musician's own computer that the musician chose and has access to."
