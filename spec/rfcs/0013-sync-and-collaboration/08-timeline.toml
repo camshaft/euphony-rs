@@ -1,0 +1,289 @@
+[section]
+anchor = 'timeline'
+title = 'Shared listening on one timeline'
+problem = """\
+  People who listen together over the internet hear the project through paths of different lengths, so without a shared timeline each listens to a different moment, and a claim of alignment that no one measured misleads them."""
+motivation = """\
+  One transport record ordered by the control epoch, one equation that every output uses, a clock estimate whose error is bounded and shown, and two modes for listening and for recording let everyone hear the same moment, or know exactly how far apart they are."""
+prose = """
+A shared listening session is a session with remote participants. The host is the native computer
+whose session authority owns the transport, and participants join from a native client or from the
+browser companion. The transport state is one record of the revision, a transport generation, the
+state playing or stopped, the rate, the loop range, and an anchor that pairs a project sample
+position P0 with the host media-clock time T0 at which that sample leaves every output. With the
+project sample rate f and the transport rate r, sample P leaves every output at host media-clock time
+T(P) = T0 + (P - P0) / (r f). Each output converts T(P) to its own clock and writes the sample to its
+device at that time less its own output latency. Each participant estimates the offset and drift of
+its clock from timestamp exchanges: each exchange proves that the offset lies in a window as wide as
+its round trip, and the session intersects the drift-corrected windows of the recent exchanges. Where
+the two directions of a path take different times, the offset error can reach half the difference,
+which a timestamp exchange cannot detect. In aligned mode the host sets a common presentation delay,
+the largest measured end-to-end delay among the participants with that participant's jitter
+allowance, so that every output, the host's own included, plays each sample at the time the equation
+sets. In host-live mode the host plays with its normal monitoring latency, and each participant plays
+behind it by its own measured delay. Sound in air takes several milliseconds to cross a room, which
+is what listening in the same room means physically."""
+
+[[requirement]]
+id = 'EU-0013-144'
+level = 'MUST'
+polarity = 'required'
+statement = 'The transport state of a shared listening session MUST be one record ordered by the control epoch of the session.'
+binds_to = 'system'
+rationale = 'One ordered history holds however many people press play.'
+
+[[requirement]]
+id = 'EU-0013-145'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every play, stop, seek, loop change, join and change of the common delay MUST make a new transport generation with a new anchor.'
+binds_to = 'system'
+rationale = 'Every output learns of a change from one record.'
+
+[[requirement]]
+id = 'EU-0013-146'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A transport change MUST NOT add a delay to an existing anchor.'
+binds_to = 'system'
+rationale = 'An anchor means the same time to every output for its whole life.'
+
+[[requirement]]
+id = 'EU-0013-147'
+level = 'MUST'
+polarity = 'required'
+statement = 'In aligned mode, every output MUST write project sample P to its device at host media-clock time T0 + (P - P0) / (r f), converted to its own clock, less its own output latency.'
+binds_to = 'system'
+rationale = "Every output, the host's included, follows the same timeline."
+
+[[requirement]]
+id = 'EU-0013-148'
+level = 'MUST'
+polarity = 'required'
+statement = 'In aligned mode, the host MUST set the output time of each anchor at least the common presentation delay after it accepts the change.'
+binds_to = 'system'
+rationale = 'Every participant receives a change before it must sound.'
+
+[[requirement]]
+id = 'EU-0013-228'
+level = 'MUST'
+polarity = 'required'
+statement = 'In host-live mode, the host MUST set the output time of each anchor at its own output time with its normal monitoring latency, without the common presentation delay.'
+binds_to = 'system'
+rationale = 'A performer listens to their own playing with normal monitoring latency.'
+
+[[requirement]]
+id = 'EU-0013-229'
+level = 'MUST'
+polarity = 'required'
+statement = 'In host-live mode, each participant MUST write project sample P to its device at T(P) plus its measured end-to-end delay, converted to its own clock, less its own output latency.'
+binds_to = 'system'
+rationale = 'A participant plays the take as soon as it reaches them, behind the host by its own delay.'
+
+[[requirement]]
+id = 'EU-0013-149'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant request for a transport change MUST carry the transport generation its sender saw.'
+binds_to = 'system'
+rationale = 'The host tells a current request from a stale one.'
+
+[[requirement]]
+id = 'EU-0013-150'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST refuse a transport request whose generation is stale.'
+binds_to = 'system'
+rationale = 'A late request never undoes a newer change.'
+
+[[requirement]]
+id = 'EU-0013-151'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant MUST see its transport request as pending until the time the host schedules for it.'
+binds_to = 'system'
+rationale = 'A person knows their request was taken and when it takes effect.'
+
+[[requirement]]
+id = 'EU-0013-152'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant with transport control MUST be able to play, stop, seek and loop for everyone.'
+binds_to = 'system'
+rationale = 'Any permitted person drives the shared listening.'
+
+[[requirement]]
+id = 'EU-0013-153'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each participant MUST estimate the offset and drift of its clock from the host media clock from timestamp exchanges with the host.'
+binds_to = 'system'
+rationale = 'Each output places the timeline on its own clock.'
+
+[[requirement]]
+id = 'EU-0013-154'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Clock sync MUST NOT add a message or a timer of its own to the session.'
+binds_to = 'system'
+rationale = "Measuring the clocks doesn't add traffic or a wake to the session."
+
+[[requirement]]
+id = 'EU-0013-155'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session MUST report each participant alignment bound as half the width of the intersection of the drift-corrected exchange windows, widened by the uncertainty of the drift fit, plus the uncertainty of the participant output latency.'
+binds_to = 'system'
+rationale = 'The bound is a guaranteed limit on the offset, never an estimate presented as one.'
+
+[[requirement]]
+id = 'EU-0013-156'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the exchange windows of a participant do not intersect, the session MUST show that participant alignment as unverified.'
+binds_to = 'system'
+rationale = 'A clock step or a wrong drift estimate is never shown as alignment.'
+
+[[requirement]]
+id = 'EU-0013-157'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the exchange windows of a participant do not intersect, the session MUST start its clock estimate again.'
+binds_to = 'system'
+rationale = 'The estimate recovers from a step of the clock.'
+
+[[requirement]]
+id = 'EU-0013-158'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a participant output latency comes only from a platform report that a loopback measurement has not confirmed, the session MUST show that participant alignment as unverified.'
+binds_to = 'system'
+rationale = 'An unconfirmed device latency is not a basis for a number.'
+
+[[requirement]]
+id = 'EU-0013-159'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a participant measured delay exceeds the common delay, the session MUST show that participant alignment as unverified.'
+binds_to = 'system'
+rationale = 'A participant playing behind is not shown as aligned.'
+
+[[requirement]]
+id = 'EU-0013-160'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a participant plays behind the common delay, the session MUST show by how much.'
+binds_to = 'system'
+rationale = 'Everyone knows how far behind that participant plays.'
+
+[[requirement]]
+id = 'EU-0013-161'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session MUST NOT present an alignment bound as sample alignment.'
+binds_to = 'system'
+rationale = 'An internet path never claims tighter alignment than it can give.'
+
+[[requirement]]
+id = 'EU-0013-162'
+level = 'MUST'
+polarity = 'required'
+statement = "In aligned mode, every output of the session whose alignment the session doesn't show as unverified, the host's included, MUST play the same moment of the project within the alignment bound the session shows for it."
+binds_to = 'system'
+rationale = 'Everyone listens to the same moment, as in one room.'
+
+[[requirement]]
+id = 'EU-0013-163'
+level = 'MUST'
+polarity = 'required'
+statement = 'Aligned mode MUST be the mode of a shared listening session while it neither records nor monitors a live input.'
+binds_to = 'system'
+rationale = 'Shared listening is for hearing the same moment together.'
+
+[[requirement]]
+id = 'EU-0013-164'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST raise the common delay at the next transport change, not during playback.'
+binds_to = 'system'
+rationale = 'A joining participant never disturbs what others are hearing.'
+
+[[requirement]]
+id = 'EU-0013-165'
+level = 'MUST'
+polarity = 'required'
+statement = 'Host-live mode MUST be the mode of the session while it records or monitors a live input.'
+binds_to = 'system'
+rationale = 'A performer listens to their own playing with normal monitoring latency.'
+
+[[requirement]]
+id = 'EU-0013-166'
+level = 'MUST'
+polarity = 'required'
+statement = 'In host-live mode, the session MUST show each participant delay behind the host.'
+binds_to = 'system'
+rationale = 'Remote listeners know how far behind the performance they hear.'
+
+[[requirement]]
+id = 'EU-0013-167'
+level = 'MUST'
+polarity = 'required'
+statement = 'Starting a take MUST move the session to host-live mode.'
+binds_to = 'system'
+rationale = 'Recording is never delayed for remote listeners.'
+
+[[requirement]]
+id = 'EU-0013-168'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The network loss of a participant MUST NOT change the monitoring or the recording of the host.'
+binds_to = 'system'
+rationale = 'A remote listener never affects a take.'
+
+[[requirement]]
+id = 'EU-0013-169'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each player MUST follow the estimated drift by resampling in small continuous amounts.'
+binds_to = 'system'
+rationale = 'Two clocks that run at slightly different rates stay together.'
+
+[[requirement]]
+id = 'EU-0013-170'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A player MUST NOT drop or repeat samples to follow clock drift.'
+binds_to = 'system'
+rationale = 'Drift correction is never heard as a glitch.'
+
+[[requirement]]
+id = 'EU-0013-171'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant MUST be able to correct its output latency by a loopback measurement or by an offset set by ear.'
+binds_to = 'system'
+rationale = 'Devices that misreport their latency, such as wireless headphones, can still align.'
+
+[[requirement]]
+id = 'EU-0013-172'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session MUST show where each output latency value came from.'
+binds_to = 'system'
+rationale = 'A person knows which values are measured and which are reported.'
+
+[[requirement]]
+id = 'EU-0013-173'
+level = 'MUST'
+polarity = 'required'
+statement = 'On a seek or a loop change, a participant MUST discard buffered audio of the previous generation.'
+binds_to = 'system'
+rationale = "After a seek or a loop change, the old position doesn't play anywhere."
+
+[[requirement]]
+id = 'EU-0013-174'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A participant joining or leaving, or an increase of the common delay, MUST NOT change the playback of other participants before the next transport change.'
+binds_to = 'system'
+rationale = 'Each listener keeps listening without interruption until the transport changes.'

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/04-membership.md#EU-0013-060"
+
+[[spec]]
+level = "MUST"
+quote = "The policy stream MUST record each collaborator's level, which is listen, comment or edit, and each revocation."

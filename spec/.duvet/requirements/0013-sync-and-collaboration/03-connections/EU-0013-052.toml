@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-052"
+
+[[spec]]
+level = "MUST"
+quote = "Transfers for playback preparation MUST take precedence over transfers of history."

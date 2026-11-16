@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-229"
+
+[[spec]]
+level = "MUST"
+quote = "In host-live mode, each participant MUST write project sample P to its device at T(P) plus its measured end-to-end delay, converted to its own clock, less its own output latency."

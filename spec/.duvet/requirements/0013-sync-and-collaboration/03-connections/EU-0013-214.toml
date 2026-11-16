@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-214"
+
+[[spec]]
+level = "MUST"
+quote = "A browser companion MUST sign its connections with a key of its own, separate from the certificate of its browser connection."

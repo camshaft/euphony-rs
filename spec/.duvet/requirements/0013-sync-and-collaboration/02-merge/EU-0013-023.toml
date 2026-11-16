@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-023"
+
+[[spec]]
+level = "MUST"
+quote = "A merge MUST make a typed conflict of competing tempo changes."

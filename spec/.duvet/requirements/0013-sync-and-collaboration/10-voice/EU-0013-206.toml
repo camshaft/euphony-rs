@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/10-voice.md#EU-0013-206"
+
+[[spec]]
+level = "MUST"
+quote = "The session MUST measure the program audio left in each outgoing voice stream against its reference."

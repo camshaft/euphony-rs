@@ -1,0 +1,216 @@
+[section]
+anchor = 'retention'
+title = 'Retiring audio and retained history'
+problem = """\
+  Audio grows without bound as projects age, and a person who removes old audio can lose a recording that retained work still needs, or believe a backup exists that restores nothing."""
+motivation = """\
+  Keeping deprecation apart from deletion, keeping the small history that recreates a piece, and stating each object's availability exactly let a person free space without losing work by surprise."""
+prose = """
+Deprecating a revision adds a signed retention declaration and leaves the revision itself as it was.
+The small history of a project is its canonical configurations, MIDI events, programs, declared
+seeds, version requirements and merge resolutions. Rendered audio is regenerable only while every
+input and every step of execution it needs stays available. A project that uses external samples is
+not self-contained because its tracks are MIDI, and a public identifier of a processor does not by
+itself mean that its old executable can be obtained. The availability of an object is one of present,
+fetchable from an authorized known peer, regenerable with a verified complete input closure,
+intentionally pruned, or unavailable with unknown custody. Recomputable caches can be evicted under
+pressure. Each peer controls its own retention. An optional backup exports the small history and the
+manifests, with a self-contained bundle for a project of MIDI and programs alone, and large audio
+goes to a store the owner selects, with verified inventories and instructions to restore it. Which
+content a peer may delete, the check of its references before a deletion and the approval that
+deleting an original recording takes are those of RFC 0008's collection section; this section
+states what deprecating a revision adds to them."""
+
+[[requirement]]
+id = 'EU-0013-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'Deprecating a revision MUST add a signed retention declaration for it.'
+binds_to = 'system'
+rationale = 'Retirement is a record that peers can verify.'
+
+[[requirement]]
+id = 'EU-0013-069'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Deprecating a revision MUST NOT change its parents, configuration, musical events or authorship.'
+binds_to = 'system'
+rationale = 'History stays true after its audio is retired.'
+
+[[requirement]]
+id = 'EU-0013-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST retain the small history of every deprecated revision.'
+binds_to = 'system'
+rationale = 'A retired version can still be opened and understood.'
+
+[[requirement]]
+id = 'EU-0013-071'
+level = 'MUST'
+polarity = 'required'
+statement = 'Rendered audio MUST be marked regenerable only while its complete input and execution closure stays available.'
+binds_to = 'system'
+rationale = 'Nothing is deleted on a promise of regeneration that cannot be kept.'
+
+[[requirement]]
+id = 'EU-0013-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'A project of MIDI and programs alone MUST retain its whole logical closure, including the embedded assets it uses that the owner is authorized to keep.'
+binds_to = 'system'
+rationale = 'Such a project stays complete without any audio.'
+
+[[requirement]]
+id = 'EU-0013-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST report the availability of each object as present, fetchable from an authorized known peer, regenerable, intentionally pruned or unavailable with unknown custody.'
+binds_to = 'system'
+rationale = 'A person knows what can sound and why.'
+
+[[requirement]]
+id = 'EU-0013-074'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fetch of an absent or pruned object MUST return a typed result with its authorized retention metadata.'
+binds_to = 'system'
+rationale = 'Missing audio is a known state, not an error to guess at.'
+
+[[requirement]]
+id = 'EU-0013-075'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A fetch MUST NOT return silence in place of a missing object.'
+binds_to = 'system'
+rationale = 'Silence is never mistaken for a successful retrieval.'
+
+[[requirement]]
+id = 'EU-0013-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'The interface MUST open retained small history and show exactly which regions cannot sound.'
+binds_to = 'system'
+rationale = 'A person works with what remains and sees what is missing.'
+
+[[requirement]]
+id = 'EU-0013-077'
+level = 'MUST'
+polarity = 'required'
+statement = 'Complete playback or export MUST wait for the missing source material, or for a new revision that replaces it.'
+binds_to = 'system'
+rationale = 'An export never leaves out audio silently.'
+
+[[requirement]]
+id = 'EU-0013-078'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Restoring an object by its digest or rendering it again MUST NOT change the historical revision.'
+binds_to = 'system'
+rationale = 'Recovery never rewrites history.'
+
+[[requirement]]
+id = 'EU-0013-083'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A deprecation marker alone MUST NOT authorize destroying the last known original of an object.'
+binds_to = 'system'
+rationale = 'Retiring a version never destroys the only copy of a recording.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-107' } ]
+
+[[requirement]]
+id = 'EU-0013-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the owner authorizes an irreversible pruning, the retention declaration MUST record the loss.'
+binds_to = 'system'
+rationale = 'History says what can no longer be recovered.'
+
+[[requirement]]
+id = 'EU-0013-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'A claim of a backup MUST rest on verified receipts of its objects.'
+binds_to = 'system'
+rationale = 'A peer existing somewhere is not a backup.'
+
+[[requirement]]
+id = 'EU-0013-086'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A peer MUST NOT treat a branch of an offline peer that it has not seen as protected.'
+binds_to = 'system'
+rationale = 'Unseen work is not assumed safe.'
+
+[[requirement]]
+id = 'EU-0013-087'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Syncing a deprecation MUST NOT delete objects on another peer.'
+binds_to = 'system'
+rationale = 'Each peer decides its own retention.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-110' } ]
+
+[[requirement]]
+id = 'EU-0013-088'
+level = 'MAY'
+polarity = 'required'
+statement = "The owner MAY back up a project's small history and manifests to a destination they choose."
+binds_to = 'system'
+rationale = 'History can be kept outside any one computer.'
+
+[[requirement]]
+id = 'EU-0013-221'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the owner backs up a project of MIDI and programs alone, the backup MUST hold a complete self-contained bundle of the project.'
+binds_to = 'system'
+rationale = 'Such a project restores whole from its backup, without any other copy.'
+
+[[requirement]]
+id = 'EU-0013-222'
+level = 'MUST'
+polarity = 'required'
+statement = 'A backup of large audio MUST include a verified inventory of the audio it holds.'
+binds_to = 'system'
+rationale = 'A person can check what the backup holds before relying on it.'
+
+[[requirement]]
+id = 'EU-0013-223'
+level = 'MUST'
+polarity = 'required'
+statement = 'A backup of large audio MUST include instructions to restore it.'
+binds_to = 'system'
+rationale = 'The audio can be restored without knowledge that the backup does not hold.'
+
+[[requirement]]
+id = 'EU-0013-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A pointer to audio MUST NOT count as a backup of that audio.'
+binds_to = 'system'
+rationale = 'A backup restores sound, not only references to it.'
+
+[[requirement]]
+id = 'EU-0013-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'The approval of a backup destination MUST show the history, media and recipients it includes and what it leaves out.'
+binds_to = 'system'
+rationale = 'A person knows what a backup holds before it is made.'
+
+[[requirement]]
+id = 'EU-0013-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'A backup of a private project MUST stay separate from public source.'
+binds_to = 'system'
+rationale = 'Private work never leaks into what is published.'
+
+[[requirement]]
+id = 'EU-0013-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'A restore MUST verify the complete manifest before it reports a playable recovery.'
+binds_to = 'system'
+rationale = 'A restore never claims more than it recovered.'

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/05-retention.md#EU-0013-083"
+
+[[spec]]
+level = "MUST"
+quote = "A deprecation marker alone MUST NOT authorize destroying the last known original of an object."

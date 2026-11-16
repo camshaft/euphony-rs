@@ -1,0 +1,139 @@
+[section]
+anchor = 'history'
+title = 'Independent copies and signed history'
+problem = """\
+  Musicians who edit one project apart cannot keep their own work, exchange it and trust whose work is whose without a server that holds the one copy, and a lost server would take the shared history with it."""
+motivation = """\
+  An editable copy for each collaborator, made of immutable signed revisions and branches that one author owns, lets each person work while disconnected, exchange work directly, and trust every revision and branch head they receive."""
+prose = """
+Each collaborator holds a local repository of immutable revisions and content objects. A revision
+names its parent revisions, the canonical root of the project's state, the project's schema version,
+its author's signature and an optional message. A branch is a reference to a head revision that one
+author owns and signs; two branches with the same display label stay two branches of their authors.
+A branch head is a signed, numbered record. It holds the identity of the branch, made of the
+author's key and a branch nonce, the identity of the head revision, a sequence number, the identity
+of the previous head record and a timestamp, and the author's device key signs its stored bytes. Two
+validly signed head records of one branch with the same sequence number are an equivocation. The
+local command authority of a copy orders edits within its own working branch alone, so collaborators
+edit while disconnected and exchange revisions later. Playback plays a chosen revision on the
+computer that plays it, and collaboration leaves every audio deadline on that computer."""
+
+[[requirement]]
+id = 'EU-0013-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each collaborator MUST hold an editable copy of the project with its whole history on their own computer.'
+binds_to = 'system'
+rationale = 'A collaborator keeps working, and keeps the history, whatever happens to any other copy.'
+
+[[requirement]]
+id = 'EU-0013-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Collaboration MUST NOT require a project hosting service or an elected server.'
+binds_to = 'system'
+rationale = 'Two people collaborate with nothing but their own computers and the connection between them.'
+
+[[requirement]]
+id = 'EU-0013-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'A revision MUST be immutable once it is made.'
+binds_to = 'system'
+rationale = 'Every reference to a revision keeps meaning the same music.'
+
+[[requirement]]
+id = 'EU-0013-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'A revision MUST name its parent revisions, the root of its project state, its schema version and the signature of its author.'
+binds_to = 'system'
+rationale = 'A receiver verifies a revision and its place in history from the revision alone.'
+
+[[requirement]]
+id = 'EU-0013-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each branch MUST be owned by exactly one author, whose device key alone signs its head records.'
+binds_to = 'system'
+rationale = "No one moves another author's branch."
+
+[[requirement]]
+id = 'EU-0013-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An equal display label MUST NOT give one peer control of a branch that another author owns.'
+binds_to = 'system'
+rationale = "A name chosen by a person never grants control of someone else's work."
+
+[[requirement]]
+id = 'EU-0013-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'A branch head record MUST hold the branch identity, the head revision identity, a sequence number, the identity of the previous head record and a timestamp, signed by its author.'
+binds_to = 'system'
+rationale = 'A receiver orders head records and checks who wrote each.'
+
+[[requirement]]
+id = 'EU-0013-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST accept a new branch head record only where its sequence number is higher than that of the accepted record and it names the accepted record as its previous record.'
+binds_to = 'system'
+rationale = 'A replayed older head record never moves a branch back.'
+
+[[requirement]]
+id = 'EU-0013-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where two validly signed head records of one branch hold the same sequence number, a peer MUST keep both as a typed conflict and show it.'
+binds_to = 'system'
+rationale = 'An equivocation is visible instead of being decided silently.'
+
+[[requirement]]
+id = 'EU-0013-010'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A peer MUST NOT advance a branch whose head records conflict until its author signs a record that names one of them.'
+binds_to = 'system'
+rationale = 'Only the author settles an equivocation of their own branch.'
+
+[[requirement]]
+id = 'EU-0013-011'
+level = 'MUST'
+polarity = 'required'
+statement = 'The local command authority of a copy MUST order edits only within its own working branch.'
+binds_to = 'system'
+rationale = 'Edits on different computers never wait for each other or for a shared order.'
+
+[[requirement]]
+id = 'EU-0013-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'Two people MUST be able to edit disconnected branches at the same time and exchange their revisions later.'
+binds_to = 'system'
+rationale = 'Collaborators work while apart and combine their work when they connect.'
+
+[[requirement]]
+id = 'EU-0013-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'Playback MUST play a revision chosen on the computer that plays it.'
+binds_to = 'system'
+rationale = 'Each person listens to the version they chose, whatever the state of other copies.'
+
+[[requirement]]
+id = 'EU-0013-014'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Collaboration MUST NOT carry the deadline of an audio device across the network.'
+binds_to = 'system'
+rationale = 'A slow or lost connection never interrupts audio on any computer.'
+
+[[requirement]]
+id = 'EU-0013-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'Undo MUST make a new revision and leave the shared history unchanged.'
+binds_to = 'system'
+rationale = 'An undo on one copy never rewrites history that others hold.'

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-159"
+
+[[spec]]
+level = "MUST"
+quote = "Where a participant measured delay exceeds the common delay, the session MUST show that participant alignment as unverified."

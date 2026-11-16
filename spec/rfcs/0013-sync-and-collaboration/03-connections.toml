@@ -1,0 +1,228 @@
+[section]
+anchor = 'connections'
+title = 'Connections between peers'
+problem = """\
+  Collaborators work on different networks behind home routers, and the services that help them find each other or carry their traffic are run by others, so a connection can be blocked, overheard or taken over between the peers."""
+motivation = """\
+  Peers that connect only through invitations a person approved, keep every connection encrypted end to end, use a relay where a direct path fails and say plainly when no path works collaborate across the internet without trusting the services between them."""
+prose = """
+Discovery on the local network finds candidate peers but does not make them trusted. Across the
+internet, collaborators connect through authenticated invitations and a signaling service that
+exchanges connection candidates. A direct path is used where one exists, and a relay carries the
+traffic where it does not, including through networks that allow only encrypted web traffic. The
+signaling service and the relay are connection infrastructure, public or self-hosted, which the
+owner chooses when first turning on internet collaboration; neither is a project host or an
+authority over history, and neither is trusted with project contents. Each computer holds a
+long-term device key, separate from the keys of any one connection. A browser connection doesn't
+carry a full copy of a project or its history, and full collaboration on a project takes place
+between native copies. Existing standards for local discovery, local audio streams and MIDI stay
+local-network features, and project sync across the internet is not sample-synchronous performance.
+An offline bundle stays a separate way to recover a project's history."""
+
+[[requirement]]
+id = 'EU-0013-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'Collaborators MUST be able to connect and sync across the internet through home routers.'
+binds_to = 'system'
+rationale = 'Collaboration across the internet through ordinary networks is a supported mode.'
+
+[[requirement]]
+id = 'EU-0013-036'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where no direct path between two peers works, their connection MUST use a relay that the owner approved.'
+binds_to = 'system'
+rationale = 'Peers on networks that block direct paths still collaborate.'
+
+[[requirement]]
+id = 'EU-0013-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'A relayed connection MUST work through a network that allows only encrypted web traffic.'
+binds_to = 'system'
+rationale = 'Restrictive networks are a tested case, not an exception.'
+
+[[requirement]]
+id = 'EU-0013-038'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A signaling service or a relay MUST NOT hold project history or act as an authority over it.'
+binds_to = 'system'
+rationale = 'Infrastructure that connects peers never becomes a host that collaboration depends on.'
+
+[[requirement]]
+id = 'EU-0013-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to choose a public or a self-hosted signaling service and relay.'
+binds_to = 'system'
+rationale = 'A person runs their own services where they want to.'
+
+[[requirement]]
+id = 'EU-0013-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT configure a signaling service or a relay by default.'
+binds_to = 'system'
+rationale = 'No third party sees a collaboration that the owner did not route through it.'
+
+[[requirement]]
+id = 'EU-0013-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'The approval of a connection MUST show the domains of the services it uses and the traffic metadata they see.'
+binds_to = 'system'
+rationale = 'A person knows who learns of a collaboration before it starts.'
+
+[[requirement]]
+id = 'EU-0013-042'
+level = 'MUST'
+polarity = 'required'
+statement = "A peer MUST bind the other peer's identity and the session keys to the approved invitation before it reveals branch heads, manifests or object availability."
+binds_to = 'system'
+rationale = 'Nothing about a project reaches a peer that the owner did not admit.'
+
+[[requirement]]
+id = 'EU-0013-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'Project payloads MUST be encrypted end to end, independently of every signaling and relay operator.'
+binds_to = 'system'
+rationale = 'An operator in the path never reads a project.'
+
+[[requirement]]
+id = 'EU-0013-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST authenticate the signaling service it uses.'
+binds_to = 'system'
+rationale = 'A peer does not take connection candidates from an impostor.'
+
+[[requirement]]
+id = 'EU-0013-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST refuse a replayed invitation.'
+binds_to = 'system'
+rationale = 'An invitation seen in transit cannot be used again.'
+
+[[requirement]]
+id = 'EU-0013-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST close a connection whose peer key changes.'
+binds_to = 'system'
+rationale = 'A key change fails closed instead of being trusted.'
+
+[[requirement]]
+id = 'EU-0013-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'Before it sends anything else, a peer MUST verify that the other peer signed its connection key, the session nonce and the invitation identity with a device key that the invitation and the owner-signed policy admit.'
+binds_to = 'system'
+rationale = 'A signaling service that swaps keys cannot place itself between the peers.'
+
+[[requirement]]
+id = 'EU-0013-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each signaling message MUST be sealed to the key of the peer it is for.'
+binds_to = 'system'
+rationale = 'The signaling service does not read the connection candidates, which hold network addresses.'
+
+[[requirement]]
+id = 'EU-0013-214'
+level = 'MUST'
+polarity = 'required'
+statement = 'A browser companion MUST sign its connections with a key of its own, separate from the certificate of its browser connection.'
+binds_to = 'system'
+rationale = 'A browser keeps a connection certificate for a limited time, while the identity of the companion lasts.'
+
+[[requirement]]
+id = 'EU-0013-215'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A peer MUST NOT admit a paired device whose key differs from the key its pairing recorded.'
+binds_to = 'system'
+rationale = 'A changed device key fails closed instead of being trusted when it is first seen.'
+
+[[requirement]]
+id = 'EU-0013-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every connection that collaboration makes MUST stay encrypted end to end, whatever network it starts on.'
+binds_to = 'system'
+rationale = "A collaborator's sync, a share link's session and a relay can each leave the owner's networks."
+
+[[requirement]]
+id = 'EU-0013-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'Sync MUST exchange missing small revision objects before it fetches audio.'
+binds_to = 'system'
+rationale = 'History arrives quickly, and audio follows as it is needed.'
+
+[[requirement]]
+id = 'EU-0013-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'Sync MUST fetch audio by its digest in resumable chunks, verifying each chunk.'
+binds_to = 'system'
+rationale = 'A large transfer survives interruption and never accepts corrupt audio.'
+
+[[requirement]]
+id = 'EU-0013-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Transfers for playback preparation MUST take precedence over transfers of history.'
+binds_to = 'system'
+rationale = 'What a person is about to hear arrives before what they might want later.'
+
+[[requirement]]
+id = 'EU-0013-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'A connection failure MUST keep local edits and queued sync.'
+binds_to = 'system'
+rationale = 'A dropped connection never loses work.'
+
+[[requirement]]
+id = 'EU-0013-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'Queued sync MUST resume when a connection to the peer returns.'
+binds_to = 'system'
+rationale = 'Sync finishes without a person starting it again.'
+
+[[requirement]]
+id = 'EU-0013-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where neither a direct path nor an approved relay path works, a peer MUST report collaboration as unavailable.'
+binds_to = 'system'
+rationale = 'A person never believes their work was exchanged when it was not.'
+
+[[requirement]]
+id = 'EU-0013-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A browser connection MUST NOT carry a full copy of a project or an exchange of its history or objects.'
+binds_to = 'system'
+rationale = 'Full project copies live only in native copies.'
+
+[[requirement]]
+id = 'EU-0013-057'
+level = 'MAY'
+polarity = 'required'
+statement = "A collaborator MAY exchange a project's history as an offline bundle to recover it."
+binds_to = 'system'
+rationale = 'A project can be recovered where no connection is possible.'
+
+[[requirement]]
+id = 'EU-0013-058'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Project sync across the internet MUST NOT be presented as sample-synchronous performance.'
+binds_to = 'system'
+rationale = 'No one plays in time with another over a path that cannot carry it.'

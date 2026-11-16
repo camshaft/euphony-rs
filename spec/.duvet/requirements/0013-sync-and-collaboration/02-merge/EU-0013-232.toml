@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-232"
+
+[[spec]]
+level = "MUST"
+quote = "A merge preview MUST offer musical alternatives for each conflict."

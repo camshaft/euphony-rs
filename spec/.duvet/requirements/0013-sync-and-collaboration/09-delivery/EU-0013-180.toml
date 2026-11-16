@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-180"
+
+[[spec]]
+level = "MUST"
+quote = "Each stream message MUST carry the transport generation, the sample position of its first sample, the host send time and the codec of its frames."

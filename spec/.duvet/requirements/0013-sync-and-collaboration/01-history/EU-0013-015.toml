@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/01-history.md#EU-0013-015"
+
+[[spec]]
+level = "MUST"
+quote = "Undo MUST make a new revision and leave the shared history unchanged."

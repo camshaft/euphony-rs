@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-036"
+
+[[spec]]
+level = "MUST"
+quote = "Where no direct path between two peers works, their connection MUST use a relay that the owner approved."

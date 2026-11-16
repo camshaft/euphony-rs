@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-233"
+
+[[spec]]
+level = "MUST"
+quote = "Computers paired with the owner's MUST subscribe to the changes of a session."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-094"
+
+[[spec]]
+level = "MUST"
+quote = "An active session MUST be a record separate from every project revision."

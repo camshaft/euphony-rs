@@ -1,0 +1,134 @@
+[section]
+anchor = 'voice'
+title = 'Speech during a session'
+problem = """\
+  People who listen together talk about what they hear, but speech through a separate call arrives out of step with the music, a microphone near speakers sends the mix back to everyone, and speech must never end up in the music."""
+motivation = """\
+  Speech kept out of every project path, headphones as the supported setup, a warning wherever the session cannot confirm that program audio is not coming back, and voice built into the session let people talk while they listen without spoiling the mix."""
+prose = """
+Participants talk through an ordinary call alongside the session or through voice built into the
+session, and the call stays the fallback whenever the session's voice path is unavailable.
+Headphones are the supported setup with both. Voice built into the session travels on the session's
+connection as a stream separate from the program audio, and its echo canceller takes what each
+participant's output plays as its reference. The session offers push-to-talk and an open microphone,
+and can lower the program audio while someone speaks, as the talkback of a studio does."""
+
+[[requirement]]
+id = 'EU-0013-200'
+level = 'MUST'
+polarity = 'required'
+statement = 'Participants MUST be able to talk during a session while they listen to the mix through the session.'
+binds_to = 'system'
+rationale = 'Talking about the music is part of listening together.'
+
+[[requirement]]
+id = 'EU-0013-201'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Speech MUST NOT enter any recording, export, project bus or mix.'
+binds_to = 'system'
+rationale = 'The music never carries the conversation about it.'
+
+[[requirement]]
+id = 'EU-0013-202'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'With headphones, program audio MUST NOT reach the other participants through the microphone of a participant.'
+binds_to = 'system'
+rationale = 'Headphones keep the mix from being heard twice.'
+
+[[requirement]]
+id = 'EU-0013-203'
+level = 'MUST'
+polarity = 'required'
+statement = 'With an external call, the session MUST ask each participant whether they listen on headphones.'
+binds_to = 'system'
+rationale = 'The session knows where echo can come from when it cannot measure it.'
+
+[[requirement]]
+id = 'EU-0013-204'
+level = 'MUST'
+polarity = 'required'
+statement = 'With an external call, the session MUST show every participant a warning while any participant listens on speakers.'
+binds_to = 'system'
+rationale = 'Everyone knows the mix may come back through a call.'
+
+[[requirement]]
+id = 'EU-0013-205'
+level = 'MUST'
+polarity = 'required'
+statement = 'The voice built into the session MUST cancel echo against the program audio and the voices that the output of each participant plays.'
+binds_to = 'system'
+rationale = 'Program audio from speakers is removed with its exact reference.'
+
+[[requirement]]
+id = 'EU-0013-206'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session MUST measure the program audio left in each outgoing voice stream against its reference.'
+binds_to = 'system'
+rationale = 'Echo suppression is measured, not assumed.'
+
+[[requirement]]
+id = 'EU-0013-207'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the session cannot confirm that program audio returning through the microphone of a participant is suppressed, it MUST warn every participant.'
+binds_to = 'system'
+rationale = 'No one listens to the mix doubled without being told why.'
+
+[[requirement]]
+id = 'EU-0013-208'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where suppression for a participant is not confirmed, the session MUST offer that participant push-to-talk.'
+binds_to = 'system'
+rationale = 'The participant can still speak without sending the mix back.'
+
+[[requirement]]
+id = 'EU-0013-209'
+level = 'MUST'
+polarity = 'required'
+statement = 'A participant MUST be able to choose whether their voice plays with low delay or delayed to the aligned presentation delay.'
+binds_to = 'system'
+rationale = 'Speech can arrive together with the music it is about.'
+
+[[requirement]]
+id = 'EU-0013-226'
+level = 'MUST'
+polarity = 'required'
+statement = 'The voice built into the session MUST offer each participant both push-to-talk and an open microphone.'
+binds_to = 'system'
+rationale = 'A participant chooses how they speak.'
+
+[[requirement]]
+id = 'EU-0013-210'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session MUST show the microphone state of each participant to everyone.'
+binds_to = 'system'
+rationale = 'Everyone knows who can be heard.'
+
+[[requirement]]
+id = 'EU-0013-211'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A muted participant MUST NOT send audio.'
+binds_to = 'system'
+rationale = 'Mute means silence.'
+
+[[requirement]]
+id = 'EU-0013-212'
+level = 'MUST'
+polarity = 'required'
+statement = 'Capturing a microphone for voice MUST need the consent of the participant.'
+binds_to = 'system'
+rationale = 'A microphone opens only when its owner agrees.'
+
+[[requirement]]
+id = 'EU-0013-213'
+level = 'MAY'
+polarity = 'required'
+statement = 'The session MAY lower the program audio while someone speaks.'
+binds_to = 'system'
+rationale = 'Talkback makes speech clear over the mix.'

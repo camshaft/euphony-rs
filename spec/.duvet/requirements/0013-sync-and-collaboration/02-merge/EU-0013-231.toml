@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-231"
+
+[[spec]]
+level = "MUST"
+quote = "A merge preview MUST show both versions of each conflict."

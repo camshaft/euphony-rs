@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/05-retention.md#EU-0013-090"
+
+[[spec]]
+level = "MUST"
+quote = "The approval of a backup destination MUST show the history, media and recipients it includes and what it leaves out."

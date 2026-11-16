@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/04-membership.md#EU-0013-059"
+
+[[spec]]
+level = "MUST"
+quote = "Membership MUST be recorded in a policy stream that the owner signs, separate from the musical history of the project."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/10-voice.md#EU-0013-213"
+
+[[spec]]
+level = "MAY"
+quote = "The session MAY lower the program audio while someone speaks."

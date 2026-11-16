@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-033"
+
+[[spec]]
+level = "MUST"
+quote = "When two collaborators who edited while disconnected exchange their versions, every accepted edit of each MUST be kept."
