@@ -1,5 +1,0 @@
-target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-094"
-
-[[spec]]
-level = "MUST"
-quote = "A report that an assistant drafts MUST wait for the owner's approval before it goes."
