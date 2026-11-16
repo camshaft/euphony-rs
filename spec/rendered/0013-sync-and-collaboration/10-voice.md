@@ -47,6 +47,10 @@ Where suppression for a participant is not confirmed, the session MUST offer tha
 
 A participant MUST be able to choose whether their voice plays with low delay or delayed to the aligned presentation delay.
 
+### EU-0013-226 {#EU-0013-226}
+
+The voice built into the session MUST offer each participant both push-to-talk and an open microphone.
+
 ### EU-0013-210 {#EU-0013-210}
 
 The session MUST show the microphone state of each participant to everyone.

@@ -94,6 +94,14 @@ binds_to = 'system'
 rationale = 'Speech can arrive together with the music it is about.'
 
 [[requirement]]
+id = 'EU-0013-226'
+level = 'MUST'
+polarity = 'required'
+statement = 'The voice built into the session MUST offer each participant both push-to-talk and an open microphone.'
+binds_to = 'system'
+rationale = 'A participant chooses how they speak.'
+
+[[requirement]]
 id = 'EU-0013-210'
 level = 'MUST'
 polarity = 'required'

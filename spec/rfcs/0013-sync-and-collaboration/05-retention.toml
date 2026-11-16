@@ -160,6 +160,30 @@ binds_to = 'system'
 rationale = 'History can be kept outside any one computer.'
 
 [[requirement]]
+id = 'EU-0013-221'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the owner backs up a project of MIDI and programs alone, the backup MUST hold a complete self-contained bundle of the project.'
+binds_to = 'system'
+rationale = 'Such a project restores whole from its backup, without any other copy.'
+
+[[requirement]]
+id = 'EU-0013-222'
+level = 'MUST'
+polarity = 'required'
+statement = 'A backup of large audio MUST include a verified inventory of the audio it holds.'
+binds_to = 'system'
+rationale = 'A person can check what the backup holds before relying on it.'
+
+[[requirement]]
+id = 'EU-0013-223'
+level = 'MUST'
+polarity = 'required'
+statement = 'A backup of large audio MUST include instructions to restore it.'
+binds_to = 'system'
+rationale = 'The audio can be restored without knowledge that the backup does not hold.'
+
+[[requirement]]
 id = 'EU-0013-089'
 level = 'MUST'
 polarity = 'forbidden'

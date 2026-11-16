@@ -102,6 +102,22 @@ binds_to = 'system'
 rationale = 'A person knows who could read the secret.'
 
 [[requirement]]
+id = 'EU-0013-224'
+level = 'MUST'
+polarity = 'required'
+statement = 'A listener MUST receive the audio stream of the sink that the owner assigns to their link.'
+binds_to = 'system'
+rationale = 'The owner chooses which audio each listener receives.'
+
+[[requirement]]
+id = 'EU-0013-225'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the owner doesn't assign a sink to a listen link, a listener MUST receive the main mix."
+binds_to = 'system'
+rationale = 'A listener receives the whole piece unless the owner chooses otherwise.'
+
+[[requirement]]
 id = 'EU-0013-119'
 level = 'MUST'
 polarity = 'forbidden'

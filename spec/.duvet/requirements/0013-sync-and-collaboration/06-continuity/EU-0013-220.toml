@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-220"
+
+[[spec]]
+level = "MUST"
+quote = "Computers paired with the owner's MUST subscribe to the changes of a session and prefetch its selected manifest, recent edits and media."

@@ -83,6 +83,18 @@ Syncing a deprecation MUST NOT delete objects on another peer.
 
 The owner MAY back up a project's small history and manifests to a destination they choose.
 
+### EU-0013-221 {#EU-0013-221}
+
+Where the owner backs up a project of MIDI and programs alone, the backup MUST hold a complete self-contained bundle of the project.
+
+### EU-0013-222 {#EU-0013-222}
+
+A backup of large audio MUST include a verified inventory of the audio it holds.
+
+### EU-0013-223 {#EU-0013-223}
+
+A backup of large audio MUST include instructions to restore it.
+
 ### EU-0013-089 {#EU-0013-089}
 
 A pointer to audio MUST NOT count as a backup of that audio.

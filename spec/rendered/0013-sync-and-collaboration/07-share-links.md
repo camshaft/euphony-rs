@@ -55,6 +55,14 @@ A signaling or relay operator MUST NOT be able to redeem a link, read its sessio
 
 Where one operator runs both the signaling service and the application origin, the approval that makes a link MUST say that this operator is trusted with the secret of the link.
 
+### EU-0013-224 {#EU-0013-224}
+
+A listener MUST receive the audio stream of the sink that the owner assigns to their link.
+
+### EU-0013-225 {#EU-0013-225}
+
+Where the owner doesn't assign a sink to a listen link, a listener MUST receive the main mix.
+
 ### EU-0013-119 {#EU-0013-119}
 
 A listener MUST NOT receive project objects, stems, prepared audio files or history.

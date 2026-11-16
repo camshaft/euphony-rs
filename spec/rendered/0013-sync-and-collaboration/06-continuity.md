@@ -20,6 +20,10 @@ A person MUST be able to continue a recording session on another paired computer
 
 An active session MUST be a record separate from every project revision.
 
+### EU-0013-220 {#EU-0013-220}
+
+Computers paired with the owner's MUST subscribe to the changes of a session and prefetch its selected manifest, recent edits and media.
+
 ### EU-0013-095 {#EU-0013-095}
 
 Prefetch of a session MUST go only to computers paired with the owner's.

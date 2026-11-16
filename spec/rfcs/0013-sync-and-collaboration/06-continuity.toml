@@ -35,6 +35,14 @@ binds_to = 'system'
 rationale = 'Moving a session never changes a revision, and a revision never carries a session.'
 
 [[requirement]]
+id = 'EU-0013-220'
+level = 'MUST'
+polarity = 'required'
+statement = "Computers paired with the owner's MUST subscribe to the changes of a session and prefetch its selected manifest, recent edits and media."
+binds_to = 'system'
+rationale = 'The next room is ready before the person reaches it.'
+
+[[requirement]]
 id = 'EU-0013-095'
 level = 'MUST'
 polarity = 'required'
