@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-127"
+
+[[spec]]
+level = "MUST"
+quote = "A host MUST read the loss recovery journal that a peer sends."

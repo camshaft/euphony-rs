@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-134"
+
+[[spec]]
+level = "MUST"
+quote = "The route editor MUST let a person preview a transform against recorded input before they commit the route."

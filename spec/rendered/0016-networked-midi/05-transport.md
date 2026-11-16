@@ -42,7 +42,7 @@ A clock discontinuity MUST suspend scheduled admission until the new clock mappi
 
 ### EU-0016-081 {#EU-0016-081}
 
-A host MUST send and read the loss recovery journal of the network MIDI session protocol.
+A host MUST send the loss recovery journal of the network MIDI session protocol with the events it sends.
 
 ### EU-0016-082 {#EU-0016-082}
 
@@ -86,7 +86,7 @@ An unencrypted interoperable transport MUST run only on an interface whose netwo
 
 ### EU-0016-092 {#EU-0016-092}
 
-The transport boundary MUST be enforced where events enter and leave euphony, not only in the user interface.
+The transport boundary MUST be enforced by the session host where events enter and leave it, and by each MIDI host's network service, not only in the user interface.
 
 ### EU-0016-093 {#EU-0016-093}
 
@@ -94,7 +94,7 @@ The session host MUST refuse to activate a transport unless a verification recor
 
 ### EU-0016-094 {#EU-0016-094}
 
-A missing, failed or mismatched verification record MUST produce an unverified transport result and an event.
+A missing, failed or mismatched verification record MUST produce an unverified transport result.
 
 ### EU-0016-095 {#EU-0016-095}
 
@@ -107,3 +107,15 @@ The session host MUST check each packet it accepts against the current peer and 
 ### EU-0016-097 {#EU-0016-097}
 
 A passing verification record MUST NOT grant access.
+
+### EU-0016-127 {#EU-0016-127}
+
+A host MUST read the loss recovery journal that a peer sends.
+
+### EU-0016-128 {#EU-0016-128}
+
+A host MUST keep a history of each peer's clock drift from successive clock exchanges.
+
+### EU-0016-129 {#EU-0016-129}
+
+A missing, failed or mismatched verification record MUST raise an event that says why the transport is unverified.

@@ -2,4 +2,4 @@ target = "rendered/0016-networked-midi/03-routes.md#EU-0016-038"
 
 [[spec]]
 level = "MUST"
-quote = "A declared routing loop MUST carry an explicit delay and a tested feedback policy."
+quote = "A declared routing loop MUST carry an explicit delay."

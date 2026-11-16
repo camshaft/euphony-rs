@@ -61,7 +61,7 @@ The command gateway MUST refuse a route that closes a routing cycle the route do
 
 ### EU-0016-038 {#EU-0016-038}
 
-A declared routing loop MUST carry an explicit delay and a tested feedback policy.
+A declared routing loop MUST carry an explicit delay.
 
 ### EU-0016-039 {#EU-0016-039}
 
@@ -122,3 +122,7 @@ The output adapter MUST refuse each event of a route generation that isn't curre
 ### EU-0016-053 {#EU-0016-053}
 
 The session host MUST NOT send events to a host after the owner unpairs it.
+
+### EU-0016-140 {#EU-0016-140}
+
+A declared routing loop MUST carry a declared feedback policy.

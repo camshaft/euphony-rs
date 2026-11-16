@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-137"
+
+[[spec]]
+level = "MUST"
+quote = "The projection, the change of tonic and the change of mode MUST be separate typed operations."

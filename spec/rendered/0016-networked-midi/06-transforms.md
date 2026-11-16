@@ -56,7 +56,7 @@ A reconnection or a move of execution site MUST NOT apply a transform to an even
 
 ### EU-0016-107 {#EU-0016-107}
 
-Moving a route's transforms to another execution site MUST release the notes they own and start them with clean state.
+Moving a route's transforms to another execution site MUST release the notes they own.
 
 ### EU-0016-108 {#EU-0016-108}
 
@@ -88,7 +88,7 @@ A program that isn't admitted live MUST stay usable for offline composition.
 
 ### EU-0016-115 {#EU-0016-115}
 
-A missed transform deadline or exhausted event capacity MUST suspend the affected route and release the notes it owns.
+A missed transform deadline or exhausted event capacity MUST suspend the affected route.
 
 ### EU-0016-116 {#EU-0016-116}
 
@@ -97,3 +97,43 @@ Raw input and transformed output MUST be recordable as distinct streams.
 ### EU-0016-117 {#EU-0016-117}
 
 A recording of transformed output MUST hold the transform's identity, parameters, seed, route generation and timing mapping.
+
+### EU-0016-130 {#EU-0016-130}
+
+After a move of execution site, a route's transforms MUST start with clean state.
+
+### EU-0016-131 {#EU-0016-131}
+
+When a route's transform stops, for any reason, the session host MUST release each note the route owns wherever its instrument is still reachable.
+
+### EU-0016-132 {#EU-0016-132}
+
+A transform MUST accept one timestamped event, its declared typed parameters and bounded state, and return validated events or a typed diagnostic.
+
+### EU-0016-133 {#EU-0016-133}
+
+A transform's compile result MUST hold the digests of its source, library and runtime, its parameters, the event classes it supports, its greatest output expansion inferred from the validated program, and its resource needs.
+
+### EU-0016-134 {#EU-0016-134}
+
+The route editor MUST let a person preview a transform against recorded input before they commit the route.
+
+### EU-0016-135 {#EU-0016-135}
+
+The route editor MUST show a transform's destinations and measured readiness before the route is committed.
+
+### EU-0016-136 {#EU-0016-136}
+
+A transform that projects chromatic input onto C major by nearest note, with a note equally far from two scale notes going to the lower one, and maps the result onto D Dorian keeping scale degree and octave, MUST map MIDI notes 60 through 71 to 62, 62, 64, 64, 65, 67, 67, 69, 69, 71, 71 and 72.
+
+### EU-0016-137 {#EU-0016-137}
+
+The projection, the change of tonic and the change of mode MUST be separate typed operations.
+
+### EU-0016-138 {#EU-0016-138}
+
+The interface MUST show the projection rule and the source and target tonic and mode of each transform that projects onto a scale.
+
+### EU-0016-139 {#EU-0016-139}
+
+The interface MUST let a musician choose an explicit projection rule other than nearest note.

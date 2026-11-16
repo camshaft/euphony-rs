@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-131"
+
+[[spec]]
+level = "MUST"
+quote = "When a route's transform stops, for any reason, the session host MUST release each note the route owns wherever its instrument is still reachable."
