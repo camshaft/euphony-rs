@@ -48,7 +48,7 @@ polarity = 'required'
 statement = 'Anyone who may read a project MUST be able to read, for each of its revisions, the changes it made and its actor.'
 binds_to = 'system'
 rationale = 'A musician can inspect every change an assistant or a device made.'
-relations = [ { kind = 'depends_on', target = 'EU-0004-026' }, { kind = 'depends_on', target = 'EU-0004-048' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0004-026' }, { kind = 'depends_on', target = 'EU-0004-052' } ]
 
 [[requirement]]
 id = 'EU-0004-029'

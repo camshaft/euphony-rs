@@ -66,14 +66,14 @@ A subscription resumed from a cursor MUST NOT deliver an event at or before that
 
 A subscriber MUST learn of each committed revision of the project without asking for it.
 
-### EU-0004-048 {#EU-0004-048}
+### EU-0004-052 {#EU-0004-052}
 
 Each answer to a read of a project MUST hold at most one page.
 
-### EU-0004-049 {#EU-0004-049}
+### EU-0004-053 {#EU-0004-053}
 
 An answer to a read that does not hold its last page MUST name the token that reads its next page.
 
-### EU-0004-050 {#EU-0004-050}
+### EU-0004-054 {#EU-0004-054}
 
 The cost of reading one page MUST NOT grow with the length of the history or the size of the project.
