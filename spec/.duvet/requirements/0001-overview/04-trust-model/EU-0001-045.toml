@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-045"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to revoke any share link at any time."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-011"
+
+[[spec]]
+level = "MUST"
+quote = "Closing, restarting or losing an interface MUST NOT interrupt another interface."

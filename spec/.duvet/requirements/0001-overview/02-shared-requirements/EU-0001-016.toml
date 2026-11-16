@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-016"
+
+[[spec]]
+level = "MUST"
+quote = "On one computer, the desktop interface MUST respond to faders, the transport, meters, waveforms and scrolling within the difference the owner accepts from the same interface and engine built into one program, after seeing that difference measured on their computer."

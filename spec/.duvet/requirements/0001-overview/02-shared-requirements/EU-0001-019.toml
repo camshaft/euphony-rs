@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-019"
+
+[[spec]]
+level = "MUST"
+quote = "Each behavior this set specifies MUST hold when a computer the session uses fails or returns outdated audio."

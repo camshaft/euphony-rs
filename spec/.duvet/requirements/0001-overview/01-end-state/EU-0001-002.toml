@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/01-end-state.md#EU-0001-002"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST offer programmable composition in the same project as recording, arranging and mixing tracks."

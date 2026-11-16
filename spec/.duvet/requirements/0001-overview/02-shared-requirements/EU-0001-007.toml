@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-007"
+
+[[spec]]
+level = "MUST"
+quote = "A session action MUST return the same result whether it is taken from the desktop interface, a command line, a script or an assistant."

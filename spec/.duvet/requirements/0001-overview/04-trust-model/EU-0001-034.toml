@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-034"
+
+[[spec]]
+level = "MUST"
+quote = "The owner's first computer MUST create the owner's identity on its local console before it accepts a pairing attempt."

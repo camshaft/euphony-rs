@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-048"
+
+[[spec]]
+level = "MUST"
+quote = "Unpairing a device or revoking a share link MUST change the keys that protect every later object."

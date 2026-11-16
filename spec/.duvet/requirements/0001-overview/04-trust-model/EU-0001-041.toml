@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-041"
+
+[[spec]]
+level = "MUST"
+quote = "Each share link MUST have an expiry."

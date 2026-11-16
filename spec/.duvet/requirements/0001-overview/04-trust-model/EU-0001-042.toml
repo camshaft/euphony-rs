@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-042"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator's peer MUST NOT receive an object of a project that none of its links reaches."

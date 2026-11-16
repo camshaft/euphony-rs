@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-046"
+
+[[spec]]
+level = "MUST"
+quote = "Unpairing a device MUST end that device's connections and commands immediately."

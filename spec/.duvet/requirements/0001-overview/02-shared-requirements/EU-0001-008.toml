@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-008"
+
+[[spec]]
+level = "MUST"
+quote = "A session action MUST return the same result whether it is taken on the computer that runs the session or on another of the owner's computers."

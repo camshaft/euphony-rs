@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-026"
+
+[[spec]]
+level = "MUST"
+quote = "The publication check MUST treat as upstream-derived each file whose comparison with the pinned upstream inventory finds a derivation."

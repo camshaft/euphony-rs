@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-027"
+
+[[spec]]
+level = "MUST"
+quote = "The publication check MUST refuse a publication while a required comparison is incomplete or a comparison finding is unresolved."

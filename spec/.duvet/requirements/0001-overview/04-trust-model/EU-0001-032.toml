@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-032"
+
+[[spec]]
+level = "MUST"
+quote = "A pairing MUST take the device's class and sink from the owner's approval alone."

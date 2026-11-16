@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-056"
+
+[[spec]]
+level = "MUST"
+quote = "A script or a parser of imported material MUST NOT reach the network, a file or a device beyond what its task needs."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-055"
+
+[[spec]]
+level = "MUST"
+quote = "Scripts and the parsers of imported projects, model files and analysis media MUST run isolated from the process that drives the audio device."

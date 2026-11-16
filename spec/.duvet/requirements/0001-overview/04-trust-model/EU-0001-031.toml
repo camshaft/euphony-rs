@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-031"
+
+[[spec]]
+level = "MUST"
+quote = "A pairing approval MUST cover the pairing attempt, the new device's key, its class and, for a sink endpoint, its sink."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-064"
+
+[[spec]]
+level = "MUST"
+quote = "The command gateway MUST check each command against the party that sent it, the level of that party's link and any approval the command needs, before the command takes effect."

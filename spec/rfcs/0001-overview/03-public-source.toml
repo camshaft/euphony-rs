@@ -1,0 +1,95 @@
+[section]
+anchor = 'public-source'
+title = 'Public source and publication'
+problem = """\
+  Euphony's source is public, so private material in its history would be exposed for good, and a \
+  build that needs a package or a service an outside reader can't reach would leave the source \
+  unusable to them."""
+motivation = """\
+  Holding the public history to material authorized for public distribution, and checking every \
+  publication before it is pushed, keeps private work private and keeps the source usable by anyone \
+  who can read it."""
+prose = """
+Euphony's source, documentation and release history are public, under a permissive license that
+stays as it is. A publication is a push of commits or history to the public repository, or a
+release. A file is upstream-derived where it carries or adapts code of another project. A provenance
+record of an upstream-derived file states the upstream project, the source path, the pinned commit,
+the identity of the local file, a summary of the local changes and the copyright or permission
+notice that applies. The pinned upstream inventory lists the upstream sources the project compares
+new files with, and the rules of that comparison. The publication check reads a publication before
+it is pushed. A comparison that finds similar code doesn't prove that a file is original, and its
+report states what it covered and what it can't detect. Deleting a file from the final tree doesn't
+remove it from the history."""
+
+[[requirement]]
+id = 'EU-0001-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'The public source, documentation and release history of euphony MUST hold only material authorized for public distribution.'
+binds_to = 'system'
+rationale = 'Nothing private reaches a history that can never be taken back.'
+
+[[requirement]]
+id = 'EU-0001-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Building and running euphony from its public source MUST NOT need a private package or a private service.'
+binds_to = 'system'
+rationale = 'Anyone who can read the source can build and run it.'
+
+[[requirement]]
+id = 'EU-0001-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each upstream-derived file MUST have a provenance record before it is published.'
+binds_to = 'system'
+rationale = 'Every reuse of another project is traced to its origin and its terms.'
+
+[[requirement]]
+id = 'EU-0001-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each upstream-derived file MUST carry the copyright or permission notice its upstream requires.'
+binds_to = 'system'
+rationale = 'The project meets the terms under which it reuses code.'
+
+[[requirement]]
+id = 'EU-0001-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'The publication check MUST read the whole history and every generated file of a publication before it is pushed.'
+binds_to = 'system'
+rationale = 'Private material in an earlier commit or a generated file is found before it becomes public.'
+
+[[requirement]]
+id = 'EU-0001-025'
+level = 'MUST'
+polarity = 'required'
+statement = "The publication check MUST refuse a publication that holds an upstream-derived file whose provenance record is missing or doesn't match the file."
+binds_to = 'system'
+rationale = 'An untraced reuse never reaches the public history.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-022' } ]
+
+[[requirement]]
+id = 'EU-0001-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The publication check MUST treat as upstream-derived each file whose comparison with the pinned upstream inventory finds a derivation.'
+binds_to = 'system'
+rationale = 'Removing the mark from a derived file cannot bypass its provenance record.'
+
+[[requirement]]
+id = 'EU-0001-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The publication check MUST refuse a publication while a required comparison is incomplete or a comparison finding is unresolved.'
+binds_to = 'system'
+rationale = 'A publication waits for its provenance review instead of going out unchecked.'
+
+[[requirement]]
+id = 'EU-0001-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'A change to upstream-derived code MUST update the summary of local changes in its provenance record.'
+binds_to = 'system'
+rationale = 'The record keeps describing the file as it is.'

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-035"
+
+[[spec]]
+level = "MUST"
+quote = "A paired owner device MUST be able to take every action the owner can take, on every project of the owner."

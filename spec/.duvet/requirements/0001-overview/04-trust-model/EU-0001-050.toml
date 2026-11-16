@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-050"
+
+[[spec]]
+level = "MUST"
+quote = "A real-time stream MUST NOT run unencrypted on a network the owner hasn't marked as theirs."
