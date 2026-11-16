@@ -160,3 +160,11 @@ polarity = 'required'
 statement = "Each frame of the scrub copy MUST match the original's decoded frame, scaled to the scrub copy's size, within the tolerance of the scrub copy's format."
 binds_to = 'system'
 rationale = "A musician who scrubs to a frame sees the same picture as in normal playback of the original."
+
+[[requirement]]
+id = 'EU-0022-170'
+level = 'MUST'
+polarity = 'required'
+statement = "Audio imported from an uncompressed stream MUST keep every sample of the stream unchanged."
+binds_to = 'system'
+rationale = "The sound the editor delivered is the sound the musician works with."
