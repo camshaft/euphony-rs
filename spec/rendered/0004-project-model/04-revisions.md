@@ -58,7 +58,7 @@ Each page of a paged answer MUST show the revision that its first page shows.
 
 ### EU-0004-043 {#EU-0004-043}
 
-A subscription resumed from a cursor MUST deliver every event after that cursor.
+A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.
 
 ### EU-0004-044 {#EU-0004-044}
 
@@ -79,3 +79,7 @@ euphony MUST NOT deliver an event of a project, or a later page of an answer abo
 ### EU-0004-061 {#EU-0004-061}
 
 euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.
+
+### EU-0004-062 {#EU-0004-062}
+
+euphony MUST refuse as denied each later page of a paged read of a project once its caller may no longer read the project.

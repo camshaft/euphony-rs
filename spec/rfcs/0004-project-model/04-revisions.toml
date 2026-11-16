@@ -117,9 +117,10 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
 id = 'EU-0004-043'
 level = 'MUST'
 polarity = 'required'
-statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor.'
+statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.'
 binds_to = 'system'
 rationale = 'A subscriber that reconnects misses nothing.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-060' } ]
 
 [[requirement]]
 id = 'EU-0004-044'
@@ -161,5 +162,14 @@ level = 'MUST'
 polarity = 'required'
 statement = 'euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.'
 binds_to = 'system'
-rationale = 'A subscriber learns that its access ended, and doesn't wait for events that never come.'
+rationale = 'A subscriber learns that its access ended, and does not wait for events that never come.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-060' } ]
+
+[[requirement]]
+id = 'EU-0004-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each later page of a paged read of a project once its caller may no longer read the project.'
+binds_to = 'system'
+rationale = 'A reader whose access ends during a paged read learns that it ended, and gets no more of the answer.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-060' } ]
