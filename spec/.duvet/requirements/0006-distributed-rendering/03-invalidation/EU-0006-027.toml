@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-027"
+
+[[spec]]
+level = "MUST"
+quote = "Musical positions MUST be resolved to sample positions by one stated rounding rule."

@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-052"
+
+[[spec]]
+level = "MUST"
+quote = "Interactive preparation MUST be scheduled ahead of speculative preparation."

@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-038"
+
+[[spec]]
+level = "MUST"
+quote = "Where a tail is unbounded or unknown, the remainder that depends on it MUST stay invalid until it is rendered again."

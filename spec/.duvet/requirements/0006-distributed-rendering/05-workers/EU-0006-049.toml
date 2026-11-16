@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-049"
+
+[[spec]]
+level = "MUST"
+quote = "The scheduler MUST stop placing work on a worker once the discovery service reports that worker gone."

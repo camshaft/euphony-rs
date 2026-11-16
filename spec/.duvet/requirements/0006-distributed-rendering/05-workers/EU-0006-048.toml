@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-048"
+
+[[spec]]
+level = "MUST"
+quote = "Adding a worker MUST NOT require a change to the owner's device discovery service."

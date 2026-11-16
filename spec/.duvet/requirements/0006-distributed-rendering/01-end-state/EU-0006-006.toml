@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-006"
+
+[[spec]]
+level = "MUST"
+quote = "Rendering MUST NOT stop recording or live monitoring on the musician's computer."

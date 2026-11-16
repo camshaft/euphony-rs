@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-050"
+
+[[spec]]
+level = "MUST"
+quote = "The scheduler MUST NOT impose a fixed limit on the work that a worker or a link takes."

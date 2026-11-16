@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-005"
+
+[[spec]]
+level = "MUST"
+quote = "Results of passages that an edit doesn't change MUST stay valid in the manifest of the new revision."

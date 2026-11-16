@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-001"
+
+[[spec]]
+level = "MUST"
+quote = "The scheduler MUST be able to place a project's render work on every present worker that the owner has paired."

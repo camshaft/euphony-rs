@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-060"
+
+[[spec]]
+level = "MUST"
+quote = "Every render input and every result MUST move between computers as an item of the content store."

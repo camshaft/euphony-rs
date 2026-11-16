@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-019"
+
+[[spec]]
+level = "MUST"
+quote = "A result of one render profile MUST NOT be served for a request of another render profile."

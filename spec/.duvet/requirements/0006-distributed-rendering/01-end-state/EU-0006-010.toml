@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-010"
+
+[[spec]]
+level = "MUST"
+quote = "A computer the owner has paired MUST be offered as a worker as soon as it joins the owner's network."

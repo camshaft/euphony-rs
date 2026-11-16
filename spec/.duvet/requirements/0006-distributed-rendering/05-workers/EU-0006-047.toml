@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-047"
+
+[[spec]]
+level = "MUST"
+quote = "Render jobs and transfers MUST NOT wait on the authority that orders a branch's edits."

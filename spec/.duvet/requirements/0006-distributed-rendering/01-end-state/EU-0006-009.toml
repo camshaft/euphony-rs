@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-009"
+
+[[spec]]
+level = "MUST"
+quote = "Every worker, the host's own computer included, MUST render through the same versioned render contract."

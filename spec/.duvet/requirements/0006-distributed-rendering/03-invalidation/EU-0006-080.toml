@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-080"
+
+[[spec]]
+level = "MUST"
+quote = "A send, a sidechain or a bus MUST render a time range only after each of its upstream dependencies has rendered the input that range reads."

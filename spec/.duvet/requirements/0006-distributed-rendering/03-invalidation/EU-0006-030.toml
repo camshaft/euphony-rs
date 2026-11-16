@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-030"
+
+[[spec]]
+level = "MUST"
+quote = "A feedback cycle MUST NOT be divided between workers."

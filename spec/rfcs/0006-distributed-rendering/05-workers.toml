@@ -1,0 +1,154 @@
+[section]
+anchor = 'workers'
+title = 'Workers and scheduling'
+problem = """\
+  A scheduler that caps work by a fixed number, or that serves projects and priorities unequally, \
+  either wastes the owner's computers or lets speculative work hold up the passage the musician \
+  waits on, and a result from an attempt the scheduler gave up on can overwrite newer work."""
+motivation = """\
+  Workers that pull work, capacity measured from each worker's own answers, priority levels with \
+  fair shares inside them, and attempts that newer attempts replace let dozens of computers work at \
+  the rate each sustains while the musician's current work comes first."""
+prose = """
+The host of a project keeps its render job queue and the journal of that queue. A worker is
+described to the owner's device discovery service as data: its render profiles, the formats it
+accepts and the addresses of its job and transfer endpoints. The discovery service reports each
+worker's presence and configures the connection to it, and carries none of the render traffic. The
+scheduler reads every capacity signal, such as completions, latency, errors and storage pressure,
+from the job protocol itself. An idle worker pulls a lease on a job. Render work has two priority
+levels, interactive preparation for what the musician is about to hear, then speculative
+preparation, and the messages that start, cancel and answer an attempt come ahead of both. Each new
+attempt at a job replaces the earlier attempts of that job. A local authority orders the edits of
+each branch of a project, and independent branches, render jobs and transfers proceed beside it.
+Each attempt reports its progress over the job protocol, and the scheduler measures each
+worker's rate of progress from those reports as it measures its other capacity signals.
+Render work and its answers travel over the job protocol's connections. Inputs and results travel
+over the content store's connections, whose pairing and encryption rules RFC 0008 states."""
+
+[[requirement]]
+id = 'EU-0006-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A unit of render work MUST be a render island over a time range.'
+binds_to = 'system'
+rationale = 'Workers exchange substantial pieces of work, never a message for each sample or each node.'
+
+[[requirement]]
+id = 'EU-0006-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Render jobs and transfers MUST NOT wait on the authority that orders a branch's edits."
+binds_to = 'system'
+rationale = 'Ordering edits never serializes their rendering or routes audio through one computer.'
+
+[[requirement]]
+id = 'EU-0006-048'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Adding a worker MUST NOT require a change to the owner's device discovery service."
+binds_to = 'system'
+rationale = 'A worker is data the discovery service carries, and the service stays general.'
+
+[[requirement]]
+id = 'EU-0006-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'The scheduler MUST stop placing work on a worker once the discovery service reports that worker gone.'
+binds_to = 'system'
+rationale = 'Work never waits on a computer that has left the network.'
+
+[[requirement]]
+id = 'EU-0006-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The scheduler MUST NOT impose a fixed limit on the work that a worker or a link takes.'
+binds_to = 'system'
+rationale = 'Each computer and each link works at the capacity it shows, whatever that is.'
+
+[[requirement]]
+id = 'EU-0006-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The scheduler MUST size the work it assigns to each worker and each link from that worker's measured completions, latency, errors and storage pressure."
+binds_to = 'system'
+rationale = 'Work grows on clean answers and shrinks on slow answers, errors and full disks.'
+
+[[requirement]]
+id = 'EU-0006-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Interactive preparation MUST be scheduled ahead of speculative preparation.'
+binds_to = 'system'
+rationale = 'The passage the musician is about to hear comes first.'
+
+[[requirement]]
+id = 'EU-0006-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'Projects at the same priority level MUST each receive a fair share of the available capacity.'
+binds_to = 'system'
+rationale = 'One large project never starves another.'
+
+[[requirement]]
+id = 'EU-0006-054'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'The scheduler SHOULD place a job on the worker with the least measured transfer time to its inputs.'
+binds_to = 'system'
+rationale = 'Work runs where its inputs arrive soonest.'
+
+[[requirement]]
+id = 'EU-0006-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST refuse a result from an attempt that a newer attempt of the same job has replaced.'
+binds_to = 'system'
+rationale = 'A late answer from a slow computer never overwrites newer work.'
+
+[[requirement]]
+id = 'EU-0006-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A message that starts, cancels or answers an attempt MUST NOT wait behind queued bulk transfers on a connection.'
+binds_to = 'system'
+rationale = 'Control of the work stays prompt while chunks fill the link.'
+
+[[requirement]]
+id = 'EU-0006-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each connection of the job protocol MUST be authenticated and encrypted on every network.'
+binds_to = 'system'
+rationale = "Render work and its answers stay private and unaltered on every network, as RFC 0008 keeps the content store's connections."
+
+[[requirement]]
+id = 'EU-0006-058'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A computer that isn't one of the owner's paired computers MUST NOT be given render work."
+binds_to = 'system'
+rationale = "The owner's project never leaves the owner's trusted computers."
+
+[[requirement]]
+id = 'EU-0006-059'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An accepted render job MUST NOT be dropped for want of capacity.'
+binds_to = 'system'
+rationale = 'An accepted job waits durably until a worker can take it.'
+
+[[requirement]]
+id = 'EU-0006-079'
+level = 'MUST'
+polarity = 'required'
+statement = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker."
+binds_to = 'system'
+rationale = 'A lease ends on an event and never on an expiry timer, so a slow worker that keeps progressing keeps its work, and the work of a lost or unpaired worker moves at once.'
+
+[[requirement]]
+id = 'EU-0006-091'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST cancel an attempt and start a replacing attempt of its job on another worker once the progress that attempt reports falls behind what its worker's measured rate of progress predicts."
+binds_to = 'system'
+rationale = "A worker that stays connected but stops progressing never holds a job, and the host judges a stall from the worker's own measurements, never from a fixed timer."

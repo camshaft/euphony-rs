@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-076"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted host MUST rebuild its queued render work from its journal and its manifests."

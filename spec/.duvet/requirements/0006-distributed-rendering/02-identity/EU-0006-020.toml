@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-020"
+
+[[spec]]
+level = "MUST"
+quote = "An export MUST use exactly one render profile."

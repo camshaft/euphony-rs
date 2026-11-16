@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-022"
+
+[[spec]]
+level = "MUST"
+quote = "Where no present worker can render a project's pinned render profile, euphony MUST play the project's pinned results."

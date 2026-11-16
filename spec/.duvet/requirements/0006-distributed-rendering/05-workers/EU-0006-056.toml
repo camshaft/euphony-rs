@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-056"
+
+[[spec]]
+level = "MUST"
+quote = "A message that starts, cancels or answers an attempt MUST NOT wait behind queued bulk transfers on a connection."

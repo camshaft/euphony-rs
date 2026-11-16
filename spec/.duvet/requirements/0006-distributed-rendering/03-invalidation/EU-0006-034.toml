@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-034"
+
+[[spec]]
+level = "MUST"
+quote = "Independent render islands and independent time ranges MUST be able to render on different workers at the same time."

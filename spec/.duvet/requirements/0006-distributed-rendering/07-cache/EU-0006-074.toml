@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-074"
+
+[[spec]]
+level = "MUST"
+quote = "Playback MUST go on reading the prepared audio already on a computer while that computer's storage is full."

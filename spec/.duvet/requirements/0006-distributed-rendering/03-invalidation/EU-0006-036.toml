@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-036"
+
+[[spec]]
+level = "MUST"
+quote = "An edit MUST invalidate every result that depends on its changed input through any dependency of the graph."

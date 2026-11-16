@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-055"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST refuse a result from an attempt that a newer attempt of the same job has replaced."

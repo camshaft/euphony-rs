@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-012"
+
+[[spec]]
+level = "MUST"
+quote = "A render descriptor MUST hold every input that can change the bytes of its result."

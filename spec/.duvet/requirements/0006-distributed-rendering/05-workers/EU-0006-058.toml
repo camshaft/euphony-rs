@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-058"
+
+[[spec]]
+level = "MUST"
+quote = "A computer that isn't one of the owner's paired computers MUST NOT be given render work."
