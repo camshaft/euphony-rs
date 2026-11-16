@@ -17,9 +17,9 @@ controller, never a render worker or a microphone the session takes from automat
 id = 'EU-0017-032'
 level = 'MUST'
 polarity = 'required'
-statement = "The system MUST offer a native phone controller app for each of the major mobile platforms."
+statement = "The system MUST offer a native phone controller app for each mobile platform the project's configuration lists."
 binds_to = 'system'
-rationale = "A musician uses the phone they already carry."
+rationale = "A musician uses the phone they already carry, and a test reads the platforms from one place."
 
 [[requirement]]
 id = 'EU-0017-033'
@@ -60,6 +60,14 @@ polarity = 'forbidden'
 statement = "The phone controller MUST NOT offer pairing or link management."
 binds_to = 'system'
 rationale = "Granting access stays on the screen where the owner confirms it."
+
+[[requirement]]
+id = 'EU-0017-153'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The phone controller MUST NOT offer arrangement editing, program authoring or processor mapping."
+binds_to = 'system'
+rationale = "Those tasks stay on the desktop interface and with assistants, where the whole project is in view."
 
 [[requirement]]
 id = 'EU-0017-038'
