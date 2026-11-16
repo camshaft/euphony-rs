@@ -1,7 +1,8 @@
 ## Generated tracks and regeneration {#generated-tracks}
 
-Each generated track stays linked to the version of the program and the identity of each input that
-made it. Each generated event has an explicit start and an explicit end, which an editor shows and
+Each generated track stays linked to the version of the program that made it and to the identity of
+each asset the program imported and each musical input it read. Each generated event has an
+explicit start and an explicit end, which an editor shows and
 moves, and an identity that stays the same across regenerations of the same program. Regenerating a
 track shows the difference first. The musician's own edits of a generated track stay in a layer of
 their own, and replacing them is an explicit command that can be undone. A project made only of
@@ -10,7 +11,7 @@ leaves the meaning of saved values as it was until an explicit migration changes
 
 ### EU-0009-070 {#EU-0009-070}
 
-A generated track MUST stay linked to the version of the program and the identity of each input that made it.
+A generated track MUST stay linked to the version of the program that made it and to the identity of each asset the program imported and each musical input it read.
 
 ### EU-0009-071 {#EU-0009-071}
 

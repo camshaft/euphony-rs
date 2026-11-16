@@ -2,4 +2,4 @@ target = "rendered/0009-composition-programs/06-determinism.md#EU-0009-066"
 
 [[spec]]
 level = "MUST"
-quote = "The identity of the output of a program MUST cover its text, inputs and seed, and the versions of the runtime, the type library, each definition, each tuning, each rounding policy and the numerical profile."
+quote = "The identity of the output of a program MUST cover its text, each asset it imports, each musical input it reads and its seed, and the versions of the runtime, the type library, each definition, each tuning, each rounding policy and the numerical profile."

@@ -10,8 +10,9 @@ motivation = """\
   stable identities, a preview before each regeneration, edits kept in a layer of their own, and \
   every input retained let a musician mix generated and hand-made music and rebuild it later."""
 prose = """
-Each generated track stays linked to the version of the program and the identity of each input that
-made it. Each generated event has an explicit start and an explicit end, which an editor shows and
+Each generated track stays linked to the version of the program that made it and to the identity of
+each asset the program imported and each musical input it read. Each generated event has an
+explicit start and an explicit end, which an editor shows and
 moves, and an identity that stays the same across regenerations of the same program. Regenerating a
 track shows the difference first. The musician's own edits of a generated track stay in a layer of
 their own, and replacing them is an explicit command that can be undone. A project made only of
@@ -22,7 +23,7 @@ leaves the meaning of saved values as it was until an explicit migration changes
 id = 'EU-0009-070'
 level = 'MUST'
 polarity = 'required'
-statement = 'A generated track MUST stay linked to the version of the program and the identity of each input that made it.'
+statement = 'A generated track MUST stay linked to the version of the program that made it and to the identity of each asset the program imported and each musical input it read.'
 binds_to = 'system'
 rationale = 'A musician and the system know where each generated track came from.'
 
