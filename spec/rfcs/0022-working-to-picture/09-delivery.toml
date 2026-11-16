@@ -18,12 +18,12 @@ mix by a gain that the stems don't carry. Other nonlinear processing on the main
 saturation or clipping, can't be reproduced on each stem.
 
 A loudness profile is versioned data that names its source and version and sets targets for
-integrated loudness, true peak and loudness range. The built-in profiles are the European broadcast
-profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP, and the North
-American broadcast profile, an integrated loudness of -24 LKFS. Integrated loudness, true peak and
-loudness range are measured as the international broadcast recommendations for loudness state.
-Sending an export to another person follows the approval of what leaves the owner's computers that
-RFC 0001 states.
+integrated loudness, true peak and loudness range. The built-in profiles are EBU R128, the European
+broadcast profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP, and
+ATSC A/85, the North American broadcast profile, an integrated loudness of -24 LKFS. Integrated
+loudness and true peak are measured as ITU-R BS.1770 states, and loudness range as EBU Tech 3342
+states. Sending an export to another person follows the approval of what leaves the owner's
+computers that RFC 0001 states.
 
 Exchange reaches two kinds of video editing program. The first kind opens an open project
 interchange format, one with a published specification and a public software development kit, which
