@@ -2,4 +2,4 @@ target = "rendered/0001-overview/04-trust-model.md#EU-0001-043"
 
 [[spec]]
 level = "MUST"
-quote = "An unpaired device, a discovery advertisement, a signaling or relay operator and the network MUST NOT be able to send a command to a session."
+quote = "A device that is neither paired with the owner nor connected through a share link, a discovery advertisement, a signaling or relay operator and the network MUST NOT be able to send a command to a session."

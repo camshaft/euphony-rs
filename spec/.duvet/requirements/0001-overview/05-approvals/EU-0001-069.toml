@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-069"
+
+[[spec]]
+level = "MUST"
+quote = "An owner-interaction record MUST be bound to the exact effect it approves and to the paired owner device that made it."

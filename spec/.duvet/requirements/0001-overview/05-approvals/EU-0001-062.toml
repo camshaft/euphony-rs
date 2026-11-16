@@ -2,4 +2,4 @@ target = "rendered/0001-overview/05-approvals.md#EU-0001-062"
 
 [[spec]]
 level = "MUST"
-quote = "An action the owner takes on their own device MUST NOT wait for an approval."
+quote = "An approval-held action that the owner's own input on a paired owner device starts, with the owner-interaction record of that input, MUST NOT wait for a further approval."

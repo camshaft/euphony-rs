@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-071"
+
+[[spec]]
+level = "MUST"
+quote = "The engine MUST accept the approval of a pairing only after the trusted device and the new device have shown the same short code, derived from the pairing attempt and the new device's key."
