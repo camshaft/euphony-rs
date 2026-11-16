@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-173"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST NOT restore from a backup any data of an identity that has a tombstone."
