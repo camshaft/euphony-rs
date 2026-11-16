@@ -1,0 +1,92 @@
+[section]
+anchor = 'transfer'
+title = 'Moving content between computers'
+problem = """\
+  Bulk copies between the owner's computers can delay a fetch that playback waits for or a control \
+  message that a release or a deletion waits for, a dropped connection can restart a long copy from \
+  its start, and a second transport adds another path to secure and observe."""
+motivation = """\
+  One transport for every exchange between the owner's computers, priority by the work each stream \
+  serves, and transfers that resume from the missing chunks keep playback and the store's decisions \
+  ahead of bulk copies, on connections that only the owner's computers can open."""
+prose = """
+Every chunk request, chunk transfer and control message the store sends between the owner's
+computers uses the one transport that euphony's own protocols share, and the store doesn't add a
+second. A receiver asks which chunks of an item it lacks, fetches only those, checks each against
+the signed chunk list before it counts as present, and records what is present only after the data
+is durable, so a dropped connection resumes from the missing chunks. Traffic has three levels of
+priority: the store's control messages, which are receipts, reservations, release commits, deletion
+intents, barriers and outcomes, at the highest; fetches a session waits for, on project open, before
+playback starts, during playback and for an audition, at the interactive level; and placement
+copies, repair copies and the recall of an archived project at the lowest. Each stream opens at the
+level of the work it serves, so a control message or a playback fetch doesn't wait behind queued
+bulk chunks, and within a level the capacity is shared from the answers of the holders and the
+network, without a fixed cap. Each connection accepts only the owner's paired computers, and is
+authenticated and encrypted on every network. A holder that stops ends its transfers cleanly, and
+the receiver resumes them. Where one of the owner's computers runs a platform the transport doesn't
+support yet, the store waits for that support instead of using another transport."""
+
+[[requirement]]
+id = 'EU-0008-111'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The store MUST NOT use a second transport beside the one that the protocols of euphony share.'
+binds_to = 'system'
+rationale = 'Every exchange between the computers of the owner is secured and observed in one place.'
+
+[[requirement]]
+id = 'EU-0008-112'
+level = 'MUST'
+polarity = 'required'
+statement = 'A receiver MUST record a chunk as present only after the chunk is verified and durable.'
+binds_to = 'system'
+rationale = 'A crash during a transfer never leaves a chunk counted that is not held.'
+
+[[requirement]]
+id = 'EU-0008-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'A transfer that a dropped connection or a stopped holder interrupts MUST resume from the chunks the receiver lacks.'
+binds_to = 'system'
+rationale = 'A long copy never starts again from its beginning.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-112' } ]
+
+[[requirement]]
+id = 'EU-0008-114'
+level = 'MUST'
+polarity = 'required'
+statement = 'The control messages of the store MUST be sent at a higher priority than any fetch or copy.'
+binds_to = 'system'
+rationale = 'Receipts, reservations and deletion decisions never wait behind bulk chunks.'
+
+[[requirement]]
+id = 'EU-0008-115'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fetch that a session waits for MUST be sent at a higher priority than placement copies, repair copies and the recall of an archived project.'
+binds_to = 'system'
+rationale = 'Playback keeps its time while the store copies content in the background.'
+
+[[requirement]]
+id = 'EU-0008-116'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Transfers between the computers of the owner MUST NOT be limited by a fixed cap on concurrency or rate.'
+binds_to = 'system'
+rationale = 'Capacity is learned from the holders and the network, and never set by a guess.'
+
+[[requirement]]
+id = 'EU-0008-117'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each connection of the store MUST accept only the paired computers of the owner.'
+binds_to = 'system'
+rationale = 'No other computer reads or sends the content of the owner.'
+
+[[requirement]]
+id = 'EU-0008-118'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each connection of the store MUST be authenticated and encrypted on every network.'
+binds_to = 'system'
+rationale = 'Content between the computers of the owner is private on any network.'
