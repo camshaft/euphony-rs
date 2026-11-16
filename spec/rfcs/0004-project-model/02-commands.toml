@@ -11,7 +11,9 @@ motivation = """\
 prose = """
 Every change a person or an assistant makes to a project is a command. Commands are sent in batches.
 A batch names the project, the revision its sender expects to change, a key that identifies the batch
-across retries, and the actor that sends it. euphony checks each batch against the project schema and
+across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
+euphony refuses as denied a batch that names another actor before it reads any batch of that actor.
+euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
 conflict carries, at the head of the batch's branch, the view of each part of the project that the
@@ -49,6 +51,15 @@ polarity = 'required'
 statement = 'A batch MUST name its project, its expected revision, its idempotency key and its actor.'
 binds_to = 'system'
 rationale = 'euphony knows what the batch changes, against which state, across retries and for whom.'
+
+[[requirement]]
+id = 'EU-0004-049'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key."
+binds_to = 'system'
+rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 
 [[requirement]]
 id = 'EU-0004-012'
