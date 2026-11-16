@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-132"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST let the owner ask a holder to verify its copy of an item."

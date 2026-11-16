@@ -26,8 +26,9 @@ arrangement, with audition and drag into a track; the owner's assistants search 
 actions: search, get an item, list its uses, set metadata and license, preview and place, keep and
 release a keep mark, and subscribe. Placing an item adds a reference to it through the project's
 previewable, undoable command; it never copies the item, and editing a placed note sequence or
-curve in the new project makes a new item. An entry stays searchable whatever tier holds its item,
-with a waveform overview, and an item that was pruned keeps its entry as absent. Collaborators
+curve in the new project makes a new item, whose provenance records the project it was found in. An entry stays searchable whatever tier holds its item,
+with a waveform overview; an audition of an item held only on another computer fetches its first
+chunks first; and an item that was pruned keeps its entry as absent. Collaborators
 reach none of the owner's catalog; each collaborator's catalog indexes what they hold.
 
 ### EU-0008-067 {#EU-0008-067}
@@ -137,3 +138,15 @@ A collaborator MUST NOT reach any entry of the catalog of the owner.
 ### EU-0008-093 {#EU-0008-093}
 
 The catalog MUST let a subscriber follow new items, analysis progress and changes of availability.
+
+### EU-0008-128 {#EU-0008-128}
+
+The provenance of a placed item MUST record the project it was found in.
+
+### EU-0008-129 {#EU-0008-129}
+
+An entry of an audio item MUST keep a waveform overview whatever tier holds the item.
+
+### EU-0008-130 {#EU-0008-130}
+
+An audition of an item that is not held locally MUST fetch the first chunks of the item first.

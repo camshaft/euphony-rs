@@ -14,13 +14,14 @@ and a move to storage when the owner archives a project, with the rules on last 
 Each of the owner's computers plans from the same policy and the latest availability reports, on
 events, and plans the same actions: copy an item's missing chunks to a holder, verify a holder's
 copy, or release a working copy. A holder that has stored and verified an item signs a receipt that
-names the item, its chunk list, the holder and the storage volume. A storage volume carries a random
-identifier its holder writes when it enrolls it, and a volume on network storage also names its
-server, so copies on one volume or on one server count as one copy. A copy is released only through
-reservations that other holders record for that release: each reserving holder keeps its copy, and
+names the item, its chunk list, the holder and the storage volume. Copies on one storage
+volume, or on volumes of one network storage server, count as one copy. A copy is released only through
+reservations that other holders record for that release: each reserving holder keeps its copy, a holder
+releasing its own copy isn't reserved for another release of the same item, and
 the release commits only while the policy and the pairing are those it recorded. Each release has
 an epoch, so that a release planned by a computer the owner declares lost is settled once and its
-late messages change nothing. A holder verifies a copy by reading each chunk, checking its digest,
+late messages change nothing; a release that recovery can't settle keeps its reservations and shows to
+the owner as unresolved. A holder verifies a copy by reading each chunk, checking its digest,
 decoding it and checking the item's identity. Where the verified copies of an item fall below its
 policy, the planner copies it again from the remaining copies; where no verified copy remains, the
 item is unavailable and each project shows the regions that can't sound. Holders don't encrypt what
@@ -44,7 +45,7 @@ Placement MUST keep, for each item, the number of verified copies on separate co
 
 ### EU-0008-025 {#EU-0008-025}
 
-Placement MUST plan again when a project is archived, opened or closed, a session ends, the policy changes, a holder joins, leaves or reports a storage error, a verification fails, or a computer is unpaired or declared lost.
+Placement MUST plan again when a project is archived, opened or closed, a session ends, the policy changes, a holder joins, leaves or reports a storage error or storage pressure, a verification fails, or a computer is unpaired or declared lost.
 
 ### EU-0008-026 {#EU-0008-026}
 
@@ -108,7 +109,7 @@ A holder MUST verify a copy when it is written, when the holder starts, when it 
 
 ### EU-0008-041 {#EU-0008-041}
 
-Where the verified copies of an item fall below its policy, placement MUST copy it again from the remaining verified copies.
+Where the reachable verified copies of an item fall below its policy, placement MUST copy it again from the remaining verified copies.
 
 ### EU-0008-042 {#EU-0008-042}
 
@@ -129,3 +130,11 @@ Each step of placement, verification, repair, release and fetch MUST emit a type
 ### EU-0008-046 {#EU-0008-046}
 
 An event of the store MUST NOT hold the file name or the project of an item.
+
+### EU-0008-125 {#EU-0008-125}
+
+A holder that is releasing its own copy of an item MUST NOT be reserved for another release of the same item.
+
+### EU-0008-138 {#EU-0008-138}
+
+A release that recovery cannot settle MUST keep its reservations and be shown to the owner as an unresolved release.

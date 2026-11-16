@@ -75,3 +75,11 @@ An archived project that the owner opens MUST be recalled to the working tier as
 ### EU-0008-060 {#EU-0008-060}
 
 Opening a project held only on storage computers and playing it SHOULD NOT cause a missed audio deadline from waiting for its content.
+
+### EU-0008-126 {#EU-0008-126}
+
+An item placed from the catalog MUST be fetched while its placement preview is shown.
+
+### EU-0008-127 {#EU-0008-127}
+
+A rule of the placement policy MAY keep a working copy of each item whose project is open on another computer of the owner.

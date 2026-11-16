@@ -2,4 +2,4 @@ target = "rendered/0008-content-store/02-placement.md#EU-0008-025"
 
 [[spec]]
 level = "MUST"
-quote = "Placement MUST plan again when a project is archived, opened or closed, a session ends, the policy changes, a holder joins, leaves or reports a storage error, a verification fails, or a computer is unpaired or declared lost."
+quote = "Placement MUST plan again when a project is archived, opened or closed, a session ends, the policy changes, a holder joins, leaves or reports a storage error or storage pressure, a verification fails, or a computer is unpaired or declared lost."

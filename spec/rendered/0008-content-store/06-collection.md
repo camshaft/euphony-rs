@@ -95,3 +95,7 @@ Deleting a project MUST NOT delete an item that another project, an export or a 
 ### EU-0008-110 {#EU-0008-110}
 
 A deletion by the owner MUST NOT delete a copy that a collaborator holds.
+
+### EU-0008-139 {#EU-0008-139}
+
+Each computer MUST release its barrier for an intent once the recorded outcome of that intent reaches it.

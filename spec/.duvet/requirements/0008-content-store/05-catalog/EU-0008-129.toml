@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-129"
+
+[[spec]]
+level = "MUST"
+quote = "An entry of an audio item MUST keep a waveform overview whatever tier holds the item."
