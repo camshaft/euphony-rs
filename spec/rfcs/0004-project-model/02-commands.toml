@@ -13,16 +13,18 @@ Every change a person or an assistant makes to a project is a command. Commands 
 A batch names the project, the revision its sender expects to change, a key that identifies the batch
 across retries, and the actor that sends it. The actor is the caller that euphony authenticated, and
 euphony refuses as denied a batch that names another actor before it makes any other check of the
-batch: before it checks the batch's commands against the project schema, its expected revision or
-its idempotency key. euphony checks every other batch against the project schema and the access
-rules that the overview RFC states, and then commits it whole as a new revision, or refuses it whole
-with a typed reason: a conflict, a denial, invalid input or unavailable storage. A gesture in an
-interface, a line of a script, the result of a composition program and the call of an assistant all
-reach the project as such batches. A change of presentation that leaves the project as it was, such
-as scrolling, isn't a command. The protocol that carries batches to euphony is the subject of the
-client protocol RFC. A key identifies a batch only among the batches one actor sends to one project:
-a retry of a committed batch receives that batch's outcome, and a key used again for other commands
-is refused."""
+batch but the check that it names an actor: before it checks the batch's commands against the
+project schema, its expected revision or its idempotency key. euphony refuses as invalid input a
+batch that doesn't name an actor it can compare with the caller, and a batch of the caller that
+leaves out its project, its expected revision or its idempotency key. euphony checks every other
+batch against the project schema and the access rules that the overview RFC states, and then
+commits it whole as a new revision, or refuses it whole with a typed reason: a conflict, a denial,
+invalid input or unavailable storage. A gesture in an interface, a line of a script, the result of
+a composition program and the call of an assistant all reach the project as such batches. A change
+of presentation that leaves the project as it was, such as scrolling, isn't a command. The protocol
+that carries batches to euphony is the subject of the client protocol RFC. A key identifies a batch
+only among the batches one actor sends to one project: a retry of a committed batch receives that
+batch's outcome, and a key used again for other commands is refused."""
 
 [[requirement]]
 id = 'EU-0004-009'
@@ -52,10 +54,19 @@ rationale = 'euphony knows what the batch changes, against which state, across r
 id = 'EU-0004-049'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch: before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
+statement = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch but the check that it names an actor: before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
 binds_to = 'system'
 rationale = 'No sender records a change as another actor, or learns from a refusal or a retry which keys another actor used, and a batch that names another actor is refused as denied whichever other check it would fail.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
+
+[[requirement]]
+id = 'EU-0004-063'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input."
+binds_to = 'system'
+rationale = "A batch that leaves out what EU-0004-011 asks for has one result, invalid input, and a batch whose actor euphony can't compare with the caller is refused before EU-0004-049 compares it, while a batch that names another actor stays denied whatever else it leaves out."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-049' } ]
 
 [[requirement]]
 id = 'EU-0004-012'
