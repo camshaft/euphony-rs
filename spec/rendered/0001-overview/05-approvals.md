@@ -30,7 +30,7 @@ An approval-held action that an assistant, a script, a workflow mechanism, a col
 
 ### EU-0001-060 {#EU-0001-060}
 
-The party that starts an approval-held action MUST NOT be able to approve it.
+An assistant, a script, a workflow mechanism or a collaborator that starts an approval-held action MUST NOT be able to approve it.
 
 ### EU-0001-061 {#EU-0001-061}
 
