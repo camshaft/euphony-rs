@@ -10,7 +10,8 @@ assistant all reach the project as such batches. A change of presentation that l
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
 subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
 to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
-other commands is refused.
+other commands is refused. A batch of another actor or another project with the same key is a new
+batch under its own key.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -67,6 +68,10 @@ Where a batch has the project, actor and idempotency key of a committed batch an
 ### EU-0004-047 {#EU-0004-047}
 
 euphony MUST NOT answer a batch with the outcome of a committed batch of another actor or another project.
+
+### EU-0004-048 {#EU-0004-048}
+
+Where a batch has the idempotency key of a committed batch of another actor or another project, euphony MUST handle it as a new batch.
 
 ### EU-0004-021 {#EU-0004-021}
 
