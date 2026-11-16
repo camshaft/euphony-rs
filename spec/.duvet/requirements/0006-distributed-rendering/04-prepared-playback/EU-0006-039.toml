@@ -1,5 +1,0 @@
-target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-039"
-
-[[spec]]
-level = "MUST"
-quote = "Each playback segment MUST come from a single revision of the graph."

@@ -34,3 +34,7 @@ A result MUST become visible in the render cache only once it is complete and ch
 ### EU-0006-066 {#EU-0006-066}
 
 A transfer MUST run at the priority level of the work it serves.
+
+### EU-0006-090 {#EU-0006-090}
+
+A computer MUST NOT send a chunk of a render input or a result to a computer that isn't one of the owner's paired computers.

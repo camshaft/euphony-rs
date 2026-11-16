@@ -113,7 +113,7 @@ rationale = 'Control of the work stays prompt while chunks fill the link.'
 id = 'EU-0006-057'
 level = 'MUST'
 polarity = 'required'
-statement = 'Every connection between a worker and a host MUST be authenticated and encrypted.'
+statement = 'Every connection between two computers that carries render work, an input or a result MUST be authenticated and encrypted.'
 binds_to = 'system'
 rationale = 'Prepared audio and render work stay private and unaltered on every network.'
 

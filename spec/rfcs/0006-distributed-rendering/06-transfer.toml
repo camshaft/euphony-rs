@@ -73,3 +73,11 @@ polarity = 'required'
 statement = 'A transfer MUST run at the priority level of the work it serves.'
 binds_to = 'system'
 rationale = 'The chunks of interactive preparation come ahead of the chunks of speculative preparation.'
+
+[[requirement]]
+id = 'EU-0006-090'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A computer MUST NOT send a chunk of a render input or a result to a computer that isn't one of the owner's paired computers."
+binds_to = 'system'
+rationale = "The owner's project audio and inputs reach only the owner's trusted computers."
