@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-123"
+
+[[spec]]
+level = "MUST"
+quote = "A route whose transform budget doesn't cover its transforms MUST be shown as not live-ready."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-066"
+
+[[spec]]
+level = "MUST"
+quote = "The output adapter MUST read the channel allocation at the moment it emits a channel-wide reset, whichever transform or recovery path requested it."

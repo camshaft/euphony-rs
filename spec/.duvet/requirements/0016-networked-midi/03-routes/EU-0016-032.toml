@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-032"
+
+[[spec]]
+level = "MUST"
+quote = "The command gateway MUST refuse a route whose source or destination has the wrong direction."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-022"
+
+[[spec]]
+level = "MUST"
+quote = "Changed hardware on a confirmed connector MUST stay unresolved until the owner confirms it again."

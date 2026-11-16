@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-058"
+
+[[spec]]
+level = "MUST"
+quote = "A route MUST own the sustain and other held controller state it sets on a channel."

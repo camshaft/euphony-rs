@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-030"
+
+[[spec]]
+level = "MUST"
+quote = "A route mutation that repeats the idempotency identity of an earlier mutation MUST answer as that mutation answered, without changing the project again."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-061"
+
+[[spec]]
+level = "MUST"
+quote = "When a port is removed, its transport fails, its host is lost or its host is unpaired, the session host MUST mark each route over it unavailable."

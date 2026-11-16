@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-073"
+
+[[spec]]
+level = "MUST"
+quote = "A MIDI host MUST NOT send a channel-wide reset."

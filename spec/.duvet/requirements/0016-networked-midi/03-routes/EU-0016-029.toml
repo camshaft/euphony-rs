@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-029"
+
+[[spec]]
+level = "MUST"
+quote = "Each route mutation MUST answer with a committed revision or a typed refusal."

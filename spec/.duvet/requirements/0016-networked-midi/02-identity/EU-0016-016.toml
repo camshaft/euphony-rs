@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-016"
+
+[[spec]]
+level = "MUST"
+quote = "Each device binding MUST hold an ambiguity state, resolved or unresolved."

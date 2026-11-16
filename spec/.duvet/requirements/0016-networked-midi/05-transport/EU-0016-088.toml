@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-088"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST keep raw captured events, with a visible gap where events were lost."

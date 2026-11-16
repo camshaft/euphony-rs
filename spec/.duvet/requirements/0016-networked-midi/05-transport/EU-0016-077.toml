@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-077"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST map each event's capture time onto the session's sample timeline."

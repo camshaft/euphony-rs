@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-020"
+
+[[spec]]
+level = "MUST"
+quote = "A device that cannot be told apart from another device MUST stay unresolved until the owner confirms its physical connector."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-059"
+
+[[spec]]
+level = "MUST"
+quote = "Before it activates a route's new generation, the session host MUST release each note and controller the old generation owns."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-115"
+
+[[spec]]
+level = "MUST"
+quote = "A missed transform deadline or exhausted event capacity MUST suspend the affected route and release the notes it owns."

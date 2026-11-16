@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-126"
+
+[[spec]]
+level = "MUST"
+quote = "A simulated result MUST NOT be reported as a measurement on hardware."

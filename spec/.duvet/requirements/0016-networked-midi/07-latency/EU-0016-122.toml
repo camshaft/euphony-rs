@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-122"
+
+[[spec]]
+level = "MUST"
+quote = "A route's transform budget MUST be the accepted monitoring delay less the route's other measured delays and their uncertainty allowance."

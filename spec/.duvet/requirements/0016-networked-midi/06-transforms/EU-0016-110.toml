@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-110"
+
+[[spec]]
+level = "MUST"
+quote = "A change of a transform's source MUST create a new immutable version."

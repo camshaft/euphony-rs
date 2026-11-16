@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-067"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST give each reset-sensitive route an exclusive destination channel or refuse the route."

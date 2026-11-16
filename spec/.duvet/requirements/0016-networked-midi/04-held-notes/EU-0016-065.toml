@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-065"
+
+[[spec]]
+level = "MUST"
+quote = "The output adapter MUST emit a typed refusal event for each channel-wide reset it refuses."

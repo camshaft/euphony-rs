@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-074"
+
+[[spec]]
+level = "MUST"
+quote = "Each event MUST carry its capture time and the clock generation of the host that captured it to the session host."

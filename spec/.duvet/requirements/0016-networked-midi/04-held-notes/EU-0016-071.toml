@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-071"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST NOT replay a buffered performance or controller gesture after a reconnection."

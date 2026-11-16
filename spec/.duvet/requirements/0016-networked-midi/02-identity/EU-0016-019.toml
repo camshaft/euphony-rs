@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-019"
+
+[[spec]]
+level = "MUST"
+quote = "A device that returns with a verified identity MUST receive the routes of its own saved binding."

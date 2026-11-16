@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-094"
+
+[[spec]]
+level = "MUST"
+quote = "A missing, failed or mismatched verification record MUST produce an unverified transport result and an event."

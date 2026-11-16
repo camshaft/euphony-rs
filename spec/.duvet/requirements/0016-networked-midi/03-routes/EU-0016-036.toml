@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-036"
+
+[[spec]]
+level = "MUST"
+quote = "The command gateway MUST refuse a route mutation from a caller the trust model doesn't authorize for the project."

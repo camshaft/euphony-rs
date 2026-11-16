@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-084"
+
+[[spec]]
+level = "MUST"
+quote = "On a gap the recovery journal doesn't cover, the session host MUST reset the state the affected route owns."
