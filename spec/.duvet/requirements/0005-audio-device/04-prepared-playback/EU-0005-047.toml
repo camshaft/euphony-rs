@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-047"
+
+[[spec]]
+level = "MUST"
+quote = "The audio device process MUST report a prepared buffer that is not full when the callback reads it to the session host as an underrun."

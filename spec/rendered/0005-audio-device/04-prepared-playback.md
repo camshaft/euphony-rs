@@ -2,13 +2,14 @@
 
 Prepared audio is audio of the project rendered ahead of playback, and it is the normal input of
 playback. A passage whose prepared audio matches the current revision plays from that audio, and a
-fully prepared project replays without calculating any instrument or effect. Prepared audio is
-streamed from storage into buffers that are full before the callback reads them, and playback can
-start at any sample of a prepared buffer. Playback moves between prepared audio and the live render
-island at aligned sample positions, compensates the latency of each path, crosses between them with
-a transition envelope and carries tails and instrument state across the switch. The browser
-companion plays prepared audio to its output; live rendering and capture run in the native audio
-device process.
+fully prepared project replays without calculating any instrument or effect outside the live render
+island. Prepared audio is streamed from storage into buffers that are full before the callback
+reads them, and a prepared buffer that isn't full when the callback reads it reaches the session
+host as an underrun. Playback can start at any sample of a prepared buffer. Playback moves between
+prepared audio and the live render island at aligned sample positions, compensates the latency of
+each path, crosses between them with a transition envelope and carries tails and instrument state
+across the switch, so that the output doesn't break at the switch. The browser companion plays
+prepared audio to its output; live rendering and capture run in the native audio device process.
 
 ### EU-0005-029 {#EU-0005-029}
 
@@ -16,7 +17,7 @@ A passage whose prepared audio matches the current revision MUST play from that 
 
 ### EU-0005-030 {#EU-0005-030}
 
-Replaying a fully prepared project MUST NOT render any of its instruments or effects during playback.
+Replaying a fully prepared project MUST NOT render any instrument or effect outside the live render island during playback.
 
 ### EU-0005-031 {#EU-0005-031}
 
@@ -40,7 +41,7 @@ A switch between prepared audio and the live render island MUST compensate the l
 
 ### EU-0005-036 {#EU-0005-036}
 
-A switch between prepared audio and the live render island MUST cross between them with a transition envelope.
+A switch between prepared audio and the live render island MUST NOT put a discontinuity in the output.
 
 ### EU-0005-037 {#EU-0005-037}
 
@@ -57,3 +58,7 @@ Live rendering MUST run in a native audio device process.
 ### EU-0005-040 {#EU-0005-040}
 
 Input capture MUST run in a native audio device process.
+
+### EU-0005-047 {#EU-0005-047}
+
+The audio device process MUST report a prepared buffer that is not full when the callback reads it to the session host as an underrun.

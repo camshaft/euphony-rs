@@ -15,7 +15,8 @@ again, and a performance can't. A take enters the project as regions of the same
 any other audio. Each recorded sample is aligned with the sample of playback it was recorded
 against, so a take sounds in time with the passage it was played over. The process measures the
 round-trip latency of the active device, and the musician chooses a monitoring mode after seeing
-it; euphony doesn't promise a latency of its own."""
+it; euphony doesn't promise a latency of its own. Recording continues while changed passages of
+the project are prepared again."""
 
 [[requirement]]
 id = 'EU-0005-041'
@@ -65,3 +66,11 @@ polarity = 'required'
 statement = 'Input captured before the loss of a device MUST stay in the recording.'
 binds_to = 'system'
 rationale = "A lost device doesn't take the take with it."
+
+[[requirement]]
+id = 'EU-0005-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Recording MUST continue while changed passages of the project are prepared again.'
+binds_to = 'system'
+rationale = 'A performance is not cut short while euphony prepares an edit.'

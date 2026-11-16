@@ -17,7 +17,8 @@ The island renders on the musician's own computer and doesn't wait on another co
 Each playback segment comes from one compiled graph revision. Where the island can't meet the
 measured deadline of the device, playback keeps the previous revision the musician selected, or
 pauses the preview where the musician selected none, and euphony shows that the sound isn't the
-current revision."""
+current revision. Input monitoring continues while changed passages of the project are prepared
+again."""
 
 [[requirement]]
 id = 'EU-0005-019'
@@ -95,6 +96,14 @@ rationale = "The musician never judges an edit from audio that doesn't hold it."
 id = 'EU-0005-028'
 level = 'MUST'
 polarity = 'required'
-statement = 'The live render island MUST render the project graph without waiting on another computer for audio.'
+statement = 'The live render island MUST render its part of the project graph without waiting on another computer for audio.'
 binds_to = 'system'
 rationale = 'A network or clock failure of another computer never becomes a playback failure.'
+
+[[requirement]]
+id = 'EU-0005-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'Input monitoring MUST continue while changed passages of the project are prepared again.'
+binds_to = 'system'
+rationale = 'The musician keeps hearing their input while euphony prepares an edit.'

@@ -13,9 +13,9 @@ output of the period and takes its input before the deadline of the device. Ever
 reads is ready before it runs: the session host delivers buffers whose memory is already allocated,
 and each compiled graph revision before the callback plays it. The callback passes buffers and
 revisions to and from the session host without either side waiting on the other. Work whose time
-has no bound, such as a read of storage, a call to another computer, or allocating or releasing
-memory, happens outside the callback. The callback counts positions in whole samples; exact musical
-time is resolved to samples before a revision reaches it."""
+has no bound, such as waiting on a lock, a read of storage, a call to another computer, or
+allocating or releasing memory, happens outside the callback. The callback counts positions in whole
+samples; exact musical time is resolved to samples before a revision reaches it."""
 
 [[requirement]]
 id = 'EU-0005-010'
@@ -45,7 +45,7 @@ rationale = 'Releasing memory can take time without a bound, so old buffers and 
 id = 'EU-0005-013'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'The callback MUST NOT acquire a lock whose wait has no bound.'
+statement = 'The callback MUST NOT wait on a lock.'
 binds_to = 'system'
 rationale = 'A lock held elsewhere never holds up the device.'
 
@@ -61,10 +61,9 @@ rationale = 'A storage access can take time without a bound.'
 id = 'EU-0005-015'
 level = 'MUST'
 polarity = 'required'
-statement = 'The session host MUST deliver each buffer the callback uses with its memory already allocated.'
+statement = 'The session host MUST deliver each audio buffer it sends to the audio device process with its memory already allocated.'
 binds_to = 'system'
 rationale = 'The callback fills and reads buffers without allocating.'
-relations = [ { kind = 'depends_on', target = 'EU-0005-011' } ]
 
 [[requirement]]
 id = 'EU-0005-016'

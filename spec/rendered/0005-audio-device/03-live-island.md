@@ -7,7 +7,8 @@ The island renders on the musician's own computer and doesn't wait on another co
 Each playback segment comes from one compiled graph revision. Where the island can't meet the
 measured deadline of the device, playback keeps the previous revision the musician selected, or
 pauses the preview where the musician selected none, and euphony shows that the sound isn't the
-current revision.
+current revision. Input monitoring continues while changed passages of the project are prepared
+again.
 
 ### EU-0005-019 {#EU-0005-019}
 
@@ -47,4 +48,8 @@ Euphony MUST NOT present a sound as the current revision when it was rendered fr
 
 ### EU-0005-028 {#EU-0005-028}
 
-The live render island MUST render the project graph without waiting on another computer for audio.
+The live render island MUST render its part of the project graph without waiting on another computer for audio.
+
+### EU-0005-048 {#EU-0005-048}
+
+Input monitoring MUST continue while changed passages of the project are prepared again.

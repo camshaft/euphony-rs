@@ -2,4 +2,4 @@ target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-036"
 
 [[spec]]
 level = "MUST"
-quote = "A switch between prepared audio and the live render island MUST cross between them with a transition envelope."
+quote = "A switch between prepared audio and the live render island MUST NOT put a discontinuity in the output."

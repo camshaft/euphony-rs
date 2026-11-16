@@ -6,7 +6,8 @@ again, and a performance can't. A take enters the project as regions of the same
 any other audio. Each recorded sample is aligned with the sample of playback it was recorded
 against, so a take sounds in time with the passage it was played over. The process measures the
 round-trip latency of the active device, and the musician chooses a monitoring mode after seeing
-it; euphony doesn't promise a latency of its own.
+it; euphony doesn't promise a latency of its own. Recording continues while changed passages of
+the project are prepared again.
 
 ### EU-0005-041 {#EU-0005-041}
 
@@ -31,3 +32,7 @@ Euphony MUST show the musician the measured round-trip latency of the active dev
 ### EU-0005-046 {#EU-0005-046}
 
 Input captured before the loss of a device MUST stay in the recording.
+
+### EU-0005-049 {#EU-0005-049}
+
+Recording MUST continue while changed passages of the project are prepared again.
