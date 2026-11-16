@@ -31,6 +31,10 @@ A reader that cannot hold a subscription MUST be able to resume from a durable c
 
 A query of an analysis that has not finished MUST return the part it covers so far and a cursor to continue from.
 
+### EU-0020-113 {#EU-0020-113}
+
+A read of a result's series MUST return one page and a cursor to the next page, whatever the state of its analysis.
+
 ### EU-0020-049 {#EU-0020-049}
 
 Each view MUST show whether the data it shows is measured, inferred, corrected, stale, incomplete or unsupported.
