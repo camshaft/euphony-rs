@@ -14,8 +14,10 @@ A batch names the project, the branch it changes, the revision its sender expect
 branch, a key that identifies the batch across retries, and the actor that sends it. The actor is the
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
 before it reads any batch of that actor. euphony also refuses as denied a batch whose caller may not
-take its commands on the branch it names, before it checks the batch's expected revision or its key,
-and then refuses as invalid input a batch whose expected revision isn't in the history of that branch.
+take its commands on the branch it names, or that names a branch the project doesn't hold, with one
+answer for both, before it checks the batch's expected revision or its key. It then refuses as
+invalid input a batch that names a working branch another copy holds, and a batch whose expected
+revision isn't in the history of that branch.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -67,6 +69,24 @@ statement = "Where the caller that euphony authenticated may not take every comm
 binds_to = 'system'
 rationale = "A caller that may not take a batch's commands on its branch doesn't learn from a conflict or from a retry whether that branch's head moved or which keys its actors used, and a caller that may not change the project at all doesn't learn that it exists."
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
+
+[[requirement]]
+id = 'EU-0004-081'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key."
+binds_to = 'system'
+rationale = "A refusal doesn't tell a caller whether a branch that it may not write exists."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-056' } ]
+
+[[requirement]]
+id = 'EU-0004-082'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-081 and before it checks the batch's expected revision or its idempotency key."
+binds_to = 'system'
+rationale = "A copy never commits to a branch that another copy holds, and a caller that may not take the batch's commands on that branch learns only that it is denied."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-038' }, { kind = 'depends_on', target = 'EU-0004-081' } ]
 
 [[requirement]]
 id = 'EU-0004-064'
@@ -123,7 +143,7 @@ rationale = 'A sender acts on a typed reason, not on the words of a message.'
 id = 'EU-0004-017'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where the expected revision of a batch is not the head of the branch that the batch names, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.'
+statement = 'Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.'
 binds_to = 'system'
 rationale = 'An edit made against an old state never overwrites a newer one, and a retry of a batch whose first send committed after the head moved never reads as a conflict.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]

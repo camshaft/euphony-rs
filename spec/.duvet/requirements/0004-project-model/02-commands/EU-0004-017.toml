@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-017"
 
 [[spec]]
 level = "MUST"
-quote = "Where the expected revision of a batch is not the head of the branch that the batch names, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict."
+quote = "Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict."
