@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-050"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST restore a saved layout only after it validates the layout's targets, its schema and the surface's pairing."

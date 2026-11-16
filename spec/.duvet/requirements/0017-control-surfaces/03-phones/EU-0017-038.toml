@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-038"
+
+[[spec]]
+level = "MUST"
+quote = "The reduced set of the phone controller MUST NOT reduce what the assistant interface offers."

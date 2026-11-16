@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-041"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST save each surface layout with the project's session configuration, by project, surface identity and user."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-058"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST NOT follow another surface's selected track unless its layout is configured to follow it."

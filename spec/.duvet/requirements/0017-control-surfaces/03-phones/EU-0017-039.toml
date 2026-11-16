@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-039"
+
+[[spec]]
+level = "MUST"
+quote = "A disconnected phone controller MUST show its controls as unavailable."

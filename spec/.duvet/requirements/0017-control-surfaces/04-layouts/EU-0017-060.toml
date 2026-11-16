@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-060"
+
+[[spec]]
+level = "MUST"
+quote = "Each touch panel MUST offer keyboard, screen-reader and single-pointer alternatives."

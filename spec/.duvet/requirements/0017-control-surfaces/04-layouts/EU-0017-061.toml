@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-061"
+
+[[spec]]
+level = "MUST"
+quote = "Changing a bank or the orientation of a surface MUST NOT retarget an active gesture."

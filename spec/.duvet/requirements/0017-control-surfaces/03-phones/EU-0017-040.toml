@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-040"
+
+[[spec]]
+level = "MUST"
+quote = "Locking a device or suspending its app MUST NOT leave a gesture changing gain without end."

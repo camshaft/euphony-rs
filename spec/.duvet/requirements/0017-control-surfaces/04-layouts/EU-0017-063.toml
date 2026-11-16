@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-063"
+
+[[spec]]
+level = "MUST"
+quote = "Restoring a saved layout and activating a panel MUST pass the same conformance check as applying a layout."

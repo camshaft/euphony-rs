@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-014"
+
+[[spec]]
+level = "MUST"
+quote = "Pairing a surface MUST show the owner the session's identity and a confirmation of the device's key."

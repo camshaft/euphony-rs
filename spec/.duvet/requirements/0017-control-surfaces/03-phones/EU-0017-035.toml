@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-035"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator's phone joined by link MUST change only its own listener mix and, where the session shares its transport, playback."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-026"
+
+[[spec]]
+level = "MUST"
+quote = "Unpairing a surface MUST end its subscriptions and its control at once."

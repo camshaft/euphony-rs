@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-015"
+
+[[spec]]
+level = "MUST"
+quote = "A pairing MUST take effect only once the owner confirms it."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-021"
+
+[[spec]]
+level = "MUST"
+quote = "A surface of a participant joined by link MUST act at that link's level."

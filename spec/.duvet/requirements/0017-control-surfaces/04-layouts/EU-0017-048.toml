@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-048"
+
+[[spec]]
+level = "MUST"
+quote = "Importing a layout MUST NOT import credentials, pairings, links, tools or programs."

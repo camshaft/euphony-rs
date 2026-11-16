@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-065"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a layout MUST be refused where its expected layout revision is not the current one."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-018"
+
+[[spec]]
+level = "MUST"
+quote = "The pairing screen MUST show the surface, a warning for a shared screen, the limits of the device's credential storage and that unpairing cannot erase what the device has received."

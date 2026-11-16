@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-013"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST report each discovered controller with its identity, its class and its key fingerprint."

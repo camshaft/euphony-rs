@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/01-surfaces.md#EU-0017-005"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST let phones, tablets, desktop windows, touch monitors, the browser companion and hardware controllers attach to one running session at the same time."

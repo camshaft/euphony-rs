@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-066"
+
+[[spec]]
+level = "MUST"
+quote = "Attaching a surface MUST return the session and control generations, an authorized snapshot and a subscription cursor, or the reason it was refused."

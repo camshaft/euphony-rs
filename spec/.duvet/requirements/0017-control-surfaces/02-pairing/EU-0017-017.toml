@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-017"
+
+[[spec]]
+level = "MAY"
+quote = "An assistant MAY propose pairing a surface for the owner to confirm."
