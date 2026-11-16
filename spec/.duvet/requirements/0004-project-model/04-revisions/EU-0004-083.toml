@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-083"
+
+[[spec]]
+level = "MUST"
+quote = "The first revision of a project MUST NOT follow any revision."

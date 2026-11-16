@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-086"
+
+[[spec]]
+level = "MUST"
+quote = "The outcome of the creation of a project MUST identify the working branch whose head is the first revision of the project."

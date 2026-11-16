@@ -10,7 +10,10 @@ motivation = """\
   and reads that name their revision let every copy edit offline, keep working when another copy is \
   lost, and check each revision it receives."""
 prose = """
-Each committed batch makes a revision. A revision names the revisions it follows, its parents, so the
+The creation of a project makes its first revision, which doesn't follow any revision, carries the
+signature of the copy that created the project, and is the head of a working branch that copy holds;
+the outcome of the creation identifies that branch. Each committed batch then makes a revision. A
+revision names the revisions it follows, its parents, so the
 revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
 its head. Each copy holds its working branches and is the only copy that commits to them, so a
 musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
@@ -51,12 +54,30 @@ rationale = 'Every history has a beginning and an order.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-033' } ]
 
 [[requirement]]
+id = 'EU-0004-083'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The first revision of a project MUST NOT follow any revision.'
+binds_to = 'system'
+rationale = 'Every history of a project begins at the revision its creation made.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-033' } ]
+
+[[requirement]]
 id = 'EU-0004-035'
 level = 'MUST'
 polarity = 'required'
 statement = 'Each revision MUST carry a signature by which any copy verifies which copy committed it.'
 binds_to = 'system'
 rationale = 'A revision altered or forged on its way to another copy is found.'
+
+[[requirement]]
+id = 'EU-0004-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'The first revision of a project MUST carry the signature of the copy that created the project.'
+binds_to = 'system'
+rationale = 'Any copy verifies where the history of a project began, though no batch made its first revision.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' } ]
 
 [[requirement]]
 id = 'EU-0004-036'
@@ -74,6 +95,24 @@ polarity = 'required'
 statement = 'Each branch MUST point at exactly one revision.'
 binds_to = 'system'
 rationale = 'A branch always names one state of the project.'
+
+[[requirement]]
+id = 'EU-0004-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'The first revision of a project MUST be the head of a working branch that the copy which created the project holds.'
+binds_to = 'system'
+rationale = 'The creating copy commits the first batch of the project to that branch without waiting on another copy.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-037' }, { kind = 'depends_on', target = 'EU-0004-084' } ]
+
+[[requirement]]
+id = 'EU-0004-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of the creation of a project MUST identify the working branch whose head is the first revision of the project.'
+binds_to = 'system'
+rationale = 'The creator names that branch and the first revision in the first batch it sends.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-073' }, { kind = 'depends_on', target = 'EU-0004-085' } ]
 
 [[requirement]]
 id = 'EU-0004-038'
