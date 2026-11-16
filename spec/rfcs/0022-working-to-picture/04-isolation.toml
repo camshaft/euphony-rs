@@ -53,9 +53,17 @@ rationale = "Work admitted to that computer leaves room for the picture."
 id = 'EU-0022-059'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead and say so."
+statement = "Where the computer that plays the audio misses audio deadlines while it decodes a video's original file, Euphony MUST show the scrub copy there instead."
 binds_to = 'system'
 rationale = "The lighter copy keeps the picture without costing the sound."
+
+[[requirement]]
+id = 'EU-0022-174'
+level = 'MUST'
+polarity = 'required'
+statement = "While Euphony shows the scrub copy instead of the original file to protect the sound, it MUST tell the person on that computer that the scrub copy is shown."
+binds_to = 'system'
+rationale = "The musician knows why the picture is lighter than the original."
 
 [[requirement]]
 id = 'EU-0022-060'

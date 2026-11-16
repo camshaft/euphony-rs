@@ -32,9 +32,17 @@ rationale = "A cut that arrives without lists can still be followed."
 id = 'EU-0022-112'
 level = 'MUST'
 polarity = 'required'
-statement = "Conforming MUST move each region, picture-locked marker, automation range and cue boundary with its segment, in one command."
+statement = "Conforming MUST move each region, picture-locked marker, automation range and cue boundary with its segment."
 binds_to = 'system'
-rationale = "The whole project follows the new cut in one action."
+rationale = "The whole project follows the new cut."
+
+[[requirement]]
+id = 'EU-0022-177'
+level = 'MUST'
+polarity = 'required'
+statement = "Conforming MUST make every move of a change list in one command."
+binds_to = 'system'
+rationale = "The musician follows a new cut in one action."
 
 [[requirement]]
 id = 'EU-0022-113'
