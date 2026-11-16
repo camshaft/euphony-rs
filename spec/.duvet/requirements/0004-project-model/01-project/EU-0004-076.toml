@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-076"
+
+[[spec]]
+level = "MUST"
+quote = "Where the actor that a command creating a project names is not the caller that euphony authenticated, euphony MUST refuse the command as denied before it checks its idempotency key."
