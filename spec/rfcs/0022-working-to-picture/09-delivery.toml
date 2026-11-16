@@ -23,7 +23,14 @@ profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP,
 American broadcast profile, an integrated loudness of -24 LKFS. Integrated loudness, true peak and
 loudness range are measured as the international broadcast recommendations for loudness state.
 Sending an export to another person follows the approval of what leaves the owner's computers that
-RFC 0001 states."""
+RFC 0001 states.
+
+Exchange reaches two kinds of video editing program. The first kind opens an open project
+interchange format, one with a published specification and a public software development kit, which
+carries each track's clips with their handles, fades and clip gain at their timecode. The second kind
+doesn't open that format without another program, and opens its own timeline description file, which
+the adapters of an open-source timeline interchange format write. Both kinds write edit decision
+lists, which serve conform."""
 
 [[requirement]]
 id = 'EU-0022-140'
@@ -229,7 +236,7 @@ rationale = "A finishing editor receives the tracks as editable clips."
 id = 'EU-0022-165'
 level = 'MUST'
 polarity = 'required'
-statement = "Exchange MUST offer a format that each video editing program in common use opens."
+statement = "Exchange MUST offer a format that each kind of video editing program this section lists opens."
 binds_to = 'system'
 rationale = "A musician's collaborators use several editing programs, none more than the others."
 
