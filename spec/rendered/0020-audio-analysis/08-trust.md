@@ -51,7 +51,7 @@ A distributed build MUST NOT include a method whose rights record is missing, fa
 
 ### EU-0020-087 {#EU-0020-087}
 
-The system MUST NOT download a model or send material to an outside provider without the person's explicit choice of that destination and that material.
+The system MUST NOT download a model, send material to an outside provider or upload material publicly unless the applicable terms permit it and the person explicitly chose that destination and that material.
 
 ### EU-0020-088 {#EU-0020-088}
 

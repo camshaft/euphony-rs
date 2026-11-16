@@ -24,7 +24,7 @@ Each method MUST declare the context its results depend on beyond the analyzed i
 
 ### EU-0020-034 {#EU-0020-034}
 
-A request whose identity matches an earlier one MUST reuse the validated result of that request instead of running again.
+A request whose identity matches an earlier one MUST reuse the validated result of that request, from the result store the requester is authorized to read, instead of running again.
 
 ### EU-0020-035 {#EU-0020-035}
 

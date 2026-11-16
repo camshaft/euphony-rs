@@ -176,3 +176,36 @@ polarity = 'required'
 statement = 'Where a method runs on more than one kind of hardware, its results on each kind MUST be compared for accuracy as well as for speed.'
 binds_to = 'system'
 rationale = 'A faster profile that answers differently is found before it is used.'
+
+[[requirement]]
+id = 'EU-0020-109'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse an evaluation report or a calibration record whose corpus, split or method version doesn't match the versions it names."
+binds_to = 'system'
+rationale = 'A report or a calibration never rests on evidence from another corpus, split or method version.'
+
+[[requirement]]
+id = 'EU-0020-110'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse to publish a corpus version that holds an example derived from a correction whose owner's permission for that example and for evaluation doesn't hold at publication."
+binds_to = 'system'
+rationale = 'A permission withdrawn or narrowed after admission still keeps the example out of the next corpus version.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-105' } ]
+
+[[requirement]]
+id = 'EU-0020-111'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST accept the publication of a comparison that shows a regression.'
+binds_to = 'system'
+rationale = 'A failing comparison is the evidence a regression needs, so it is never held back.'
+
+[[requirement]]
+id = 'EU-0020-112'
+level = 'MUST'
+polarity = 'required'
+statement = 'A comparison whose publication was interrupted MUST open or join its work item once the system recovers.'
+binds_to = 'system'
+rationale = 'An interruption never leaves a regression untracked or tracked twice.'

@@ -44,7 +44,7 @@ rationale = 'A whole-song estimate is invalidated by a change outside the passag
 id = 'EU-0020-034'
 level = 'MUST'
 polarity = 'required'
-statement = 'A request whose identity matches an earlier one MUST reuse the validated result of that request instead of running again.'
+statement = 'A request whose identity matches an earlier one MUST reuse the validated result of that request, from the result store the requester is authorized to read, instead of running again.'
 binds_to = 'system'
 rationale = 'The same question is answered once.'
 relations = [ { kind = 'depends_on', target = 'EU-0020-032' } ]

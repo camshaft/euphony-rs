@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-109"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse an evaluation report or a calibration record whose corpus, split or method version doesn't match the versions it names."

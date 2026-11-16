@@ -90,3 +90,19 @@ A report published before a withdrawal MUST keep showing its original corpus tog
 ### EU-0020-108 {#EU-0020-108}
 
 Where a method runs on more than one kind of hardware, its results on each kind MUST be compared for accuracy as well as for speed.
+
+### EU-0020-109 {#EU-0020-109}
+
+The system MUST refuse an evaluation report or a calibration record whose corpus, split or method version doesn't match the versions it names.
+
+### EU-0020-110 {#EU-0020-110}
+
+The system MUST refuse to publish a corpus version that holds an example derived from a correction whose owner's permission for that example and for evaluation doesn't hold at publication.
+
+### EU-0020-111 {#EU-0020-111}
+
+The system MUST accept the publication of a comparison that shows a regression.
+
+### EU-0020-112 {#EU-0020-112}
+
+A comparison whose publication was interrupted MUST open or join its work item once the system recovers.
