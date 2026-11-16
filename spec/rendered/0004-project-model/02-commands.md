@@ -6,6 +6,8 @@ across retries, and the actor that sends it. The actor is the caller that euphon
 euphony refuses as denied a batch that names another actor before it reads any batch of that actor.
 euphony also refuses as denied a batch from a caller who may not change the project, before it
 checks the batch's expected revision or its key.
+It refuses a batch that names a project that doesn't exist in the same way, so that a refusal
+doesn't tell a caller whether the project exists.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -35,6 +37,10 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 ### EU-0004-056 {#EU-0004-056}
 
 Where the caller that euphony authenticated may not change the project that a batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
+
+### EU-0004-059 {#EU-0004-059}
+
+Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project.
 
 ### EU-0004-012 {#EU-0004-012}
 
