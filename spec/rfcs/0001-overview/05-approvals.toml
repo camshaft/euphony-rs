@@ -45,9 +45,9 @@ rationale = 'An assistant, a script or a collaborator cannot send material away 
 id = 'EU-0001-060'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'The party that starts an approval-held action MUST NOT be able to approve it.'
+statement = 'An assistant, a script, a workflow mechanism or a collaborator that starts an approval-held action MUST NOT be able to approve it.'
 binds_to = 'system'
-rationale = 'An approval is a decision of the owner, never of the party that asks for it.'
+rationale = "An approval is a decision of the owner, never of the party that asks for it, and the owner's own pairing on the first computer's console can still be approved there."
 relations = [ { kind = 'depends_on', target = 'EU-0001-059' } ]
 
 [[requirement]]
