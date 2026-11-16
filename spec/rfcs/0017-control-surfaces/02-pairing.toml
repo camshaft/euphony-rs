@@ -13,9 +13,10 @@ the paired list on every connection. A device outside the local network, and the
 joins through an invitation and an authenticated connection with the same relay and origin
 restrictions as other devices. The gateway is the boundary of the session host that every attach,
 layout commit, control operation and delivered projection of a surface passes through. The trust
-model, the levels of a link and the meaning of pairing are stated by RFC 0001; a second window or a
-touch monitor wired to a computer is part of that computer and isn't paired on its own. Pairing
-establishes a device's identity, not trust in every later input from it.'''
+model, the levels of a link, invitations, origin restrictions, a paired device's change of key and
+the meaning of pairing are stated by RFC 0001; a second window or a touch monitor wired to a
+computer is part of that computer and isn't paired on its own. Pairing establishes a device's
+identity, not trust in every later input from it.'''
 
 [[requirement]]
 id = 'EU-0017-012'
@@ -74,6 +75,14 @@ binds_to = 'system'
 rationale = "The owner's confirmation accepts the remaining risks of the device knowingly."
 
 [[requirement]]
+id = 'EU-0017-151'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A pairing confirmation MUST NOT authorize external sharing or publication of the session's content."
+binds_to = 'system'
+rationale = "Sharing or publishing what a surface receives keeps its own approval."
+
+[[requirement]]
 id = 'EU-0017-019'
 level = 'MUST'
 polarity = 'required'
@@ -109,9 +118,9 @@ rationale = "A pairing revoked mid-session stops the very next input and update.
 id = 'EU-0017-023'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "An unpaired device MUST NOT receive anything beyond the public connection information."
+statement = "A device that is neither paired nor joined by link MUST NOT receive anything beyond the public connection information."
 binds_to = 'system'
-rationale = "Track labels, meters and project structure stay private until the owner pairs the device."
+rationale = "Track labels, meters and project structure stay private until the owner pairs the device or invites its participant."
 
 [[requirement]]
 id = 'EU-0017-024'
@@ -128,6 +137,14 @@ polarity = 'required'
 statement = "A surface MUST keep its credentials in the platform's secure storage where the platform offers it."
 binds_to = 'system'
 rationale = "A lost or shared device doesn't hand its pairing to another program."
+
+[[requirement]]
+id = 'EU-0017-152'
+level = 'MUST'
+polarity = 'required'
+statement = "A key provisioned to a hardware controller or its adapter MUST be kept in protected storage where the device keeps it."
+binds_to = 'system'
+rationale = "A hardware controller's pairing is as hard to copy as a phone's."
 
 [[requirement]]
 id = 'EU-0017-026'
