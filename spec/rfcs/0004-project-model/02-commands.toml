@@ -17,7 +17,9 @@ refuses it whole with a typed reason: a conflict, a denial, invalid input or una
 gesture in an interface, a line of a script, the result of a composition program and the call of an
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
-subject of the client protocol RFC."""
+subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
+to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
+other commands is refused."""
 
 [[requirement]]
 id = 'EU-0004-009'
@@ -89,9 +91,9 @@ rationale = 'A sender acts on a typed reason, not on the words of a message.'
 id = 'EU-0004-017'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where the expected revision of a batch is not the head of its branch, euphony MUST refuse the batch as a conflict.'
+statement = 'Where the expected revision of a batch is not the head of its branch, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.'
 binds_to = 'system'
-rationale = 'An edit made against an old state never overwrites a newer one.'
+rationale = 'An edit made against an old state never overwrites a newer one, and a retry of a batch whose first send committed after the head moved never reads as a conflict.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 
 [[requirement]]
@@ -107,7 +109,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-017' } ]
 id = 'EU-0004-019'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'A batch with the idempotency key of a committed batch MUST NOT be applied again.'
+statement = 'A batch with the project, actor and idempotency key of a committed batch MUST NOT be applied again.'
 binds_to = 'system'
 rationale = 'A retry after a lost answer, or after a reconnection, never repeats an edit.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
@@ -116,9 +118,27 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-020'
 level = 'MUST'
 polarity = 'required'
-statement = 'A batch sent again with the idempotency key of a committed batch MUST receive the outcome of that committed batch.'
+statement = 'A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.'
 binds_to = 'system'
 rationale = 'A sender whose answer was lost learns what happened.'
+
+[[requirement]]
+id = 'EU-0004-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a batch has the project, actor and idempotency key of a committed batch and other commands, euphony MUST refuse the batch as invalid input.'
+binds_to = 'system'
+rationale = 'A key used again for another change is never read as a retry, and is never applied as a new batch.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
+
+[[requirement]]
+id = 'EU-0004-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'euphony MUST NOT answer a batch with the outcome of a committed batch of another actor or another project.'
+binds_to = 'system'
+rationale = "A sender that learns the key of another actor never reads that actor's changes through a retry."
+relations = [ { kind = 'depends_on', target = 'EU-0004-020' } ]
 
 [[requirement]]
 id = 'EU-0004-021'

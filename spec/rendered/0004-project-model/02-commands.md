@@ -8,7 +8,9 @@ refuses it whole with a typed reason: a conflict, a denial, invalid input or una
 gesture in an interface, a line of a script, the result of a composition program and the call of an
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
-subject of the client protocol RFC.
+subject of the client protocol RFC. A key identifies a batch only among the batches one actor sends
+to one project: a retry of a committed batch receives that batch's outcome, and a key used again for
+other commands is refused.
 
 ### EU-0004-009 {#EU-0004-009}
 
@@ -44,7 +46,7 @@ The outcome of a refused batch MUST be one of conflict, denied, invalid input or
 
 ### EU-0004-017 {#EU-0004-017}
 
-Where the expected revision of a batch is not the head of its branch, euphony MUST refuse the batch as a conflict.
+Where the expected revision of a batch is not the head of its branch, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.
 
 ### EU-0004-018 {#EU-0004-018}
 
@@ -52,11 +54,19 @@ A conflict MUST include the current view of the project that the actor of the ba
 
 ### EU-0004-019 {#EU-0004-019}
 
-A batch with the idempotency key of a committed batch MUST NOT be applied again.
+A batch with the project, actor and idempotency key of a committed batch MUST NOT be applied again.
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the idempotency key of a committed batch MUST receive the outcome of that committed batch.
+A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch.
+
+### EU-0004-046 {#EU-0004-046}
+
+Where a batch has the project, actor and idempotency key of a committed batch and other commands, euphony MUST refuse the batch as invalid input.
+
+### EU-0004-047 {#EU-0004-047}
+
+euphony MUST NOT answer a batch with the outcome of a committed batch of another actor or another project.
 
 ### EU-0004-021 {#EU-0004-021}
 

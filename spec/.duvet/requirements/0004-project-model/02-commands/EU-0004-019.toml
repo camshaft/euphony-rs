@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-019"
 
 [[spec]]
 level = "MUST"
-quote = "A batch with the idempotency key of a committed batch MUST NOT be applied again."
+quote = "A batch with the project, actor and idempotency key of a committed batch MUST NOT be applied again."
