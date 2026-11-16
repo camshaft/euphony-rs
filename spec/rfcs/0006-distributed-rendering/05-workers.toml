@@ -19,7 +19,9 @@ from the job protocol itself. An idle worker pulls a lease on a job. Render work
 levels, interactive preparation for what the musician is about to hear, then speculative
 preparation, and the messages that start, cancel and answer an attempt come ahead of both. Each new
 attempt at a job replaces the earlier attempts of that job. A local authority orders the edits of
-each branch of a project, and independent branches, render jobs and transfers proceed beside it."""
+each branch of a project, and independent branches, render jobs and transfers proceed beside it.
+Each attempt reports its progress over the job protocol, and the scheduler measures each
+worker's rate of progress from those reports as it measures its other capacity signals."""
 
 [[requirement]]
 id = 'EU-0006-046'
@@ -137,6 +139,14 @@ rationale = 'An accepted job waits durably until a worker can take it.'
 id = 'EU-0006-079'
 level = 'MUST'
 polarity = 'required'
-statement = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, or the connection to that worker closes."
+statement = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker."
 binds_to = 'system'
-rationale = 'A lease ends on an event and never on an expiry timer, so a slow worker keeps its work and the work of a lost worker moves at once.'
+rationale = 'A lease ends on an event and never on an expiry timer, so a slow worker that keeps progressing keeps its work, and the work of a lost or unpaired worker moves at once.'
+
+[[requirement]]
+id = 'EU-0006-091'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST cancel an attempt and start a replacing attempt of its job on another worker once the progress that attempt reports falls behind what its worker's measured rate of progress predicts."
+binds_to = 'system'
+rationale = "A worker that stays connected but stops progressing never holds a job, and the host judges a stall from the worker's own measurements, never from a fixed timer."
