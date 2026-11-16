@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-065"
+
+[[spec]]
+level = "MUST"
+quote = "A sent record MUST hold only fields of the submission schema."

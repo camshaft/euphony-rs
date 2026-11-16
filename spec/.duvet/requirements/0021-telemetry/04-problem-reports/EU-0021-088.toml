@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-088"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to send one problem report while sending is off."

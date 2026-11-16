@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-150"
+
+[[spec]]
+level = "MUST"
+quote = "The issue of a fix MUST state the finding key it fixes."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-161"
+
+[[spec]]
+level = "MUST"
+quote = "The notes of each release MUST list the findings it fixed and their measured effect."

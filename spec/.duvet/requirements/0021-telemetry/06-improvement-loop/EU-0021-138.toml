@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-138"
+
+[[spec]]
+level = "MUST"
+quote = "A maintainer MUST NOT publish a part of a finding that the publication policy doesn't pass without the consent of each reporter whose cases it holds."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-169"
+
+[[spec]]
+level = "MUST"
+quote = "The release check MUST NOT pass a release with a submission field that has no privacy class or is free text."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-017"
+
+[[spec]]
+level = "MUST"
+quote = "A tool call event MUST NOT hold the call's arguments or its answer."

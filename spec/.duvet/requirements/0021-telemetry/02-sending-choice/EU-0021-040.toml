@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-040"
+
+[[spec]]
+level = "MAY"
+quote = "The person MAY choose the second mode."

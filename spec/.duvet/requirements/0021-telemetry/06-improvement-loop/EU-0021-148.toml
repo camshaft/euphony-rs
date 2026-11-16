@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-148"
+
+[[spec]]
+level = "MUST"
+quote = "Each comparison MUST state any change in who sends, such as a new release cohort or another mix of hardware classes."

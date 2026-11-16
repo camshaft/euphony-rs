@@ -1,0 +1,269 @@
+[section]
+anchor = 'local-measurements'
+title = "Measurements kept on the computer"
+problem = "A person can't see how euphony performs and fails on their own computers, with their own devices, projects and habits, unless each part of euphony records what happens there, and recording mustn't disturb the audio or mix with the person's music."
+motivation = "A local record of typed events, kept apart from every project and read in one view, lets the person see missed deadlines, slow renders, resource use, device delays, crashes, errors and failed assistant actions, while none of it leaves the computer."
+prose = """
+Each process of euphony records typed telemetry events on the computer it runs on, into a telemetry
+journal that is separate from the history of every project. An event belongs to one family, and each
+family is a closed set of fields. The families are deadline misses, render timings, resource samples,
+device latencies, crashes, errors, tool calls and exposure. The component that records an event is
+one of a closed set: the session host, the audio device process, a render worker, the composition
+program runner, the assistant adapter, a station client, a network MIDI host adapter, an analysis
+worker and a control surface adapter. Each event carries a reference to its local project and
+session, which stays on the computer. The trail of a crash is the events its process recorded
+before it ended. Exposure records intervals of use, so that a count of failures can be read against
+how much the failing work was used, and says for each family whether recording was complete over
+the interval. Each paired computer keeps its own journal, and the performance and problems view
+reads the journals of the owner's paired computers over the owner's authenticated connections.
+Measures are split only by closed values, while the identities of jobs, devices and diagnostics
+stay attributes of the local event."""
+
+[[requirement]]
+id = 'EU-0021-001'
+level = 'MUST'
+polarity = 'required'
+statement = "Each process of euphony MUST record its telemetry events into a telemetry journal on the computer it runs on."
+binds_to = 'system'
+rationale = "The person reads what happened on each computer without sending anything."
+
+[[requirement]]
+id = 'EU-0021-002'
+level = 'MUST'
+polarity = 'required'
+statement = "The telemetry journal MUST be kept apart from the history of every project."
+binds_to = 'system'
+rationale = "Pruning a project's audio leaves telemetry as it was, and telemetry never enters a project."
+
+[[requirement]]
+id = 'EU-0021-003'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The telemetry journal MUST NOT hold project state."
+binds_to = 'system'
+rationale = "Telemetry can't carry the person's music."
+
+[[requirement]]
+id = 'EU-0021-004'
+level = 'MUST'
+polarity = 'required'
+statement = "Each telemetry event MUST carry its family, the public schema version, the release version, the build identity, the component that recorded it, the computer's monotonic time and its local project and session reference."
+binds_to = 'system'
+rationale = "Every event can be read, ordered and placed on the project it belongs to."
+
+[[requirement]]
+id = 'EU-0021-005'
+level = 'MUST'
+polarity = 'required'
+statement = "Each field that a measure is split by MUST take its value from a closed set that the public schema lists."
+binds_to = 'system'
+rationale = "Every split of a measure has a bounded, known set of values."
+
+[[requirement]]
+id = 'EU-0021-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The identity of a job, a device or a diagnostic MUST NOT be a field that a measure is split by."
+binds_to = 'system'
+rationale = "Such identities stay attributes of the local event and never become the shape of a measure."
+
+[[requirement]]
+id = 'EU-0021-007'
+level = 'MUST'
+polarity = 'required'
+statement = "Each missed audio deadline MUST be recorded as a deadline miss event that states the device period, the buffer size, the part that missed, how late it was, and whether the output went silent or played a prepared result."
+binds_to = 'system'
+rationale = "The person sees where and how badly the audio fell behind."
+
+[[requirement]]
+id = 'EU-0021-008'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Recording a deadline miss MUST NOT allocate memory, take a lock or touch a file in the audio callback."
+binds_to = 'system'
+rationale = "Measuring a missed deadline never causes another one."
+
+[[requirement]]
+id = 'EU-0021-009'
+level = 'MUST'
+polarity = 'required'
+statement = "Each render, bounce, export, model fitting or analysis job MUST be recorded as a render timing event that states its job kind, frames, wall time, processor time, the worker's render profile class and whether the cache already held its result."
+binds_to = 'system'
+rationale = "Render times are compared only between like jobs."
+
+[[requirement]]
+id = 'EU-0021-010'
+level = 'MUST'
+polarity = 'required'
+statement = "Each component MUST record a resource sample of its processor time, peak and steady resident memory, disk bytes read and written, temporary bytes and network bytes when a job completes, when transport starts or stops, when the operating system signals memory or storage pressure, and when a session ends."
+binds_to = 'system'
+rationale = "Resource use is recorded at the moments it changes."
+
+[[requirement]]
+id = 'EU-0021-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A component MUST NOT record a resource sample on a timer."
+binds_to = 'system'
+rationale = "Recording follows events, so an idle computer doesn't do work for telemetry."
+
+[[requirement]]
+id = 'EU-0021-012'
+level = 'MUST'
+polarity = 'required'
+statement = "Each measured round trip, jitter and clock-lock change of an audio interface, a network MIDI host, a headphone station, a shared-session participant or a control surface MUST be recorded as a device latency event."
+binds_to = 'system'
+rationale = "The person sees each device's delay from the measurements euphony already makes."
+
+[[requirement]]
+id = 'EU-0021-013'
+level = 'MUST'
+polarity = 'required'
+statement = "Each abnormal end of a process MUST be recorded as a crash event that states the process, the release and build identity, the exception or signal kind from a closed set, the frames of the faulting thread that lie in euphony's own public code as module and offset, the trail, the uptime and the computer's hardware class."
+binds_to = 'system'
+rationale = "A crash can be grouped with others of the same cause without holding anything of the person's."
+
+[[requirement]]
+id = 'EU-0021-014'
+level = 'MUST'
+polarity = 'required'
+statement = "A crash of the session host itself MUST be recorded in its telemetry journal at the session host's next start."
+binds_to = 'system'
+rationale = "The process that supervises the others doesn't lose the record of its own crash."
+
+[[requirement]]
+id = 'EU-0021-015'
+level = 'MUST'
+polarity = 'required'
+statement = "Each typed failure that an interface of euphony returns MUST be recorded as an error event that states the interface, the operation and the result kind."
+binds_to = 'system'
+rationale = "Errors are counted by where they happen and what kind they are."
+
+[[requirement]]
+id = 'EU-0021-016'
+level = 'MUST'
+polarity = 'required'
+statement = "Each assistant tool call MUST be recorded as a tool call event that states the tool, the result kind, the duration, the schema version and, for an action that needs the owner's approval, whether it waited for that approval and how the owner decided."
+binds_to = 'system'
+rationale = "Failed and slow assistant actions show without exposing what the assistant did."
+
+[[requirement]]
+id = 'EU-0021-017'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A tool call event MUST NOT hold the call's arguments or its answer."
+binds_to = 'system'
+rationale = "Arguments and answers can hold the person's music and names."
+
+[[requirement]]
+id = 'EU-0021-018'
+level = 'MUST'
+polarity = 'required'
+statement = "Each exposure interval MUST state its identity, its session, its start and end, how the session ended, and the use it covers in open hours, transport-active hours, render jobs of each kind and attempts of each tool."
+binds_to = 'system'
+rationale = "Failure counts are read against how much the failing work was used."
+
+[[requirement]]
+id = 'EU-0021-019'
+level = 'MUST'
+polarity = 'required'
+statement = "Each exposure interval MUST state, for each family, whether recording was on throughout, the count of events recorded, the count lost to storage pressure and the count of batches built for it."
+binds_to = 'system'
+rationale = "A computer without failures is told apart from one whose record is incomplete."
+
+[[requirement]]
+id = 'EU-0021-020'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An exposure interval MUST NOT hold event content."
+binds_to = 'system'
+rationale = "Exposure measures use, not what was used."
+
+[[requirement]]
+id = 'EU-0021-021'
+level = 'MUST'
+polarity = 'required'
+statement = "The performance and problems view MUST show, for each project and session of every paired computer of the owner, the deadline misses on the project's timeline, the render and bounce times, each component's resource use, each device's latency, the crashes with their trails, the errors and the failed tool calls."
+binds_to = 'system'
+rationale = "The person sees the whole local record in one place."
+
+[[requirement]]
+id = 'EU-0021-022'
+level = 'MUST'
+polarity = 'required'
+statement = "An assistant that the owner connects MUST be able to read the performance and problems view as the owner does."
+binds_to = 'system'
+rationale = "An assistant acts as the owner and can help find a problem."
+
+[[requirement]]
+id = 'EU-0021-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A collaborator, a link participant or a listener endpoint MUST NOT read the performance and problems view."
+binds_to = 'system'
+rationale = "The record of the owner's computers stays the owner's."
+
+[[requirement]]
+id = 'EU-0021-024'
+level = 'MUST'
+polarity = 'required'
+statement = "The person MUST be able to turn local recording of each family off."
+binds_to = 'system'
+rationale = "The person decides what is recorded on their own computers."
+
+[[requirement]]
+id = 'EU-0021-025'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "While a family's recording is off, its events MUST NOT be kept."
+binds_to = 'system'
+rationale = "Turning recording off means nothing of that family is stored."
+relations = [ { kind = 'depends_on', target = 'EU-0021-024' } ]
+
+[[requirement]]
+id = 'EU-0021-026'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Turning off the recording of deadline misses MUST NOT remove the visible indication of a missed deadline."
+binds_to = 'system'
+rationale = "The person still sees a dropout as it happens."
+
+[[requirement]]
+id = 'EU-0021-027'
+level = 'MUST'
+polarity = 'required'
+statement = "Local recording of every family MUST be on in a new installation."
+binds_to = 'system'
+rationale = "The view and the first report of a crash have their record from the start, and nothing leaves the computer."
+
+[[requirement]]
+id = 'EU-0021-028'
+level = 'MUST'
+polarity = 'required'
+statement = "The telemetry journal MUST keep events for as long as the person's retention setting allows."
+binds_to = 'system'
+rationale = "The person decides how far back the local record reaches."
+
+[[requirement]]
+id = 'EU-0021-029'
+level = 'MUST'
+polarity = 'required'
+statement = "Under storage pressure, the telemetry journal MUST yield space before any cached result or original."
+binds_to = 'system'
+rationale = "Telemetry never costs the person their music or their renders."
+
+[[requirement]]
+id = 'EU-0021-030'
+level = 'MUST'
+polarity = 'required'
+statement = "When the telemetry journal yields space, it MUST remove the oldest events first and keep one summary for each release."
+binds_to = 'system'
+rationale = "The newest record stays whole, and each release keeps an outline."
+
+[[requirement]]
+id = 'EU-0021-031'
+level = 'MUST'
+polarity = 'required'
+statement = "The performance and problems view MUST say how far back its record reaches."
+binds_to = 'system'
+rationale = "The person knows what the view can and can't show."

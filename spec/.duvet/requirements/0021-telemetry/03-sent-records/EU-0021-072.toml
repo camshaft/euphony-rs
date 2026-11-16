@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-072"
+
+[[spec]]
+level = "MUST"
+quote = "The client MUST remove the local project and session references from every sent record."

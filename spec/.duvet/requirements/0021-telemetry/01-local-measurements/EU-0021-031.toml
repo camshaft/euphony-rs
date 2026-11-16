@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-031"
+
+[[spec]]
+level = "MUST"
+quote = "The performance and problems view MUST say how far back its record reaches."

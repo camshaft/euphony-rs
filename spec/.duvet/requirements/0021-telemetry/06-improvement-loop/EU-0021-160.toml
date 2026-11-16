@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-160"
+
+[[spec]]
+level = "MUST"
+quote = "A fix-effect report without comparable evidence MUST say that the fix's benefit is unverified."

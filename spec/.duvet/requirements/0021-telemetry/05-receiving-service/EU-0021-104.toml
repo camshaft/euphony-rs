@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-104"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST drop an exact replay of a stored batch."

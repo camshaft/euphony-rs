@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-132"
+
+[[spec]]
+level = "MUST"
+quote = "Each published combination of finding key, release and hardware class MUST hold cases from at least the publication threshold's count of reporting identities."

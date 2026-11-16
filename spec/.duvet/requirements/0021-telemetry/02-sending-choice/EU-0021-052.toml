@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-052"
+
+[[spec]]
+level = "MUST"
+quote = "A batch MUST NOT hold an event that the client can't attribute to included projects alone."

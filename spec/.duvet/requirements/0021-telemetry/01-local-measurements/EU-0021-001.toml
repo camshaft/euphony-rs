@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-001"
+
+[[spec]]
+level = "MUST"
+quote = "Each process of euphony MUST record its telemetry events into a telemetry journal on the computer it runs on."

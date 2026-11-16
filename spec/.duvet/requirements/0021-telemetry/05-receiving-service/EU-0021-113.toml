@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-113"
+
+[[spec]]
+level = "MUST"
+quote = "The receipt of a deletion MUST say which stores are deleted and which still hold a copy, with the time each remaining copy ends."

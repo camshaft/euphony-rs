@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-032"
+
+[[spec]]
+level = "MUST"
+quote = "Sending MUST be off in a new installation."

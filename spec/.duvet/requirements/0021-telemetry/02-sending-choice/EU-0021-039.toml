@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-039"
+
+[[spec]]
+level = "MUST"
+quote = "The sending mode MUST start as the first mode."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-021"
+
+[[spec]]
+level = "MUST"
+quote = "The performance and problems view MUST show, for each project and session of every paired computer of the owner, the deadline misses on the project's timeline, the render and bounce times, each component's resource use, each device's latency, the crashes with their trails, the errors and the failed tool calls."

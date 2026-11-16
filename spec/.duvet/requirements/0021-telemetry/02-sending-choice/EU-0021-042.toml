@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-042"
+
+[[spec]]
+level = "MUST"
+quote = "Before a batch goes, the outbox MUST show every field of every record in plain words, the exact bytes, the destination address, the schema version and the submission identity."

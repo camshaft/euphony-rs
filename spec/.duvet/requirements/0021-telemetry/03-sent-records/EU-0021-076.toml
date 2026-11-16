@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-076"
+
+[[spec]]
+level = "MUST"
+quote = "The submission identity MUST NOT be derived from the hardware or from an account."

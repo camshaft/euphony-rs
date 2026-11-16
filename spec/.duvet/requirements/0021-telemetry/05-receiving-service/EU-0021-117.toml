@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-117"
+
+[[spec]]
+level = "MUST"
+quote = "On a retry signal, the client MUST keep the batch in its outbox and send it again later with growing intervals between attempts."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-030"
+
+[[spec]]
+level = "MUST"
+quote = "When the telemetry journal yields space, it MUST remove the oldest events first and keep one summary for each release."

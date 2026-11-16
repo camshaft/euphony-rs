@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-015"
+
+[[spec]]
+level = "MUST"
+quote = "Each typed failure that an interface of euphony returns MUST be recorded as an error event that states the interface, the operation and the result kind."

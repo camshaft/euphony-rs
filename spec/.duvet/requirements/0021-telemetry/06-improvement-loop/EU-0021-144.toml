@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-144"
+
+[[spec]]
+level = "MUST"
+quote = "For each measure and hardware class, the service MUST compare the distribution in a release with the distribution in the release before it, with the count of submission identities and an interval of uncertainty."

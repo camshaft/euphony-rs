@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-083"
+
+[[spec]]
+level = "MUST"
+quote = "A batch MUST go only to the destination that the release's public configuration sets."

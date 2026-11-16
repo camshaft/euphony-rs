@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-008"
+
+[[spec]]
+level = "MUST"
+quote = "Recording a deadline miss MUST NOT allocate memory, take a lock or touch a file in the audio callback."

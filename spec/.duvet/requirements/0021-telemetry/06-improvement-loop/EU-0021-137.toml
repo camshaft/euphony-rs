@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-137"
+
+[[spec]]
+level = "MUST"
+quote = "Where the publication policy can't establish that a finding meets it, the finding MUST stay private until a maintainer reviews it."
