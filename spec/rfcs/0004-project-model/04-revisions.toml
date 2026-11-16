@@ -18,7 +18,9 @@ How copies exchange revisions and merge branches is the subject of the sync and 
 read of a project answers with a view of one revision and names that revision. Each answer holds at
 most one page: a longer answer names the token that reads its next page, each page shows that same
 revision, and reading one page costs no more in a project with a long history than in a new one. A
-subscriber to the events of a project holds a cursor that a later subscription resumes from."""
+subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
+answers a read or a subscription only for a caller who may read the project, and refuses any other as
+denied."""
 
 [[requirement]]
 id = 'EU-0004-032'
@@ -161,3 +163,11 @@ statement = 'The cost of reading one page MUST NOT grow with the length of the h
 binds_to = 'system'
 rationale = 'A project with years of history reads as quickly, page by page, as a new one.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-052' } ]
+
+[[requirement]]
+id = 'EU-0004-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.'
+binds_to = 'system'
+rationale = 'The state and the history of a project reach only the parties that may read it.'
