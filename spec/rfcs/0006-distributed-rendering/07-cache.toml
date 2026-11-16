@@ -11,8 +11,8 @@ motivation = """\
   computer holds without losing anything that can't be rendered again."""
 prose = """
 A cached result can be rendered again, while an original recording or an accepted command can't.
-Original material is kept durable and backed up as RFC 0008 states. Active playback and
-export manifests pin the results they use. A full volume holds new fetches and preparation on that
+Original material is kept durable and backed up as RFC 0008 states. Every manifest pins the
+results it uses. A full volume holds new fetches and preparation on that
 volume, frees only unpinned results that can be rendered again, keeps its verified chunks, and
 resumes once space returns, while playback goes on reading the audio already on the computer. A
 deprecated revision keeps a small history, as RFC 0013 states for the retention of revisions."""
@@ -21,9 +21,9 @@ deprecated revision keeps a small history, as RFC 0013 states for the retention 
 id = 'EU-0006-067'
 level = 'MUST'
 polarity = 'required'
-statement = 'The render cache MUST evict only results that no active playback or export manifest pins.'
+statement = 'The render cache MUST evict only results that no manifest pins.'
 binds_to = 'system'
-rationale = 'Eviction never removes audio that is playing or being exported.'
+rationale = 'Eviction never removes audio that a revision, a playback or an export still needs.'
 
 [[requirement]]
 id = 'EU-0006-068'

@@ -1,15 +1,15 @@
 ## Cache retention and recovery {#cache}
 
 A cached result can be rendered again, while an original recording or an accepted command can't.
-Original material is kept durable and backed up as RFC 0008 states. Active playback and
-export manifests pin the results they use. A full volume holds new fetches and preparation on that
+Original material is kept durable and backed up as RFC 0008 states. Every manifest pins the
+results it uses. A full volume holds new fetches and preparation on that
 volume, frees only unpinned results that can be rendered again, keeps its verified chunks, and
 resumes once space returns, while playback goes on reading the audio already on the computer. A
 deprecated revision keeps a small history, as RFC 0013 states for the retention of revisions.
 
 ### EU-0006-067 {#EU-0006-067}
 
-The render cache MUST evict only results that no active playback or export manifest pins.
+The render cache MUST evict only results that no manifest pins.
 
 ### EU-0006-068 {#EU-0006-068}
 

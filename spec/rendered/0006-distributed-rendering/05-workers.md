@@ -57,7 +57,7 @@ A message that starts, cancels or answers an attempt MUST NOT wait behind queued
 
 ### EU-0006-057 {#EU-0006-057}
 
-Every connection between a worker and a host MUST be authenticated and encrypted.
+Every connection between two computers that carries render work, an input or a result MUST be authenticated and encrypted.
 
 ### EU-0006-058 {#EU-0006-058}
 

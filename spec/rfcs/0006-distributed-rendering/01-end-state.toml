@@ -32,17 +32,9 @@ rationale = 'A musician can prepare one project across every trusted computer th
 id = 'EU-0006-002'
 level = 'MUST'
 polarity = 'forbidden'
-statement = 'Audio from an interrupted, late or superseded render MUST NOT be played or exported as the current revision of a project.'
+statement = 'Audio from an interrupted, late or superseded render MUST NOT be accepted into the manifest of the current revision.'
 binds_to = 'system'
 rationale = 'A lost or slow computer never replaces the current project with incomplete or outdated audio.'
-
-[[requirement]]
-id = 'EU-0006-003'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'Playing a project whose audio is fully prepared MUST NOT calculate any of its instruments or effects during playback.'
-binds_to = 'system'
-rationale = 'Repeated listening reuses the work of the first render.'
 
 [[requirement]]
 id = 'EU-0006-004'
@@ -56,9 +48,9 @@ rationale = 'After an edit to one passage, the rest of the project plays from sa
 id = 'EU-0006-005'
 level = 'MUST'
 polarity = 'required'
-statement = "Prepared passages that an edit doesn't change MUST play from their saved results while the changed passages are rendered again."
+statement = "Results of passages that an edit doesn't change MUST stay valid in the manifest of the new revision."
 binds_to = 'system'
-rationale = 'The musician keeps listening to the project while an edit is prepared.'
+rationale = 'The changed passages render again while the rest of the project keeps its saved audio.'
 
 [[requirement]]
 id = 'EU-0006-006'

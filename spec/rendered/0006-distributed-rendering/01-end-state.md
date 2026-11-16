@@ -16,11 +16,7 @@ The scheduler MUST be able to place a project's render work on every present wor
 
 ### EU-0006-002 {#EU-0006-002}
 
-Audio from an interrupted, late or superseded render MUST NOT be played or exported as the current revision of a project.
-
-### EU-0006-003 {#EU-0006-003}
-
-Playing a project whose audio is fully prepared MUST NOT calculate any of its instruments or effects during playback.
+Audio from an interrupted, late or superseded render MUST NOT be accepted into the manifest of the current revision.
 
 ### EU-0006-004 {#EU-0006-004}
 
@@ -28,7 +24,7 @@ An edit MUST NOT cause a render of audio that neither the edit nor its dependenc
 
 ### EU-0006-005 {#EU-0006-005}
 
-Prepared passages that an edit doesn't change MUST play from their saved results while the changed passages are rendered again.
+Results of passages that an edit doesn't change MUST stay valid in the manifest of the new revision.
 
 ### EU-0006-006 {#EU-0006-006}
 
