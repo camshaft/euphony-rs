@@ -85,8 +85,8 @@ level = 'MUST'
 polarity = 'required'
 statement = "Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-092 and before it checks the batch's expected revision or its idempotency key."
 binds_to = 'system'
-rationale = "A copy never commits to a branch that another copy holds, and a caller that may not take the batch's commands on that branch learns only that it is denied."
-relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-038' }, { kind = 'depends_on', target = 'EU-0004-092' } ]
+rationale = "The command path keeps EU-0004-038, so a copy never commits to a branch that another copy holds, and a caller that may not take the batch's commands on that branch learns only that it is denied."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-092' } ]
 
 [[requirement]]
 id = 'EU-0004-064'
