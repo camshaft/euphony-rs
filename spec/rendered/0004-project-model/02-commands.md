@@ -84,7 +84,7 @@ A batch with the project, actor and idempotency key of a committed batch MUST NO
 
 ### EU-0004-020 {#EU-0004-020}
 
-A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where EU-0004-049 or EU-0004-056 refuses it as denied, such as a retry from a caller who lost change access after that batch committed.
+A batch sent again with the project, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, except where euphony refuses it as denied before it checks its idempotency key, as EU-0004-049 and EU-0004-056 do, such as a retry from a caller who lost change access after that batch committed.
 
 ### EU-0004-046 {#EU-0004-046}
 
