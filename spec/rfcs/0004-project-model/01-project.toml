@@ -16,7 +16,12 @@ timeline, whatever the clock of the computer that edits, plays or renders it. Ea
 of a project to another is a typed field: a region refers to the audio it plays by the content
 identity of that audio, and a processor refers to the definition it runs by the identity and version
 of that definition. A copy of a project is the project as one computer holds it. Rendering, content
-identities and the processors themselves are the subjects of other RFCs."""
+identities and the processors themselves are the subjects of other RFCs.
+A project comes to exist through a request to create it, which isn't a batch: no project exists yet
+for a batch to name. The request names the sample rate of the new project and doesn't name an
+identity. euphony chooses the identity of the new project, and the outcome of the request identifies
+the project and its first revision, which the first batch sent to the project names as its expected
+revision. The access rules that the overview RFC states say who may create a project."""
 
 [[requirement]]
 id = 'EU-0004-001'
@@ -33,6 +38,32 @@ polarity = 'required'
 statement = 'Each project MUST have exactly one sample rate.'
 binds_to = 'system'
 rationale = 'Every time in the project is counted at one rate.'
+
+[[requirement]]
+id = 'EU-0004-064'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A request to create a project MUST NOT name an identity for the project it creates.'
+binds_to = 'system'
+rationale = "A creation is never refused as a batch that names a missing project, and its answer doesn't depend on which identities other projects hold."
+
+[[requirement]]
+id = 'EU-0004-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST choose the identity of each project it creates.'
+binds_to = 'system'
+rationale = "No two projects share an identity, and a caller doesn't learn from a creation which identities other projects hold."
+relations = [ { kind = 'depends_on', target = 'EU-0004-001' }, { kind = 'depends_on', target = 'EU-0004-064' } ]
+
+[[requirement]]
+id = 'EU-0004-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of a request that creates a project MUST identify the new project and its first revision.'
+binds_to = 'system'
+rationale = 'The creator names the new project and its expected revision in the first batch it sends.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-065' } ]
 
 [[requirement]]
 id = 'EU-0004-003'

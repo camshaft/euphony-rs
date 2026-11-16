@@ -8,6 +8,8 @@ euphony also refuses as denied a batch from a caller who may not change the proj
 checks the batch's expected revision or its key.
 It refuses a batch that names a project that doesn't exist in the same way, so that a refusal
 doesn't tell a caller whether the project exists.
+A request that creates a project isn't a batch and doesn't name a project, as the project section
+states, so this refusal never applies to it.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
