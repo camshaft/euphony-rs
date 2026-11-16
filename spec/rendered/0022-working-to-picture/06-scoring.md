@@ -108,7 +108,7 @@ The colors of streamers MUST tell a warning from a cue's start and from its end.
 
 ### EU-0022-105 {#EU-0022-105}
 
-Streamers and punches MUST show on every screen that shows the picture.
+Streamers and punches MUST show in the picture window, on a second display and on another of the owner's computers that shows the picture.
 
 ### EU-0022-106 {#EU-0022-106}
 

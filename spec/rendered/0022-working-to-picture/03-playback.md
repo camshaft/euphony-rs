@@ -42,7 +42,7 @@ Euphony MUST show the measured difference between the picture and the sound on e
 
 ### EU-0022-048 {#EU-0022-048}
 
-Over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub.
+On each supported computer and display, over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub.
 
 ### EU-0022-049 {#EU-0022-049}
 

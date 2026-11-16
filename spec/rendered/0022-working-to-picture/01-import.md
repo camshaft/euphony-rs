@@ -80,3 +80,11 @@ The catalog MUST list each item derived from a video as derived from that video.
 ### EU-0022-017 {#EU-0022-017}
 
 Euphony MUST NOT edit, color or re-encode the picture of a video.
+
+### EU-0022-169 {#EU-0022-169}
+
+Each frame of the scrub copy MUST match the original's decoded frame, scaled to the scrub copy's size, within the tolerance of the scrub copy's format.
+
+### EU-0022-170 {#EU-0022-170}
+
+Audio imported from an uncompressed stream MUST keep every sample of the stream unchanged.

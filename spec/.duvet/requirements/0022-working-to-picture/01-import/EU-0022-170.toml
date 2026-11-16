@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-170"
+
+[[spec]]
+level = "MUST"
+quote = "Audio imported from an uncompressed stream MUST keep every sample of the stream unchanged."

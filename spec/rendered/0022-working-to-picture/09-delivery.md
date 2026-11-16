@@ -14,12 +14,19 @@ mix by a gain that the stems don't carry. Other nonlinear processing on the main
 saturation or clipping, can't be reproduced on each stem.
 
 A loudness profile is versioned data that names its source and version and sets targets for
-integrated loudness, true peak and loudness range. The built-in profiles are the European broadcast
-profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP, and the North
-American broadcast profile, an integrated loudness of -24 LKFS. Integrated loudness, true peak and
-loudness range are measured as the international broadcast recommendations for loudness state.
-Sending an export to another person follows the approval of what leaves the owner's computers that
-RFC 0001 states.
+integrated loudness, true peak and loudness range. The built-in profiles are EBU R128, the European
+broadcast profile, an integrated loudness of -23 LUFS with a true peak of at most -1 dBTP, and
+ATSC A/85, the North American broadcast profile, an integrated loudness of -24 LKFS. Integrated
+loudness and true peak are measured as ITU-R BS.1770 states, and loudness range as EBU Tech 3342
+states. Sending an export to another person follows the approval of what leaves the owner's
+computers that RFC 0001 states.
+
+Exchange reaches two kinds of video editing program. The first kind opens an open project
+interchange format, one with a published specification and a public software development kit, which
+carries each track's clips with their handles, fades and clip gain at their timecode. The second kind
+doesn't open that format without another program, and opens its own timeline description file, which
+the adapters of an open-source timeline interchange format write. Both kinds write edit decision
+lists, which serve conform.
 
 ### EU-0022-140 {#EU-0022-140}
 
@@ -123,7 +130,7 @@ A person MUST be able to export a project exchange file that carries each track'
 
 ### EU-0022-165 {#EU-0022-165}
 
-Exchange MUST offer a format that each video editing program in common use opens.
+Exchange MUST offer a format that each kind of video editing program this section lists opens.
 
 ### EU-0022-166 {#EU-0022-166}
 

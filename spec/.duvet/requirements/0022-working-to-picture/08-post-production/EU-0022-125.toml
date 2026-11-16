@@ -2,4 +2,4 @@ target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-125"
 
 [[spec]]
 level = "MUST"
-quote = "Each track's output MUST go to one of the stem buses."
+quote = "In a project that holds the stem buses, each track's output MUST go to one of them."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-169"
+
+[[spec]]
+level = "MUST"
+quote = "Each frame of the scrub copy MUST match the original's decoded frame, scaled to the scrub copy's size, within the tolerance of the scrub copy's format."
