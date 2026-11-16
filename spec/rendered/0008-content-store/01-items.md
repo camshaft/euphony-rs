@@ -4,7 +4,7 @@ The content store holds items. Each item has one kind of a closed set: source or
 take, rendered result, export, note sequence, MIDI file, automation curve, composition program
 source, captured model, analysis result and other blob. A rendered result is a bounce, a stem, a
 frozen track or a prepared segment. An item never changes once it is stored. An item's identity is
-a digest computed from what it holds. For audio, the digest covers a canonical description of the
+a cryptographic digest computed from what it holds. For audio, the digest covers a canonical description of the
 format and the decoded sample values, so the same samples stored in two encodings, or moved to a
 later codec, are one item. For a note sequence, an automation curve or a composition program
 source, the digest covers the canonical serialization the project model defines for it, so equal
@@ -31,6 +31,10 @@ Each item MUST have exactly one kind of the closed set of item kinds.
 ### EU-0008-002 {#EU-0008-002}
 
 An item MUST NOT change once it is stored.
+
+### EU-0008-141 {#EU-0008-141}
+
+An item's identity MUST be a cryptographic digest.
 
 ### EU-0008-003 {#EU-0008-003}
 
