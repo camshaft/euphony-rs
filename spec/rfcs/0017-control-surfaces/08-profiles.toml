@@ -82,6 +82,14 @@ rationale = "Evidence that a device works never grants it access."
 id = 'EU-0017-150'
 level = 'MUST'
 polarity = 'required'
-statement = "The surface categories and the conformance publisher MUST be set in the project's configuration."
+statement = "The surface categories, the mobile platforms of the phone controller and the conformance publisher MUST be set in the project's configuration."
 binds_to = 'system'
 rationale = "A team changes what a release covers without changing code."
+
+[[requirement]]
+id = 'EU-0017-166'
+level = 'MAY'
+polarity = 'required'
+statement = "A hardware controller that only displays a surface MAY present it without emulating a touch screen."
+binds_to = 'system'
+rationale = "A display-only device shows controls in the form its hardware has."
