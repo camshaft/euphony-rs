@@ -2,4 +2,4 @@ target = "rendered/0004-project-model/02-commands.md#EU-0004-049"
 
 [[spec]]
 level = "MUST"
-quote = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key."
+quote = "Where the actor that a batch names is not the caller that euphony authenticated, euphony MUST refuse the batch as denied before any other check of the batch: before the check of EU-0004-056, the check of EU-0004-064, and the checks of the batch's commands against the project schema, of its expected revision and of its idempotency key."
