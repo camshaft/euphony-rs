@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-020"
+
+[[spec]]
+level = "MUST"
+quote = "After a presentation failure, the desktop interface MUST rebuild the view from a fresh authorized snapshot."

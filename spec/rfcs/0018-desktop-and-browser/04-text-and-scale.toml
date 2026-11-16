@@ -1,0 +1,63 @@
+[section]
+anchor = 'text-and-scale'
+title = 'Text, scale and displays'
+problem = """\
+  Fonts, text input and display scale differ between operating systems and monitors, and a view \
+  that ignores them clips names, misplaces a selection or ties musical time to the screen."""
+motivation = """\
+  Logical units, the actual scale of each window and the text services of each operating system \
+  keep every view legible and exact on any display, in any script."""
+prose = """
+Geometry is in logical units, converted with the actual scale of the window that shows it. A window
+can move between monitors of different scales, and a scale can be fractional. Names and text in a
+project can be in any script, written from right to left or from left to right, with combining
+marks and glyphs that come from a fallback font. Musical time is a position in the project, not a
+position on the screen."""
+
+[[requirement]]
+id = 'EU-0018-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST lay out each view in logical units converted with the actual scale of its window.'
+binds_to = 'system'
+rationale = 'A view has the same proportions on every display.'
+
+[[requirement]]
+id = 'EU-0018-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'A view MUST stay correct when its window moves to a monitor of another scale, is resized, or its display changes.'
+binds_to = 'system'
+rationale = 'A musician with several monitors never sees a broken view.'
+
+[[requirement]]
+id = 'EU-0018-029'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The mapping between a position on screen and musical time MUST NOT round musical time to pixels.'
+binds_to = 'system'
+rationale = 'An edit is placed where the musician meant it in time, whatever the zoom.'
+
+[[requirement]]
+id = 'EU-0018-030'
+level = 'MUST'
+polarity = 'required'
+statement = "Text entry MUST support the operating system's input methods for composing characters."
+binds_to = 'system'
+rationale = 'A musician names tracks and writes in their own language.'
+
+[[requirement]]
+id = 'EU-0018-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST display and edit bidirectional text, combining marks and fallback glyphs with correct selection and caret placement.'
+binds_to = 'system'
+rationale = 'Every script a musician writes in reads and edits correctly.'
+
+[[requirement]]
+id = 'EU-0018-032'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A font the product includes MUST NOT override the person's system text size or contrast preferences."
+binds_to = 'system'
+rationale = 'A person who needs larger or higher-contrast text keeps it.'

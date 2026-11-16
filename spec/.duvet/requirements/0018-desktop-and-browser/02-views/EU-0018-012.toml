@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-012"
+
+[[spec]]
+level = "MUST"
+quote = "Recording, punching in, looping, routing, selection, undo and export MUST use the commands every interface of euphony shares."

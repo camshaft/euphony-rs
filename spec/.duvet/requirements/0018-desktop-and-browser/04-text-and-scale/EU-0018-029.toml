@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-029"
+
+[[spec]]
+level = "MUST"
+quote = "The mapping between a position on screen and musical time MUST NOT round musical time to pixels."

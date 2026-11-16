@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-078"
+
+[[spec]]
+level = "MUST"
+quote = "The release check MUST refuse a build whose provenance or license records are missing, failed or don't match the exact build."

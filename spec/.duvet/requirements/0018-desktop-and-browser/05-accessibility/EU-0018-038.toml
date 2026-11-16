@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-038"
+
+[[spec]]
+level = "MUST"
+quote = "A track or clip that is off screen MUST keep a stable identity for assistive technology."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-082"
+
+[[spec]]
+level = "MUST"
+quote = "The selection MUST require passing target conformance and surface conformance of the selected renderer for the exact build on every supported profile."

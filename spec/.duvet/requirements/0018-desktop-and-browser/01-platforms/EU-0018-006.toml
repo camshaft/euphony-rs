@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-006"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST reach the session host only through the client protocol every interface uses."

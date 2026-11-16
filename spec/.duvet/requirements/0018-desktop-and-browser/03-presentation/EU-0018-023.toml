@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-023"
+
+[[spec]]
+level = "MUST"
+quote = "A meter MUST show the newest authorized level snapshot with its age."

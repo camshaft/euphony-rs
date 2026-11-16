@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-073"
+
+[[spec]]
+level = "MUST"
+quote = "The product MUST use an original identity, palette, icons, graphics and artwork."

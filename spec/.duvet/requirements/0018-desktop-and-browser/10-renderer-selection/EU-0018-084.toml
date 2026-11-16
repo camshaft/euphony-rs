@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-084"
+
+[[spec]]
+level = "MUST"
+quote = "The selection MUST require the provenance and license records of the build."

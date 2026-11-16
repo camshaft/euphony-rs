@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-008"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST provide an arrangement view, a mixer, a piano roll and an automation view."

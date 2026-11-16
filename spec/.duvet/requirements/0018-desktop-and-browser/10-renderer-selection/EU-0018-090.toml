@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-090"
+
+[[spec]]
+level = "MUST"
+quote = "A conformance record without a renderer identity MUST NOT satisfy the selection."

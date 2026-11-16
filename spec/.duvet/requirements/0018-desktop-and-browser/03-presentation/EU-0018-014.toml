@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-014"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST build each view from a projection of the project that the session host authorized for it."

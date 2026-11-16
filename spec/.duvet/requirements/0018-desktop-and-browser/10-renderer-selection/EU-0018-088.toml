@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-088"
+
+[[spec]]
+level = "MUST"
+quote = "A change of build, profile or asset MUST invalidate the evidence that applied before it."
