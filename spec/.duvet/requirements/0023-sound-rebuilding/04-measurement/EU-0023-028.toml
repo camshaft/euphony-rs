@@ -2,4 +2,4 @@ target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-028"
 
 [[spec]]
 level = "MUST"
-quote = "The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch and in the noise between notes."
+quote = "The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch in cents and in the noise between notes."
