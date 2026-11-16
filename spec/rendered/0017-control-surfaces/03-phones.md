@@ -11,7 +11,7 @@ controller, never a render worker or a microphone the session takes from automat
 
 ### EU-0017-032 {#EU-0017-032}
 
-The system MUST offer a native phone controller app for each of the major mobile platforms.
+The system MUST offer a native phone controller app for each mobile platform the project's configuration lists.
 
 ### EU-0017-033 {#EU-0017-033}
 
@@ -32,6 +32,10 @@ Every recording and mix control on a phone MUST show the session and the output 
 ### EU-0017-037 {#EU-0017-037}
 
 The phone controller MUST NOT offer pairing or link management.
+
+### EU-0017-153 {#EU-0017-153}
+
+The phone controller MUST NOT offer arrangement editing, program authoring or processor mapping.
 
 ### EU-0017-038 {#EU-0017-038}
 
