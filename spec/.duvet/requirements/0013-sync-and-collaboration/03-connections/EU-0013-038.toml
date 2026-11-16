@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/03-connections.md#EU-0013-038"
+
+[[spec]]
+level = "MUST"
+quote = "A signaling service or a relay MUST NOT hold project history or act as an authority over it."
