@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-173"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to record replaced dialogue to picture, with cue beeps and streamers before each line."

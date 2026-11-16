@@ -6,7 +6,9 @@ to picture such as footsteps, and backgrounds. A stem bus collects one part of t
 music or effects. The music-and-effects bus sums the music and effects stems. A sync point is a
 sample within a region, such as the attack of a slammed gate, that lines up with a picture frame.
 The sound effects category of an item is a category of the public category list that sound effects
-libraries use.
+libraries use. Replaced dialogue is speech that a performer records again while watching the picture,
+to take the place of a line recorded on set. Cue beeps are short tones before a line's start that
+count the performer in to it, as a streamer shows the line's start on the picture.
 
 ### EU-0022-124 {#EU-0022-124}
 
@@ -71,3 +73,7 @@ A candidate sound effect MUST play at the playhead in step with the picture, loo
 ### EU-0022-139 {#EU-0022-139}
 
 Placing a sound effect MUST align its sync point, its first strong attack by default, with the chosen frame or marker.
+
+### EU-0022-173 {#EU-0022-173}
+
+A person MUST be able to record replaced dialogue to picture, with cue beeps and streamers before each line.
