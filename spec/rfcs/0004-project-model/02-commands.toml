@@ -108,7 +108,7 @@ rationale = 'The sender chooses whether to compute its change again from the sta
 relations = [ { kind = 'depends_on', target = 'EU-0004-017' } ]
 
 [[requirement]]
-id = 'EU-0004-048'
+id = 'EU-0004-051'
 level = 'MUST'
 polarity = 'required'
 statement = "A conflict MUST identify the head revision of the batch's branch."

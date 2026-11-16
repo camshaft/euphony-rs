@@ -54,7 +54,7 @@ Where the expected revision of a batch is not the head of its branch, and no com
 
 A conflict MUST include the view, at the head of the batch's branch, of the parts of the project that the commands of the batch touch and that the actor of the batch may read.
 
-### EU-0004-048 {#EU-0004-048}
+### EU-0004-051 {#EU-0004-051}
 
 A conflict MUST identify the head revision of the batch's branch.
 
