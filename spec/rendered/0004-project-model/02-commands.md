@@ -6,10 +6,12 @@ branch, a key that identifies the batch across retries, and the actor that sends
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
 before it reads any batch of that actor. euphony also refuses as denied a batch whose caller may not
 take its commands on the branch it names, before it checks the batch's expected revision or its key.
-It refuses a batch that names a project that doesn't exist in the same way, so that a refusal doesn't
-tell a caller whether the project exists. euphony then refuses as invalid input a batch whose expected
-revision isn't in the history of the branch it names. euphony answers that check with a fixed number
-of reads, each bounded by an index, however long the branch's history is.
+It refuses a batch that names a project that doesn't exist, or a branch that the project doesn't hold,
+in the same way, so that a refusal doesn't tell a caller whether the project or the branch exists.
+euphony then refuses as invalid input a batch that names a working branch another copy holds, and a
+batch whose expected revision isn't in the history of the branch it names. euphony answers that
+history check with a fixed number of reads, each bounded by an index, however long the branch's
+history is.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -45,6 +47,14 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 
 Where the caller that euphony authenticated may not take every command of a batch on the branch that the batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
 
+### EU-0004-095 {#EU-0004-095}
+
+Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key.
+
+### EU-0004-096 {#EU-0004-096}
+
+Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-095 and before it checks the batch's expected revision or its idempotency key.
+
 ### EU-0004-064 {#EU-0004-064}
 
 Where the expected revision of a batch is neither the head of the branch that the batch names nor a revision that this head follows, directly or through other revisions, euphony MUST refuse the batch as invalid input after the check of EU-0004-056 and before it checks the batch's idempotency key.
@@ -79,7 +89,7 @@ The outcome of a refused batch MUST be one of conflict, denied, invalid input or
 
 ### EU-0004-017 {#EU-0004-017}
 
-Where the expected revision of a batch is not the head of the branch that the batch names, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.
+Where the expected revision of a batch is a revision that the head of the branch that the batch names follows, directly or through other revisions, and not that head, and no committed batch of the same project and actor holds its idempotency key, euphony MUST refuse the batch as a conflict.
 
 ### EU-0004-018 {#EU-0004-018}
 
