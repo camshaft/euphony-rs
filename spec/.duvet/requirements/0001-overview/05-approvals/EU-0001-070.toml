@@ -2,4 +2,4 @@ target = "rendered/0001-overview/05-approvals.md#EU-0001-070"
 
 [[spec]]
 level = "MUST"
-quote = "The engine MUST NOT accept an owner-interaction record whose effect or device doesn't match the approval, or that the engine accepted before."
+quote = "The engine MUST NOT accept an owner-interaction record whose effect, device or console doesn't match the approval, or that the engine accepted before."
