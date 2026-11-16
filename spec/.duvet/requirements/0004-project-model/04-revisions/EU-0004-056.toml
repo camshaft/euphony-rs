@@ -1,5 +1,0 @@
-target = "rendered/0004-project-model/04-revisions.md#EU-0004-056"
-
-[[spec]]
-level = "MUST"
-quote = "euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with an answer that does not differ from its refusal of a caller who may not read an existing project."
