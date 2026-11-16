@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-047"
+
+[[spec]]
+level = "MUST"
+quote = "The strength of a preference version MUST be tentative, preferred or required."

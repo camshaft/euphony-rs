@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-060"
+
+[[spec]]
+level = "MUST"
+quote = "The prepare command MUST take a source item and interval, or the identity of a capture, with optional notes, the kinds of structure to try and the expected project revision."

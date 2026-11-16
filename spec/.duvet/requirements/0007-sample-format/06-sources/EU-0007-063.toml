@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-063"
+
+[[spec]]
+level = "MUST"
+quote = "An imported original that holds a non-finite sample MUST be kept for diagnosis."

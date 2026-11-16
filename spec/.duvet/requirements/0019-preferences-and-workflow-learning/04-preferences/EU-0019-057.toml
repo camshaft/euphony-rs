@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-057"
+
+[[spec]]
+level = "MUST"
+quote = "The preferences of two subjects MUST stay independent of each other."

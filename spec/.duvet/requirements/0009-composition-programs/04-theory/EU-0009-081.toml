@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-081"
+
+[[spec]]
+level = "MUST"
+quote = "Every client MUST be able to discover the theory operations and the definition versions the project supports."

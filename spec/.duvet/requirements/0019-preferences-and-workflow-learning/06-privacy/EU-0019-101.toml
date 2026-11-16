@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-101"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST check a grant's verification again at its commit and at each release of private data."

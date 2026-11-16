@@ -1,0 +1,11 @@
+number = 7
+title = 'Sample format and storage'
+area = 'euphony'
+abstract = """\
+  The format of the audio euphony processes, saves, caches and shares: binary32 working samples, \
+  numerical profiles and processor accuracy, the canonical bytes and identity of working audio, \
+  lossless storage and its measured raw exceptions, decoders at peers and browsers, source originals, \
+  the conversions at devices, network audio and export, verified codecs and adapters, decoder \
+  migration, and the resource reports each release holds."""
+retired = []
+sources = []

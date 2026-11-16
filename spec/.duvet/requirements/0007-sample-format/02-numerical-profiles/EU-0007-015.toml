@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-015"
+
+[[spec]]
+level = "MUST"
+quote = "Registration MUST NOT accept a processor identity whose record lacks a passing higher-precision reference test for that exact identity."

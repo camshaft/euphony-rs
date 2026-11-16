@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-044"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted sound MUST stay linked to the records of the candidate it came from."

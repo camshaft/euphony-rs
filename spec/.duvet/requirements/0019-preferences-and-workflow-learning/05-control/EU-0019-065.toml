@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-065"
+
+[[spec]]
+level = "MUST"
+quote = "Before the owner decides a proposal, euphony MUST show its meaning, scope, strength, supporting and contrary evidence, expected affected behavior and exact version diff."

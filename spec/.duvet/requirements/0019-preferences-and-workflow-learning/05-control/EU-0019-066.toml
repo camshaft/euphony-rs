@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-066"
+
+[[spec]]
+level = "MUST"
+quote = "The owner's accept command MUST record approve, edit-and-approve or reject."

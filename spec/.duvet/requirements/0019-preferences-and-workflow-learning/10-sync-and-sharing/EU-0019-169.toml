@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-169"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST authorize every learning record and evidence view at each read and at each delivery to a subscription."

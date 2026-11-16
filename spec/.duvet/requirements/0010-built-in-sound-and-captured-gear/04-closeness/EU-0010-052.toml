@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-052"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST estimate its conditional-mean error so that an exact independent random replica of the hardware has an expected estimate of zero."

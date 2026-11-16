@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-075"
+
+[[spec]]
+level = "MUST"
+quote = "A run MUST end when no candidate that reduces its measured difference fits the processing cost the musician accepts."

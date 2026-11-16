@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/11-listening.md#EU-0019-180"
+
+[[spec]]
+level = "MUST"
+quote = "A listening result MUST keep the actual listener's identity, the project revision, the selected sink, the received codec and quality, the level alignment, the output profile and the reported timing uncertainty."

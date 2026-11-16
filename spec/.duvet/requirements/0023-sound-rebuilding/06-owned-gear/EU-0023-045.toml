@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/06-owned-gear.md#EU-0023-045"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuild from gear MUST fit built-in processors alone to the captures of the gear, without learned parts."

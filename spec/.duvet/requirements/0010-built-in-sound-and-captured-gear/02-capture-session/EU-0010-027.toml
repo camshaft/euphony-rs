@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-027"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST stop emission when its calibration is older than the session."

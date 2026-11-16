@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-003"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT hold the credentials an assistant uses for a model service."

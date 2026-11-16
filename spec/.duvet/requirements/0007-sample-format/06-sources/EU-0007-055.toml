@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/06-sources.md#EU-0007-055"
+
+[[spec]]
+level = "MUST"
+quote = "Imported and captured source originals MUST be kept apart from working audio."

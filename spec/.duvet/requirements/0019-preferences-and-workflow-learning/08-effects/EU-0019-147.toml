@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-147"
+
+[[spec]]
+level = "MUST"
+quote = "Where an observed report fails its trial's acceptance predicates or shows a safety failure, euphony MUST suspend the mechanism and restore its prior safe configuration."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-040"
+
+[[spec]]
+level = "MUST"
+quote = "Chunk and read-ahead sizes MUST be chosen from decoder behavior, device deadlines, the measured workload and the actual resource limits."

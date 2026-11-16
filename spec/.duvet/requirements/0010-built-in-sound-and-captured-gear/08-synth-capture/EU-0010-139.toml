@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-139"
+
+[[spec]]
+level = "MUST"
+quote = "A synthesizer capture that sends messages from another computer MUST measure the mapping and jitter of its timestamps."

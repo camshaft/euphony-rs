@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-053"
+
+[[spec]]
+level = "MUST"
+quote = "A fit computed on another numerical profile MUST have another identity."

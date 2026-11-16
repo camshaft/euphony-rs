@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/05-negotiation.md#EU-0007-054"
+
+[[spec]]
+level = "MUST"
+quote = "Work that a peer cannot read for want of a supported version MUST be held where the musician sees it."

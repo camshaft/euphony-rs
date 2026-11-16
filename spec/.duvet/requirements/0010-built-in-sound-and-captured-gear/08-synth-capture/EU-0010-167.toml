@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-167"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a synthesizer capture MUST state its unmet coverage."

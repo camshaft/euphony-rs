@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-053"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST validate a proposal's subject, schema, evidence access and typed relations before it stores the proposal."

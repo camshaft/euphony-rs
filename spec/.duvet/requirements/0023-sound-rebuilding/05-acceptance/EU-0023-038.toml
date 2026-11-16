@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-038"
+
+[[spec]]
+level = "MUST"
+quote = "The blind comparison MUST record the musician's result with its candidate."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-017"
+
+[[spec]]
+level = "MUST"
+quote = "A mutating command in an assisted session whose context handle is no longer current MUST be refused as context-stale, with a refreshed context the principal can read."

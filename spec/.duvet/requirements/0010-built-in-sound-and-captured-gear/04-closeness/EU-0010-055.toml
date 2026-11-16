@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-055"
+
+[[spec]]
+level = "MUST"
+quote = "The comparison of random parts MUST fail a model whose random part is absent or replays one recorded pass whatever its seed."

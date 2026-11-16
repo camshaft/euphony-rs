@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-144"
+
+[[spec]]
+level = "MUST"
+quote = "An effect report MUST NOT claim from an uncontrolled comparison that a mechanism caused a change."

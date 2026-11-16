@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-069"
+
+[[spec]]
+level = "MUST"
+quote = "Fitting MUST NOT be held to a fixed bound on rounds, workers or jobs."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-184"
+
+[[spec]]
+level = "MUST"
+quote = "Attaching an instrument model to a track MUST name its model digest, runtime profile version, parameter map, program, initial state and seed."

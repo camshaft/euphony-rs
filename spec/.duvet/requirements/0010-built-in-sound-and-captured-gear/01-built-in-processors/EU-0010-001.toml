@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-001"
+
+[[spec]]
+level = "MUST"
+quote = "Each built-in processor MUST declare its typed parameters, with the range and the unit of each."

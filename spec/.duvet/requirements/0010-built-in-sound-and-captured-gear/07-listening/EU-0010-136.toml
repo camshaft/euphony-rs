@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-136"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a final evaluation MUST list every attempt, with the observed proportion and interval of each listener."

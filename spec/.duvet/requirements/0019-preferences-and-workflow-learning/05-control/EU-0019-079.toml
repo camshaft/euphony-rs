@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-079"
+
+[[spec]]
+level = "MUST"
+quote = "The Why view MUST NOT present an assistant's explanation as proof of its reasoning."

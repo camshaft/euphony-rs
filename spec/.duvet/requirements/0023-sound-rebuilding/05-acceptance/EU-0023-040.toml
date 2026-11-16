@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/05-acceptance.md#EU-0023-040"
+
+[[spec]]
+level = "MUST"
+quote = "Acceptance MUST add the candidate to the project as an instrument track or an effect chain in one revision that the musician can preview."

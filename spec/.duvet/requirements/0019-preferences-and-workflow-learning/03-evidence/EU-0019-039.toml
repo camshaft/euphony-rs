@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-039"
+
+[[spec]]
+level = "MUST"
+quote = "Submitted evidence whose attribution fails its check MUST be refused as attribution-unverified, without writing any evidence."

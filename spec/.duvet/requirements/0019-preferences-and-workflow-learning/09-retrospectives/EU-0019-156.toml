@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-156"
+
+[[spec]]
+level = "MUST"
+quote = "A retrospective MUST record what worked, what needed correction, unresolved problems, evidence gaps and its proposals."

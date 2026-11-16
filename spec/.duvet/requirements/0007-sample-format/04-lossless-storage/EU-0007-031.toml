@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-031"
+
+[[spec]]
+level = "MUST"
+quote = "On the representative projects, saved, cached and shared working audio MUST use less disk space and network transfer than uncompressed audio."

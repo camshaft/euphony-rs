@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-021"
+
+[[spec]]
+level = "MUST"
+quote = "A change to the learning context MUST reach a subscribed assistant as an event of the resumable event stream."

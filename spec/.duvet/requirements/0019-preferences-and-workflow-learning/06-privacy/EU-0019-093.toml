@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-093"
+
+[[spec]]
+level = "MUST"
+quote = "The approval that grants an assistant private data MUST show the client and the data classes it allows."

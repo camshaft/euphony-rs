@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-017"
+
+[[spec]]
+level = "MUST"
+quote = "The higher-precision reference test of a processor MUST cover cancellation, long sums, low-level decays, filters and nonlinear processing."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-091"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST keep the credentials of the learning store in the platform's secure storage."

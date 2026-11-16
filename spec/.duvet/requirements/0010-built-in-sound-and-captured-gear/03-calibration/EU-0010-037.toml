@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-037"
+
+[[spec]]
+level = "MUST"
+quote = "Calibration MUST map digital full scale to the operating level of the gear."

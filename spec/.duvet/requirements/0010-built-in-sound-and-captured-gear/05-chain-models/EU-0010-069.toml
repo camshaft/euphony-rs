@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-069"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST load a model into its built-in processors without a new release of euphony."

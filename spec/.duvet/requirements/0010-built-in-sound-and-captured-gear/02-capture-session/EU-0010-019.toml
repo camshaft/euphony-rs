@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-019"
+
+[[spec]]
+level = "MUST"
+quote = "The approval of a capture session MUST name the device, the output and input channels, the sample rate, the clock source, the calibration and the highest output level."

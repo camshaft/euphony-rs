@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-034"
+
+[[spec]]
+level = "MUST"
+quote = "Each candidate MUST be an immutable record of its structure, its settings, each measure for the whole passage and for each note, its held-back result, its measured processing cost and its declared added delay."

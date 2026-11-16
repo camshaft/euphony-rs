@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-092"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST admit the training, fitting and evaluation jobs of a model on every paired computer that the scheduler admits."

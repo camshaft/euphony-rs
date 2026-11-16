@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-099"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST NOT retire a decoder while a retained dependency requires it."

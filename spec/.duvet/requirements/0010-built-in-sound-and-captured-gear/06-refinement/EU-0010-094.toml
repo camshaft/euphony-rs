@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-094"
+
+[[spec]]
+level = "MUST"
+quote = "A refinement run MUST be project data that holds its identity, its declared stop rules and the result of each of its evaluations."

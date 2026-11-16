@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-137"
+
+[[spec]]
+level = "MUST"
+quote = "A failed final evaluation MUST spend its final partition, so that another final evaluation needs a newly captured final partition."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-048"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST store the calibrated level of its capture."

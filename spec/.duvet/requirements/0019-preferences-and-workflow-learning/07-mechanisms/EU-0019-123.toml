@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-123"
+
+[[spec]]
+level = "MUST"
+quote = "Activating a mechanism MUST be the owner's accept command."

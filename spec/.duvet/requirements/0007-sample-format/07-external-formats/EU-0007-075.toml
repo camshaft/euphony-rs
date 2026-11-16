@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-075"
+
+[[spec]]
+level = "MUST"
+quote = "Dither MUST NOT be applied in cache compression or peer sync."

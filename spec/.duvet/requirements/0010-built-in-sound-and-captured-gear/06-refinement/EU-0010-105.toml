@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-105"
+
+[[spec]]
+level = "MUST"
+quote = "A stopped run MUST resume only when the musician resumes it."

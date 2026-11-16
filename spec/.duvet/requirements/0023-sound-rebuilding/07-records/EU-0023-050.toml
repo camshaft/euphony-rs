@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-050"
+
+[[spec]]
+level = "MUST"
+quote = "A repeat of a rebuild from its record MUST fit the recorded structures again without asking for new proposals."

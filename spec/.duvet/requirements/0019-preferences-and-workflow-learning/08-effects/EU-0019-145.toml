@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-145"
+
+[[spec]]
+level = "MUST"
+quote = "A shorter session or fewer undos alone MUST NOT count as evidence of better music."

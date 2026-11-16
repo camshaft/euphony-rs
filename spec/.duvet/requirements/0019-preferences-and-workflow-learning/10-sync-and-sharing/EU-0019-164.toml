@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-164"
+
+[[spec]]
+level = "MUST"
+quote = "Each owner's learning MUST have a version history apart from the branches of every project."

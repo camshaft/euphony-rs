@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-084"
+
+[[spec]]
+level = "MUST"
+quote = "An export to integer audio MUST NOT be described as lossless relative to the floating-point render."

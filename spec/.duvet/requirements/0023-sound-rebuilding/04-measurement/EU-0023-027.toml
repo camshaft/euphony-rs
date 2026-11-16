@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-027"
+
+[[spec]]
+level = "MUST"
+quote = "The comparison MUST match the levels of the rebuilt render and the original before it measures them."

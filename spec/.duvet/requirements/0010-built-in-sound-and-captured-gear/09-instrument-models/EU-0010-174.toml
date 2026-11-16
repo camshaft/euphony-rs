@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-174"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument model MUST hold the polyphony and voice allocation behavior measured on the device."

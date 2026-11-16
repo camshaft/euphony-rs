@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/04-measurement.md#EU-0023-036"
+
+[[spec]]
+level = "MUST"
+quote = "Each candidate offered MUST have a recorded comparison with its original passage."

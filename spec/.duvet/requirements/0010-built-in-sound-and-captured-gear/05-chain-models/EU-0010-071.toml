@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-071"
+
+[[spec]]
+level = "MUST"
+quote = "Before activation, the loader MUST refuse a model whose measured resource demand exceeds the capacity measured on the computer, with the reason."

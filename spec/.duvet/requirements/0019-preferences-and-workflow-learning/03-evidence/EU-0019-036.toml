@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-036"
+
+[[spec]]
+level = "MUST"
+quote = "Evidence an assistant reports MUST be stored as agent-reported, with the reporting assistant and its permitted source."

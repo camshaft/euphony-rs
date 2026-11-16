@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-124"
+
+[[spec]]
+level = "MUST"
+quote = "A listener MUST meet the criterion only when the exact one-sided upper confidence bound on their proportion of correct answers, at a confidence level of one minus the tolerated error rate divided by the number of attempts and the number of listeners, is below the tolerated proportion."

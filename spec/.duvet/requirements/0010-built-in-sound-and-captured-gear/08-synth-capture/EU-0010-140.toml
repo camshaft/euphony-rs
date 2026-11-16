@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-140"
+
+[[spec]]
+level = "MUST"
+quote = "A synthesizer capture MUST record its planned messages, actual send times, device acknowledgments, audio, clock mapping, calibration and observed failures as one take."

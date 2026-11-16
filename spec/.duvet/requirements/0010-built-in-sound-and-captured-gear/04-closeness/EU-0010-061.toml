@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/04-closeness.md#EU-0010-061"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST call the model as close as the capture can show only once the interval of its conditional-mean error and the intervals of its random-part comparisons lie within the tolerances the musician declares."

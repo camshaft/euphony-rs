@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/05-negotiation.md#EU-0007-052"
+
+[[spec]]
+level = "MUST"
+quote = "A peer MUST NOT request integer quantization of working audio."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-070"
+
+[[spec]]
+level = "MUST"
+quote = "Before activation, the loader MUST refuse a model whose graph holds an operator outside the built-in set, a cycle without delay, a dimension mismatch or a coefficient that is not finite, with the reason."

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/07-external-formats.md#EU-0007-086"
+
+[[spec]]
+level = "MUST"
+quote = "A raw copy of an export kept in the project store MUST hold the measurement a raw exception needs."

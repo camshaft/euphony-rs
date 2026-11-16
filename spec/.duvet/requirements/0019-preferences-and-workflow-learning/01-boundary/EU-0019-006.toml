@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-006"
+
+[[spec]]
+level = "MUST"
+quote = "Learning work MUST NOT run on the real-time audio path."

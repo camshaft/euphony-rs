@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/04-preferences.md#EU-0019-061"
+
+[[spec]]
+level = "MUST"
+quote = "While a conflict between preferences is unresolved, euphony MUST NOT apply a behavior other than the last approved behavior that still applies."

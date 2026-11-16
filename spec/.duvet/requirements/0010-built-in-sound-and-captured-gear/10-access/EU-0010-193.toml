@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-193"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST refuse a capture or a model to a computer that is not paired with its owner."

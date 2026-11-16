@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-064"
+
+[[spec]]
+level = "MUST"
+quote = "Where a worker is lost, the queued work of the run MUST resume on another worker."

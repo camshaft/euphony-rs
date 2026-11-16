@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-173"
+
+[[spec]]
+level = "MUST"
+quote = "The instrument state MUST hold voice allocation, global modulation, shared effects and channel and program state."

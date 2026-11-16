@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-162"
+
+[[spec]]
+level = "MUST"
+quote = "A retrospective that found nothing MUST record its coverage and the versions it examined."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-016"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST record each listed instrument or effect that no accepted built-in processor replaces yet."

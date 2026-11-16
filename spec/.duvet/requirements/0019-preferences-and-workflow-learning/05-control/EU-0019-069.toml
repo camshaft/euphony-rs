@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-069"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant MUST NOT approve a proposal."

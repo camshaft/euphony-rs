@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-242"
+
+[[spec]]
+level = "MUST"
+quote = "A model conditioned on control settings MUST report its held-out error at each captured setting."

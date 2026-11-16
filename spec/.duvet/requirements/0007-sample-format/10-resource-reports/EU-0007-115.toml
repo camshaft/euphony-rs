@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-115"
+
+[[spec]]
+level = "MUST"
+quote = "Each optimization's change record MUST state its workload, from the representative projects the project configures."

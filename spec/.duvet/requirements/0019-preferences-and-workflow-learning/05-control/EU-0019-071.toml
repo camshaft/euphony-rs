@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-071"
+
+[[spec]]
+level = "MAY"
+quote = "An assistant MAY make low-risk, undoable session edits that the owner already authorized."

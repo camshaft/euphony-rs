@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-039"
+
+[[spec]]
+level = "MUST"
+quote = "A capture of gear with a digital clock of its own MUST correct for the measured drift between that clock and the clock of the audio interface."

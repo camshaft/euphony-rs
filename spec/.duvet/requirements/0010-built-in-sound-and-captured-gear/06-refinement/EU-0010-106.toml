@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-106"
+
+[[spec]]
+level = "MUST"
+quote = "The resume of a run MUST record who resumed it and each stop rule they changed."

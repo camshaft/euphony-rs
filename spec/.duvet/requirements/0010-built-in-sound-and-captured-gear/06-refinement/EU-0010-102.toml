@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-102"
+
+[[spec]]
+level = "MUST"
+quote = "A submission to a refinement run MUST carry the run revision it read, so that a submission that races the result that stopped the run is refused."

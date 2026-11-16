@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/04-lossless-storage.md#EU-0007-124"
+
+[[spec]]
+level = "MUST"
+quote = "Stored, cached and synced objects of working audio MUST move between machines only on authenticated, encrypted transfers."

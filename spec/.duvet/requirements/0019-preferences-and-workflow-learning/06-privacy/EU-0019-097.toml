@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-097"
+
+[[spec]]
+level = "MUST"
+quote = "Synchronization to the owner's paired devices MUST NOT need the owner's approval of the exact effect."

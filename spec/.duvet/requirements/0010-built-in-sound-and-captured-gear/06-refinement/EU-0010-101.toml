@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-101"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST refuse a job of a stopped run at admission, a job queued before the stop included."

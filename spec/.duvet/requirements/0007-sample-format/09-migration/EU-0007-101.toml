@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/09-migration.md#EU-0007-101"
+
+[[spec]]
+level = "MUST"
+quote = "Publication of an object or a pin and retirement of a decoder MUST be decided atomically against each other."

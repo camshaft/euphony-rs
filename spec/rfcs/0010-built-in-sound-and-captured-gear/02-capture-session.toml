@@ -1,0 +1,166 @@
+[section]
+anchor = 'capture-session'
+title = 'The capture session'
+problem = "Measuring an external chain or synthesizer sends test signals through physical gear wired to one computer, a wrong route or level can damage the gear or a listener's hearing, and a capture made under changed conditions measures something other than the gear."
+motivation = "A capture session that the owner approves for one route and one level bound, that the engine enforces itself, and that stops on any change of its conditions, keeps the gear and the people near it safe and keeps each measurement tied to the conditions it was made under."
+prose = """
+A capture measures one external device or chain: an effect chain wired between outputs and inputs
+of an audio interface, or a synthesizer that receives instrument control messages and returns audio
+to an input. A capture runs only on the computer whose interface the gear is wired to, in a capture
+session that the owner approves before any output. The approval names the device, the output and
+input channels, the sample rate, the clock source, the calibration and the highest output level the
+session may send. The audio engine enforces the approved route and level itself, not a mixer of the
+interface. During a session, input monitoring is off and every other output of the session is
+muted. A session stops on a change of its conditions, on signs of feedback, on clipping, on a
+missing return, on the musician's stop and on the loss of the client that controls it."""
+
+[[requirement]]
+id = 'EU-0010-017'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture MUST run on the computer whose audio interface the gear is wired to."
+binds_to = 'system'
+rationale = "Only that computer can reach the gear."
+
+[[requirement]]
+id = 'EU-0010-018'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST begin only after the owner approves it."
+binds_to = 'system'
+rationale = "No signal reaches the gear without its owner's consent."
+
+[[requirement]]
+id = 'EU-0010-019'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of a capture session MUST name the device, the output and input channels, the sample rate, the clock source, the calibration and the highest output level."
+binds_to = 'system'
+rationale = "The owner approves exactly what the session will do."
+relations = [ { kind = 'depends_on', target = 'EU-0010-018' } ]
+
+[[requirement]]
+id = 'EU-0010-020'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A capture session MUST NOT emit to an output channel that its approval does not name."
+binds_to = 'system'
+rationale = "Test signals never reach speakers or headphones by mistake."
+relations = [ { kind = 'depends_on', target = 'EU-0010-019' } ]
+
+[[requirement]]
+id = 'EU-0010-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A capture session MUST NOT read from an input channel that its approval does not name."
+binds_to = 'system'
+rationale = "A capture records only the return of the gear."
+relations = [ { kind = 'depends_on', target = 'EU-0010-019' } ]
+
+[[requirement]]
+id = 'EU-0010-022'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A capture session MUST NOT send a signal above the highest output level that its approval names."
+binds_to = 'system'
+rationale = "The level bound protects the gear and the people near it."
+relations = [ { kind = 'depends_on', target = 'EU-0010-019' } ]
+
+[[requirement]]
+id = 'EU-0010-023'
+level = 'MUST'
+polarity = 'required'
+statement = "The audio engine MUST enforce the route and the level bound of a capture session itself, whatever the mixer of the audio interface is set to."
+binds_to = 'system'
+rationale = "The bound holds whatever the interface's own software does."
+
+[[requirement]]
+id = 'EU-0010-024'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST mute every output of the session that its approval does not name."
+binds_to = 'system'
+rationale = "Other tracks of the session never play into the gear or over its return."
+
+[[requirement]]
+id = 'EU-0010-025'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST keep input monitoring off for its whole duration."
+binds_to = 'system'
+rationale = "The return of the gear never feeds back into its input."
+
+[[requirement]]
+id = 'EU-0010-026'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop emission before its next segment when its device, channels, sample rate, clock source or channel map changes."
+binds_to = 'system'
+rationale = "A measurement never mixes two sets of conditions."
+
+[[requirement]]
+id = 'EU-0010-027'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop emission when its calibration is older than the session."
+binds_to = 'system'
+rationale = "Every measurement is made under a calibration of the same conditions."
+
+[[requirement]]
+id = 'EU-0010-028'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST mute its output within one device period on signs of feedback, clipping or a missing return."
+binds_to = 'system'
+rationale = "A fault in the wiring stops before it can grow."
+
+[[requirement]]
+id = 'EU-0010-029'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST mark a segment unusable when it mutes its output for feedback, clipping or a missing return."
+binds_to = 'system'
+rationale = "A model is never fitted to a faulty measurement."
+relations = [ { kind = 'depends_on', target = 'EU-0010-028' } ]
+
+[[requirement]]
+id = 'EU-0010-030'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop on the musician's stop."
+binds_to = 'system'
+rationale = "The musician can end a capture at any moment."
+
+[[requirement]]
+id = 'EU-0010-031'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop on the loss of the client that controls it."
+binds_to = 'system'
+rationale = "No capture runs unattended after its controller is gone."
+
+[[requirement]]
+id = 'EU-0010-032'
+level = 'MUST'
+polarity = 'required'
+statement = "After a stop for a change of its conditions, a capture session MUST have a new calibration and a new approval before it emits again."
+binds_to = 'system'
+rationale = "The owner approves the conditions a resumed capture runs under."
+relations = [ { kind = 'depends_on', target = 'EU-0010-026' } ]
+
+[[requirement]]
+id = 'EU-0010-209'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST stop emission when the owner unpairs its computer during a take."
+binds_to = 'system'
+rationale = "A computer the owner unpaired stops driving the gear at once."
+
+[[requirement]]
+id = 'EU-0010-211'
+level = 'MUST'
+polarity = 'required'
+statement = "A capture session MUST mark a take incomplete when it stops emission for an unpairing or a reservation conflict."
+binds_to = 'system'
+rationale = "A take cut short is never fitted as if it were whole."
+relations = [ { kind = 'depends_on', target = 'EU-0010-209' }, { kind = 'depends_on', target = 'EU-0010-210' } ]

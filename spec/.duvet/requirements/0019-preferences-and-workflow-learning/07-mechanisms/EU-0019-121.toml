@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-121"
+
+[[spec]]
+level = "MUST"
+quote = "A mechanism test MUST NOT use real devices, write outside its pinned copy or export anything."

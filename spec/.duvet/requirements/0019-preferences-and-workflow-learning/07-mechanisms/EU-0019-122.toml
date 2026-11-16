@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-122"
+
+[[spec]]
+level = "MUST"
+quote = "A test result MUST hold the command diff, an audio comparison where audio changes, the failures, the resource use and a replay of the rollback."

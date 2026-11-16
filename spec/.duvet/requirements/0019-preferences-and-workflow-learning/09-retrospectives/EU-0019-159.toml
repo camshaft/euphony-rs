@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-159"
+
+[[spec]]
+level = "MUST"
+quote = "The event that creates retrospective work MUST make the work available at once and at the next connection of an assistant."

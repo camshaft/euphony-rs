@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-076"
+
+[[spec]]
+level = "MUST"
+quote = "Each assisted change MUST record its context manifest, the preference and mechanism versions that applied, typed links to its effects and the explanation the assistant supplied."

@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-015"
+
+[[spec]]
+level = "MUST"
+quote = "A comparison of a built-in processor with another product MUST NOT use a reference whose license does not permit that comparison."

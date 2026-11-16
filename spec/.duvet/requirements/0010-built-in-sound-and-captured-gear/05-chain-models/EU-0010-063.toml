@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-063"
+
+[[spec]]
+level = "MUST"
+quote = "For each capture of an external chain, euphony MUST fit a structured model and a learned model to the same capture."

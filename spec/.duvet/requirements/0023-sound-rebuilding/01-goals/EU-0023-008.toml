@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/01-goals.md#EU-0023-008"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuilt sound MUST NOT hold the performance of its original."

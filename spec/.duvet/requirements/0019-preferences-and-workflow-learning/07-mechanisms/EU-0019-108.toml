@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-108"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT start an assistant to work on learning work."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-167"
+
+[[spec]]
+level = "MUST"
+quote = "A published copy of a preference or mechanism MUST reach its recipient as an attributed proposal."

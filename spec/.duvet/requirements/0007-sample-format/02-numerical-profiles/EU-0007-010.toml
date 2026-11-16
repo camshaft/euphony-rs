@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/02-numerical-profiles.md#EU-0007-010"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of a processor MUST cover its numerical profile identity, the digest of its implementation and the versions of its parameters and schema."

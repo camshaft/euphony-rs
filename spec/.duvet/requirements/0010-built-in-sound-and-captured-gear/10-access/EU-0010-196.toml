@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/10-access.md#EU-0010-196"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST NOT name a model with the product name or trademark of a manufacturer."

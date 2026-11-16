@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-099"
+
+[[spec]]
+level = "MUST"
+quote = "The stagnation rule of a refinement run MUST default to three rounds without an improvement beyond the intervals."

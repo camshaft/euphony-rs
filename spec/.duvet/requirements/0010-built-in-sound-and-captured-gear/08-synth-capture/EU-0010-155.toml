@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-155"
+
+[[spec]]
+level = "MUST"
+quote = "After a device is lost, a new session MUST reconcile the state of the device rather than replay an uncertain outstanding message."

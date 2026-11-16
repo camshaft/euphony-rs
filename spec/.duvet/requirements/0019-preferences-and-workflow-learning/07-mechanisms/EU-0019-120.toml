@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-120"
+
+[[spec]]
+level = "MUST"
+quote = "Testing a mechanism MUST run its exact digest on a pinned copy of the project with deterministic inputs and simulated dependencies."

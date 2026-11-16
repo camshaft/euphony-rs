@@ -1,0 +1,95 @@
+[section]
+anchor = 'goals'
+title = 'Goals and end state'
+problem = """\
+  A musician who wants a sound they hear on a record, in a sample or from their own gear keeps \
+  depending on the plug-in or the hardware that made it, loses the sound when that goes away, and \
+  cannot tell how close a rebuilt sound is to the original."""
+motivation = """\
+  Rebuilding a sound from euphony's own instruments and effects, and measuring each rebuilt sound \
+  against its original before the musician accepts it, keeps the sound playable for as long as the \
+  project lasts and tells the musician how close it is."""
+prose = """
+Rebuilding a sound takes a passage of a recording or a sample, or the captures of an instrument or
+an effect the musician owns, and offers rebuilt sounds made of euphony's built-in instruments and
+effects. A rebuilt sound is a structure of built-in processors with their settings, which the
+musician plays with new notes and adjusts with ordinary controls. Each rebuilt sound is measured
+against its original and listened to blind by the musician before the musician accepts it. The notes
+that a rebuild plays come from the musician or from the analysis of the passage; rebuilding rebuilds
+the instrument and its effects, not the performance. Rebuilding builds a chain of its own that
+measures close to the original, and doesn't identify the product, preset or chain that made it.
+The analysis of a passage, the built-in processors, the capture of gear and its blind comparison,
+the workers that render, the content store and the trust model are each specified in the RFC of
+their own component, and this RFC uses them."""
+
+[[requirement]]
+id = 'EU-0023-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'A musician MUST be able to rebuild a sound from a chosen passage of a recording or a sample.'
+binds_to = 'system'
+rationale = 'The sound comes from audio the musician chooses.'
+
+[[requirement]]
+id = 'EU-0023-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'A musician MUST be able to rebuild the sound of an instrument or an effect they own from its captures.'
+binds_to = 'system'
+rationale = 'Owned gear can be rebuilt as well as recordings.'
+
+[[requirement]]
+id = 'EU-0023-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuilt sound MUST be made only of built-in instruments and effects with their settings.'
+binds_to = 'system'
+rationale = 'The sound keeps playing when a plug-in or a piece of gear goes away.'
+
+[[requirement]]
+id = 'EU-0023-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'A rebuilt sound MUST play the new notes that the musician plays on it.'
+binds_to = 'system'
+rationale = 'The musician plays the rebuilt sound like any other instrument.'
+
+[[requirement]]
+id = 'EU-0023-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each setting of a rebuilt sound MUST be an ordinary control of a built-in instrument or effect that the musician can adjust.'
+binds_to = 'system'
+rationale = 'The musician changes the rebuilt sound with the controls they already know.'
+
+[[requirement]]
+id = 'EU-0023-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Rebuilding MUST NOT name the product, preset or chain that made the original sound.'
+binds_to = 'system'
+rationale = "Rebuilding matches a sound and doesn't identify where it came from."
+
+[[requirement]]
+id = 'EU-0023-007'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A rebuilt sound MUST NOT carry the name of its source or of a commercial product.'
+binds_to = 'system'
+rationale = "A rebuilt sound is the musician's own sound and doesn't pass as a product."
+
+[[requirement]]
+id = 'EU-0023-008'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A rebuilt sound MUST NOT hold the performance of its original.'
+binds_to = 'system'
+rationale = 'Rebuilding rebuilds the instrument and its effects; the notes come from the musician or from the analysis.'
+
+[[requirement]]
+id = 'EU-0023-009'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Rebuilt sounds MUST NOT be published or distributed as presets.'
+binds_to = 'system'
+rationale = "A rebuilt sound stays in the musician's projects and in what they share with collaborators."

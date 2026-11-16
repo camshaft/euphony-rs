@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-189"
+
+[[spec]]
+level = "MUST"
+quote = "The report of an instrument model MUST state note-level clips, phrase-level clips and live playing as separate claims."

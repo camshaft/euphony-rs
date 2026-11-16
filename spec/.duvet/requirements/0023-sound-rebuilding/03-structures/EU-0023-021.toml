@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/03-structures.md#EU-0023-021"
+
+[[spec]]
+level = "MUST"
+quote = "A fit MUST render the notes of the passage through its structure and measure the difference of that render from the original."

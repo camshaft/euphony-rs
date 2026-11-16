@@ -1,0 +1,5 @@
+target = "rendered/0023-sound-rebuilding/07-records.md#EU-0023-049"
+
+[[spec]]
+level = "MUST"
+quote = "The record of a rebuild MUST hold its source digest and interval, the analysis results it read, the versions of its planner, fitter, measurements and processors, its seeds, its held-back notes and each structure proposed for it."

@@ -1,0 +1,227 @@
+[section]
+anchor = 'instrument-models'
+title = 'Instrument models'
+problem = "A musician wants to play and adjust their synthesizer when the hardware is absent, but a synthesizer holds voice state and interacting controls, and a model that guesses between measured settings or hides an overload sounds unlike the hardware without saying so."
+motivation = "Instrument models that hold their voices and state explicitly, generate from events and controls, refuse settings outside their measured domain, and report their evidence by note and by patch let the musician play an adjustable model and know where it is faithful."
+prose = """
+An instrument model generates audio from timed events, control trajectories, elapsed time and prior
+state. A structured instrument model has three parts: euphony's own voice allocator and envelopes,
+which hold the voices and their state; a model fitted for each voice, conditioned on the known
+settings; and a shared stage after the voices, modeled as an external chain is. A learned
+instrument model is one trained generator of the whole instrument. A voice state holds oscillator
+phase, envelope stage, filter memory, note identity, pedal state, glide and random-process state;
+the instrument state holds voice allocation, global modulation, shared effects and channel and
+program state. The manifest of a model states the continuous control regions and the discrete
+modes it supports, and the interface shows each setting as measured, validated by interpolation or
+unsupported. The model represents the tested unit, firmware, patch families, controls and
+operating conditions, not every sound any unit of the product can make."""
+
+[[requirement]]
+id = 'EU-0010-168'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument model MUST generate audio from timed events, control trajectories, elapsed time and prior state."
+binds_to = 'system'
+rationale = "An effect model fed with silence can't stand in for an instrument."
+
+[[requirement]]
+id = 'EU-0010-169'
+level = 'MUST'
+polarity = 'required'
+statement = "For each synthesizer capture, euphony MUST fit a structured instrument model and a learned instrument model to the same capture."
+binds_to = 'system'
+rationale = "The musician compares both families on the same evidence."
+
+[[requirement]]
+id = 'EU-0010-170'
+level = 'MUST'
+polarity = 'required'
+statement = "A structured instrument model MUST hold its voices and their state in euphony's own voice allocator and envelopes."
+binds_to = 'system'
+rationale = "Voice allocation, stealing, retrigger and legato follow measured behavior that a person can read."
+
+[[requirement]]
+id = 'EU-0010-171'
+level = 'MUST'
+polarity = 'required'
+statement = "The pitch of each voice of a structured instrument model MUST come from the events it plays."
+binds_to = 'system'
+rationale = "Fitting sets the timbre, and the instrument plays in tune."
+
+[[requirement]]
+id = 'EU-0010-172'
+level = 'MUST'
+polarity = 'required'
+statement = "A voice state MUST hold oscillator phase, envelope stage, filter memory, note identity, pedal state, glide and random-process state."
+binds_to = 'system'
+rationale = "A voice resumes exactly where it was."
+
+[[requirement]]
+id = 'EU-0010-173'
+level = 'MUST'
+polarity = 'required'
+statement = "The instrument state MUST hold voice allocation, global modulation, shared effects and channel and program state."
+binds_to = 'system'
+rationale = "State shared between voices is modeled once, as the hardware holds it."
+
+[[requirement]]
+id = 'EU-0010-174'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument model MUST hold the polyphony and voice allocation behavior measured on the device."
+binds_to = 'system'
+rationale = "The model plays chords and steals voices as the hardware does."
+
+[[requirement]]
+id = 'EU-0010-175'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An instrument model MUST NOT steal voices beyond its modeled behavior to hide an overload."
+binds_to = 'system'
+rationale = "An overload is reported rather than heard as a different instrument."
+relations = [ { kind = 'depends_on', target = 'EU-0010-174' } ]
+
+[[requirement]]
+id = 'EU-0010-176'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the runtime can't sustain the modeled voice behavior, euphony MUST mark live use of the model unavailable."
+binds_to = 'system'
+rationale = "Live use is offered only where it plays as the model claims."
+
+[[requirement]]
+id = 'EU-0010-177'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument model MUST derive the random stream of each voice from a root seed and stable event and voice identities."
+binds_to = 'system'
+rationale = "A bounce repeats exactly, and each voice varies on its own."
+
+[[requirement]]
+id = 'EU-0010-178'
+level = 'MUST'
+polarity = 'required'
+statement = "A seek or restart of an instrument model MUST restore its voice and random state from a compatible checkpoint, or render the history that leads to it."
+binds_to = 'system'
+rationale = "A region starting mid-song sounds as it does in a full playback."
+
+[[requirement]]
+id = 'EU-0010-179'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument model MUST interpolate a control only between validated points within its supported domain."
+binds_to = 'system'
+rationale = "A setting between measurements is played only where it was validated."
+
+[[requirement]]
+id = 'EU-0010-180'
+level = 'MUST'
+polarity = 'required'
+statement = "A request for a control value outside the supported domain of an instrument model MUST be refused with that domain and its missing coverage."
+binds_to = 'system'
+rationale = "A request is never clamped silently to a different sound."
+
+[[requirement]]
+id = 'EU-0010-181'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument model MUST keep patch identities, algorithm choices and voice modes discrete."
+binds_to = 'system'
+rationale = "A model never blends two patches or modes into a sound the hardware can't make."
+
+[[requirement]]
+id = 'EU-0010-182'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An experimental preview outside the supported domain of an instrument model MUST NOT acquire a fidelity claim."
+binds_to = 'system'
+rationale = "An extrapolated sound is never presented as measured."
+
+[[requirement]]
+id = 'EU-0010-183'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST admit an instrument model for live playback only where its deadline, memory and underrun tests pass at its advertised polyphony and control rates on that computer."
+binds_to = 'system'
+rationale = "A live instrument never misses the deadline of the audio device."
+
+[[requirement]]
+id = 'EU-0010-184'
+level = 'MUST'
+polarity = 'required'
+statement = "Attaching an instrument model to a track MUST name its model digest, runtime profile version, parameter map, program, initial state and seed."
+binds_to = 'system'
+rationale = "A track plays one exactly identified instrument."
+
+[[requirement]]
+id = 'EU-0010-185'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A worker MUST NOT approve a model or attach it to a track."
+binds_to = 'system'
+rationale = "Only the project, after validation, changes what a project plays."
+
+[[requirement]]
+id = 'EU-0010-186'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of an instrument model MUST give its results by pitch, velocity, articulation, duration and release, and by control region, chord, pedal sequence and automation path."
+binds_to = 'system'
+rationale = "A single aggregate never hides a poor patch or articulation."
+
+[[requirement]]
+id = 'EU-0010-187'
+level = 'MUST'
+polarity = 'required'
+statement = "A null test of an instrument model MUST be applied only where reset, phase, timing and deterministic state can be matched."
+binds_to = 'system'
+rationale = "Free-running voices are compared by their distributions, not by waveform."
+
+[[requirement]]
+id = 'EU-0010-188'
+level = 'MUST'
+polarity = 'required'
+statement = "The final listening test of an instrument model MUST compare independently captured hardware performances with model renders of identical event and control sequences."
+binds_to = 'system'
+rationale = "Hardware and model play the same music in the test."
+
+[[requirement]]
+id = 'EU-0010-189'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of an instrument model MUST state note-level clips, phrase-level clips and live playing as separate claims."
+binds_to = 'system'
+rationale = "A result on short clips never stands in for playing feel."
+
+[[requirement]]
+id = 'EU-0010-190'
+level = 'MUST'
+polarity = 'required'
+statement = "The acceptance of an instrument model MUST keep its tested coverage and limitations with the model."
+binds_to = 'system'
+rationale = "Acceptance never turns untested regions into measured ones."
+
+[[requirement]]
+id = 'EU-0010-191'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "euphony MUST NOT call an instrument model complete while a promised parameter domain or voice behavior remains untested."
+binds_to = 'system'
+rationale = "A model is described by what was measured."
+
+[[requirement]]
+id = 'EU-0010-280'
+level = 'MUST'
+polarity = 'required'
+statement = "The manifest of an instrument model MUST state the continuous control regions and the discrete modes that the model supports."
+binds_to = 'system'
+rationale = "A musician reads where the model is defined before playing it."
+
+[[requirement]]
+id = 'EU-0010-281'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST show each setting of an instrument model as measured, validated by interpolation or unsupported."
+binds_to = 'system'
+rationale = "A musician sees which settings were measured before relying on them."
+relations = [ { kind = 'depends_on', target = 'EU-0010-280' } ]

@@ -1,0 +1,5 @@
+target = "rendered/0007-sample-format/10-resource-reports.md#EU-0007-121"
+
+[[spec]]
+level = "MUST"
+quote = "The release step MUST NOT publish a commit whose resource report doesn't show a reduction of each resource its optimizations target on their workloads."
