@@ -23,7 +23,7 @@ A derived result MUST NOT reveal material that the boundary of a reader withhold
 
 ### EU-0020-080 {#EU-0020-080}
 
-The system MUST check the requester's boundary again before it dispatches a job and before it delivers a result.
+The system MUST check again, before it dispatches a job, the requester's boundary, and before it delivers a result, the boundary of each reader it delivers it to.
 
 ### EU-0020-081 {#EU-0020-081}
 
