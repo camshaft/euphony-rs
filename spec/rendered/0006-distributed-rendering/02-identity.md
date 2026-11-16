@@ -5,7 +5,7 @@ version, the digest of each source, the transforms of each region, the tempo map
 the routing, the descriptor of every upstream calculation, the version of each processor and of its
 parameters, the sample rate, the channel layout, the precision of each internal stage, each random
 seed, the render mode, the identity of the checkpoint the calculation starts from, and the requested
-range with its preroll and its tails. A result is identified by a digest of its bytes. A render
+range with its preroll and its tails. A result is identified by a cryptographic digest of its bytes. A render
 profile names one executable and numerical behavior, since different processors, vector
 instructions and browser builds don't yield the same floating-point bytes; workers share a profile
 only where they yield the same bytes for the same descriptor. The manifest of a revision maps each
@@ -26,7 +26,7 @@ A render descriptor MUST NOT hold the identity of a worker or a wall-clock time.
 
 ### EU-0006-014 {#EU-0006-014}
 
-Each result MUST be identified by a digest of its bytes.
+Each result MUST be identified by a cryptographic digest of its bytes.
 
 ### EU-0006-015 {#EU-0006-015}
 
