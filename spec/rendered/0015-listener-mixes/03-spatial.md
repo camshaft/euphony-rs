@@ -51,6 +51,10 @@ A spatial render MUST apply spatial automation at the sample time the project ho
 
 A spatial render MUST map each output channel to the speaker its layout declares for that channel.
 
+### EU-0015-113 {#EU-0015-113}
+
+A spatial render that downmixes a mix to a layout with fewer speakers than the one it was made for MUST keep the loudness of each speaker bed and sound object, measured on the calibrated smaller layout, equal to its loudness on the layout it was made for.
+
 ### EU-0015-032 {#EU-0015-032}
 
 A live sound object MUST play on the local live path.
