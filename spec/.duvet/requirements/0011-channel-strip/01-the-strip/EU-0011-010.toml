@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-010"
+
+[[spec]]
+level = "MUST"
+quote = "The de-esser stage MUST reduce short loud events in a band of the high frequencies without reducing the rest of the track."

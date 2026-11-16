@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-132"
+
+[[spec]]
+level = "MUST"
+quote = "Each stage of a strip preset MUST be adaptive or fixed."

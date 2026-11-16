@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-093"
+
+[[spec]]
+level = "MUST"
+quote = "The musician and an assistant MUST be able to preview a stage's starting point before it applies."

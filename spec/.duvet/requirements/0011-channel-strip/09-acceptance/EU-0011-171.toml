@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-171"
+
+[[spec]]
+level = "MUST"
+quote = "The musician's own tracks in a listening corpus MUST NOT leave the musician's computers."

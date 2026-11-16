@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-133"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a preset's adaptive stage MUST dial that stage in from the new track's own audio with the preset's targets and offsets."

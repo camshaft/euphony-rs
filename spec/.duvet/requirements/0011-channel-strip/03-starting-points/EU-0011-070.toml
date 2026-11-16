@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-070"
+
+[[spec]]
+level = "SHOULD"
+quote = "The role profile's bound on an equalizer band's starting gain SHOULD default to 4 decibels."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-130"
+
+[[spec]]
+level = "MUST"
+quote = "A strip preset MUST record its name, role and genre tags, character, strip layout version, each stage's on state and processor version, its sends and its provenance."

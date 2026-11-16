@@ -1,0 +1,498 @@
+[section]
+anchor = 'starting-points'
+title = 'Starting points'
+problem = "A musician who switches on a compressor or an equalizer has to find its settings from nothing on each track, and a louder setting can sound better only because it is louder."
+motivation = "A starting point calculated from the track's own sound, its instrument and the musician's approved preferences, and matched in loudness with the stage off, makes a switched-on stage sound right at once and fair to compare."
+prose = """
+Switching a stage on sets it to a starting point calculated for that track. The calculation is a
+versioned, deterministic function of recorded inputs: the track's role, such as lead vocal, kick or
+bass; the analysis results of the track's audio as it reaches the stage, as RFC 0020 specifies them;
+the targets of the role profile for that role, genre and character; the musician's approved
+preferences for strip settings, as RFC 0019 specifies them; the calculation's version; and the
+stage's processor version. A role profile is a versioned record of the project that states, for each
+role and optionally a genre, the target each stage's calculation aims for. Each stage's rule works
+from these inputs with defaults from common mixing practice, which the musician changes in the
+profile or with a preference. Every starting point is matched in loudness with the stage off, so it
+sounds different, not only louder. Pan and fader stay the musician's, since the balance of a mix is
+theirs. A track that has no audio yet starts from its role's defaults, and Listen measures a moment
+of the live input to dial in from it."""
+
+[[requirement]]
+id = 'EU-0011-037'
+level = 'MUST'
+polarity = 'required'
+statement = "Switching a stage on MUST set it to a starting point calculated for that track."
+binds_to = 'system'
+rationale = "A switched-on stage sounds right for the track at once."
+
+[[requirement]]
+id = 'EU-0011-038'
+level = 'MUST'
+polarity = 'required'
+statement = "A stage's starting point MUST be a deterministic function of exactly these inputs: the track's role, the analysis results of the track's audio as it reaches the stage, the role profile's targets, the musician's approved preferences for strip settings, the calculation's version and the stage's processor version."
+binds_to = 'system'
+rationale = "The same inputs always produce the same starting point, and each input that changes it is known."
+
+[[requirement]]
+id = 'EU-0011-039'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip MUST record each input of a stage's starting point with the stage."
+binds_to = 'system'
+rationale = "A reader of the project sees why a stage started where it did."
+
+[[requirement]]
+id = 'EU-0011-040'
+level = 'MUST'
+polarity = 'required'
+statement = "Two calculations with the same inputs MUST return the same starting point on every computer of a compatible numerical profile."
+binds_to = 'system'
+rationale = "Any computer of the musician can calculate a starting point, and an earlier result can be reused."
+
+[[requirement]]
+id = 'EU-0011-041'
+level = 'MUST'
+polarity = 'required'
+statement = "A track's role MUST be one the musician set, one a preset or an import set, or an instrument candidate of analysis that the musician accepted."
+binds_to = 'system'
+rationale = "The role that shapes every starting point is always one the musician chose or accepted."
+
+[[requirement]]
+id = 'EU-0011-042'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to accept an instrument candidate of analysis as the track's role with one action."
+binds_to = 'system'
+rationale = "Setting a role is as quick as confirming what analysis heard."
+
+[[requirement]]
+id = 'EU-0011-043'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An instrument candidate of analysis MUST NOT be used as a track's role before the musician accepts it."
+binds_to = 'system'
+rationale = "A wrong guess of the instrument never shapes the track's sound."
+
+[[requirement]]
+id = 'EU-0011-044'
+level = 'MUST'
+polarity = 'required'
+statement = "A track without a role MUST use the general role profile."
+binds_to = 'system'
+rationale = "Every track has targets for its stages, whether or not it has a role."
+
+[[requirement]]
+id = 'EU-0011-045'
+level = 'MUST'
+polarity = 'required'
+statement = "The analysis results of a starting point MUST be measured on the track's audio as it reaches the stage, after the stages before it."
+binds_to = 'system'
+rationale = "Each stage starts from the sound it actually receives."
+
+[[requirement]]
+id = 'EU-0011-046'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A starting point MUST NOT use an analysis result that analysis marks unsupported or below its accepted confidence."
+binds_to = 'system'
+rationale = "An unreliable measurement never sets a stage."
+
+[[requirement]]
+id = 'EU-0011-047'
+level = 'MUST'
+polarity = 'required'
+statement = "Where an analysis result is missing or unsupported, the stage MUST use the role's default for that input."
+binds_to = 'system'
+rationale = "A stage still starts somewhere sensible without that measurement."
+
+[[requirement]]
+id = 'EU-0011-048'
+level = 'MUST'
+polarity = 'required'
+statement = "A stage MUST report each input for which its starting point used the role's default."
+binds_to = 'system'
+rationale = "The musician knows which part of a starting point wasn't measured."
+
+[[requirement]]
+id = 'EU-0011-049'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician's approved preferences for strip settings MUST override the role profile's targets within the preferences' scope."
+binds_to = 'system'
+rationale = "What the musician approved counts over the project's general targets."
+
+[[requirement]]
+id = 'EU-0011-050'
+level = 'MUST'
+polarity = 'required'
+statement = "Where approved preferences conflict and the conflict is unresolved, the starting point MUST use the role profile's target."
+binds_to = 'system'
+rationale = "A conflict the musician hasn't settled doesn't pick a side for them."
+
+[[requirement]]
+id = 'EU-0011-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip MUST show each unresolved conflict of preferences that a starting point met."
+binds_to = 'system'
+rationale = "The musician sees the conflict and can settle it."
+
+[[requirement]]
+id = 'EU-0011-052'
+level = 'MUST'
+polarity = 'required'
+statement = "A role profile MUST state, for its role and optionally a genre and a character, the target each stage's calculation aims for."
+binds_to = 'system'
+rationale = "Each stage's calculation has a target for the kind of track it is on."
+
+[[requirement]]
+id = 'EU-0011-053'
+level = 'MUST'
+polarity = 'required'
+statement = "Role profiles MUST be versioned records that the project authors and releases."
+binds_to = 'system'
+rationale = "A profile changes through a release, never through a name in code."
+
+[[requirement]]
+id = 'EU-0011-054'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The released role profiles SHOULD cover at least lead vocal, backing vocal, kick, snare, drum overheads, bass, electric guitar, acoustic guitar, piano, pad and a general role."
+binds_to = 'system'
+rationale = "The common roles of a recording start from targets made for them."
+
+[[requirement]]
+id = 'EU-0011-055'
+level = 'MUST'
+polarity = 'required'
+statement = "A starting point MUST make the track's loudness through the stage equal its loudness with the stage off, within the level-match tolerance."
+binds_to = 'system'
+rationale = "A starting point sounds different, not merely louder, and comparisons with it are fair."
+
+[[requirement]]
+id = 'EU-0011-056'
+level = 'MUST'
+polarity = 'required'
+statement = "The level-match tolerance MUST be a setting the musician changes."
+binds_to = 'system'
+rationale = "The musician decides how close a match is close enough."
+
+[[requirement]]
+id = 'EU-0011-057'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The level-match tolerance SHOULD default to 0.5 loudness units."
+binds_to = 'system'
+rationale = "Half a loudness unit is below the difference most listeners hear as louder."
+
+[[requirement]]
+id = 'EU-0011-058'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The input stage's starting trim SHOULD bring the track's short-term loudness to the strip's operating level."
+binds_to = 'system'
+rationale = "The color stage's saturation depends on level, so every track reaches it at the same level."
+
+[[requirement]]
+id = 'EU-0011-059'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The strip's operating level SHOULD default to 18 decibels below full scale."
+binds_to = 'system'
+rationale = "It is a common reference level for processors modeled on analog gear."
+
+[[requirement]]
+id = 'EU-0011-060'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The low cut's starting point SHOULD sit just below the lowest sustained fundamental of the track, or below the low edge of its spectrum where no pitch is found."
+binds_to = 'system'
+rationale = "The low cut removes rumble without thinning the instrument's lowest notes."
+
+[[requirement]]
+id = 'EU-0011-061'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The starting point MUST NOT switch the low cut on for the kick and bass roles."
+binds_to = 'system'
+rationale = "The low end of a kick or a bass is the part, not rumble."
+
+[[requirement]]
+id = 'EU-0011-062'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The starting point MUST NOT switch the high cut on unless the role profile or an approved preference asks for it."
+binds_to = 'system'
+rationale = "Most tracks need their top end, so the high cut waits for a reason."
+
+[[requirement]]
+id = 'EU-0011-063'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The starting point MUST NOT switch the gate on unless analysis finds a steady level of bleed or noise between onsets."
+binds_to = 'system'
+rationale = "A gate on material without steady bleed would cut the quiet parts of the performance."
+
+[[requirement]]
+id = 'EU-0011-064'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the gate stays off at its starting point, the stage MUST report why."
+binds_to = 'system'
+rationale = "The musician knows the gate was considered and why it stayed off."
+
+[[requirement]]
+id = 'EU-0011-065'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The gate's starting threshold SHOULD sit between the level of the bleed and the level of the onsets."
+binds_to = 'system'
+rationale = "The gate then opens on the notes and closes on the bleed."
+
+[[requirement]]
+id = 'EU-0011-066'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The gate's starting range SHOULD reduce the bleed without silencing it."
+binds_to = 'system'
+rationale = "A gate that cuts to silence sounds unnatural on most material."
+
+[[requirement]]
+id = 'EU-0011-067'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The gate's starting hold SHOULD follow the tempo."
+binds_to = 'system'
+rationale = "The gate stays open for the length of the notes the tempo implies. The listening record of EU-0011-165 is its check."
+
+[[requirement]]
+id = 'EU-0011-068'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The equalizer's starting point SHOULD fit the difference between the track's long-term spectrum and the role's target curve with its four bands."
+binds_to = 'system'
+rationale = "The equalizer moves the track's tonal balance toward what suits its role."
+
+[[requirement]]
+id = 'EU-0011-069'
+level = 'MUST'
+polarity = 'required'
+statement = "Each equalizer band's starting gain MUST stay within the role profile's bound."
+binds_to = 'system'
+rationale = "A starting point never makes a correction too large to trust."
+
+[[requirement]]
+id = 'EU-0011-070'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The role profile's bound on an equalizer band's starting gain SHOULD default to 4 decibels."
+binds_to = 'system'
+rationale = "Broad corrections of a few decibels are the usual size of a mix correction."
+
+[[requirement]]
+id = 'EU-0011-071'
+level = 'SHOULD'
+polarity = 'required'
+statement = "A peaking band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut."
+binds_to = 'system'
+rationale = "A spare band treats the resonance that most colors the track."
+
+[[requirement]]
+id = 'EU-0011-072'
+level = 'MUST'
+polarity = 'required'
+statement = "Where more corrections qualify than four bands hold, the starting point MUST keep the set that most reduces the difference from the target."
+binds_to = 'system'
+rationale = "The four bands do the most good they can."
+
+[[requirement]]
+id = 'EU-0011-073'
+level = 'MUST'
+polarity = 'required'
+statement = "The equalizer MUST report each correction its four bands leave out."
+binds_to = 'system'
+rationale = "The musician can treat the rest with an equalizer in a free slot."
+
+[[requirement]]
+id = 'EU-0011-074'
+level = 'MUST'
+polarity = 'required'
+statement = "The response that the starting point calculates MUST equal the equalizer's rendered response."
+binds_to = 'system'
+rationale = "What the calculation chose is what the track plays."
+
+[[requirement]]
+id = 'EU-0011-075'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The starting point MUST NOT cut a resonance at a note of the song's key or at its octaves unless the musician asks."
+binds_to = 'system'
+rationale = "Such a resonance is usually the music, not a fault."
+
+[[requirement]]
+id = 'EU-0011-076'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The compressor's starting threshold SHOULD bring the loud passages to the role's target of average gain reduction."
+binds_to = 'system'
+rationale = "The compressor does as much work as the role usually needs, such as a few decibels on a lead vocal."
+
+[[requirement]]
+id = 'EU-0011-077'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The compressor's starting ratio SHOULD follow the role and the track's loudness range."
+binds_to = 'system'
+rationale = "A part with a wide range of loudness needs a firmer ratio than a steady one. The listening record of EU-0011-165 is its check."
+
+[[requirement]]
+id = 'EU-0011-078'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The compressor's starting attack SHOULD follow the sharpness of the onsets, slower where the transients carry the part."
+binds_to = 'system'
+rationale = "The attack of a snare or a picked string survives the compressor. The listening record of EU-0011-165 is its check."
+
+[[requirement]]
+id = 'EU-0011-079'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The compressor's starting release SHOULD follow the tempo, near an eighth note, within the role profile's range."
+binds_to = 'system'
+rationale = "The compressor recovers in time with the music."
+
+[[requirement]]
+id = 'EU-0011-080'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The de-esser's starting point SHOULD center it on the band between about 4 and 10 kilohertz where short events stand above that band's long-term level."
+binds_to = 'system'
+rationale = "Harsh s sounds of each voice sit in a band of their own."
+
+[[requirement]]
+id = 'EU-0011-081'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The de-esser's starting threshold SHOULD reduce those events by the role's target reduction."
+binds_to = 'system'
+rationale = "The de-esser softens the harsh sounds without lisping the voice."
+
+[[requirement]]
+id = 'EU-0011-180'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The starting point SHOULD switch the de-esser on only for vocal roles."
+binds_to = 'system'
+rationale = "A voice's harsh s sounds need softening, and other parts keep their brightness."
+
+[[requirement]]
+id = 'EU-0011-082'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The color stage's starting drive SHOULD be light, as the character and the role set it."
+binds_to = 'system'
+rationale = "Warmth starts subtle, and the musician adds more where they want it. The listening record of EU-0011-165 is its check."
+
+[[requirement]]
+id = 'EU-0011-083'
+level = 'SHOULD'
+polarity = 'required'
+statement = "Switching a send on SHOULD route it to the project's shared reverb or delay return, created from the role profile where the project has none."
+binds_to = 'system'
+rationale = "A send works at once, without the musician building a return first."
+
+[[requirement]]
+id = 'EU-0011-181'
+level = 'SHOULD'
+polarity = 'required'
+statement = "A send's starting amount SHOULD follow the track's role."
+binds_to = 'system'
+rationale = "Each part starts with the amount of space its role usually has."
+
+[[requirement]]
+id = 'EU-0011-182'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The starting delay time of a delay return that a send creates SHOULD follow the tempo."
+binds_to = 'system'
+rationale = "The echoes fall in time with the song."
+
+[[requirement]]
+id = 'EU-0011-084'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A starting point MUST NOT set pan or the fader."
+binds_to = 'system'
+rationale = "The balance of the mix belongs to the musician."
+
+[[requirement]]
+id = 'EU-0011-085'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a stage's input needs measuring again, the stage MUST pass its audio unchanged until its starting point is ready."
+binds_to = 'system'
+rationale = "The track never plays a half-calculated setting."
+
+[[requirement]]
+id = 'EU-0011-086'
+level = 'MUST'
+polarity = 'required'
+statement = "A stage whose starting point isn't ready MUST show that it is dialing in."
+binds_to = 'system'
+rationale = "The musician knows why the stage doesn't change the sound yet."
+
+[[requirement]]
+id = 'EU-0011-087'
+level = 'MUST'
+polarity = 'required'
+statement = "A switch and its starting point MUST be committed to the project together, as one change."
+binds_to = 'system'
+rationale = "The project never holds a switched-on stage without its settings."
+
+[[requirement]]
+id = 'EU-0011-088'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A starting point calculated for an earlier revision of the track MUST NOT be committed."
+binds_to = 'system'
+rationale = "A late result never overwrites a newer state of the track."
+
+[[requirement]]
+id = 'EU-0011-089'
+level = 'MUST'
+polarity = 'required'
+statement = "A track without audio MUST start from its role's defaults."
+binds_to = 'system'
+rationale = "An armed track before its first take still has sensible stages."
+
+[[requirement]]
+id = 'EU-0011-090'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip MUST offer Listen on a track without audio, which measures a moment of the live input and dials the stages in from it."
+binds_to = 'system'
+rationale = "A musician can dial in before recording by playing for a moment."
+
+[[requirement]]
+id = 'EU-0011-091'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Audio that Listen measures MUST NOT be recorded unless the musician records."
+binds_to = 'system'
+rationale = "Playing to dial in never leaves a take behind."
+
+[[requirement]]
+id = 'EU-0011-092'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to dial a stage in on several tracks with one command."
+binds_to = 'system'
+rationale = "A whole drum kit or a choir of vocals is set up at once."
+
+[[requirement]]
+id = 'EU-0011-093'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician and an assistant MUST be able to preview a stage's starting point before it applies."
+binds_to = 'system'
+rationale = "A starting point can be heard before it is chosen."

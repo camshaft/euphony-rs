@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-116"
+
+[[spec]]
+level = "MUST"
+quote = "The simple view and the full view of a stage MUST always show the same settings."

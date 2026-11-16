@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-129"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to save a track's strip as a strip preset."

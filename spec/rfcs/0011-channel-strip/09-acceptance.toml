@@ -1,0 +1,135 @@
+[section]
+anchor = 'acceptance'
+title = 'Listening tests and release'
+problem = "Whether a starting point sounds good can't be shown by measurement alone, and a release whose presets or calculation weren't heard, or whose delays differ from their declarations, reaches musicians unchecked."
+motivation = "Blind, level-matched listening against the musician's own criterion, records kept for each version, and a release that refuses any version without them make the strip's sound a checked property of each release."
+prose = """
+Each calculation version and each built-in preset keeps a listening record. A listening test is
+blind, in random order, with every condition level-matched, and presents the stage off, the starting
+point, a setting an engineer made by hand on the same track, a deliberately poor setting so that a
+listener who can't tell the conditions apart is noticed, and the starting point of the previous
+calculation version. Listeners rate each condition on a scale against a hidden reference, or choose
+between pairs. The corpus is licensed multitrack recordings across the roles and genres the musician
+names, beside the musician's own tracks. The musician sets the criterion of acceptance. A release
+checks the records, the declared delays, the names and models that need clearance, and the hold of an
+assistant's change while the transport runs."""
+
+[[requirement]]
+id = 'EU-0011-165'
+level = 'MUST'
+polarity = 'required'
+statement = "Each calculation version and each built-in preset MUST keep a listening record."
+binds_to = 'system'
+rationale = "Every starting point and preset a release offers was heard."
+
+[[requirement]]
+id = 'EU-0011-166'
+level = 'MUST'
+polarity = 'required'
+statement = "A listening test MUST be blind, in random order, with every condition level-matched."
+binds_to = 'system'
+rationale = "Neither expectation nor loudness decides a rating."
+
+[[requirement]]
+id = 'EU-0011-167'
+level = 'MUST'
+polarity = 'required'
+statement = "A listening test of a starting point MUST present the stage off, the starting point, a setting an engineer made by hand on the same track, a deliberately poor setting, and the previous calculation version's starting point."
+binds_to = 'system'
+rationale = "A rating means something only beside a reference, a skilled setting and a control a listener has to notice."
+
+[[requirement]]
+id = 'EU-0011-168'
+level = 'MUST'
+polarity = 'required'
+statement = "The criterion of acceptance of a listening test MUST be the musician's."
+binds_to = 'system'
+rationale = "Whether a starting point sounds good is the musician's call."
+
+[[requirement]]
+id = 'EU-0011-169'
+level = 'MUST'
+polarity = 'required'
+statement = "Until the musician sets a criterion, each listening result MUST be reported as unverified."
+binds_to = 'system'
+rationale = "A result is never reported as a pass against a criterion no one set."
+
+[[requirement]]
+id = 'EU-0011-170'
+level = 'MUST'
+polarity = 'required'
+statement = "A regression of a calculation version against the previous version MUST be reported with the tracks it covers."
+binds_to = 'system'
+rationale = "A calculation that got worse is found before musicians hear it."
+
+[[requirement]]
+id = 'EU-0011-171'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The musician's own tracks in a listening corpus MUST NOT leave the musician's computers."
+binds_to = 'system'
+rationale = "Testing with the musician's recordings never shares them."
+
+[[requirement]]
+id = 'EU-0011-172'
+level = 'MUST'
+polarity = 'required'
+statement = "A release MUST be refused where a built-in preset or a calculation version lacks, for a role the release supports, a listening record of that exact version and of the named corpus that meets the musician's criterion."
+binds_to = 'system'
+rationale = "A release offers only starting points and presets that passed the musician's test."
+
+[[requirement]]
+id = 'EU-0011-173'
+level = 'MUST'
+polarity = 'required'
+statement = "A release MUST be refused where a stage's measured delay differs from its declared delay."
+binds_to = 'system'
+rationale = "A release never puts tracks out of time."
+
+[[requirement]]
+id = 'EU-0011-174'
+level = 'MUST'
+polarity = 'required'
+statement = "A release MUST be refused where a character, a preset or the text of the interface carries a console maker's name without recorded legal clearance."
+binds_to = 'system'
+rationale = "A protected name never reaches musicians by mistake."
+
+[[requirement]]
+id = 'EU-0011-175'
+level = 'MUST'
+polarity = 'required'
+statement = "A release MUST be refused where a built-in character or preset includes a model fitted to a commercial unit without recorded legal clearance."
+binds_to = 'system'
+rationale = "A model the project may not release never reaches musicians."
+
+[[requirement]]
+id = 'EU-0011-176'
+level = 'MUST'
+polarity = 'required'
+statement = "A release MUST be refused where an assistant's strip change can apply while the transport plays or records other than through the musician's own apply of the held proposal."
+binds_to = 'system'
+rationale = "The hold of an assistant's change during a take is checked on every release."
+
+[[requirement]]
+id = 'EU-0011-177'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A prototype build MUST NOT be reported as accepted."
+binds_to = 'system'
+rationale = "Only a released version carries the musician's acceptance."
+
+[[requirement]]
+id = 'EU-0011-178'
+level = 'SHOULD'
+polarity = 'required'
+statement = "On comparable tracks, the offsets the musician keeps after a starting point SHOULD become smaller from one release to the next."
+binds_to = 'system'
+rationale = "Starting points get closer to what the musician wants over time."
+
+[[requirement]]
+id = 'EU-0011-179'
+level = 'MUST'
+polarity = 'required'
+statement = "The size of the offsets the musician keeps MUST be reported, release against release, from the musician's own records, with the count of tracks it covers."
+binds_to = 'system'
+rationale = "The musician sees whether the strip is learning their taste."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-004"
+
+[[spec]]
+level = "MUST"
+quote = "Each stage MUST be a built-in processor of euphony or a model of gear the musician captured."

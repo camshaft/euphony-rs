@@ -1,0 +1,140 @@
+[section]
+anchor = 'controls'
+title = 'Simple and full controls'
+problem = "A stage with many technical controls slows a musician who only wants a little more or a little less of its effect, and two views of one stage that disagree make neither trustworthy."
+motivation = "A simple view of a few controls named for their effect on the sound, beside the full controls one action away and always in agreement with them, serves both a quick adjustment and a detailed one."
+prose = """
+Each stage shows a simple view of one to three controls, each named for what it does to the sound,
+and its full controls one action away. Each simple control is a curve over the stage's parameters,
+centered on the starting point, with the range the role profile sets, and moving a full control moves
+that center, so both views always show the same settings. Simple controls are parameters like any
+other, so automation and modulation reach them, as RFC 0012 specifies modulation. The phone
+controllers and control surfaces of RFC 0017 show the simple view."""
+
+[[requirement]]
+id = 'EU-0011-113'
+level = 'MUST'
+polarity = 'required'
+statement = "Each stage MUST offer a simple view of fewer controls than its full set."
+binds_to = 'system'
+rationale = "A quick adjustment needs only a few controls."
+
+[[requirement]]
+id = 'EU-0011-114'
+level = 'MUST'
+polarity = 'required'
+statement = "Each simple control MUST be named for its effect on the sound."
+binds_to = 'system'
+rationale = "A musician who isn't an engineer knows what each control does."
+
+[[requirement]]
+id = 'EU-0011-115'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to open a stage's full controls from its simple view with one action."
+binds_to = 'system'
+rationale = "Every parameter stays within reach."
+
+[[requirement]]
+id = 'EU-0011-116'
+level = 'MUST'
+polarity = 'required'
+statement = "The simple view and the full view of a stage MUST always show the same settings."
+binds_to = 'system'
+rationale = "Neither view hides a change made in the other."
+
+[[requirement]]
+id = 'EU-0011-117'
+level = 'MUST'
+polarity = 'required'
+statement = "The simple view MUST hold low cut and high cut for the filters, amount for the gate, amount and tone for the equalizer, amount and speed for the compressor, amount for the de-esser, drive and tone for the color stage, and an amount for each send."
+binds_to = 'system'
+rationale = "Each stage's simple view holds the one to three controls a musician reaches for first."
+
+[[requirement]]
+id = 'EU-0011-118'
+level = 'MUST'
+polarity = 'required'
+statement = "The equalizer's amount MUST scale its dialed corrections from none to twice their starting size."
+binds_to = 'system'
+rationale = "One control sets how much the equalizer changes the track."
+
+[[requirement]]
+id = 'EU-0011-119'
+level = 'MUST'
+polarity = 'required'
+statement = "The equalizer's tone MUST tilt its response from darker to brighter."
+binds_to = 'system'
+rationale = "One control moves the track's overall brightness."
+
+[[requirement]]
+id = 'EU-0011-120'
+level = 'MUST'
+polarity = 'required'
+statement = "The compressor's amount MUST move its threshold and its level-matched output gain together."
+binds_to = 'system'
+rationale = "More or less compression doesn't change the track's loudness."
+
+[[requirement]]
+id = 'EU-0011-121'
+level = 'MUST'
+polarity = 'required'
+statement = "The compressor's speed MUST move its attack and its release together."
+binds_to = 'system'
+rationale = "One control sets how quickly the compressor reacts."
+
+[[requirement]]
+id = 'EU-0011-122'
+level = 'MUST'
+polarity = 'required'
+statement = "The center of each simple control MUST be the stage's starting point with the changes of its full controls applied."
+binds_to = 'system'
+rationale = "The simple view adjusts around what the stage holds now."
+
+[[requirement]]
+id = 'EU-0011-123'
+level = 'MUST'
+polarity = 'required'
+statement = "The range of each simple control MUST be the one the role profile sets."
+binds_to = 'system'
+rationale = "A simple control never reaches settings that make no sense for the role."
+
+[[requirement]]
+id = 'EU-0011-124'
+level = 'MUST'
+polarity = 'required'
+statement = "The full view MUST show every parameter of the stage."
+binds_to = 'system'
+rationale = "Nothing a stage does is out of the musician's reach."
+
+[[requirement]]
+id = 'EU-0011-125'
+level = 'MUST'
+polarity = 'required'
+statement = "The full view MUST show the stage's analysis display, such as its gain reduction or its spectrum."
+binds_to = 'system'
+rationale = "The musician sees what the stage is doing to the track."
+
+[[requirement]]
+id = 'EU-0011-126'
+level = 'MUST'
+polarity = 'required'
+statement = "Each simple control MUST be a target of automation and of modulation, as any parameter is."
+binds_to = 'system'
+rationale = "A simple control can move over time like any other control."
+
+[[requirement]]
+id = 'EU-0011-127'
+level = 'MUST'
+polarity = 'required'
+statement = "Every client MUST draw both views of a stage from the same description of its controls."
+binds_to = 'system'
+rationale = "The desktop, the browser, a phone and a surface never disagree about a stage."
+
+[[requirement]]
+id = 'EU-0011-128'
+level = 'MUST'
+polarity = 'required'
+statement = "The phone controllers and the control surfaces MUST show the simple view of each stage."
+binds_to = 'system'
+rationale = "A musician adjusts the strip from a phone or a surface in the controls that matter most."

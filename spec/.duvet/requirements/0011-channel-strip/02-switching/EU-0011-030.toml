@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-030"
+
+[[spec]]
+level = "MUST"
+quote = "The compressor, the de-esser and the output limiter MUST each offer a look-ahead mode, whose delay each declares."

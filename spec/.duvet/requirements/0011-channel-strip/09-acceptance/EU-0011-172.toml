@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-172"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST be refused where a built-in preset or a calculation version lacks, for a role the release supports, a listening record of that exact version and of the named corpus that meets the musician's criterion."

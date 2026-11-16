@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-140"
+
+[[spec]]
+level = "MUST"
+quote = "Each offset the musician keeps after a starting point MUST be recorded as evidence of the musician's adjustment, linked to the starting point's inputs."

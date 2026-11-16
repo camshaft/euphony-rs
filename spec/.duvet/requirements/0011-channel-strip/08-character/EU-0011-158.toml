@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/08-character.md#EU-0011-158"
+
+[[spec]]
+level = "MUST"
+quote = "Each project MUST have one character, which sets how the equalizer, compressor and color stages of its strips sound."

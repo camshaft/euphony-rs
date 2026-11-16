@@ -1,0 +1,69 @@
+[section]
+anchor = 'character'
+title = 'Character and original sound'
+problem = "A strip that copies a known console's name, circuits or panels uses what isn't the project's, while a strip without any character doesn't sound like the consoles musicians love."
+motivation = "Original characters written from published methods, and the musician's own captured gear as the color stage, give the strip console character that belongs to the project and to the musician."
+prose = """
+The character of a strip sets how its equalizer, compressor and color stages sound: the shapes of
+the equalizer's curves, the compressor's detector and gain element, and the color stage's
+saturation. A project has one character, as a studio has one console, and a track can use another.
+A character is a versioned set of processor versions and their profile data. Characters are
+original, written from public signal-processing literature, or come from gear the musician owns and
+captures, as RFC 0010 specifies capture. The strip doesn't copy a named console's circuits, panels or
+name."""
+
+[[requirement]]
+id = 'EU-0011-158'
+level = 'MUST'
+polarity = 'required'
+statement = "Each project MUST have one character, which sets how the equalizer, compressor and color stages of its strips sound."
+binds_to = 'system'
+rationale = "A project sounds as one studio with one console does."
+
+[[requirement]]
+id = 'EU-0011-159'
+level = 'MUST'
+polarity = 'required'
+statement = "The strip MUST let a track use a character other than its project's."
+binds_to = 'system'
+rationale = "One track can have a different color where the music asks for it."
+
+[[requirement]]
+id = 'EU-0011-160'
+level = 'MUST'
+polarity = 'required'
+statement = "A character MUST be a versioned set of processor versions and their profile data."
+binds_to = 'system'
+rationale = "A character is data a release changes, never a path chosen by its name."
+
+[[requirement]]
+id = 'EU-0011-161'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A character, a preset or the text of the interface MUST NOT carry the name of a console maker or of its products without recorded legal clearance."
+binds_to = 'system'
+rationale = "The project never uses names that aren't its own."
+
+[[requirement]]
+id = 'EU-0011-162'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A stage MUST NOT copy the circuits or the panel design of a named console."
+binds_to = 'system'
+rationale = "The strip's sound and look are the project's own."
+
+[[requirement]]
+id = 'EU-0011-163'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A built-in character or preset MUST NOT include a model fitted to a commercial unit without recorded legal clearance."
+binds_to = 'system'
+rationale = "A model of someone else's product is released only where the project may release it."
+
+[[requirement]]
+id = 'EU-0011-164'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A captured model used as a color stage MUST NOT leave the musician's computers without the musician's approval."
+binds_to = 'system'
+rationale = "The musician's captured gear stays theirs."

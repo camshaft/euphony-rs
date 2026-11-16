@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-064"
+
+[[spec]]
+level = "MUST"
+quote = "Where the gate stays off at its starting point, the stage MUST report why."

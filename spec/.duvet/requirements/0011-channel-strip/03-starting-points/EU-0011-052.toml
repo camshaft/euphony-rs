@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-052"
+
+[[spec]]
+level = "MUST"
+quote = "A role profile MUST state, for its role and optionally a genre and a character, the target each stage's calculation aims for."

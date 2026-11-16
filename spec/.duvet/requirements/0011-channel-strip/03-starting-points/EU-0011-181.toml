@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-181"
+
+[[spec]]
+level = "SHOULD"
+quote = "A send's starting amount SHOULD follow the track's role."

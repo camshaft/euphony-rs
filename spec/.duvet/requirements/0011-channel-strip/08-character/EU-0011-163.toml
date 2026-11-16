@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/08-character.md#EU-0011-163"
+
+[[spec]]
+level = "MUST"
+quote = "A built-in character or preset MUST NOT include a model fitted to a commercial unit without recorded legal clearance."

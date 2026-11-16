@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-058"
+
+[[spec]]
+level = "SHOULD"
+quote = "The input stage's starting trim SHOULD bring the track's short-term loudness to the strip's operating level."

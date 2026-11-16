@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-075"
+
+[[spec]]
+level = "MUST"
+quote = "The starting point MUST NOT cut a resonance at a note of the song's key or at its octaves unless the musician asks."

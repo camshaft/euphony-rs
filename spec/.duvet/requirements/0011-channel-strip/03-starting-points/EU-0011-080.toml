@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-080"
+
+[[spec]]
+level = "SHOULD"
+quote = "The de-esser's starting point SHOULD center it on the band between about 4 and 10 kilohertz where short events stand above that band's long-term level."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-084"
+
+[[spec]]
+level = "MUST"
+quote = "A starting point MUST NOT set pan or the fader."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-069"
+
+[[spec]]
+level = "MUST"
+quote = "Each equalizer band's starting gain MUST stay within the role profile's bound."

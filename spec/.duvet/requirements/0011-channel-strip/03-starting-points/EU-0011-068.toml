@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-068"
+
+[[spec]]
+level = "SHOULD"
+quote = "The equalizer's starting point SHOULD fit the difference between the track's long-term spectrum and the role's target curve with its four bands."

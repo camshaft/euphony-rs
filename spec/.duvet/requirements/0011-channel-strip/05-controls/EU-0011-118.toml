@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-118"
+
+[[spec]]
+level = "MUST"
+quote = "The equalizer's amount MUST scale its dialed corrections from none to twice their starting size."

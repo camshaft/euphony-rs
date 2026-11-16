@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-053"
+
+[[spec]]
+level = "MUST"
+quote = "Role profiles MUST be versioned records that the project authors and releases."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-180"
+
+[[spec]]
+level = "SHOULD"
+quote = "The starting point SHOULD switch the de-esser on only for vocal roles."

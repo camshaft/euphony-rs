@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-092"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to dial a stage in on several tracks with one command."

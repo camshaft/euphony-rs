@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-144"
+
+[[spec]]
+level = "MUST"
+quote = "A proposal of a learned strip preset MUST show the preset and the evidence it was learned from."

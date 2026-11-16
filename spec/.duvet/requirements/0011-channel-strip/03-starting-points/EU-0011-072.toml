@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-072"
+
+[[spec]]
+level = "MUST"
+quote = "Where more corrections qualify than four bands hold, the starting point MUST keep the set that most reduces the difference from the target."

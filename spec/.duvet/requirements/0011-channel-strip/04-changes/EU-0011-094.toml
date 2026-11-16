@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-094"
+
+[[spec]]
+level = "MUST"
+quote = "A stage's settings MUST NOT change except at the request of the musician or of an assistant the musician connected."

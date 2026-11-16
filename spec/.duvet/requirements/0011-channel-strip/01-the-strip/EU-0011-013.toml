@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-013"
+
+[[spec]]
+level = "MUST"
+quote = "Each send MUST pass a share of the track that the musician sets to a shared effect return of the project."

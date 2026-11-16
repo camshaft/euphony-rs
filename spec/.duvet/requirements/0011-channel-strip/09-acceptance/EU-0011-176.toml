@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-176"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST be refused where an assistant's strip change can apply while the transport plays or records other than through the musician's own apply of the held proposal."

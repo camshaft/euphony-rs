@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-088"
+
+[[spec]]
+level = "MUST"
+quote = "A starting point calculated for an earlier revision of the track MUST NOT be committed."

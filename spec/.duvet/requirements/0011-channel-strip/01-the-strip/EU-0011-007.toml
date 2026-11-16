@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-007"
+
+[[spec]]
+level = "MUST"
+quote = "The gate stage MUST offer a noise gate and an expander."

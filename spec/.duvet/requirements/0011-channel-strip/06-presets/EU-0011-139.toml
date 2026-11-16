@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-139"
+
+[[spec]]
+level = "SHOULD"
+quote = "The project SHOULD release original built-in presets for each role and for several genres."

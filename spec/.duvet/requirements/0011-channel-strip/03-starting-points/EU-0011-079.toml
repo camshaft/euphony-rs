@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-079"
+
+[[spec]]
+level = "SHOULD"
+quote = "The compressor's starting release SHOULD follow the tempo, near an eighth note, within the role profile's range."

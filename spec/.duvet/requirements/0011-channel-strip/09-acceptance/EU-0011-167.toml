@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-167"
+
+[[spec]]
+level = "MUST"
+quote = "A listening test of a starting point MUST present the stage off, the starting point, a setting an engineer made by hand on the same track, a deliberately poor setting, and the previous calculation version's starting point."

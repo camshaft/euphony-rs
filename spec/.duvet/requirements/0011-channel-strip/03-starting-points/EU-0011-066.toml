@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-066"
+
+[[spec]]
+level = "SHOULD"
+quote = "The gate's starting range SHOULD reduce the bleed without silencing it."

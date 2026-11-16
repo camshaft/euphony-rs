@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-170"
+
+[[spec]]
+level = "MUST"
+quote = "A regression of a calculation version against the previous version MUST be reported with the tracks it covers."

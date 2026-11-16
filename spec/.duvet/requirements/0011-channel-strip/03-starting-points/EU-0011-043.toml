@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-043"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument candidate of analysis MUST NOT be used as a track's role before the musician accepts it."
