@@ -1,5 +1,0 @@
-target = "rendered/0003-client-protocol/02-connection.md#EU-0003-017"
-
-[[spec]]
-level = "MUST"
-quote = "A client session other than the person's native interface MUST NOT create a record of the person's interaction."

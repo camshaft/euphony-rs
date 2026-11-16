@@ -1,5 +1,0 @@
-target = "rendered/0003-client-protocol/02-connection.md#EU-0003-013"
-
-[[spec]]
-level = "MUST"
-quote = "The origin of each command MUST be the origin of the client session that sent it."
