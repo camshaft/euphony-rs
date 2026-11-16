@@ -5,15 +5,15 @@ A batch names the project, the branch it changes, the revision its sender expect
 branch, a key that identifies the batch across retries, and the actor that sends it. The actor is the
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
 before it reads any batch of that actor. euphony also refuses as denied a batch whose caller may not
-take its commands on the branch it names, before it checks the batch's expected revision or its key.
-It refuses a batch that names a project that doesn't exist, or a branch that the project doesn't hold,
-in the same way, so that a refusal doesn't tell a caller whether the project or the branch exists.
-euphony then refuses as invalid input a batch that names a working branch another copy holds, and a
-batch whose expected revision isn't in the history of the branch it names. euphony answers that
-history check with a fixed number of reads, each bounded by an index, however long the branch's
-history is.
-euphony checks each batch against the project schema and
-the access rules that the overview RFC states, and then commits it whole as a new revision, or
+take its commands on the branch it names, before it checks the batch's commands against the project
+schema, its expected revision or its key. It refuses a batch that names a project that doesn't
+exist, or a branch that the project doesn't hold, in the same way and at the same point of its
+checks, so that a refusal doesn't tell a caller whether the project or the branch exists. euphony
+then refuses as invalid input a batch that names a working branch another copy holds, and a batch
+whose expected revision isn't in the history of the branch it names. euphony answers that history
+check with a fixed number of reads, each bounded by an index, however long the branch's history is.
+euphony checks each batch against the access rules that the overview RFC states and the project
+schema, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
 conflict carries, at the head of the batch's branch, the view of each part of the project that the
 batch's commands name or change and that its actor may read, with that part's own fields and the
@@ -49,11 +49,11 @@ Where the actor that a batch names is not the caller that euphony authenticated,
 
 ### EU-0004-056 {#EU-0004-056}
 
-Where the caller that euphony authenticated may not take every command of a batch on the branch that the batch names, euphony MUST refuse the batch as denied before it checks the batch's expected revision or its idempotency key.
+Where the caller that euphony authenticated may not take every command of a batch on the branch that the batch names, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key.
 
 ### EU-0004-095 {#EU-0004-095}
 
-Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key.
+Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's commands against the project schema, its expected revision or its idempotency key.
 
 ### EU-0004-096 {#EU-0004-096}
 
@@ -65,7 +65,7 @@ Where the expected revision of a batch is neither the head of the branch that th
 
 ### EU-0004-059 {#EU-0004-059}
 
-Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of EU-0004-056 of a batch whose caller may not take its commands on the branch it names.
+Where the project that a batch names does not exist, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key, with a refusal whose kind and content, apart from the values the batch itself supplies, are those of its refusal of EU-0004-056 of a batch whose caller may not take its commands on the branch it names.
 
 ### EU-0004-067 {#EU-0004-067}
 
