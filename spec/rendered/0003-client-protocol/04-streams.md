@@ -67,4 +67,4 @@ A client MUST NOT be able to write any memory of the engine.
 
 ### EU-0003-064 {#EU-0003-064}
 
-A malformed or oversized message MUST NOT change any state of the session.
+A malformed message, such as one whose length differs from the length it declares, MUST NOT change any state of the session.

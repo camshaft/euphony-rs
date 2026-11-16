@@ -5,11 +5,16 @@ and close it. Each attachment has a generation, and a new attach starts a new on
 typed action on the session: it carries the revision of the session it was made against, an
 idempotency key that identifies it across a resend, and the transaction group it commits with. The
 session host answers it with the revision it committed or with a typed refusal, and accepts it only
-once it has decoded, validated and recorded it. The state of the session reaches a client as a
-snapshot of the part the client may see and then as an ordered stream of deltas, each at a revision,
-which the client resumes from a cursor. A gesture, such as a fader drag, is a token that begins, is
-updated in sequence with the time each update was captured, and ends or is cancelled. Undo and redo
-are commands on the one history of the session, and RFC 0002 states how the session host keeps that
+once it has decoded, validated and recorded it. Each refusal has one kind. A command whose expected
+revision isn't the current revision of the session is refused as a conflict that names the current
+head revision, as RFC 0002 states, and that conflict is the only refusal of a stale revision. A
+command from an origin that may not take it is denied, a command that names an object the session
+doesn't hold has an unknown target, and a command that needs a capability the session host doesn't
+serve has an unsupported capability. The state of the session reaches a client as a snapshot of the
+part the client may see and then as an ordered stream of deltas, each at a revision, which the
+client resumes from a cursor. A gesture, such as a fader drag, is a token that begins, is updated in
+sequence with the time each update was captured, and ends or is cancelled. Undo and redo are
+commands on the one history of the session, and RFC 0002 states how the session host keeps that
 history, applies each command once and resumes a subscription from its cursor. The state of a view
 has shared parts, which belong to the session, and transient parts, such as scrolling, which stay
 with each client. A client draws the effect of its own command at once, as a predicted value, until
@@ -21,7 +26,7 @@ The client protocol MUST offer the session operations list, open, attach, detach
 
 ### EU-0003-027 {#EU-0003-027}
 
-An attach MUST return the generation of the session, the generation of its control, a snapshot of the part of the session the client may see and a subscription cursor.
+An attach MUST return the generation of the session, its control epoch, a snapshot of the part of the session the client may see and a subscription cursor.
 
 ### EU-0003-028 {#EU-0003-028}
 
@@ -33,7 +38,7 @@ Each command MUST be answered with the revision it committed or with a typed ref
 
 ### EU-0003-030 {#EU-0003-030}
 
-A refusal MUST state its kind as one of denied, stale revision, conflict, unknown target and unsupported capability.
+A refusal MUST state its kind as one of denied, conflict, unknown target and unsupported capability.
 
 ### EU-0003-031 {#EU-0003-031}
 
