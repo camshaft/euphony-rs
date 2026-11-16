@@ -5,8 +5,17 @@ on:
   pull_request:
     branches:
       - master
+    # A pull request that changes only the specification runs the spec workflow alone.
+    paths-ignore:
+      - 'spec/**'
 
 name: ci
+
+# A newer push to a pull request cancels that pull request's run in progress; any other run has a group of its own.
+# The group is keyed on the pull request's number, which its author can't choose, not on its branch's name.
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   CARGO_INCREMENTAL: 0
