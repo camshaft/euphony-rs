@@ -71,7 +71,7 @@ euphony MUST NOT answer a batch with the outcome of a committed batch of another
 
 ### EU-0004-048 {#EU-0004-048}
 
-Where a batch has the idempotency key of a committed batch of another actor or another project, euphony MUST handle it as a new batch.
+Where a batch has the idempotency key of a committed batch of another actor or another project, and no committed batch of the same project and actor holds that key, euphony MUST handle it as a new batch.
 
 ### EU-0004-021 {#EU-0004-021}
 
