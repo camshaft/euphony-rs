@@ -6,7 +6,7 @@ is the sink of one listener. The session host calculates the station's sink mix 
 every other sink mix and sends the station the finished stream, which the station plays after its
 own output protection. The station doesn't run the session host, compile the graph or render for the
 session, and doesn't hold project objects or stems. The hardware description of a station lists its
-encoders, switches and light groups by stable identity, its output formats and its jack state. A
+encoders, switches and light groups by stable identity, its output formats and its headphone socket state. A
 station reaches its listener's sink alone: that sink's stream and meters, its mix parameters, its mix
 revision and its control map. A wired network connection is the recommended path, and a wireless
 connection is supported and measured. A station isn't a mixer on its own: it plays and controls its
@@ -38,7 +38,7 @@ A station's hardware description MUST list each of its encoders, switches and li
 
 ### EU-0015-047 {#EU-0015-047}
 
-A station MUST read the rates, formats, period sizes and jack detection its output device supports from the device.
+A station MUST read the rates, formats, period sizes and headphone detection its output device supports from the device.
 
 ### EU-0015-048 {#EU-0015-048}
 
@@ -46,7 +46,7 @@ A station MUST apply its output protection before it plays its sink's stream.
 
 ### EU-0015-049 {#EU-0015-049}
 
-Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and jack state.
+Once paired and connected, a station MUST register its sink with its device and stream identity, channel layout, supported formats, measured latency, clock domain and headphone socket state.
 
 ### EU-0015-050 {#EU-0015-050}
 
@@ -54,7 +54,7 @@ Where its hardware reports headphone insertion, a station MUST report each inser
 
 ### EU-0015-051 {#EU-0015-051}
 
-Where its hardware doesn't report headphone insertion, a station MUST report its jack state as unknown.
+Where its hardware doesn't report headphone insertion, a station MUST report its headphone socket state as unknown.
 
 ### EU-0015-052 {#EU-0015-052}
 
