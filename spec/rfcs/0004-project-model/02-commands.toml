@@ -89,7 +89,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends
 id = 'EU-0004-059'
 level = 'MUST'
 polarity = 'required'
-statement = 'Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project.'
+statement = 'Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of EU-0004-056 of a batch whose caller may not take its commands on the branch it names.'
 binds_to = 'system'
 rationale = "A refusal of a batch doesn't tell its sender which projects exist."
 relations = [ { kind = 'depends_on', target = 'EU-0004-056' } ]
