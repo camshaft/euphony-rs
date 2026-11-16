@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-140"
+
+[[spec]]
+level = "MUST"
+quote = "Knowledge of an identity MUST NOT let a collaborator fetch an item, or learn whether one exists, outside the projects its links reach."

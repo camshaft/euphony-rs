@@ -11,8 +11,9 @@ playback starts, during playback and for an audition, at the interactive level; 
 copies, repair copies and the recall of an archived project at the lowest. Each stream opens at the
 level of the work it serves, so a control message or a playback fetch doesn't wait behind queued
 bulk chunks, and within a level the capacity is shared from the answers of the holders and the
-network, without a fixed cap. Each connection accepts only the owner's paired computers, and is
-authenticated and encrypted on every network. A holder that stops ends its transfers cleanly, and
+network, without a fixed cap. Each connection between the owner's computers accepts only the owner's
+paired computers, and is authenticated and encrypted on every network; a collaborator's fetch goes
+over the link that shares a project with them, and never over these connections. A holder that stops ends its transfers cleanly, and
 the receiver resumes them. Where one of the owner's computers runs a platform the transport doesn't
 support yet, the store waits for that support instead of using another transport.
 
@@ -42,7 +43,7 @@ Transfers between the computers of the owner MUST NOT be limited by a fixed cap 
 
 ### EU-0008-117 {#EU-0008-117}
 
-Each connection of the store MUST accept only the paired computers of the owner.
+Each connection of the store between the computers of the owner MUST accept only the paired computers of the owner.
 
 ### EU-0008-118 {#EU-0008-118}
 

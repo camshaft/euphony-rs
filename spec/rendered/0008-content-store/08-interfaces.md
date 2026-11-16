@@ -17,7 +17,9 @@ reservations; each computer writes its own barriers; the decision point writes a
 and the owner writes the policy, keep marks and licenses. The owner's assistants, which act as the
 owner, reach the placement, catalog and deletion operations over content they can already read and
 place; holders, which are the owner's paired computers, reach the storage operations; and
-collaborators reach only a fetch of the items that their copy of a shared project refers to.
+collaborators reach only a fetch, over the link that shares a project with them, of the items that
+the revisions of a project their links reach refer to, and knowing an item's identity tells them
+nothing outside those projects.
 
 ### EU-0008-119 {#EU-0008-119}
 
@@ -41,7 +43,7 @@ An assistant of the owner MUST NOT reach a placement, catalog or deletion operat
 
 ### EU-0008-124 {#EU-0008-124}
 
-A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the collaborator's copy of a shared project refers to.
+A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the revisions of a project its links reach refer to.
 
 ### EU-0008-131 {#EU-0008-131}
 
@@ -70,3 +72,7 @@ The catalog MUST let the owner set the license of an item.
 ### EU-0008-137 {#EU-0008-137}
 
 The catalog MUST let the owner keep an item with a keep mark and release that mark.
+
+### EU-0008-140 {#EU-0008-140}
+
+Knowledge of an identity MUST NOT let a collaborator fetch an item, or learn whether one exists, outside the projects its links reach.

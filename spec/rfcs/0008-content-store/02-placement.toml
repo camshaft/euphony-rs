@@ -32,8 +32,8 @@ the release commits only while the policy and the pairing are those it recorded.
 an epoch, so that a release planned by a computer the owner declares lost is settled once and its
 late messages change nothing; a release that recovery can't settle keeps its reservations and shows to
 the owner as unresolved. A holder verifies a copy by reading each chunk, checking its digest,
-decoding it and checking the item's identity. Where the verified copies of an item fall below its
-policy, the planner copies it again from the remaining copies; where no verified copy remains, the
+decoding it and checking the item's identity. Where the reachable verified copies of an item fall below
+its policy, the planner copies it again from the remaining copies; where no verified copy remains, the
 item is unavailable and each project shows the regions that can't sound. Holders don't encrypt what
 they store: an owner who wants encryption at rest turns on disk encryption on each computer."""
 

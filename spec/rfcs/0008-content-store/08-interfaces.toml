@@ -27,7 +27,9 @@ reservations; each computer writes its own barriers; the decision point writes a
 and the owner writes the policy, keep marks and licenses. The owner's assistants, which act as the
 owner, reach the placement, catalog and deletion operations over content they can already read and
 place; holders, which are the owner's paired computers, reach the storage operations; and
-collaborators reach only a fetch of the items that their copy of a shared project refers to."""
+collaborators reach only a fetch, over the link that shares a project with them, of the items that
+the revisions of a project their links reach refer to, and knowing an item's identity tells them
+nothing outside those projects."""
 
 [[requirement]]
 id = 'EU-0008-119'
@@ -73,7 +75,7 @@ rationale = 'An assistant gains operations, and never access to more content.'
 id = 'EU-0008-124'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the collaborator's copy of a shared project refers to."
+statement = 'A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the revisions of a project its links reach refer to.'
 binds_to = 'system'
 rationale = 'Sharing a project opens only the content that the shared project uses, and never the library or the storage of the owner.'
 
@@ -132,4 +134,13 @@ polarity = 'required'
 statement = 'The catalog MUST let the owner keep an item with a keep mark and release that mark.'
 binds_to = 'system'
 rationale = 'The owner protects material that no project uses yet from collection.'
+
+[[requirement]]
+id = 'EU-0008-140'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Knowledge of an identity MUST NOT let a collaborator fetch an item, or learn whether one exists, outside the projects its links reach.'
+binds_to = 'system'
+rationale = 'A collaborator who guesses or copies an identity learns nothing of the rest of the library.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-124' } ]
 
