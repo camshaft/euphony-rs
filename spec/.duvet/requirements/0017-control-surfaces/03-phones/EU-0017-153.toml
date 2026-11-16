@@ -2,4 +2,4 @@ target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-153"
 
 [[spec]]
 level = "MUST"
-quote = "The phone controller MUST NOT offer arrangement editing, program authoring or processor mapping."
+quote = "The phone controller MUST NOT offer full arrangement editing, program authoring or processor mapping."

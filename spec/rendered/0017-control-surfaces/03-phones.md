@@ -5,8 +5,8 @@ protocol with controls native to the platform. A phone is discovered, paired and
 pairing section of this RFC states, and attaches to a selected session through the session's control
 service, on the local network or through the authenticated connection between networks otherwise.
 Its default layout holds transport, cue and recording actions alone; the layouts and panels section
-of this RFC adds optional panels. Arrangement editing, program authoring, processor mapping, and
-pairing and link management stay on the desktop interface and with assistants. A phone is a
+of this RFC adds optional panels. Full arrangement editing, program authoring, processor mapping,
+and pairing and link management stay on the desktop interface and with assistants. A phone is a
 controller, never a render worker or a microphone the session takes from automatically.
 
 ### EU-0017-032 {#EU-0017-032}
@@ -35,7 +35,7 @@ The phone controller MUST NOT offer pairing or link management.
 
 ### EU-0017-153 {#EU-0017-153}
 
-The phone controller MUST NOT offer arrangement editing, program authoring or processor mapping.
+The phone controller MUST NOT offer full arrangement editing, program authoring or processor mapping.
 
 ### EU-0017-038 {#EU-0017-038}
 

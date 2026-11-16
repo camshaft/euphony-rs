@@ -58,7 +58,7 @@ The session host MUST acknowledge play, stop, locate and recording commands with
 
 ### EU-0017-112 {#EU-0017-112}
 
-While a remote surface is unavailable, the local host MUST apply a stop made on it without waiting for an acknowledgement from any remote surface.
+While a remote surface is unavailable, the local host MUST apply a stop made on the local host without waiting for an acknowledgement from any remote surface.
 
 ### EU-0017-113 {#EU-0017-113}
 
