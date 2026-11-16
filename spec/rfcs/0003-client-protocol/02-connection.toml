@@ -1,101 +1,23 @@
 [section]
 anchor = 'connection'
-title = 'Connecting and client sessions'
+title = 'Connecting from any computer'
 problem = """\
   A session that any program on the computer can connect to, or that believes what a connecting \
   program says about itself, lets another user's program or a script act as the person's own \
   interface and approve what only the person may approve."""
 motivation = """\
-  Admitting only the person's own processes and devices, and giving each attachment a client session \
-  whose origin the engine sets rather than the client, lets every interface reach a session while \
-  each command keeps the origin that its checks depend on."""
+  Messages that are the same on every computer, a discovery that never admits a connection by \
+  itself, and a record of the person's interaction that counts only once, let every interface reach \
+  a session while the checks that RFC 0002 states decide who acts."""
 prose = """
-On the computer that runs the session, a client connects to a local endpoint that only processes of
-the same operating-system user reach, at a location that follows the convention of each platform.
-Being admitted to the endpoint doesn't say who the client is. At each attach the client receives a
-client session, bound to the session and to the generation of that attachment, and the origin of the
-client session is one of the person's native interface, an assistant or a script. The person's
-native interface proves its origin with the key of the device the person paired; every other client
-is an assistant or a script, whatever it says about itself. Only the native interface records the
-person's own interactions, from the person's input on that interface, so an action that waits for
-the person's approval waits for the person. From another computer, a client connects as a paired
-device over a connection that both ends authenticate and that is encrypted, using discovery on the
-local network only as a hint, and attaches as on the same computer. A participant of a share link
-attaches at the level of its link, to listen, to comment or to edit. The messages are the same
-locally and remotely; only the transport and the delivery of display streams differ."""
-
-[[requirement]]
-id = 'EU-0003-010'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'The local endpoint MUST NOT admit a connection from a process of another operating-system user.'
-binds_to = 'system'
-rationale = 'Another user of the computer cannot reach the sessions of the person.'
-
-[[requirement]]
-id = 'EU-0003-011'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'Admitting a connection MUST NOT assign it an origin.'
-binds_to = 'system'
-rationale = 'Being able to connect never makes a program the native interface of the person.'
-
-[[requirement]]
-id = 'EU-0003-012'
-level = 'MUST'
-polarity = 'required'
-statement = 'Each attachment MUST be given a client session bound to the session and to the generation of the attachment.'
-binds_to = 'system'
-rationale = 'Every command can be traced to one attachment, and an ended attachment holds nothing.'
-
-[[requirement]]
-id = 'EU-0003-013'
-level = 'MUST'
-polarity = 'required'
-statement = 'The origin of each command MUST be the origin of the client session that sent it.'
-binds_to = 'system'
-rationale = 'The checks that depend on who acted read one fact that the engine sets.'
-relations = [ { kind = 'depends_on', target = 'EU-0003-012' } ]
-
-[[requirement]]
-id = 'EU-0003-014'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'A claim that a client makes about its own origin MUST NOT change the origin of its client session.'
-binds_to = 'system'
-rationale = 'A script that claims to be the native interface of the person is still treated as a script.'
-
-[[requirement]]
-id = 'EU-0003-015'
-level = 'MUST'
-polarity = 'required'
-statement = 'A command that a client forwards, queues or replays MUST keep the origin of the client session that first sent it.'
-binds_to = 'system'
-rationale = 'A command of an assistant does not become the command of the person by passing through another client.'
-
-[[requirement]]
-id = 'EU-0003-016'
-level = 'MUST'
-polarity = 'required'
-statement = "A client session MUST hold the origin of the person's native interface only where its client proves that origin with the key of a paired device."
-binds_to = 'system'
-rationale = 'Only the interface on a device the person paired acts as the person.'
-
-[[requirement]]
-id = 'EU-0003-017'
-level = 'MUST'
-polarity = 'forbidden'
-statement = "A client session other than the person's native interface MUST NOT create a record of the person's interaction."
-binds_to = 'system'
-rationale = 'An action that waits for the approval of the person waits for the person, not for a script or an assistant.'
-
-[[requirement]]
-id = 'EU-0003-018'
-level = 'MUST'
-polarity = 'forbidden'
-statement = "A decision on an approval MUST NOT be accepted from a client session other than the person's native interface."
-binds_to = 'system'
-rationale = 'Only the person approves what leaves their computers or cannot be undone.'
+On the computer that runs the session, a client connects to a local endpoint at a location that
+follows the convention of each platform. From another computer, a client connects as a paired
+device or as a participant of a share link, and uses discovery on the local network only as a hint
+of where a session runs. RFC 0002 states who may connect, the client session that each attachment
+receives, the origin of each command, and the approvals that only the person's native interface
+decides. A record of the person's interaction comes from the person's input on that interface and
+counts for one action alone. The messages are the same locally and remotely; only the transport and
+the delivery of display streams differ."""
 
 [[requirement]]
 id = 'EU-0003-019'
@@ -104,30 +26,6 @@ polarity = 'forbidden'
 statement = "A record of the person's interaction MUST NOT be accepted more than once."
 binds_to = 'system'
 rationale = 'A record taken from one approval cannot approve another action.'
-
-[[requirement]]
-id = 'EU-0003-020'
-level = 'MUST'
-polarity = 'forbidden'
-statement = 'An unpaired computer MUST NOT attach to a session except through a share link.'
-binds_to = 'system'
-rationale = 'A session reaches another person only at the level the person chose.'
-
-[[requirement]]
-id = 'EU-0003-021'
-level = 'MUST'
-polarity = 'required'
-statement = 'The connection of a client on another computer MUST be mutually authenticated and encrypted.'
-binds_to = 'system'
-rationale = 'Nothing on the network reads or changes a session.'
-
-[[requirement]]
-id = 'EU-0003-022'
-level = 'MUST'
-polarity = 'required'
-statement = 'A participant of a share link MUST receive only the part of the session that the level of its link allows.'
-binds_to = 'system'
-rationale = 'A link to listen never shows what a link to edit shows.'
 
 [[requirement]]
 id = 'EU-0003-023'
