@@ -33,7 +33,7 @@ A query of an analysis that has not finished MUST return the part it covers so f
 
 ### EU-0020-113 {#EU-0020-113}
 
-A read of a result's series MUST return one page and a cursor to the next page, whatever the state of its analysis.
+A read of a result's series MUST return one page, with a cursor to the next page or, on the last page of a finished analysis, a mark that the series ends.
 
 ### EU-0020-049 {#EU-0020-049}
 
