@@ -82,7 +82,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-095'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's expected revision or its idempotency key."
+statement = "Where the branch that a batch names is not a branch of the project, euphony MUST refuse the batch as denied, with the same answer as EU-0004-056, before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
 binds_to = 'system'
 rationale = "A refusal doesn't tell a caller whether a branch that it may not write exists."
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-056' } ]
@@ -91,7 +91,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends
 id = 'EU-0004-096'
 level = 'MUST'
 polarity = 'required'
-statement = "Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-095 and before it checks the batch's expected revision or its idempotency key."
+statement = "Where the branch that a batch names is a working branch that another copy holds, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-095 and before it checks the batch's commands against the project schema, its expected revision or its idempotency key."
 binds_to = 'system'
 rationale = "The command path keeps EU-0004-038, so a copy never commits to a branch that another copy holds, and a caller that may not take the batch's commands on that branch learns only that it is denied."
 relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-095' } ]
