@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-013"
+
+[[spec]]
+level = "MUST"
+quote = "Each take of a recording MUST be stored as an item of its own."

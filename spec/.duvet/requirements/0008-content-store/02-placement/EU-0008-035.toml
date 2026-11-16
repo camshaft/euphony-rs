@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-035"
+
+[[spec]]
+level = "MUST"
+quote = "After a crash, a holder MUST keep its reservations until the terminal state of the release they serve is known."

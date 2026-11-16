@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-047"
+
+[[spec]]
+level = "MUST"
+quote = "The audio output MUST read only content that is already held locally."

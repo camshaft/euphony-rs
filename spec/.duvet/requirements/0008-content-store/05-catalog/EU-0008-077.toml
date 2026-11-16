@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-077"
+
+[[spec]]
+level = "MUST"
+quote = "A license in the catalog MUST NOT clear an item for a use that requires verified rights."

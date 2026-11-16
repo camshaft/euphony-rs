@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-074"
+
+[[spec]]
+level = "MUST"
+quote = "An entry of a note sequence, a MIDI file or an automation curve MUST hold its symbolic features."

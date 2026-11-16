@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-045"
+
+[[spec]]
+level = "MUST"
+quote = "Each step of placement, verification, repair, release and fetch MUST emit a typed event with the item kind, the tier and the bytes."

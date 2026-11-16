@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-019"
+
+[[spec]]
+level = "MUST"
+quote = "A trim, a split, a comp or a fade MUST NOT create new audio content."

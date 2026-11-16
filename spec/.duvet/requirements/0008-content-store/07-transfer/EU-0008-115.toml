@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/07-transfer.md#EU-0008-115"
+
+[[spec]]
+level = "MUST"
+quote = "A fetch that a session waits for MUST be sent at a higher priority than placement copies, repair copies and the recall of an archived project."

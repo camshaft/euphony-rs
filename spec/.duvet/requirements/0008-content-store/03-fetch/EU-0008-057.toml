@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-057"
+
+[[spec]]
+level = "MUST"
+quote = "Captured input MUST be written to local durable storage whatever the state of the store."

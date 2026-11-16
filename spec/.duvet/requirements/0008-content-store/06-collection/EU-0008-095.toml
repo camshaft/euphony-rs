@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-095"
+
+[[spec]]
+level = "MUST"
+quote = "Collection MUST NOT delete an item that a root on any computer of the owner refers to."

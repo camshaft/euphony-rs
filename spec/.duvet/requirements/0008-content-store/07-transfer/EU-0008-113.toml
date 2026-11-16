@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/07-transfer.md#EU-0008-113"
+
+[[spec]]
+level = "MUST"
+quote = "A transfer that a dropped connection or a stopped holder interrupts MUST resume from the chunks the receiver lacks."

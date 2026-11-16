@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-039"
+
+[[spec]]
+level = "MUST"
+quote = "A verification MUST check each chunk of a copy and its decoded content against the identity of the item."

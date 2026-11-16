@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-122"
+
+[[spec]]
+level = "MUST"
+quote = "Each kind of record of the store MUST be written only by the party that owns that kind: the project authority, a publishing computer, a holder, a computer for its own barriers, the decision point or the owner."

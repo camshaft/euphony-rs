@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-048"
+
+[[spec]]
+level = "MUST"
+quote = "When a project opens, the store MUST fetch each item the project refers to that is not held locally, in the order in which playback from the current position reaches it."

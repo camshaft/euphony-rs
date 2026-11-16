@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-128"
+
+[[spec]]
+level = "MUST"
+quote = "The provenance of a placed item MUST record the project it was found in."

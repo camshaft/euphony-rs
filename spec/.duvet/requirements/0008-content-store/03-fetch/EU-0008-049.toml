@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-049"
+
+[[spec]]
+level = "MUST"
+quote = "Before playback starts, the session MUST plan the fetches of every region the playback range reads together, against the measured capacity of each disk, network path and decoder they share."

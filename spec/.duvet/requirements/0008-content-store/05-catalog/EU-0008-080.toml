@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-080"
+
+[[spec]]
+level = "MUST"
+quote = "Search MUST find sounds similar to a given audio item."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-054"
+
+[[spec]]
+level = "MUST"
+quote = "A session MUST NOT play silence in place of content that has not arrived as though the content were present."

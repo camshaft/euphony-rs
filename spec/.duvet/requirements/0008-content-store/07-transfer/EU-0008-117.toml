@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/07-transfer.md#EU-0008-117"
+
+[[spec]]
+level = "MUST"
+quote = "Each connection of the store between the computers of the owner MUST accept only the paired computers of the owner."

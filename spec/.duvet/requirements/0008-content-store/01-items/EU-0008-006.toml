@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-006"
+
+[[spec]]
+level = "MUST"
+quote = "Two items of different kinds MUST NOT share an identity, even where their bytes are equal."

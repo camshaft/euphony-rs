@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-023"
+
+[[spec]]
+level = "MUST"
+quote = "Each computer of the owner MUST plan placement from the same signed policy and the latest availability reports of the computers of the owner."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-104"
+
+[[spec]]
+level = "MUST"
+quote = "Where the computer of a decision point is declared lost, each holder of its intent MUST refuse every later message of the lost decision point for that intent."

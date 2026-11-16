@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-058"
+
+[[spec]]
+level = "MUST"
+quote = "Arming a track to record MUST show which regions of the punch range are not ready before recording starts."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-096"
+
+[[spec]]
+level = "MUST"
+quote = "The last copies of an item MUST be deleted only through a deletion intent that one decision point settles."

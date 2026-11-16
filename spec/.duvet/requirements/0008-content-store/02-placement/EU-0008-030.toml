@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-030"
+
+[[spec]]
+level = "MUST"
+quote = "Two holders that report the same storage volume MUST be shown to the owner as a conflict until it is resolved."

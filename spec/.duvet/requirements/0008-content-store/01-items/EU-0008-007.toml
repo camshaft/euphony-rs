@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-007"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST keep the original bytes of each imported file unchanged, beside any decoded copy of it."

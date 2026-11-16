@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-125"
+
+[[spec]]
+level = "MUST"
+quote = "A holder that is releasing its own copy of an item MUST NOT be reserved for another release of the same item."

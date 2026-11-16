@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-073"
+
+[[spec]]
+level = "MUST"
+quote = "An entry MUST hold the analysis results of its item with their confidence."

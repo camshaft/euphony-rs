@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-038"
+
+[[spec]]
+level = "MUST"
+quote = "A source original or a recording MUST NOT be released from its last working copy before a release of it commits."

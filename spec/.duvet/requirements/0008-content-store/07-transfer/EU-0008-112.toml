@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/07-transfer.md#EU-0008-112"
+
+[[spec]]
+level = "MUST"
+quote = "A receiver MUST record a chunk as present only after the chunk is verified and durable."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-094"
+
+[[spec]]
+level = "MUST"
+quote = "Collection MUST treat as roots every retained revision of every project on any computer of the owner, pins, working copies, exports, active transfers, recordings in progress, keep marks and placements in progress."

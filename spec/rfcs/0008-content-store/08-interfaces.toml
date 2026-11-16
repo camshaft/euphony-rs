@@ -1,0 +1,146 @@
+[section]
+anchor = 'interfaces'
+title = 'Interfaces and typed records'
+problem = """\
+  A store, a planner and a catalog that answer in free text, keep their relations in prose, or let \
+  any party write any record leave people, assistants and other components unable to tell what an \
+  operation did or who decided it."""
+motivation = """\
+  A fixed set of operations with typed errors, every relation held as typed data, and one writer for \
+  each kind of record let every component and every assistant act on the store's answers and audit \
+  its decisions."""
+prose = """
+The store offers these operations: publish an item from chunks, with its kind and provenance;
+resolve a reference to its chunk list and availability; fetch a frame range with a readiness
+deadline; list the holders and receipts of an item; verify a holder's copy; and publish or cancel a
+deletion intent. Its errors are absent, pruned with its retention record, corrupt, not ready with
+its measured readiness, under-replicated, denied, unsupported codec and unavailable storage.
+Placement offers these operations: read and propose the signed policy, which the owner approves;
+read the planner's pending actions and the items below their policy; and declare a computer lost.
+Its errors are invalid rule, conflicting rules and unknown computer. The catalog offers search, get,
+list uses, set metadata, set license, preview and place, keep and release a keep mark, and
+subscribe. Its errors are not ready, unavailable, invalid query, unsupported model version and
+conflict. Every relation is typed data: references from revisions, uses, chunk lists, receipts,
+reservations, intents, barriers, outcomes, provenance and license records. The project's authority
+writes references and uses; publishing computers sign chunk lists; holders write receipts and
+reservations; each computer writes its own barriers; the decision point writes an intent's outcome;
+and the owner writes the policy, keep marks and licenses. The owner's assistants, which act as the
+owner, reach the placement, catalog and deletion operations over content they can already read and
+place; holders, which are the owner's paired computers, reach the storage operations; and
+collaborators reach only a fetch, over the link that shares a project with them, of the items that
+the revisions of a project their links reach refer to, and knowing an item's identity tells them
+nothing outside those projects."""
+
+[[requirement]]
+id = 'EU-0008-119'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each operation of the store, of placement and of the catalog MUST answer a failure with one error of its typed set.'
+binds_to = 'system'
+rationale = 'A caller acts on what went wrong without reading prose.'
+
+[[requirement]]
+id = 'EU-0008-120'
+level = 'MUST'
+polarity = 'required'
+statement = 'A fetch of a frame range MUST answer not ready, with its measured readiness, where the range cannot arrive before its deadline.'
+binds_to = 'system'
+rationale = 'A session plans around late content instead of waiting on it blindly.'
+
+[[requirement]]
+id = 'EU-0008-121'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every relation between items, revisions, copies and deletion decisions MUST be held as typed data.'
+binds_to = 'system'
+rationale = 'Every component reads the same relations, and none is inferred from text.'
+
+[[requirement]]
+id = 'EU-0008-122'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each kind of record of the store MUST be written only by the party that owns that kind: the project authority, a publishing computer, a holder, a computer for its own barriers, the decision point or the owner.'
+binds_to = 'system'
+rationale = 'Each record shows who decided it, and no party writes for another.'
+
+[[requirement]]
+id = 'EU-0008-123'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant of the owner MUST NOT reach a placement, catalog or deletion operation over content that it may not already read.'
+binds_to = 'system'
+rationale = 'An assistant gains operations, and never access to more content.'
+
+[[requirement]]
+id = 'EU-0008-124'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the revisions of a project its links reach refer to.'
+binds_to = 'system'
+rationale = 'Sharing a project opens only the content that the shared project uses, and never the library or the storage of the owner.'
+
+[[requirement]]
+id = 'EU-0008-131'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST let the owner list the holders and receipts of an item.'
+binds_to = 'system'
+rationale = 'The owner sees where each copy is and who vouches for it.'
+
+[[requirement]]
+id = 'EU-0008-132'
+level = 'MUST'
+polarity = 'required'
+statement = 'The store MUST let the owner ask a holder to verify its copy of an item.'
+binds_to = 'system'
+rationale = 'The owner checks a copy whenever they doubt it.'
+
+[[requirement]]
+id = 'EU-0008-133'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placement MUST let the owner read the pending actions of the planner and the items below their policy.'
+binds_to = 'system'
+rationale = 'The owner sees what placement is about to do and which material is at risk.'
+
+[[requirement]]
+id = 'EU-0008-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'Placement MUST let the owner declare a computer lost.'
+binds_to = 'system'
+rationale = 'Repair and recovery start when the owner knows a computer is gone.'
+
+[[requirement]]
+id = 'EU-0008-135'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST let the owner set the metadata of an item.'
+binds_to = 'system'
+rationale = 'The owner corrects and adds to what an item says about itself.'
+
+[[requirement]]
+id = 'EU-0008-136'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST let the owner set the license of an item.'
+binds_to = 'system'
+rationale = 'The owner records the terms under which they hold an item.'
+
+[[requirement]]
+id = 'EU-0008-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'The catalog MUST let the owner keep an item with a keep mark and release that mark.'
+binds_to = 'system'
+rationale = 'The owner protects material that no project uses yet from collection.'
+
+[[requirement]]
+id = 'EU-0008-140'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Knowledge of an identity MUST NOT let a collaborator fetch an item, or learn whether one exists, outside the projects its links reach.'
+binds_to = 'system'
+rationale = 'A collaborator who guesses or copies an identity learns nothing of the rest of the library.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-124' } ]
+

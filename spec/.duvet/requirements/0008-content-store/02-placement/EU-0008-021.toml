@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-021"
+
+[[spec]]
+level = "MUST"
+quote = "The placement policy MUST be a versioned record signed by the owner."
