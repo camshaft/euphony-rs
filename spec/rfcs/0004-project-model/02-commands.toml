@@ -13,13 +13,14 @@ Every change a person or an assistant makes to a project is a command. Commands 
 A batch names the project, the branch it changes, the revision its sender expects to change on that
 branch, a key that identifies the batch across retries, and the actor that sends it. The actor is the
 caller that euphony authenticated, and euphony refuses as denied a batch that names another actor
-before it reads any batch of that actor. euphony refuses as invalid input a batch that doesn't name
-an actor it can compare with the caller, and a batch of the caller that leaves out its project, its
-branch, its expected revision or its idempotency key. euphony also refuses as denied a batch whose
-caller may not take its commands on the branch it names, before it checks the batch's expected
-revision or its key.
+before it reads any batch of that actor. Before that check and before any check of access, euphony
+refuses as invalid input a batch that doesn't name an actor it can compare with the caller, and a
+batch of the caller that leaves out its project or its branch. euphony also refuses as denied a
+batch whose caller may not take its commands on the branch it names, before it checks the batch's
+expected revision or its key.
 It refuses a batch that names a project that doesn't exist in the same way, so that a refusal doesn't
-tell a caller whether the project exists. euphony then refuses as invalid input a batch whose expected
+tell a caller whether the project exists. euphony then refuses as invalid input a batch of the caller
+that leaves out its expected revision or its idempotency key, and a batch whose expected
 revision isn't in the history of the branch it names. euphony answers that check with a fixed number
 of reads, each bounded by an index, however long the branch's history is.
 euphony checks each batch against the project schema and
@@ -74,10 +75,10 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-063'
 level = 'MUST'
 polarity = 'required'
-statement = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project, its branch, its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input."
+statement = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project or its branch, euphony MUST refuse the batch as invalid input before the checks of EU-0004-049, EU-0004-056 and EU-0004-059."
 binds_to = 'system'
-rationale = "A batch that leaves out what EU-0004-011 asks for has one result, invalid input, and a batch whose actor euphony can't compare with the caller is refused before EU-0004-049 compares it, while a batch that names another actor stays denied whatever else it leaves out."
-relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-049' } ]
+rationale = "A batch without a comparable actor, a project or a branch has one result, invalid input, which euphony answers from the batch's own fields before it compares the actor or checks access, so the answer doesn't tell a caller whether a project exists; a batch that names another actor stays denied whatever else it leaves out."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-049' }, { kind = 'depends_on', target = 'EU-0004-056' }, { kind = 'depends_on', target = 'EU-0004-059' } ]
 
 [[requirement]]
 id = 'EU-0004-056'
@@ -105,6 +106,15 @@ statement = 'Where the project that a batch names does not exist, euphony MUST r
 binds_to = 'system'
 rationale = "A refusal of a batch doesn't tell its sender which projects exist."
 relations = [ { kind = 'depends_on', target = 'EU-0004-056' } ]
+
+[[requirement]]
+id = 'EU-0004-068'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a batch names the caller that euphony authenticated, its project and its branch, and leaves out its expected revision or its idempotency key, euphony MUST refuse the batch as invalid input after the checks of EU-0004-056 and EU-0004-059."
+binds_to = 'system'
+rationale = "A caller that may not take the batch's commands on its branch, or that names a project that doesn't exist, is denied whatever else the batch leaves out, and a caller that may take them gets one result, invalid input, for a batch that leaves out the rest of what EU-0004-011 asks for."
+relations = [ { kind = 'depends_on', target = 'EU-0004-011' }, { kind = 'depends_on', target = 'EU-0004-056' }, { kind = 'depends_on', target = 'EU-0004-059' } ]
 
 [[requirement]]
 id = 'EU-0004-067'
