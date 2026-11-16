@@ -86,9 +86,25 @@ rationale = "A dead surface never keeps a target locked."
 id = 'EU-0017-077'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "Cancelling a gesture or losing its surface MUST NOT invent a value for its targets."
+statement = "Cancelling a gesture or losing its surface MUST NOT set its targets to a value other than its last accepted value or the loss behavior its control states."
 binds_to = 'system'
-rationale = "Only values a person made reach the session."
+rationale = "A cancel or a loss never sets a value that neither a person nor the control's stated loss behavior chose."
+
+[[requirement]]
+id = 'EU-0017-157'
+level = 'MUST'
+polarity = 'required'
+statement = "Ending a gesture MUST commit its last accepted value."
+binds_to = 'system'
+rationale = "The value a person let go at is the value the session keeps."
+
+[[requirement]]
+id = 'EU-0017-158'
+level = 'MUST'
+polarity = 'required'
+statement = "Ending a gesture MUST release the reservation of its target set."
+binds_to = 'system'
+rationale = "Another surface can take a target as soon as the gesture on it ends."
 
 [[requirement]]
 id = 'EU-0017-078'
@@ -110,7 +126,15 @@ rationale = "A person sees why their control isn't moving the target."
 id = 'EU-0017-080'
 level = 'MUST'
 polarity = 'required'
-statement = "A takeover MUST invalidate the earlier owner's gesture token and report the change to both surfaces."
+statement = "A takeover MUST invalidate the earlier owner's gesture token."
+binds_to = 'system'
+rationale = "The earlier owner's next update after a takeover never applies."
+
+[[requirement]]
+id = 'EU-0017-159'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST report a takeover to the surface of the earlier owner and to the surface of the new owner."
 binds_to = 'system'
 rationale = "Taking over a control is explicit, and both people see it."
 
@@ -214,9 +238,17 @@ rationale = "A gesture never continues under conditions its person didn't see."
 id = 'EU-0017-093'
 level = 'MUST'
 polarity = 'required'
-statement = "A layout edit that affects an active target MUST wait visibly for the gesture's release or cancel the gesture before it commits."
+statement = "A layout edit that affects an active target MUST wait for the gesture's release before it commits."
 binds_to = 'system'
 rationale = "Input is never reinterpreted under a new mapping."
+
+[[requirement]]
+id = 'EU-0017-160'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST show a layout edit that waits for a gesture's release as waiting."
+binds_to = 'system'
+rationale = "The person editing the layout sees why it hasn't taken effect yet."
 
 [[requirement]]
 id = 'EU-0017-094'
