@@ -91,4 +91,4 @@ euphony MUST refuse as denied each read of a project, of its history or of its e
 
 ### EU-0004-057 {#EU-0004-057}
 
-euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with an answer that does not differ from its refusal of a caller who may not read an existing project.
+euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with a refusal whose kind and content, apart from the values the request itself supplies, are those of its refusal of a caller who may not read an existing project.
