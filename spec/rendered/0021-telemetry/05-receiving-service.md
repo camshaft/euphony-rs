@@ -52,7 +52,7 @@ The service MUST delete a report's attachments once its finding closes and the n
 
 ### EU-0021-110 {#EU-0021-110}
 
-On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups.
+On a deletion request signed with an identity's private key, the service MUST delete everything it holds under that identity: raw events, batches, problem reports, attachments, its entries in the findings' identity index, grouping work still queued for its batches, and its copies in backups, each backup copy no later than that backup's expiry.
 
 ### EU-0021-111 {#EU-0021-111}
 
