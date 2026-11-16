@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-130"
+
+[[spec]]
+level = "MUST"
+quote = "Auditioning an item that is not held locally MUST fetch its first chunks before the rest of it."

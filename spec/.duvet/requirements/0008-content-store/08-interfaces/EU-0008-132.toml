@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-132"
+
+[[spec]]
+level = "MUST"
+quote = "The store MUST offer an operation that verifies the copy of an item that a holder keeps."

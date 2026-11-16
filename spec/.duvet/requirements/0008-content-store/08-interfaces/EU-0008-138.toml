@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-138"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST offer an operation by which the owner marks an item to keep."

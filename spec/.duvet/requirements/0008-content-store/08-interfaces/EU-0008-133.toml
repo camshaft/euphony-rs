@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-133"
+
+[[spec]]
+level = "MUST"
+quote = "Placement MUST offer an operation that reads the actions the planner has yet to take."

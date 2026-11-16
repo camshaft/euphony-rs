@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-141"
+
+[[spec]]
+level = "MUST"
+quote = "A release that recovery cannot settle MUST keep its reservations and be shown to the owner as an unresolved release."
