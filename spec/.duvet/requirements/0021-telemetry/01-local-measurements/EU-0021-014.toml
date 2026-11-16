@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-014"
+
+[[spec]]
+level = "MUST"
+quote = "A crash of the session host itself MUST be recorded in its telemetry journal at the session host's next start."

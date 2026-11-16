@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-087"
+
+[[spec]]
+level = "MUST"
+quote = "Before the first send, the outbox MUST say which data a deletion removes and which remains, that a public tracker issue holds only counts that passed the publication policy, and that copies others make of a published issue can't be deleted."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-128"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST keep one tracker issue for each finding key."

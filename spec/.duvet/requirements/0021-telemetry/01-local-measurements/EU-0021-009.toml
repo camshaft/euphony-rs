@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-009"
+
+[[spec]]
+level = "MUST"
+quote = "Each render, bounce, export, model fitting or analysis job MUST be recorded as a render timing event that states its job kind, frames, wall time, processor time, the worker's render profile class and whether the cache already held its result."

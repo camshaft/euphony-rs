@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-127"
+
+[[spec]]
+level = "MUST"
+quote = "Each comparison MUST state that a count of distinct submission identities isn't a verified count of computers."

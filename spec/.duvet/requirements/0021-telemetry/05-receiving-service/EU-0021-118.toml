@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-118"
+
+[[spec]]
+level = "MUST"
+quote = "The client MUST NOT drop a batch for want of capacity at the service."

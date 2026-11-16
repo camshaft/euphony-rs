@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-135"
+
+[[spec]]
+level = "MUST"
+quote = "A later update of a published finding MUST publish new counts only where the change itself comes from at least the publication threshold's count of identities."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-091"
+
+[[spec]]
+level = "MUST"
+quote = "Each attachment of a report MUST stay off until the person adds it: the full crash dump, a log excerpt, a reduced copy of the project holding the tracks the person chooses, an audio clip, a screenshot and a reply address."

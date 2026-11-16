@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-066"
+
+[[spec]]
+level = "MUST"
+quote = "Each field of the submission schema MUST have a privacy class."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-055"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant, a script or a workflow MUST NOT create a send authorization."

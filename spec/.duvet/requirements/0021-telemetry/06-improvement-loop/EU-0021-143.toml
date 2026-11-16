@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-143"
+
+[[spec]]
+level = "MUST"
+quote = "A timing comparison MUST use only records with the same job kind, a matching frame count and the same cache result."

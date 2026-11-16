@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-006"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of a job, a device or a diagnostic MUST NOT be a field that a measure is split by."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-025"
+
+[[spec]]
+level = "MUST"
+quote = "While a family's recording is off, its events MUST NOT be kept."

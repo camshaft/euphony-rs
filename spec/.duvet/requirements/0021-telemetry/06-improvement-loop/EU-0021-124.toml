@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-124"
+
+[[spec]]
+level = "MUST"
+quote = "The finding key of a tool call MUST be its tool and its result kind."

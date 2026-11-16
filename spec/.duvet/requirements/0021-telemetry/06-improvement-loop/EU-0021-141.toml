@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-141"
+
+[[spec]]
+level = "MUST"
+quote = "Where the two results disagree on the direction of a change, the result MUST be reported as unverified."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-069"
+
+[[spec]]
+level = "MUST"
+quote = "The client MUST describe the computer only by its processor family, a range of core counts, a range of memory, the operating system's family and major version, and an audio interface model from a closed list of known models."

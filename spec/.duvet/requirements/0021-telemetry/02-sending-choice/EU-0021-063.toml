@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-063"
+
+[[spec]]
+level = "MUST"
+quote = "The owner's own change of the sending choice in the native client of a paired owner device MUST count as the owner's approval of that change."

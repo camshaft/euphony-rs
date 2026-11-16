@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-077"
+
+[[spec]]
+level = "MUST"
+quote = "A sent record MUST NOT hold any link between the batches of one installation other than the submission identity."

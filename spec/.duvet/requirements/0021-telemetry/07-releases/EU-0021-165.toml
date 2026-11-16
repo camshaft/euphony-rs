@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-165"
+
+[[spec]]
+level = "MUST"
+quote = "The release notes MUST describe each change of the submission schema."

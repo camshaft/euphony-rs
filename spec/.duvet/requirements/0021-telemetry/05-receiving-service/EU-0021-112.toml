@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-112"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST refuse every later upload, retry or grouping job of an identity that has a tombstone."

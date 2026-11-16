@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-093"
+
+[[spec]]
+level = "MUST"
+quote = "The preview of a report MUST show each part as the outbox shows a batch."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-068"
+
+[[spec]]
+level = "MUST"
+quote = "A sent record MUST NOT hold audio, notes or MIDI content, project, track, region or file names, paths, processor parameter values or state, the learning store, link, collaborator or device names, network addresses or the person's account, outside an attachment that the person adds to one problem report."

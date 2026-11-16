@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-011"
+
+[[spec]]
+level = "MUST"
+quote = "A component MUST NOT record a resource sample on a timer."
