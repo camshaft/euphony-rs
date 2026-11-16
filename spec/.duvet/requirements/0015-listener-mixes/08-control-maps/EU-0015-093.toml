@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-093"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST fetch the current control map on each reconnection."

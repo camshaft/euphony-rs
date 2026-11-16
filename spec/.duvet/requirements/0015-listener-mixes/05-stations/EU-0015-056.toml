@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-056"
+
+[[spec]]
+level = "MUST"
+quote = "The readiness view MUST label a station on a wireless connection as wireless."

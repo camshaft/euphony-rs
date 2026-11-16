@@ -1,0 +1,11 @@
+number = 15
+title = 'Listener mixes, spatial audio and stations'
+area = 'euphony'
+abstract = """\
+  Listener outputs and their own mixes within the owner's gain limit, alignment, monitoring delay and \
+  output protection, spatial mixing that keeps its placement across speaker and headphone layouts, \
+  licensed spatial delivery formats, and the headphone stations that play one listener's mix at \
+  their seat: pairing, stream confidentiality, audio and clock, control maps, and joining and \
+  leaving a session."""
+retired = []
+sources = []

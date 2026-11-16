@@ -1,0 +1,196 @@
+[section]
+anchor = 'control-maps'
+title = 'Control maps, encoders and lights'
+problem = """\
+  A few knobs and lights can't reach a whole mix unless each is bound to a part of it, and a knob \
+  turn sent over a network can be lost, repeated, reordered or late, or reach a part of the session \
+  it shouldn't."""
+motivation = """\
+  A versioned control map bound to the hardware of a station and to its listener's sink, turns that \
+  carry an epoch and a sequence and apply once, and lights that show acknowledged values give a \
+  listener controls that are safe and that show truly what they hear."""
+prose = """
+A control map is a versioned record that binds each encoder, switch and light group of one station
+to a target in its listener's sink. An encoder targets a parameter of that sink mix: a source send
+level, a source pan, the click level, the overall level of the sink or its mute. Each encoder binding
+sets its range within the owner's bounds, its curve, such as a decibel taper, its step size and its
+acceleration. A switch targets a mute, a cue solo or a change of bank, which lets a few encoders
+reach more sources in turn. A light group targets a meter or a value: the output level of the sink,
+the level of a source, the value of an encoder's bound parameter, clip indication or mute state, each
+with its display mode. A person sets a map with the same command from the desktop mixer, a phone or
+an assistant, or on the station by a learn gesture: holding an encoder switch, then touching a
+control of that listener's sink in the desktop mixer. Maps are kept in the project's session
+configuration, keyed by station identity and listener, so a station paired to the same listener in
+another project has its own map there, and each station has a default map that seeds its map in a
+new project. An encoder turn is a relative change that carries the sink's control epoch, the map
+revision, a sequence number and an idempotency identity. The host combines the turns it receives
+into the sink's mix revision, ramps the gain to avoid audible steps, and acknowledges the resulting
+value."""
+
+[[requirement]]
+id = 'EU-0015-084'
+level = 'MUST'
+polarity = 'required'
+statement = "A control map MUST bind the encoders, switches and light groups of one station only to targets in that station's sink."
+binds_to = 'system'
+rationale = 'A control on a station never reaches another listener or the main mix.'
+
+[[requirement]]
+id = 'EU-0015-085'
+level = 'MUST'
+polarity = 'required'
+statement = "Each encoder binding MUST set a range within the owner's bounds, a curve, a step size and an acceleration."
+binds_to = 'system'
+rationale = 'Every knob turns in a way the listener can feel and the owner allows.'
+
+[[requirement]]
+id = 'EU-0015-086'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to set a station's control map from the desktop interface, a phone or an assistant with the same command."
+binds_to = 'system'
+rationale = 'Every client sets a map under the same checks.'
+
+[[requirement]]
+id = 'EU-0015-087'
+level = 'MAY'
+polarity = 'required'
+statement = 'A person MAY bind a station control by a learn gesture on the station.'
+binds_to = 'system'
+rationale = 'A player sets up their knobs at their seat without a menu.'
+
+[[requirement]]
+id = 'EU-0015-088'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST refuse a control map binding to a control the station's hardware description doesn't list."
+binds_to = 'system'
+rationale = "A map never refers to a knob or light the station doesn't have."
+
+[[requirement]]
+id = 'EU-0015-089'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST refuse a control map binding to a parameter outside the station's sink."
+binds_to = 'system'
+rationale = 'A map can never be used to reach beyond its listener.'
+
+[[requirement]]
+id = 'EU-0015-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST check each command a control map produces again when the command is used.'
+binds_to = 'system'
+rationale = 'A map that was valid when set never carries a command that is no longer allowed.'
+
+[[requirement]]
+id = 'EU-0015-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Control maps MUST be kept in the project's session configuration, keyed by station identity and listener."
+binds_to = 'system'
+rationale = 'A station has its own map in each project it is used in.'
+
+[[requirement]]
+id = 'EU-0015-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each station MUST have a default control map that seeds its map in a new project.'
+binds_to = 'system'
+rationale = 'A station works in a new project without setup.'
+
+[[requirement]]
+id = 'EU-0015-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST fetch the current control map on each reconnection.'
+binds_to = 'system'
+rationale = 'A station never uses a map that changed while it was away.'
+
+[[requirement]]
+id = 'EU-0015-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST receive each later change of its control map as an event, without polling.'
+binds_to = 'system'
+rationale = 'A map change reaches the station at once, without traffic while nothing changes.'
+
+[[requirement]]
+id = 'EU-0015-095'
+level = 'MUST'
+polarity = 'required'
+statement = "An encoder turn MUST carry the sink's control epoch, the map revision, a sequence number and an idempotency identity."
+binds_to = 'system'
+rationale = 'The host can tell a stale, repeated or reordered turn from a new one.'
+
+[[requirement]]
+id = 'EU-0015-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST apply each encoder turn it accepts exactly once, however often it arrives and in whatever order.'
+binds_to = 'system'
+rationale = 'A lossy network never doubles or reverses a change of level.'
+
+[[requirement]]
+id = 'EU-0015-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST refuse an encoder turn that carries a stale control epoch.'
+binds_to = 'system'
+rationale = 'A turn made against an older state of the sink never applies to the new one.'
+
+[[requirement]]
+id = 'EU-0015-098'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST ramp each gain change of a sink mix so that it doesn't make an audible step."
+binds_to = 'system'
+rationale = 'Turning a knob never clicks in the ears of the listener.'
+
+[[requirement]]
+id = 'EU-0015-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST acknowledge the value each encoder turn results in.'
+binds_to = 'system'
+rationale = 'The station shows the value the host applied, not the one it asked for.'
+
+[[requirement]]
+id = 'EU-0015-100'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's lights MUST show the acknowledged value of each bound parameter."
+binds_to = 'system'
+rationale = 'What the lights show is what reaches the listener.'
+
+[[requirement]]
+id = 'EU-0015-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST drop the encoder turns made while it is disconnected.'
+binds_to = 'system'
+rationale = 'A burst of stale turns never changes a mix after a reconnection.'
+
+[[requirement]]
+id = 'EU-0015-102'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST calculate its output-level meters from the audio it plays.'
+binds_to = 'system'
+rationale = 'The output meter shows the level that reaches the listener.'
+
+[[requirement]]
+id = 'EU-0015-103'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST publish the source meters of a station's sink mix as events at the refresh rate the station reports for its lights."
+binds_to = 'system'
+rationale = 'Source meters arrive as fast as the lights can show them and no faster.'
+
+[[requirement]]
+id = 'EU-0015-104'
+level = 'MUST'
+polarity = 'required'
+statement = "A continuous encoder turn MUST be one grouped change in the project's history."
+binds_to = 'system'
+rationale = 'Undo takes back a whole turn of a knob in one step.'

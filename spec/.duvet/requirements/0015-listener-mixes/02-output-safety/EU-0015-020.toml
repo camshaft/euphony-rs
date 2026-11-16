@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-020"
+
+[[spec]]
+level = "MUST"
+quote = "After a change of its output device, a sink MUST stay muted until its route and limits are validated."

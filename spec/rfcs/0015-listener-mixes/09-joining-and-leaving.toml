@@ -1,0 +1,96 @@
+[section]
+anchor = 'joining-and-leaving'
+title = 'Stations joining and leaving'
+problem = """\
+  A station that joins or leaves during playback or a take could change what other listeners hear, \
+  the main mix or the recording, and a station that comes back could play its listener's mix at an \
+  unsafe level, or lose it."""
+motivation = """\
+  A station that starts muted, leaves without touching anything else, and finds its mix and its map \
+  waiting in the session lets stations come and go during a take."""
+prose = """
+A station leaves when its connection closes, when the transport reports it lost, when it powers off
+or when it is unpaired. Its sink then becomes unavailable and the host stops calculating its output.
+Its sink mix revision and its control map stay in the session, so a station that reconnects plays the
+same mix once it is validated again. Removing the headphones keeps the station connected and mutes
+its output until headphones are inserted again."""
+
+[[requirement]]
+id = 'EU-0015-105'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A station joining or leaving a session MUST NOT change the output of any other sink.'
+binds_to = 'system'
+rationale = 'Other listeners hear nothing when a station comes or goes.'
+
+[[requirement]]
+id = 'EU-0015-106'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A station joining or leaving a session MUST NOT change the main mix.'
+binds_to = 'system'
+rationale = 'The mix of the session never depends on which stations are connected.'
+
+[[requirement]]
+id = 'EU-0015-107'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A station joining or leaving a session MUST NOT change a recording in progress.'
+binds_to = 'system'
+rationale = 'A take continues whatever happens to a station.'
+
+[[requirement]]
+id = 'EU-0015-108'
+level = 'MUST'
+polarity = 'required'
+statement = "On a new connection or a headphone insertion, a station's output MUST start muted and rise to its listener's mix level only after its route and limits are validated."
+binds_to = 'system'
+rationale = 'A listener never gets a loud surprise when they plug in or reconnect.'
+
+[[requirement]]
+id = 'EU-0015-109'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a station leaves, the host MUST make its sink unavailable.'
+binds_to = 'system'
+rationale = 'Every client sees that the station is gone.'
+
+[[requirement]]
+id = 'EU-0015-110'
+level = 'MUST'
+polarity = 'required'
+statement = "A station's sink mix revision and control map MUST stay in the session after the station leaves."
+binds_to = 'system'
+rationale = 'A listener who reconnects finds their mix as they left it.'
+
+[[requirement]]
+id = 'EU-0015-111'
+level = 'MUST'
+polarity = 'required'
+statement = "A station that reconnects MUST restore its sink's mix once it is validated again."
+binds_to = 'system'
+rationale = 'A dropped connection costs the listener nothing but the time it was down.'
+
+[[requirement]]
+id = 'EU-0015-112'
+level = 'MUST'
+polarity = 'required'
+statement = "A headphone removal MUST mute the station's output until headphones are inserted again."
+binds_to = 'system'
+rationale = 'Unplugging never sends sound into the room.'
+
+[[requirement]]
+id = 'EU-0015-114'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a station leaves, the host MUST stop calculating its output.'
+binds_to = 'system'
+rationale = 'No work is spent on a mix that no one listens to.'
+
+[[requirement]]
+id = 'EU-0015-115'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A headphone removal MUST NOT end the station's connection."
+binds_to = 'system'
+rationale = 'Unplugging never drops the station from the session.'

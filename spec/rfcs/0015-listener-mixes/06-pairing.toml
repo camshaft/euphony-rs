@@ -1,0 +1,186 @@
+[section]
+anchor = 'pairing'
+title = 'Station pairing and stream confidentiality'
+problem = """\
+  A station on a shared network could be an impostor, a lost device or a stolen one, and its audio \
+  could be heard by any receiver on that network, unless the station proves its identity, the owner \
+  approves it, and its stream is protected."""
+motivation = """\
+  A device key, an approval on the owner's screen with a matching number and a press on the station, \
+  and a stream encrypted by default let only the station the owner chose hear and control one sink, \
+  on any network."""
+prose = """
+On its first start a station makes its device key pair and keeps the private key on the station. It
+advertises itself on the local network, and that advertisement is only a hint. Pairing binds the
+station's key to one sink and that sink's gain limit: the owner's desktop or phone shows the
+station's key fingerprint and a short confirmation number, the station shows the same number on its
+lights, a person presses the station's encoder switch to show they are present, and the owner
+approves the pairing on the desktop or phone. Each computer of the session keeps the list of paired
+stations, and checks it on every connection and every command. A station that isn't on the host's
+network joins through the session's authenticated invitation path. By default the audio of a station
+is an authenticated, encrypted stream that only the paired station can decode. On a network the
+owner marks as theirs, the host can send the stream as an unencrypted standard network audio stream,
+so that the station or another standard receiver can play it; there, pairing still decides which
+station the host sends to and whose commands it takes, but any receiver on that network can hear a
+stream in use. Control traffic is authenticated and encrypted on every network. Unpairing can't take
+back audio already played."""
+
+[[requirement]]
+id = 'EU-0015-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST make its device key pair on its first start.'
+binds_to = 'system'
+rationale = 'Each station has an identity of its own before it is ever paired.'
+
+[[requirement]]
+id = 'EU-0015-058'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST treat a station's network advertisement as an untrusted hint."
+binds_to = 'system'
+rationale = 'Anyone on the network can advertise anything, so an advertisement grants nothing.'
+
+[[requirement]]
+id = 'EU-0015-059'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The host MUST NOT address audio or meters to a station that isn't paired."
+binds_to = 'system'
+rationale = 'An unknown device never receives a mix of the session.'
+
+[[requirement]]
+id = 'EU-0015-060'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST refuse every command of a station that isn't paired."
+binds_to = 'system'
+rationale = 'An unknown device never changes a mix.'
+
+[[requirement]]
+id = 'EU-0015-061'
+level = 'MUST'
+polarity = 'required'
+statement = "During pairing, the owner's desktop or phone MUST show the station's key fingerprint and a short confirmation number."
+binds_to = 'system'
+rationale = 'The owner sees which key they are about to trust.'
+
+[[requirement]]
+id = 'EU-0015-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'During pairing, the station MUST show the same confirmation number on its lights.'
+binds_to = 'system'
+rationale = 'The owner checks that the station in front of them is the one asking to pair.'
+
+[[requirement]]
+id = 'EU-0015-063'
+level = 'MUST'
+polarity = 'required'
+statement = "Pairing MUST require a press of the station's switch."
+binds_to = 'system'
+rationale = 'A person at the station shows they are present.'
+
+[[requirement]]
+id = 'EU-0015-064'
+level = 'MUST'
+polarity = 'required'
+statement = "Pairing MUST require the owner's approval on the desktop or phone."
+binds_to = 'system'
+rationale = 'Only the owner admits a station to the session.'
+
+[[requirement]]
+id = 'EU-0015-065'
+level = 'MUST'
+polarity = 'required'
+statement = "A pairing whose confirmation numbers don't match MUST fail."
+binds_to = 'system'
+rationale = 'An impostor that relays a pairing never completes it.'
+
+[[requirement]]
+id = 'EU-0015-066'
+level = 'MUST'
+polarity = 'required'
+statement = "Pairing MUST bind the station to one sink and that sink's gain limit."
+binds_to = 'system'
+rationale = 'A paired station reaches exactly one listening output.'
+
+[[requirement]]
+id = 'EU-0015-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'The list of paired stations MUST be checked on every connection and every command.'
+binds_to = 'system'
+rationale = 'An unpaired station loses its access at once.'
+
+[[requirement]]
+id = 'EU-0015-068'
+level = 'MUST'
+polarity = 'required'
+statement = "A station that isn't on the host's network MUST join through the session's authenticated invitation path."
+binds_to = 'system'
+rationale = 'A remote station is admitted the same way as any other remote participant.'
+
+[[requirement]]
+id = 'EU-0015-069'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST refuse a second station that presents a paired station's identity."
+binds_to = 'system'
+rationale = 'A copied identity never doubles the access of a listener.'
+
+[[requirement]]
+id = 'EU-0015-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'Unpairing a station MUST end its stream and its control session at once.'
+binds_to = 'system'
+rationale = 'A lost or stolen station stops receiving audio as soon as the owner unpairs it.'
+
+[[requirement]]
+id = 'EU-0015-071'
+level = 'MUST'
+polarity = 'required'
+statement = "By default, a station's audio stream MUST be encrypted so that only the paired station can decode it."
+binds_to = 'system'
+rationale = 'No other receiver on the network decodes the mix of a listener.'
+
+[[requirement]]
+id = 'EU-0015-072'
+level = 'MAY'
+polarity = 'required'
+statement = "On a network the owner marks as theirs, the host MAY send a station's audio as an unencrypted standard network audio stream."
+binds_to = 'system'
+rationale = 'A station or another standard receiver interoperates on a network the owner controls.'
+
+[[requirement]]
+id = 'EU-0015-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The host MUST NOT send a station's audio unencrypted on a network the owner hasn't marked as theirs."
+binds_to = 'system'
+rationale = 'A mix is heard in the open only where the owner accepted that exposure.'
+
+[[requirement]]
+id = 'EU-0015-074'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST stop an unencrypted station stream when the network's identity no longer matches the owner's mark."
+binds_to = 'system'
+rationale = 'Moving to another network never carries an unencrypted stream with it.'
+
+[[requirement]]
+id = 'EU-0015-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'Control traffic between a station and the host MUST be authenticated and encrypted on every network.'
+binds_to = 'system'
+rationale = 'No one on any network changes a mix in the name of a station.'
+
+[[requirement]]
+id = 'EU-0015-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'A station MUST keep the private key of its device key pair on the station.'
+binds_to = 'system'
+rationale = 'The identity of a station never leaves the station.'

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/07-station-audio.md#EU-0015-082"
+
+[[spec]]
+level = "MUST"
+quote = "A station's sink MUST report its measured monitoring delay as its latency."

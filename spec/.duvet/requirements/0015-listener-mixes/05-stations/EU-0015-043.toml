@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-043"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST NOT receive the separate sources of its listener's mix."

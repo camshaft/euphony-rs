@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-045"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST NOT play or control a mix while it isn't connected to the session's host."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-097"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST refuse an encoder turn that carries a stale control epoch."

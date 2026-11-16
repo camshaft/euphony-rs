@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-017"
+
+[[spec]]
+level = "MUST"
+quote = "Each listener MUST be shown the measured monitoring delay of their sink."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/01-listener-outputs.md#EU-0015-009"
+
+[[spec]]
+level = "MUST"
+quote = "Each sink MUST have a mix revision of its own."

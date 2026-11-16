@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-041"
+
+[[spec]]
+level = "MUST"
+quote = "A headphone station MUST appear in its session as the sink of one listener."

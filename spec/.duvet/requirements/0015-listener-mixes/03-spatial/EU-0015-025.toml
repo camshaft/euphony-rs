@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-025"
+
+[[spec]]
+level = "MUST"
+quote = "Rendering a spatial mix to a speaker layout or a headphone profile MUST NOT change its beds or objects."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-074"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST stop an unencrypted station stream when the network's identity no longer matches the owner's mark."

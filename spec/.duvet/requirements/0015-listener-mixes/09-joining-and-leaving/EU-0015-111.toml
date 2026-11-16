@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-111"
+
+[[spec]]
+level = "MUST"
+quote = "A station that reconnects MUST restore its sink's mix once it is validated again."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-102"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST calculate its output-level meters from the audio it plays."
