@@ -206,9 +206,9 @@ rationale = "A player reads what each streamer announces."
 id = 'EU-0022-105'
 level = 'MUST'
 polarity = 'required'
-statement = "Streamers and punches MUST show on every screen that shows the picture."
+statement = "Streamers and punches MUST show in the picture window, on a second display and on another of the owner's computers that shows the picture."
 binds_to = 'system'
-rationale = "Players on second displays and other computers see the same countdowns."
+rationale = "Players on second displays and the owner's other computers see the same countdowns."
 
 [[requirement]]
 id = 'EU-0022-106'

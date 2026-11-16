@@ -24,9 +24,9 @@ rationale = "Each track says which part of a film's sound it carries."
 id = 'EU-0022-125'
 level = 'MUST'
 polarity = 'required'
-statement = "Each track's output MUST go to one of the stem buses."
+statement = "In a project that holds the stem buses, each track's output MUST go to one of them."
 binds_to = 'system'
-rationale = "Every sound reaches exactly one stem."
+rationale = "In a post-production project, every sound reaches exactly one stem."
 
 [[requirement]]
 id = 'EU-0022-126'

@@ -76,7 +76,7 @@ rationale = "Sync is measured and shown rather than assumed."
 id = 'EU-0022-048'
 level = 'MUST'
 polarity = 'required'
-statement = "Over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub."
+statement = "On each supported computer and display, over the whole length of a video at each timecode rate, the flash-and-tone test MUST see every flash during the frame whose tone is heard, during playback and after each jump, loop and scrub."
 binds_to = 'system'
 rationale = "The alignment holds on every supported computer and display, not only at the start of a video."
 
