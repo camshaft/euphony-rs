@@ -219,7 +219,9 @@ impl Stream {
         .0;
 
         if found != kind {
-            return Err(invalid(format!("expected a {kind:?} stream, found a {found:?} stream")));
+            return Err(invalid(format!(
+                "expected a {kind:?} stream, found a {found:?} stream"
+            )));
         }
 
         if body.len() % kind.value_len() != 0 {
@@ -530,7 +532,10 @@ mod tests {
             0x07,
         ]);
         assert_eq!(coordinates, expected);
-        assert_eq!(content_hash(&coordinates), *blake3::hash(&expected).as_bytes());
+        assert_eq!(
+            content_hash(&coordinates),
+            *blake3::hash(&expected).as_bytes()
+        );
     }
 
     #[test]
@@ -685,7 +690,10 @@ mod tests {
         file.extend(chunk_frame(&second).unwrap());
 
         let mut reader = ChunkReader::new(&file[..], StreamKind::Samples);
-        assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.5, -0.5])));
+        assert_eq!(
+            reader.next_chunk().unwrap(),
+            Some(samples_body(&[0.5, -0.5]))
+        );
         assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.25])));
         assert_eq!(reader.next_chunk().unwrap(), None);
 
