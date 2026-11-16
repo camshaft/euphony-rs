@@ -2,4 +2,4 @@ target = "rendered/0014-project-interchange/04-edits.md#EU-0014-036"
 
 [[spec]]
 level = "MUST"
-quote = "The import MUST map each timing mode of the source workstation to the closest built-in timing mode."
+quote = "The import MUST map each timing mode of the source workstation to a built-in timing mode through a versioned mapping."

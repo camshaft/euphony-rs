@@ -1,12 +1,13 @@
 ## Effect settings {#effects}
 
-An effect of a source project carries over to a built-in effect where a mapping covers it. A
-mapping is versioned data: it identifies the source effect and the version of its settings, selects
-the built-in effect that replaces it, and converts each control's value and automation exactly, by
-what the control is and not by how it looks. Some effects store settings that only the effect itself
-can read; the import never runs such an effect, so it keeps the effect's identity and settings as
-they were and reports it as not converted. A control converts exactly only where its position, unit
-and range at the source project's format version are known.
+An effect here means an effect or an instrument of a track. An effect of a source project carries
+over to a built-in effect where a mapping covers it. A mapping is versioned data: it identifies the
+source effect and the version of its settings, selects the built-in effect that replaces it, and
+converts each control's value and automation exactly, by what the control is and not by how it
+looks. Some effects store settings that only the effect itself can read; the import never runs such
+an effect, so it keeps the effect's identity and settings as they were and reports it as not
+converted. A control converts exactly only where its position, unit and range at the source
+project's format version are known.
 
 ### EU-0014-050 {#EU-0014-050}
 
@@ -38,7 +39,7 @@ The import MUST report each control value that its mapping leaves missing or amb
 
 ### EU-0014-057 {#EU-0014-057}
 
-The import MUST keep the raw settings of each source effect for a later import.
+The import MUST keep the raw settings of each source effect on the musician's own computer, for a later import.
 
 ### EU-0014-058 {#EU-0014-058}
 
@@ -59,3 +60,7 @@ The import MUST NOT put a default value in place of a setting it can't read.
 ### EU-0014-062 {#EU-0014-062}
 
 Each mapping MUST carry a version.
+
+### EU-0014-076 {#EU-0014-076}
+
+A mapping MUST carry each mapped effect's bypass state, channel layout, routing and modulation sources to its built-in replacement.

@@ -27,6 +27,7 @@ polarity = 'required'
 statement = "The import MUST convert automation recorded inside a region as automation anchored to that region, at positions relative to the region's start."
 binds_to = 'system'
 rationale = 'The automation keeps its timing inside the region wherever the region goes.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-030'
@@ -50,7 +51,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0014-029' } ]
 id = 'EU-0014-032'
 level = 'MUST'
 polarity = 'required'
-statement = "Where automation inside a region and track automation act on one control, the import MUST combine them as the source project does, with one of euphony's modulation combination modes."
+statement = "Where automation inside a region and track automation act on one control, and one of euphony's modulation combination modes expresses how the source project combines them, the import MUST combine them with that mode."
 binds_to = 'system'
 rationale = 'The control sounds as it did where both kinds of automation act on it.'
 
@@ -69,6 +70,7 @@ polarity = 'required'
 statement = "The import MUST convert the timing edits inside a recording as the region's time map, of pairs of a position in the recording and its position on the timeline."
 binds_to = 'system'
 rationale = 'The timing of a recording plays as the musician edited it.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-035'
@@ -83,9 +85,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0014-034' } ]
 id = 'EU-0014-036'
 level = 'MUST'
 polarity = 'required'
-statement = 'The import MUST map each timing mode of the source workstation to the closest built-in timing mode.'
+statement = 'The import MUST map each timing mode of the source workstation to a built-in timing mode through a versioned mapping.'
 binds_to = 'system'
-rationale = "The source workstation's timing processing isn't published, and the closest mode keeps the edit rather than losing it."
+rationale = "The source workstation's timing processing isn't published, so a versioned mapping states which built-in mode plays each edit."
 
 [[requirement]]
 id = 'EU-0014-037'
@@ -111,6 +113,7 @@ polarity = 'required'
 statement = 'The import MUST convert the pitch edits of a region as edits of each detected note: its position, length, pitch offset, pitch drift, vibrato, formant shift and gain.'
 binds_to = 'system'
 rationale = 'Each pitch correction plays on the note it was made for.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-040'
@@ -128,6 +131,7 @@ polarity = 'required'
 statement = "The import MUST convert a folder of takes as the region's takes, keeping every take."
 binds_to = 'system'
 rationale = 'The musician can change the comp from every take they recorded.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-042'
@@ -136,7 +140,7 @@ polarity = 'required'
 statement = 'The import MUST convert each comp as an ordered list of sections, each with the take it uses, its start, its end, and its crossfade lengths and shapes.'
 binds_to = 'system'
 rationale = 'The comp plays the same parts of the same takes with the same transitions.'
-relations = [ { kind = 'depends_on', target = 'EU-0014-041' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0014-041' }, { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-043'
@@ -145,7 +149,7 @@ polarity = 'required'
 statement = 'The import MUST convert the other saved comps of a folder of takes as alternative comps.'
 binds_to = 'system'
 rationale = 'No comp the musician saved is lost.'
-relations = [ { kind = 'depends_on', target = 'EU-0014-042' } ]
+relations = [ { kind = 'depends_on', target = 'EU-0014-042' }, { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-044'
@@ -154,6 +158,7 @@ polarity = 'required'
 statement = 'The import MUST convert a loop grid as a loop grid whose cells each hold their region, loop length, start quantization and play settings.'
 binds_to = 'system'
 rationale = 'The loop grid comes over as the musician built it.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-045'
@@ -180,6 +185,7 @@ polarity = 'required'
 statement = 'The import MUST convert a performance recorded from a loop grid into the arrangement as ordinary regions, keeping the grid beside them.'
 binds_to = 'system'
 rationale = 'The recorded performance plays as it did, and the grid stays ready to perform again.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 
 [[requirement]]
 id = 'EU-0014-048'

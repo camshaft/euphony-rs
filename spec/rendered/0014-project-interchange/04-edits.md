@@ -24,7 +24,7 @@ Automation anchored to a region MUST stay separate from its track's automation.
 
 ### EU-0014-032 {#EU-0014-032}
 
-Where automation inside a region and track automation act on one control, the import MUST combine them as the source project does, with one of euphony's modulation combination modes.
+Where automation inside a region and track automation act on one control, and one of euphony's modulation combination modes expresses how the source project combines them, the import MUST combine them with that mode.
 
 ### EU-0014-033 {#EU-0014-033}
 
@@ -40,7 +40,7 @@ A converted time map MUST record the source workstation's timing mode as the reg
 
 ### EU-0014-036 {#EU-0014-036}
 
-The import MUST map each timing mode of the source workstation to the closest built-in timing mode.
+The import MUST map each timing mode of the source workstation to a built-in timing mode through a versioned mapping.
 
 ### EU-0014-037 {#EU-0014-037}
 
