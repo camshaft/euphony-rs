@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-060"
+
+[[spec]]
+level = "SHOULD"
+quote = "The low cut's starting point SHOULD sit just below the lowest sustained fundamental of the track, or below the low edge of its spectrum where no pitch is found."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-124"
+
+[[spec]]
+level = "MUST"
+quote = "The full view MUST show every parameter of the stage."

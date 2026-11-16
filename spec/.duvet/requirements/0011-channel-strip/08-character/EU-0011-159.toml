@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/08-character.md#EU-0011-159"
+
+[[spec]]
+level = "MAY"
+quote = "A track MAY use a character other than its project's."

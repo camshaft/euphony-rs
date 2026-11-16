@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-062"
+
+[[spec]]
+level = "MUST"
+quote = "The starting point MUST NOT switch the high cut on unless the role profile or an approved preference asks for it."

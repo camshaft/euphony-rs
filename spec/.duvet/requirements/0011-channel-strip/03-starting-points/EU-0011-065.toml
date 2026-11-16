@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-065"
+
+[[spec]]
+level = "SHOULD"
+quote = "The gate's starting threshold SHOULD sit between the level of the bleed and the level of the onsets."

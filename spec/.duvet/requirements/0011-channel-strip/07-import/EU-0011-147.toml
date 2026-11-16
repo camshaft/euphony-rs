@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/07-import.md#EU-0011-147"
+
+[[spec]]
+level = "MUST"
+quote = "Where any placement condition fails, the whole imported chain MUST stay in the free slots in its original order, with the stages off."

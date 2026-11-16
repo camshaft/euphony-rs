@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-067"
+
+[[spec]]
+level = "SHOULD"
+quote = "The gate's starting hold SHOULD follow the tempo."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-044"
+
+[[spec]]
+level = "MUST"
+quote = "A track without a role MUST use the general role profile."

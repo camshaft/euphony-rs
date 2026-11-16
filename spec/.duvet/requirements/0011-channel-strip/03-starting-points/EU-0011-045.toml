@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-045"
+
+[[spec]]
+level = "MUST"
+quote = "The analysis results of a starting point MUST be measured on the track's audio as it reaches the stage, after the stages before it."

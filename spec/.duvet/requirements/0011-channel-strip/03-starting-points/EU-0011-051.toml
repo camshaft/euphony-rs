@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-051"
+
+[[spec]]
+level = "MUST"
+quote = "The strip MUST show each unresolved conflict of preferences that a starting point met."

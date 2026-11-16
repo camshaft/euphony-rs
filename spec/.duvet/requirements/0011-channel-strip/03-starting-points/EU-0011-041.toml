@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-041"
+
+[[spec]]
+level = "MUST"
+quote = "A track's role MUST be one the musician set, one a preset or an import set, or an instrument candidate of analysis that the musician accepted."

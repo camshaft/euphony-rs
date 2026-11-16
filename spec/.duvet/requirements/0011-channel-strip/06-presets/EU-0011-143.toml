@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-143"
+
+[[spec]]
+level = "MUST"
+quote = "A learned strip preset MUST NOT appear among the musician's presets before the musician approves it."

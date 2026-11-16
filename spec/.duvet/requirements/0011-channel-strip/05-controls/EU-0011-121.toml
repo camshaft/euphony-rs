@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-121"
+
+[[spec]]
+level = "MUST"
+quote = "The compressor's speed MUST move its attack and its release together."

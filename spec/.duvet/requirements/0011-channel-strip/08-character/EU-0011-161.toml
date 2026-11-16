@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/08-character.md#EU-0011-161"
+
+[[spec]]
+level = "MUST"
+quote = "A character, a preset or the text of the interface MUST NOT carry the name of a console maker or of its products without recorded legal clearance."

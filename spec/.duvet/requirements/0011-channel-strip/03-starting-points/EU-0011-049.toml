@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-049"
+
+[[spec]]
+level = "MUST"
+quote = "The musician's approved preferences for strip settings MUST override the role profile's targets within the preferences' scope."

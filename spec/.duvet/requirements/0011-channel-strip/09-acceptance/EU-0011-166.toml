@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-166"
+
+[[spec]]
+level = "MUST"
+quote = "A listening test MUST be blind, in random order, with every condition level-matched."

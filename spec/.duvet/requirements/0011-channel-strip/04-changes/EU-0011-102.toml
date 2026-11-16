@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-102"
+
+[[spec]]
+level = "MUST"
+quote = "A held proposal MUST NOT apply during playback or recording unless the musician applies it from their own client."

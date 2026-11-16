@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-083"
+
+[[spec]]
+level = "SHOULD"
+quote = "Switching a send on SHOULD route it to the project's shared reverb or delay return, created from the role profile where the project has none."

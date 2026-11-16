@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/07-import.md#EU-0011-150"
+
+[[spec]]
+level = "MUST"
+quote = "An import MUST NOT dial in a stage that holds imported values."

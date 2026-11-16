@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-073"
+
+[[spec]]
+level = "MUST"
+quote = "The equalizer MUST report each correction its four bands leave out."

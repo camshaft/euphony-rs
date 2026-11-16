@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-050"
+
+[[spec]]
+level = "MUST"
+quote = "Where approved preferences conflict and the conflict is unresolved, the starting point MUST use the role profile's target."

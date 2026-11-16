@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-048"
+
+[[spec]]
+level = "MUST"
+quote = "A stage MUST report each input for which its starting point used the role's default."

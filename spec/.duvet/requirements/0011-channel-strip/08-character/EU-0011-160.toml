@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/08-character.md#EU-0011-160"
+
+[[spec]]
+level = "MUST"
+quote = "A character MUST be a versioned set of processor versions and their profile data."

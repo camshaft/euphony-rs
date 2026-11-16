@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-117"
+
+[[spec]]
+level = "MUST"
+quote = "The simple view MUST hold low cut and high cut for the filters, amount for the gate, amount and tone for the equalizer, amount and speed for the compressor, amount for the de-esser, drive and tone for the color stage, and an amount for each send."

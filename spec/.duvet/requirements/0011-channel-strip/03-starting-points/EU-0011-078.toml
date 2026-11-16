@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-078"
+
+[[spec]]
+level = "SHOULD"
+quote = "The compressor's starting attack SHOULD follow the sharpness of the onsets, slower where the transients carry the part."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-125"
+
+[[spec]]
+level = "MUST"
+quote = "The full view MUST show the stage's analysis display, such as its gain reduction or its spectrum."

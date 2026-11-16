@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-091"
+
+[[spec]]
+level = "MUST"
+quote = "Audio that Listen measures MUST NOT be recorded unless the musician records."

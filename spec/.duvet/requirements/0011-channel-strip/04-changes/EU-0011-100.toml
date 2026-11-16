@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-100"
+
+[[spec]]
+level = "MUST"
+quote = "While the transport plays or records, an assistant's change to a strip MUST wait as a proposal."

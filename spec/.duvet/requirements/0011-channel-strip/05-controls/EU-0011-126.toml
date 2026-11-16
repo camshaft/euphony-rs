@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-126"
+
+[[spec]]
+level = "MUST"
+quote = "Each simple control MUST be a target of automation and of modulation, as any parameter is."

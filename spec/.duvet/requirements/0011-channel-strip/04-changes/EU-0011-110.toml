@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-110"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to reset a stage to its starting point by clearing its offsets."

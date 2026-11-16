@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-105"
+
+[[spec]]
+level = "MUST"
+quote = "The same strip workflow MUST produce the same project history whether it is made from the interface, the command line or an assistant."
