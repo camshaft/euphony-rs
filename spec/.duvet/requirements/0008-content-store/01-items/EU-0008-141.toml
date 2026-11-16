@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-141"
+
+[[spec]]
+level = "MUST"
+quote = "An item's identity MUST be a cryptographic digest."
