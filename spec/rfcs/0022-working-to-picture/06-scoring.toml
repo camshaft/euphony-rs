@@ -190,7 +190,15 @@ rationale = "Two seconds is the warning a player commonly expects."
 id = 'EU-0022-103'
 level = 'MUST'
 polarity = 'required'
-statement = "A streamer MUST end on its hit's frame, where a punch shows for one frame."
+statement = "A streamer MUST end on its hit's frame."
+binds_to = 'system'
+rationale = "The streamer arrives on the frame the music hits."
+
+[[requirement]]
+id = 'EU-0022-175'
+level = 'MUST'
+polarity = 'required'
+statement = "A punch MUST show for one frame, on the hit's frame where its streamer ends."
 binds_to = 'system'
 rationale = "The punch marks the frame the music hits."
 
@@ -230,9 +238,17 @@ rationale = "Every export keeps the picture unchanged."
 id = 'EU-0022-108'
 level = 'MUST'
 polarity = 'required'
-statement = "The click MUST follow the fitted tempo, with a count-in before each cue."
+statement = "The click MUST follow the fitted tempo."
 binds_to = 'system'
 rationale = "Players record to the tempo that puts the hits on their beats."
+
+[[requirement]]
+id = 'EU-0022-176'
+level = 'MUST'
+polarity = 'required'
+statement = "The click MUST play a count-in before each cue."
+binds_to = 'system'
+rationale = "Players come in on the cue's first beat."
 
 [[requirement]]
 id = 'EU-0022-109'
