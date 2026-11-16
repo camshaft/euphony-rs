@@ -10,7 +10,8 @@ most one page: a longer answer names the token that reads its next page, each pa
 revision, and reading one page costs no more in a project with a long history than in a new one. A
 subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
 answers a read or a subscription only for a caller who may read the project, and refuses any other
-as denied.
+as denied. It refuses a read or a subscription of a project that doesn't exist in the same way, so
+that a refusal doesn't tell a caller whether the project exists.
 
 ### EU-0004-032 {#EU-0004-032}
 
@@ -87,3 +88,7 @@ The cost of reading one page MUST NOT grow with the length of the history or the
 ### EU-0004-050 {#EU-0004-050}
 
 euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.
+
+### EU-0004-057 {#EU-0004-057}
+
+euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with an answer that does not differ from its refusal of a caller who may not read an existing project.
