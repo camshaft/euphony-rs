@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-075"
+
+[[spec]]
+level = "MUST"
+quote = "Control traffic between a station and the host MUST be authenticated and encrypted on every network."

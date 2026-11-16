@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/04-licensed-delivery.md#EU-0015-034"
+
+[[spec]]
+level = "MUST"
+quote = "A public build MUST NOT link or redistribute proprietary code."

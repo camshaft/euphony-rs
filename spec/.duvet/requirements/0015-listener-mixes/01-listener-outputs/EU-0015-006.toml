@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/01-listener-outputs.md#EU-0015-006"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT accept a command from a listener who isn't the owner that changes another listener's sink mix."

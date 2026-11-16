@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-015"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST align each sink stream to the session using the measured latency of its device and its network path."

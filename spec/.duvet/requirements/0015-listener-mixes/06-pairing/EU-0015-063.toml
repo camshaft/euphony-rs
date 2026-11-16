@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-063"
+
+[[spec]]
+level = "MUST"
+quote = "Pairing MUST require a press of the station's switch."

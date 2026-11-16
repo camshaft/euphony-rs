@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-084"
+
+[[spec]]
+level = "MUST"
+quote = "A control map MUST bind the encoders, switches and light groups of one station only to targets in that station's sink."

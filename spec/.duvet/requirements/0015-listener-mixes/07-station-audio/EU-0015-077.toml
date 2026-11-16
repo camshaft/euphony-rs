@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/07-station-audio.md#EU-0015-077"
+
+[[spec]]
+level = "MUST"
+quote = "The packet time of a station's stream MUST be negotiated by both ends."

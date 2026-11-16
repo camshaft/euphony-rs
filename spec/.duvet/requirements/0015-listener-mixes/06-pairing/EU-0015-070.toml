@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-070"
+
+[[spec]]
+level = "MUST"
+quote = "Unpairing a station MUST end its stream and its control session at once."

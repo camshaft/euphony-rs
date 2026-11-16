@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-090"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST check each command a control map produces again when the command is used."

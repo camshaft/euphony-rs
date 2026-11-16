@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-073"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT send a station's audio unencrypted on a network the owner hasn't marked as theirs."

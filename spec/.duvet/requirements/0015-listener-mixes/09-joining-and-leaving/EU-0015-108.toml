@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-108"
+
+[[spec]]
+level = "MUST"
+quote = "On a new connection or a headphone insertion, a station's output MUST start muted and rise to its listener's mix level only after its route and limits are validated."

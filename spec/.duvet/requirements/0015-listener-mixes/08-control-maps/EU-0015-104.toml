@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-104"
+
+[[spec]]
+level = "MUST"
+quote = "A continuous encoder turn MUST be one grouped change in the project's history."

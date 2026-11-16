@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-044"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST NOT hold project objects."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-085"
+
+[[spec]]
+level = "MUST"
+quote = "Each encoder binding MUST set a range within the owner's bounds, a curve, a step size and an acceleration."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/01-listener-outputs.md#EU-0015-003"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST NOT let anyone other than the owner set the gain limit of a sink."

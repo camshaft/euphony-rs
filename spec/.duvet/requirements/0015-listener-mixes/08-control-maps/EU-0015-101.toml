@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-101"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST drop the encoder turns made while it is disconnected."

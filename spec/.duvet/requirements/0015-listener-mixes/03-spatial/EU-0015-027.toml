@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-027"
+
+[[spec]]
+level = "MUST"
+quote = "The metadata of each sound object MUST be preserved through collaboration, history and the preparation of source material."

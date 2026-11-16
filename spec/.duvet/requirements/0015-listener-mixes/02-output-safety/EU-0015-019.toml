@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-019"
+
+[[spec]]
+level = "MUST"
+quote = "Output protection MUST act on the computer that plays the output, without waiting on the network."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-050"
+
+[[spec]]
+level = "MUST"
+quote = "Where its hardware reports headphone insertion, a station MUST report each insertion and removal as an event."

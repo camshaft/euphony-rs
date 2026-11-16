@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-110"
+
+[[spec]]
+level = "MUST"
+quote = "A station's sink mix revision and control map MUST stay in the session after the station leaves."

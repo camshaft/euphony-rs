@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-067"
+
+[[spec]]
+level = "MUST"
+quote = "The list of paired stations MUST be checked on every connection and every command."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-051"
+
+[[spec]]
+level = "MUST"
+quote = "Where its hardware doesn't report headphone insertion, a station MUST report its jack state as unknown."
