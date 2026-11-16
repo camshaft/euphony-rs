@@ -482,7 +482,10 @@ mod tests {
         assert!(directory.is_cached(&hash));
 
         let mut leak_dc = LeakDc::default();
-        let expected: Vec<f64> = input.iter().map(|(value, _)| leak_dc.apply(*value)).collect();
+        let expected: Vec<f64> = input
+            .iter()
+            .map(|(value, _)| leak_dc.apply(*value))
+            .collect();
 
         let read: Vec<_> = directory
             .open_sink(&hash)
@@ -506,7 +509,10 @@ mod tests {
         // near twice, far twice, then near once
         assert_eq!(runs.len(), 1);
         assert_eq!(runs[0].len(), 3 * record::COORDINATE_RUN);
-        assert_eq!(record::read_coordinate_run(&runs[0][..record::COORDINATE_RUN]).0, 1);
+        assert_eq!(
+            record::read_coordinate_run(&runs[0][..record::COORDINATE_RUN]).0,
+            1
+        );
 
         // a stream's name is the content hash of its file's bytes, the frames of its chunk records
         let bytes = fs::read(directory.hash_path(&index.samples)).unwrap();
@@ -548,7 +554,10 @@ mod tests {
         }
 
         let mut leak_dc = LeakDc::default();
-        let expected: Vec<f64> = input.iter().map(|(value, _)| leak_dc.apply(*value)).collect();
+        let expected: Vec<f64> = input
+            .iter()
+            .map(|(value, _)| leak_dc.apply(*value))
+            .collect();
 
         let index: SinkIndex = directory.read_record(&hash).unwrap();
         let samples = chunks(&directory, &index.samples, StreamKind::Samples);
@@ -573,8 +582,7 @@ mod tests {
             .collect();
         assert_eq!(read.len(), len);
 
-        for ((sample, value), (_, coord)) in read.iter().zip(&expected).zip(input.iter().copied())
-        {
+        for ((sample, value), (_, coord)) in read.iter().zip(&expected).zip(input.iter().copied()) {
             assert_eq!(sample.value, *value);
             assert_coordinate(sample.coordinate, coord);
         }
@@ -622,7 +630,11 @@ mod tests {
 
         // the store's directory is gone when the first chunk fills
         fs::remove_dir_all(directory.path()).unwrap();
-        out.write(&record::samples_body(&vec![0.5; record::CHUNK / record::SAMPLE + 1]));
+        out.write(&record::samples_body(&vec![
+            0.5;
+            record::CHUNK / record::SAMPLE
+                + 1
+        ]));
         assert!(out.failure.is_some());
         assert!(out.chunk.is_empty());
 
@@ -641,7 +653,11 @@ mod tests {
         let mut out = directory.create(StreamKind::Samples);
 
         // the first chunk goes to the temporary file, and then the file is lost
-        out.write(&record::samples_body(&vec![0.5; record::CHUNK / record::SAMPLE + 1]));
+        out.write(&record::samples_body(&vec![
+            0.5;
+            record::CHUNK / record::SAMPLE
+                + 1
+        ]));
         assert!(out.file.is_some());
         fs::remove_dir_all(directory.path()).unwrap();
         fs::create_dir_all(directory.path()).unwrap();
@@ -870,7 +886,9 @@ mod tests {
 
         let index: SinkIndex = directory.read_record(&hash).unwrap();
         assert!(chunks(&directory, &index.samples, StreamKind::Samples).is_empty());
-        assert!(fs::read(directory.hash_path(&index.samples)).unwrap().is_empty());
+        assert!(fs::read(directory.hash_path(&index.samples))
+            .unwrap()
+            .is_empty());
         assert_eq!(directory.open_sink(&hash).unwrap().count(), 0);
     }
 
@@ -916,7 +934,12 @@ mod tests {
             },
         ];
 
-        directory.group("group", &hash, entries.iter().copied(), &midi::Writer::default());
+        directory.group(
+            "group",
+            &hash,
+            entries.iter().copied(),
+            &midi::Writer::default(),
+        );
 
         let read: Vec<_> = directory
             .open_group(&hash)
@@ -1085,7 +1108,10 @@ mod tests {
                 Ok::<_, io::Error>(vec![vec![0.75, 0.125]])
             })
             .unwrap();
-        assert!(converted.get(), "a list older than its source is converted again");
+        assert!(
+            converted.get(),
+            "a list older than its source is converted again"
+        );
         assert_eq!(again.len(), 1);
         assert_eq!(&*again[0].samples, &[0.75, 0.125]);
 
