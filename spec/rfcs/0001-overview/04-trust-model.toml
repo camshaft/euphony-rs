@@ -221,7 +221,6 @@ polarity = 'required'
 statement = "The engine MUST stop an unencrypted real-time stream when the computer's network attachment no longer matches the network the owner marked."
 binds_to = 'system'
 rationale = 'Moving a computer to another network never carries an unprotected stream with it.'
-relations = [ { kind = 'depends_on', target = 'EU-0001-050' } ]
 
 [[requirement]]
 id = 'EU-0001-052'
