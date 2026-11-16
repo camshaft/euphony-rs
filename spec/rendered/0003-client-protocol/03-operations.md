@@ -9,10 +9,11 @@ once it has decoded, validated and recorded it. The state of the session reaches
 snapshot of the part the client may see and then as an ordered stream of deltas, each at a revision,
 which the client resumes from a cursor. A gesture, such as a fader drag, is a token that begins, is
 updated in sequence with the time each update was captured, and ends or is cancelled. Undo and redo
-are commands on the one history of the session. The state of a view has shared parts, which belong
-to the session, and transient parts, such as scrolling, which stay with each client. A client draws
-the effect of its own command at once, as a predicted value, until the command is acknowledged or
-refused.
+are commands on the one history of the session, and RFC 0002 states how the session host keeps that
+history, applies each command once and resumes a subscription from its cursor. The state of a view
+has shared parts, which belong to the session, and transient parts, such as scrolling, which stay
+with each client. A client draws the effect of its own command at once, as a predicted value, until
+the command is acknowledged or refused.
 
 ### EU-0003-026 {#EU-0003-026}
 
@@ -42,17 +43,9 @@ A command MUST NOT be acknowledged before the session host has validated it and 
 
 A client MUST learn the outcome of an unacknowledged command from its idempotency key before it sends that command again.
 
-### EU-0003-033 {#EU-0003-033}
-
-Two commands with the same idempotency key MUST NOT both be applied.
-
 ### EU-0003-034 {#EU-0003-034}
 
 The state of a session MUST reach a client as a snapshot followed by a stream of deltas, each at a revision of the session.
-
-### EU-0003-035 {#EU-0003-035}
-
-A subscription MUST be resumable from its cursor.
 
 ### EU-0003-036 {#EU-0003-036}
 
@@ -74,13 +67,9 @@ Each update of a gesture MUST carry its sequence and its capture time.
 
 Two updates of one gesture MUST NOT be applied out of their sequence.
 
-### EU-0003-041 {#EU-0003-041}
-
-Undo and redo MUST act on one history of the session, whichever client sent the command undone.
-
 ### EU-0003-042 {#EU-0003-042}
 
-Undo MUST undo a transaction or a gesture as one step.
+Undo MUST undo a gesture as one step.
 
 ### EU-0003-043 {#EU-0003-043}
 
