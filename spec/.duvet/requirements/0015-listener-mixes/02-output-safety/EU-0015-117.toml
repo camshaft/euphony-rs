@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-117"
+
+[[spec]]
+level = "MUST"
+quote = "A sink whose measured delay is longer than the monitoring mode its listener accepted MUST stay available."

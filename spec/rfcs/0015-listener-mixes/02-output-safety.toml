@@ -54,6 +54,14 @@ binds_to = 'system'
 rationale = 'A player never plays along to a mix that is later than they were told.'
 
 [[requirement]]
+id = 'EU-0015-117'
+level = 'MUST'
+polarity = 'required'
+statement = 'A sink whose measured delay is longer than the monitoring mode its listener accepted MUST stay available.'
+binds_to = 'system'
+rationale = 'A listener whose path is slower than the mode they chose keeps their mix, with its delay shown, instead of losing it.'
+
+[[requirement]]
 id = 'EU-0015-019'
 level = 'MUST'
 polarity = 'required'
