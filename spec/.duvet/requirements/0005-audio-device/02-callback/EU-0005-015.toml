@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/02-callback.md#EU-0005-015"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST deliver each audio buffer it sends to the audio device process with its memory already allocated."

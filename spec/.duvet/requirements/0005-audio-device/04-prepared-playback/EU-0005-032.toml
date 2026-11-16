@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-032"
+
+[[spec]]
+level = "MUST"
+quote = "Playback MUST stream prepared audio from storage as it plays."

@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/05-capture.md#EU-0005-043"
+
+[[spec]]
+level = "MUST"
+quote = "Each recorded sample MUST be aligned with the sample of playback it was recorded against."

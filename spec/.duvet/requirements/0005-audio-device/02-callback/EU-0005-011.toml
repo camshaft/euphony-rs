@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/02-callback.md#EU-0005-011"
+
+[[spec]]
+level = "MUST"
+quote = "The callback MUST NOT allocate memory."

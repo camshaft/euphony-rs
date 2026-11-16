@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-038"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST play prepared audio to its output device."

@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-031"
+
+[[spec]]
+level = "MUST"
+quote = "Each buffer of prepared audio MUST be filled before the callback reads it."

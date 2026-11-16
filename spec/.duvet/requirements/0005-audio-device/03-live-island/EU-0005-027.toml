@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-027"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT present a sound as the current revision when it was rendered from another revision."

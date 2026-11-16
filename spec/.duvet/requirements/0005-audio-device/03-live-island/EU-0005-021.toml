@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-021"
+
+[[spec]]
+level = "MUST"
+quote = "While a track is being edited, the audio device process MUST render the affected part of that track, and each bus that depends on it, in the live render island."

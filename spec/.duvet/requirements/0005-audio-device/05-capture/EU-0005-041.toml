@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/05-capture.md#EU-0005-041"
+
+[[spec]]
+level = "MUST"
+quote = "Recording MUST keep the raw input it captures independently of any rendered output."

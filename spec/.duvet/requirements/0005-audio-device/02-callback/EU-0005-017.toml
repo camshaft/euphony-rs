@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/02-callback.md#EU-0005-017"
+
+[[spec]]
+level = "MUST"
+quote = "Passing a buffer or a revision between the session host and the callback MUST NOT make either side wait on the other."

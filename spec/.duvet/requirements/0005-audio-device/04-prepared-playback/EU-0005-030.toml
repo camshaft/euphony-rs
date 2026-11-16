@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-030"
+
+[[spec]]
+level = "MUST"
+quote = "Replaying a fully prepared project MUST NOT render any instrument or effect outside the live render island during playback."

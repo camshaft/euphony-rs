@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/05-capture.md#EU-0005-046"
+
+[[spec]]
+level = "MUST"
+quote = "Input captured before the loss of a device MUST stay in the recording."
