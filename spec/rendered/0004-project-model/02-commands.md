@@ -8,7 +8,8 @@ before it reads any batch of that actor. euphony also refuses as denied a batch 
 take its commands on the branch it names, before it checks the batch's expected revision or its key.
 It refuses a batch that names a project that doesn't exist in the same way, so that a refusal doesn't
 tell a caller whether the project exists. euphony then refuses as invalid input a batch whose expected
-revision isn't in the history of the branch it names.
+revision isn't in the history of the branch it names. euphony answers that check with a fixed number
+of reads, each bounded by an index, however long the branch's history is.
 euphony checks each batch against the project schema and
 the access rules that the overview RFC states, and then commits it whole as a new revision, or
 refuses it whole with a typed reason: a conflict, a denial, invalid input or unavailable storage. A
@@ -51,6 +52,10 @@ Where the expected revision of a batch is neither the head of the branch that th
 ### EU-0004-059 {#EU-0004-059}
 
 Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project.
+
+### EU-0004-067 {#EU-0004-067}
+
+euphony MUST make the check of EU-0004-064 with a fixed number of reads, each bounded by an index and returning a fixed number of records, whatever the length of the history of the branch that the batch names.
 
 ### EU-0004-012 {#EU-0004-012}
 
