@@ -132,7 +132,7 @@ The owner MUST see the waiting participants in their waiting order.
 
 ### EU-0013-247 {#EU-0013-247}
 
-Once the measured upload of the host carries one more stream, the host MUST admit the first waiting participant.
+Once the measured upload of the host carries one more stream, the host MUST admit the first waiting participant, unless that participant was stopped for a shrinking upload and the congestion control is not raising the rates of the remaining streams.
 
 ### EU-0013-248 {#EU-0013-248}
 
@@ -140,7 +140,7 @@ When the measured upload of the host shrinks below what the streams of the admit
 
 ### EU-0013-249 {#EU-0013-249}
 
-Where the measured upload still cannot carry every admitted participant, the host MUST stop the playback of the participant admitted last with the reason shown and return it to the front of the waiting order, until the remaining streams fit.
+Where the measured upload still cannot carry every admitted participant, the host MUST stop the playback of the participant admitted last, with the reason shown, return it to the front of the waiting order, and repeat this until the remaining streams fit, while the participants still admitted keep playing.
 
 ### EU-0013-250 {#EU-0013-250}
 
