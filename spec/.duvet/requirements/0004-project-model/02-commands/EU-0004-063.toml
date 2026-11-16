@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-063"
+
+[[spec]]
+level = "MUST"
+quote = "Where a batch doesn't name an actor in a form that euphony can compare with the caller that euphony authenticated, or names that caller and leaves out its project or its branch, euphony MUST refuse the batch as invalid input before the checks of EU-0004-049, EU-0004-056, EU-0004-059 and EU-0004-095."
