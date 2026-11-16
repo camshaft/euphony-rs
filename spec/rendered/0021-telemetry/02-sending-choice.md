@@ -20,7 +20,7 @@ Sending MUST be off in a new installation.
 
 ### EU-0021-033 {#EU-0021-033}
 
-While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send.
+While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send or a deletion request that the person made.
 
 ### EU-0021-034 {#EU-0021-034}
 

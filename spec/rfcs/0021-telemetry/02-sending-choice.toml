@@ -30,9 +30,9 @@ rationale = "Nothing leaves a person's computers until they choose to send it."
 id = 'EU-0021-033'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send."
+statement = "While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send or a deletion request that the person made."
 binds_to = 'system'
-rationale = "An installation that doesn't send isn't seen by the service, except through a report the person sends."
+rationale = "An installation that doesn't send isn't seen by the service, except through a report the person sends or a deletion the person asks for."
 
 [[requirement]]
 id = 'EU-0021-034'
