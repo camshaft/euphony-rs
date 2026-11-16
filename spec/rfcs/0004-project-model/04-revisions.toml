@@ -21,7 +21,9 @@ revision, and reading one page costs no more in a project with a long history th
 subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
 answers a read or a subscription only for a caller who may read the project, and refuses any other
 as denied. It refuses a read or a subscription of a project that doesn't exist in the same way, so
-that a refusal doesn't tell a caller whether the project exists."""
+that a refusal doesn't tell a caller whether the project exists. Access can end while a paged read or a subscription is open, such as when a link is
+revoked: from then on euphony refuses each later page of that read as denied, ends the subscription
+as denied, and delivers nothing more of the project to that caller."""
 
 [[requirement]]
 id = 'EU-0004-032'
@@ -127,9 +129,10 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
 id = 'EU-0004-043'
 level = 'MUST'
 polarity = 'required'
-statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor.'
+statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.'
 binds_to = 'system'
 rationale = 'A subscriber that reconnects misses nothing.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
 
 [[requirement]]
 id = 'EU-0004-044'
@@ -143,9 +146,10 @@ rationale = 'A subscriber that reconnects sees each event once.'
 id = 'EU-0004-045'
 level = 'MUST'
 polarity = 'required'
-statement = 'A subscriber MUST learn of each committed revision of the project without asking for it.'
+statement = 'A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.'
 binds_to = 'system'
 rationale = 'A reader stays current without polling.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
 
 [[requirement]]
 id = 'EU-0004-052'
@@ -189,4 +193,31 @@ polarity = 'required'
 statement = 'euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with a refusal whose kind and content, apart from the values the request itself supplies, are those of its refusal of a caller who may not read an existing project.'
 binds_to = 'system'
 rationale = "A refusal doesn't tell a caller which projects exist."
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.'
+binds_to = 'system'
+rationale = 'A caller whose access ends, such as by a revoked link, receives nothing more of the project through a subscription or a paged read it opened before.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-061'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.'
+binds_to = 'system'
+rationale = 'A subscriber learns that its access ended, and does not wait for events that never come.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each later page of a paged read of a project once its caller may no longer read the project.'
+binds_to = 'system'
+rationale = 'A reader whose access ends during a paged read learns that it ended, and gets no more of the answer.'
 relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
