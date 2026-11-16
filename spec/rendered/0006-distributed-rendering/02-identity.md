@@ -8,7 +8,10 @@ seed, the render mode, the identity of the checkpoint the calculation starts fro
 range with its preroll and its tails. A result is identified by a cryptographic digest of its bytes. A render
 profile names one executable and numerical behavior, since different processors, vector
 instructions and browser builds don't yield the same floating-point bytes; workers share a profile
-only where they yield the same bytes for the same descriptor. The manifest of a revision maps each
+only where they yield the same bytes for the same descriptor. The repeatability suite of a render
+profile is a fixed set of render descriptors, each with the digest of the result that the profile
+yields for it. A worker passes the suite where, for every descriptor of the suite, it renders a
+result whose digest equals the digest the suite records. The manifest of a revision maps each
 descriptor the revision needs to at most one validated result and pins that result. A digest
 establishes a result's identity, not trust in it.
 
@@ -42,7 +45,7 @@ A result MUST NOT hold processing that its render descriptor doesn't record.
 
 ### EU-0006-018 {#EU-0006-018}
 
-A worker MUST pass the repeatability suite of a render profile before it shares that profile with other workers.
+A worker MUST share a render profile with other workers only once, for every descriptor of that profile's repeatability suite, it renders a result whose digest equals the digest the suite records.
 
 ### EU-0006-019 {#EU-0006-019}
 

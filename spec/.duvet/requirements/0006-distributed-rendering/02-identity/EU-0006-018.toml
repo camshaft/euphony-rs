@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-018"
 
 [[spec]]
 level = "MUST"
-quote = "A worker MUST pass the repeatability suite of a render profile before it shares that profile with other workers."
+quote = "A worker MUST share a render profile with other workers only once, for every descriptor of that profile's repeatability suite, it renders a result whose digest equals the digest the suite records."
