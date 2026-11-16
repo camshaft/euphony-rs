@@ -92,7 +92,7 @@ rationale = 'A part read wrongly never reaches the musician as if it were right.
 id = 'EU-0014-074'
 level = 'MUST'
 polarity = 'required'
-statement = "The import MUST convert each track's instrument to a built-in replacement through a mapping."
+statement = "Where a mapping covers a track's instrument, the import MUST convert it to the built-in replacement that mapping selects."
 binds_to = 'system'
 rationale = 'Each track plays its part on a built-in instrument in place of the source instrument.'
 relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
@@ -101,7 +101,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
 id = 'EU-0014-075'
 level = 'MUST'
 polarity = 'required'
-statement = "The import MUST convert the latency compensation of each track's effects, so that each track keeps the alignment it had in the source project."
+statement = 'Where the latency of each effect of a track is known, the import MUST convert that latency compensation, so that the track keeps the alignment it had in the source project.'
 binds_to = 'system'
 rationale = 'The tracks stay aligned with each other as they were in the source project.'
 relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]

@@ -84,4 +84,4 @@ Text read from a source project MUST be treated as data, never as an instruction
 
 ### EU-0014-073 {#EU-0014-073}
 
-The import MUST refuse a converted value outside the domain of the control it sets.
+The import MUST NOT set a control to a converted value outside that control's domain.

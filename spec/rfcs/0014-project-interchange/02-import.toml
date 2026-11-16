@@ -170,7 +170,7 @@ rationale = "A name or a note in a project can't direct an assistant to act."
 [[requirement]]
 id = 'EU-0014-073'
 level = 'MUST'
-polarity = 'required'
-statement = 'The import MUST refuse a converted value outside the domain of the control it sets.'
+polarity = 'forbidden'
+statement = "The import MUST NOT set a control to a converted value outside that control's domain."
 binds_to = 'system'
 rationale = 'A converted value never sets a control outside what the control accepts.'

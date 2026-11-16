@@ -43,8 +43,8 @@ The import MUST convert a feature at a format version only where its reader of t
 
 ### EU-0014-074 {#EU-0014-074}
 
-The import MUST convert each track's instrument to a built-in replacement through a mapping.
+Where a mapping covers a track's instrument, the import MUST convert it to the built-in replacement that mapping selects.
 
 ### EU-0014-075 {#EU-0014-075}
 
-The import MUST convert the latency compensation of each track's effects, so that each track keeps the alignment it had in the source project.
+Where the latency of each effect of a track is known, the import MUST convert that latency compensation, so that the track keeps the alignment it had in the source project.
