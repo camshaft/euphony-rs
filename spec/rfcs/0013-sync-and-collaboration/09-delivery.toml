@@ -89,7 +89,7 @@ polarity = 'required'
 statement = 'The lossy stream MUST carry full-band stereo audio at 48 kHz.'
 binds_to = 'system'
 rationale = 'Lossy listening still covers the whole audible band in stereo.'
-params = [ { name = 'lossy_stream_sample_rate', type = 'rate', unit = 'Hz', bound = 'exact', value = 48000 } ]
+params = [ { name = 'lossy_stream_sample_rate', type = 'rate', unit = 'per_s', bound = 'exact', value = 48000 } ]
 
 [[requirement]]
 id = 'EU-0013-184'
