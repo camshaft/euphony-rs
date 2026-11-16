@@ -2,4 +2,4 @@ target = "rendered/0011-channel-strip/02-switching.md#EU-0011-025"
 
 [[spec]]
 level = "MUST"
-quote = "Switching a stage on or off MUST cross from the earlier output to the new one with a short crossfade, so that the output has no discontinuity."
+quote = "Switching a stage on or off MUST cross from the earlier output to the new one with a short crossfade whose discontinuity doesn't exceed the bound the role profile sets."

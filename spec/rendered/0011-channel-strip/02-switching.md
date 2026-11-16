@@ -22,7 +22,7 @@ Switching a stage on or off during playback MUST take effect at the same sample 
 
 ### EU-0011-025 {#EU-0011-025}
 
-Switching a stage on or off MUST cross from the earlier output to the new one with a short crossfade, so that the output has no discontinuity.
+Switching a stage on or off MUST cross from the earlier output to the new one with a short crossfade whose discontinuity doesn't exceed the bound the role profile sets.
 
 ### EU-0011-026 {#EU-0011-026}
 
@@ -38,11 +38,11 @@ In its default mode, a stage other than the color stage MUST NOT add delay.
 
 ### EU-0011-029 {#EU-0011-029}
 
-The equalizer MAY offer a linear-phase mode, whose delay it declares.
+The equalizer MUST offer a linear-phase mode, whose delay it declares.
 
 ### EU-0011-030 {#EU-0011-030}
 
-The compressor, the de-esser and the output limiter MAY offer a look-ahead mode, whose delay each declares.
+The compressor, the de-esser and the output limiter MUST each offer a look-ahead mode, whose delay each declares.
 
 ### EU-0011-031 {#EU-0011-031}
 

@@ -151,7 +151,7 @@ The role profile's bound on an equalizer band's starting gain SHOULD default to 
 
 ### EU-0011-071 {#EU-0011-071}
 
-An equalizer band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut.
+A peaking band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut.
 
 ### EU-0011-072 {#EU-0011-072}
 
@@ -193,6 +193,10 @@ The de-esser's starting point SHOULD center it on the band between about 4 and 1
 
 The de-esser's starting threshold SHOULD reduce those events by the role's target reduction.
 
+### EU-0011-180 {#EU-0011-180}
+
+The starting point SHOULD switch the de-esser on only for vocal roles.
+
 ### EU-0011-082 {#EU-0011-082}
 
 The color stage's starting drive SHOULD be light, as the character and the role set it.
@@ -200,6 +204,14 @@ The color stage's starting drive SHOULD be light, as the character and the role 
 ### EU-0011-083 {#EU-0011-083}
 
 Switching a send on SHOULD route it to the project's shared reverb or delay return, created from the role profile where the project has none.
+
+### EU-0011-181 {#EU-0011-181}
+
+A send's starting amount SHOULD follow the track's role.
+
+### EU-0011-182 {#EU-0011-182}
+
+The starting delay time of a delay return that a send creates SHOULD follow the tempo.
 
 ### EU-0011-084 {#EU-0011-084}
 

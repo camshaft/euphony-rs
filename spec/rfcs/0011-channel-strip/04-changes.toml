@@ -81,7 +81,7 @@ rationale = "An assistant's change arrives as soon as it can't disturb anything.
 id = 'EU-0011-102'
 level = 'MUST'
 polarity = 'forbidden'
-statement = "A held proposal MUST NOT apply during playback or recording unless the musician applies it from their own client."
+statement = "A held proposal MUST NOT apply during playback or recording unless the musician applies it from their native client."
 binds_to = 'system'
 rationale = "Only the musician decides that a change is safe to hear mid-take."
 
@@ -92,6 +92,14 @@ polarity = 'required'
 statement = "An apply of a held proposal that an assistant, a script or the command line sends MUST be refused."
 binds_to = 'system'
 rationale = "An assistant can't approve its own change during playback."
+
+[[requirement]]
+id = 'EU-0011-183'
+level = 'MUST'
+polarity = 'required'
+statement = "An apply of a held proposal that repeats an earlier apply of the musician MUST be refused."
+binds_to = 'system'
+rationale = "A replayed apply can't stand in for the musician's decision now."
 
 [[requirement]]
 id = 'EU-0011-104'

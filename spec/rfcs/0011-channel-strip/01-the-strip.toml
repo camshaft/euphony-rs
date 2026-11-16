@@ -67,7 +67,15 @@ rationale = "A low cut removes rumble under the instrument's lowest notes, and a
 id = 'EU-0011-007'
 level = 'MUST'
 polarity = 'required'
-statement = "The gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold."
+statement = "The gate stage MUST offer a noise gate and an expander."
+binds_to = 'system'
+rationale = "A gate cuts noise and spill between notes, and an expander lowers them gently where a hard cut would be heard."
+
+[[requirement]]
+id = 'EU-0011-184'
+level = 'MUST'
+polarity = 'required'
+statement = "As a noise gate, the gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold."
 binds_to = 'system'
 rationale = "The gate quiets noise and spill from other instruments in the quiet passages between notes."
 
@@ -145,9 +153,9 @@ rationale = "Some material sounds better compressed before it is equalized, as s
 
 [[requirement]]
 id = 'EU-0011-017'
-level = 'MAY'
+level = 'MUST'
 polarity = 'required'
-statement = "The musician MAY set the filters stage to filter only the signal the gate's detector reads."
+statement = "The strip MUST let the musician set the filters stage to filter only the signal the gate's detector reads."
 binds_to = 'system'
 rationale = "The gate then opens on the instrument and not on rumble or hiss, while the track itself stays unfiltered."
 

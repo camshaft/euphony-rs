@@ -1,5 +1,5 @@
 target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-017"
 
 [[spec]]
-level = "MAY"
-quote = "The musician MAY set the filters stage to filter only the signal the gate's detector reads."
+level = "MUST"
+quote = "The strip MUST let the musician set the filters stage to filter only the signal the gate's detector reads."

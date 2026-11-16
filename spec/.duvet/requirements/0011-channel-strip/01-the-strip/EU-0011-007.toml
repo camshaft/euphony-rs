@@ -2,4 +2,4 @@ target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-007"
 
 [[spec]]
 level = "MUST"
-quote = "The gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold."
+quote = "The gate stage MUST offer a noise gate and an expander."

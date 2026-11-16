@@ -14,7 +14,7 @@ Each project MUST have one character, which sets how the equalizer, compressor a
 
 ### EU-0011-159 {#EU-0011-159}
 
-A track MAY use a character other than its project's.
+The strip MUST let a track use a character other than its project's.
 
 ### EU-0011-160 {#EU-0011-160}
 

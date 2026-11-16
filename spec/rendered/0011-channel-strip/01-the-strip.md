@@ -37,7 +37,11 @@ The filters stage MUST offer a low cut and a high cut.
 
 ### EU-0011-007 {#EU-0011-007}
 
-The gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold.
+The gate stage MUST offer a noise gate and an expander.
+
+### EU-0011-184 {#EU-0011-184}
+
+As a noise gate, the gate stage MUST reduce the track's level by its range while the level its detector reads is below its threshold.
 
 ### EU-0011-008 {#EU-0011-008}
 
@@ -77,7 +81,7 @@ Each strip MUST offer one switch that swaps the order of the equalizer and the c
 
 ### EU-0011-017 {#EU-0011-017}
 
-The musician MAY set the filters stage to filter only the signal the gate's detector reads.
+The strip MUST let the musician set the filters stage to filter only the signal the gate's detector reads.
 
 ### EU-0011-018 {#EU-0011-018}
 

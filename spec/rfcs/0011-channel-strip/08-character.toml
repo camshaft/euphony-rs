@@ -22,9 +22,9 @@ rationale = "A project sounds as one studio with one console does."
 
 [[requirement]]
 id = 'EU-0011-159'
-level = 'MAY'
+level = 'MUST'
 polarity = 'required'
-statement = "A track MAY use a character other than its project's."
+statement = "The strip MUST let a track use a character other than its project's."
 binds_to = 'system'
 rationale = "One track can have a different color where the music asks for it."
 

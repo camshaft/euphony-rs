@@ -43,11 +43,15 @@ A held proposal MUST apply when the transport stops.
 
 ### EU-0011-102 {#EU-0011-102}
 
-A held proposal MUST NOT apply during playback or recording unless the musician applies it from their own client.
+A held proposal MUST NOT apply during playback or recording unless the musician applies it from their native client.
 
 ### EU-0011-103 {#EU-0011-103}
 
 An apply of a held proposal that an assistant, a script or the command line sends MUST be refused.
+
+### EU-0011-183 {#EU-0011-183}
+
+An apply of a held proposal that repeats an earlier apply of the musician MUST be refused.
 
 ### EU-0011-104 {#EU-0011-104}
 

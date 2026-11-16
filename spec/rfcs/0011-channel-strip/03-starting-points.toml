@@ -263,7 +263,7 @@ level = 'SHOULD'
 polarity = 'required'
 statement = "The gate's starting hold SHOULD follow the tempo."
 binds_to = 'system'
-rationale = "The gate stays open for the length of the notes the tempo implies."
+rationale = "The gate stays open for the length of the notes the tempo implies. The listening record of EU-0011-165 is its check."
 
 [[requirement]]
 id = 'EU-0011-068'
@@ -293,7 +293,7 @@ rationale = "Broad corrections of a few decibels are the usual size of a mix cor
 id = 'EU-0011-071'
 level = 'SHOULD'
 polarity = 'required'
-statement = "An equalizer band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut."
+statement = "A peaking band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut."
 binds_to = 'system'
 rationale = "A spare band treats the resonance that most colors the track."
 
@@ -343,7 +343,7 @@ level = 'SHOULD'
 polarity = 'required'
 statement = "The compressor's starting ratio SHOULD follow the role and the track's loudness range."
 binds_to = 'system'
-rationale = "A part with a wide range of loudness needs a firmer ratio than a steady one."
+rationale = "A part with a wide range of loudness needs a firmer ratio than a steady one. The listening record of EU-0011-165 is its check."
 
 [[requirement]]
 id = 'EU-0011-078'
@@ -351,7 +351,7 @@ level = 'SHOULD'
 polarity = 'required'
 statement = "The compressor's starting attack SHOULD follow the sharpness of the onsets, slower where the transients carry the part."
 binds_to = 'system'
-rationale = "The attack of a snare or a picked string survives the compressor."
+rationale = "The attack of a snare or a picked string survives the compressor. The listening record of EU-0011-165 is its check."
 
 [[requirement]]
 id = 'EU-0011-079'
@@ -378,12 +378,20 @@ binds_to = 'system'
 rationale = "The de-esser softens the harsh sounds without lisping the voice."
 
 [[requirement]]
+id = 'EU-0011-180'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The starting point SHOULD switch the de-esser on only for vocal roles."
+binds_to = 'system'
+rationale = "A voice's harsh s sounds need softening, and other parts keep their brightness."
+
+[[requirement]]
 id = 'EU-0011-082'
 level = 'SHOULD'
 polarity = 'required'
 statement = "The color stage's starting drive SHOULD be light, as the character and the role set it."
 binds_to = 'system'
-rationale = "Warmth starts subtle, and the musician adds more where they want it."
+rationale = "Warmth starts subtle, and the musician adds more where they want it. The listening record of EU-0011-165 is its check."
 
 [[requirement]]
 id = 'EU-0011-083'
@@ -392,6 +400,22 @@ polarity = 'required'
 statement = "Switching a send on SHOULD route it to the project's shared reverb or delay return, created from the role profile where the project has none."
 binds_to = 'system'
 rationale = "A send works at once, without the musician building a return first."
+
+[[requirement]]
+id = 'EU-0011-181'
+level = 'SHOULD'
+polarity = 'required'
+statement = "A send's starting amount SHOULD follow the track's role."
+binds_to = 'system'
+rationale = "Each part starts with the amount of space its role usually has."
+
+[[requirement]]
+id = 'EU-0011-182'
+level = 'SHOULD'
+polarity = 'required'
+statement = "The starting delay time of a delay return that a send creates SHOULD follow the tempo."
+binds_to = 'system'
+rationale = "The echoes fall in time with the song."
 
 [[requirement]]
 id = 'EU-0011-084'

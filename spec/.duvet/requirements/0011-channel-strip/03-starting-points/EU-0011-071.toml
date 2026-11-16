@@ -2,4 +2,4 @@ target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-071"
 
 [[spec]]
 level = "SHOULD"
-quote = "An equalizer band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut."
+quote = "A peaking band that the broad fit doesn't need SHOULD take the strongest resonance that stands above its neighbors, narrowed for a cut."
