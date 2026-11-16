@@ -48,7 +48,7 @@ A checkpoint MUST hold the running state of each processor it covers.
 
 Independent render islands and independent time ranges MUST be able to render on different workers at the same time.
 
-### EU-0006-079 {#EU-0006-079}
+### EU-0006-080 {#EU-0006-080}
 
 A send, a sidechain or a bus MUST render a time range only after each of its upstream dependencies has rendered the input that range reads.
 

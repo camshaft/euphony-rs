@@ -94,7 +94,7 @@ binds_to = 'system'
 rationale = "The work of a project fans out across the owner's computers."
 
 [[requirement]]
-id = 'EU-0006-079'
+id = 'EU-0006-080'
 level = 'MUST'
 polarity = 'required'
 statement = 'A send, a sidechain or a bus MUST render a time range only after each of its upstream dependencies has rendered the input that range reads.'
