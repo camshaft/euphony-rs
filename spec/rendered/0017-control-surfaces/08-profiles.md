@@ -44,4 +44,8 @@ A conformance record MUST NOT authorize pairing or control.
 
 ### EU-0017-150 {#EU-0017-150}
 
-The surface categories and the conformance publisher MUST be set in the project's configuration.
+The surface categories, the mobile platforms of the phone controller and the conformance publisher MUST be set in the project's configuration.
+
+### EU-0017-166 {#EU-0017-166}
+
+A hardware controller that only displays a surface MAY present it without emulating a touch screen.
