@@ -10,7 +10,10 @@ fetchable from an authorized known peer, regenerable with a verified complete in
 intentionally pruned, or unavailable with unknown custody. Recomputable caches can be evicted under
 pressure. Each peer controls its own retention. An optional backup exports the small history and the
 manifests, with a self-contained bundle for a project of MIDI and programs alone, and large audio
-goes to a store the owner selects, with verified inventories and instructions to restore it.
+goes to a store the owner selects, with verified inventories and instructions to restore it. Which
+content a peer may delete, the check of its references before a deletion and the approval that
+deleting an original recording takes are those of RFC 0008's collection section; this section
+states what deprecating a revision adds to them.
 
 ### EU-0013-068 {#EU-0013-068}
 
@@ -55,22 +58,6 @@ Complete playback or export MUST wait for the missing source material, or for a 
 ### EU-0013-078 {#EU-0013-078}
 
 Restoring an object by its digest or rendering it again MUST NOT change the historical revision.
-
-### EU-0013-079 {#EU-0013-079}
-
-Before it deletes audio, a peer MUST check every locally retained branch, pin, working copy, export, active transfer and recording for a reference to it.
-
-### EU-0013-080 {#EU-0013-080}
-
-A peer MUST check those references again atomically at deletion, so that a pin made meanwhile keeps the audio.
-
-### EU-0013-081 {#EU-0013-081}
-
-Pruning a unique original recording MUST need an approval that shows the objects, the affected revisions and the recoverability lost.
-
-### EU-0013-082 {#EU-0013-082}
-
-A peer MUST retain original recordings unless the owner approves their pruning.
 
 ### EU-0013-083 {#EU-0013-083}
 

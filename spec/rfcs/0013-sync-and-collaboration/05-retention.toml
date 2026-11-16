@@ -16,7 +16,10 @@ fetchable from an authorized known peer, regenerable with a verified complete in
 intentionally pruned, or unavailable with unknown custody. Recomputable caches can be evicted under
 pressure. Each peer controls its own retention. An optional backup exports the small history and the
 manifests, with a self-contained bundle for a project of MIDI and programs alone, and large audio
-goes to a store the owner selects, with verified inventories and instructions to restore it."""
+goes to a store the owner selects, with verified inventories and instructions to restore it. Which
+content a peer may delete, the check of its references before a deletion and the approval that
+deleting an original recording takes are those of RFC 0008's collection section; this section
+states what deprecating a revision adds to them."""
 
 [[requirement]]
 id = 'EU-0013-068'
@@ -107,44 +110,13 @@ binds_to = 'system'
 rationale = 'Recovery never rewrites history.'
 
 [[requirement]]
-id = 'EU-0013-079'
-level = 'MUST'
-polarity = 'required'
-statement = 'Before it deletes audio, a peer MUST check every locally retained branch, pin, working copy, export, active transfer and recording for a reference to it.'
-binds_to = 'system'
-rationale = 'Audio that retained work needs is never deleted.'
-
-[[requirement]]
-id = 'EU-0013-080'
-level = 'MUST'
-polarity = 'required'
-statement = 'A peer MUST check those references again atomically at deletion, so that a pin made meanwhile keeps the audio.'
-binds_to = 'system'
-rationale = 'A concurrent pin wins over a deletion.'
-
-[[requirement]]
-id = 'EU-0013-081'
-level = 'MUST'
-polarity = 'required'
-statement = 'Pruning a unique original recording MUST need an approval that shows the objects, the affected revisions and the recoverability lost.'
-binds_to = 'system'
-rationale = 'A person sees the exact effect before losing an original.'
-
-[[requirement]]
-id = 'EU-0013-082'
-level = 'MUST'
-polarity = 'required'
-statement = 'A peer MUST retain original recordings unless the owner approves their pruning.'
-binds_to = 'system'
-rationale = 'Originals are kept by default.'
-
-[[requirement]]
 id = 'EU-0013-083'
 level = 'MUST'
 polarity = 'forbidden'
 statement = 'A deprecation marker alone MUST NOT authorize destroying the last known original of an object.'
 binds_to = 'system'
 rationale = 'Retiring a version never destroys the only copy of a recording.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-107' } ]
 
 [[requirement]]
 id = 'EU-0013-084'
@@ -177,6 +149,7 @@ polarity = 'forbidden'
 statement = 'Syncing a deprecation MUST NOT delete objects on another peer.'
 binds_to = 'system'
 rationale = 'Each peer decides its own retention.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-110' } ]
 
 [[requirement]]
 id = 'EU-0013-088'

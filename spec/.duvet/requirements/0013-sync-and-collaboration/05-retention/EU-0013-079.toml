@@ -1,5 +1,0 @@
-target = "rendered/0013-sync-and-collaboration/05-retention.md#EU-0013-079"
-
-[[spec]]
-level = "MUST"
-quote = "Before it deletes audio, a peer MUST check every locally retained branch, pin, working copy, export, active transfer and recording for a reference to it."
