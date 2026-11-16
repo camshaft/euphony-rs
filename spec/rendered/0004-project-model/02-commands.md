@@ -51,7 +51,7 @@ Where the expected revision of a batch is neither the head of the branch that th
 
 ### EU-0004-059 {#EU-0004-059}
 
-Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of a batch from a caller who may not change an existing project.
+Where the project that a batch names does not exist, euphony MUST refuse the batch as denied, with an answer that does not differ from its refusal of EU-0004-056 of a batch whose caller may not take its commands on the branch it names.
 
 ### EU-0004-067 {#EU-0004-067}
 
