@@ -25,9 +25,9 @@ gesture in an interface, a line of a script, the result of a composition program
 assistant all reach the project as such batches. A change of presentation that leaves the project as
 it was, such as scrolling, isn't a command. The protocol that carries batches to euphony is the
 subject of the client protocol RFC. The command gateway of the overview RFC refuses a batch from an
-unpaired device, beyond the level of its link, or over an expired or revoked link before euphony
-checks the batch's key, and asks for the owner's approval only of a batch that the key check doesn't
-answer as a retry. A key identifies a batch only among the batches one actor sends
+unpaired device, beyond the level of its link, or over an expired or revoked link, with the reason
+the overview RFC sets for it, before euphony makes any check of this RFC, and asks for the owner's
+approval only of a batch that the key check doesn't answer as a retry. A key identifies a batch only among the batches one actor sends
 to one project: a retry of a committed batch on the same branch that passes every check euphony
 makes before it checks the key receives that batch's outcome without a new approval, and a key used
 again for another branch or other commands is refused."""
@@ -139,7 +139,7 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-014' } ]
 id = 'EU-0004-016'
 level = 'MUST'
 polarity = 'required'
-statement = 'The outcome of a refused batch MUST be one of conflict, denied, invalid input or unavailable storage.'
+statement = 'The outcome of a batch that the command gateway of the overview RFC accepted and euphony refused MUST be one of conflict, denied, invalid input or unavailable storage.'
 binds_to = 'system'
 rationale = 'A sender acts on a typed reason, not on the words of a message.'
 
@@ -174,9 +174,9 @@ relations = [ { kind = 'depends_on', target = 'EU-0004-011' } ]
 id = 'EU-0004-020'
 level = 'MUST'
 polarity = 'required'
-statement = 'A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, without a new approval by the owner, except where euphony refuses it before it checks its idempotency key: as unpaired, outside link level, or link expired or revoked by the command gateway of the overview RFC, as denied by EU-0004-049, EU-0004-056 or EU-0004-092, or as invalid input by EU-0004-093 or EU-0004-064, such as a retry from a device the owner unpaired or over a share link the owner revoked after that batch committed, a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.'
+statement = 'A batch sent again with the project, branch, actor, idempotency key and commands of a committed batch MUST receive the outcome of that committed batch, without a new approval by the owner, except where the command gateway of the overview RFC refuses it as unpaired, outside link level, or link expired or revoked before euphony makes the checks of EU-0004-049, EU-0004-056 and EU-0004-092, or where euphony refuses it before it checks its idempotency key, as denied by EU-0004-049, EU-0004-056 or EU-0004-092, or as invalid input by EU-0004-093 or EU-0004-064, such as a retry from a device the owner unpaired or over a share link the owner revoked after that batch committed, a retry from a caller who lost change access after that batch committed, or a retry that reaches a copy after another copy came to hold the branch of that batch.'
 binds_to = 'system'
-rationale = "A sender whose answer was lost learns what happened, a retry meets every check of the command gateway and of this RFC that comes before the key check as any other batch does, and a retry of a committed batch that held an approval-held command doesn't wait for a second approval, since it doesn't take effect again, so each case has one outcome."
+rationale = "A sender whose answer was lost learns what happened, a retry meets the checks that come before the key check in one order, the command gateway's party and link checks first, as any other batch does, and a retry of a committed batch that held an approval-held command doesn't wait for a second approval, since it doesn't take effect again, so each case has one outcome."
 relations = [ { kind = 'depends_on', target = 'EU-0004-049' }, { kind = 'depends_on', target = 'EU-0004-056' }, { kind = 'depends_on', target = 'EU-0004-064' }, { kind = 'depends_on', target = 'EU-0004-092' }, { kind = 'depends_on', target = 'EU-0004-093' } ]
 
 [[requirement]]
