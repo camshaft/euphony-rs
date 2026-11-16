@@ -31,7 +31,7 @@ Each project MUST have an identity that no other project has.
 
 Each project MUST have exactly one sample rate.
 
-### EU-0004-092 {#EU-0004-092}
+### EU-0004-094 {#EU-0004-094}
 
 The command schema MUST define the sample rate that the command creating a project names as a whole number of samples per second greater than 0.
 

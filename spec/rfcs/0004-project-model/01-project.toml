@@ -49,7 +49,7 @@ binds_to = 'system'
 rationale = 'Every time in the project is counted at one rate.'
 
 [[requirement]]
-id = 'EU-0004-092'
+id = 'EU-0004-094'
 level = 'MUST'
 polarity = 'required'
 statement = 'The command schema MUST define the sample rate that the command creating a project names as a whole number of samples per second greater than 0.'
