@@ -549,6 +549,14 @@ mod tests {
             vec![1.5, -0.25]
         );
 
+        // a part shorter than a sample at the end of the body is left out
+        let mut partial = body.clone();
+        partial.extend_from_slice(&[1, 2, 3]);
+        assert_eq!(
+            samples_from_body(&partial).collect::<Vec<_>>(),
+            vec![1.5, -0.25]
+        );
+
         let run = coordinate_run(
             7,
             Cartesian {
@@ -770,7 +778,7 @@ mod tests {
 
             let Some((first, rest)) = self.bytes.split_first() else {
                 return if self.fail {
-                    Err(io::Error::new(io::ErrorKind::Other, "the disk failed"))
+                    Err(io::Error::other("the disk failed"))
                 } else {
                     Ok(0)
                 };
