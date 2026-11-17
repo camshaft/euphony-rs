@@ -112,4 +112,4 @@ While lease requests wait at the host, the host MUST offer a job whose running a
 
 ### EU-0006-097 {#EU-0006-097}
 
-The host MUST answer a lease request, and handle each event of EU-0006-096, with work that doesn't grow with the report intervals, the waiting lease requests, the render profiles other than those that the worker whose request it answers renders, or the running attempts other than those that the asking or reporting worker holds.
+The host MUST answer a lease request, and handle each event of EU-0006-096, with work that doesn't grow with the report intervals, the waiting lease requests, the render profiles other than those that the asking worker or the worker whose request it answers renders, or the running attempts other than those that the reporting worker or the worker whose request it answers holds.
