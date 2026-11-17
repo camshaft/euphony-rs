@@ -124,6 +124,14 @@ binds_to = 'system'
 rationale = 'A signaling service that swaps keys cannot place itself between the peers.'
 
 [[requirement]]
+id = 'EU-0013-251'
+level = 'MUST'
+polarity = 'required'
+statement = 'A peer MUST close a connection whose signature check of EU-0013-047 fails.'
+binds_to = 'system'
+rationale = 'A swapped or forged key fails closed instead of being trusted.'
+
+[[requirement]]
 id = 'EU-0013-048'
 level = 'MUST'
 polarity = 'required'
