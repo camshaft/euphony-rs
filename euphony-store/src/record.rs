@@ -345,8 +345,8 @@ pub fn samples_body(samples: &[f64]) -> Vec<u8> {
 
 /// The samples of a sample stream's body.
 pub fn samples_from_body(body: &[u8]) -> impl Iterator<Item = f64> + '_ {
-    body.chunks_exact(SAMPLE)
-        .map(|sample| f64::from_le_bytes(sample.try_into().unwrap()))
+    let (samples, _) = body.as_chunks::<SAMPLE>();
+    samples.iter().map(|sample| f64::from_le_bytes(*sample))
 }
 
 /// One run of a coordinate stream's body.
