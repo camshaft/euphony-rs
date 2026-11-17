@@ -65,6 +65,10 @@ A peer MUST close a connection whose peer key changes.
 
 Before it sends anything else, a peer MUST verify that the other peer signed its connection key, the session nonce and the invitation identity with a device key that the invitation and the owner-signed policy admit.
 
+### EU-0013-251 {#EU-0013-251}
+
+A peer MUST close a connection whose signature check of EU-0013-047 fails.
+
 ### EU-0013-048 {#EU-0013-048}
 
 Each signaling message MUST be sealed to the key of the peer it is for.
