@@ -409,7 +409,7 @@ impl Iterator for GroupReader {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{dc::LeakDc, record::SinkIndex, storage::Output as _};
+    use crate::{dc::LeakDc, record::SinkIndex};
     use euphony_compiler::ConvertedBuffer;
     use euphony_units::coordinates::Cartesian;
     use std::{
@@ -568,7 +568,7 @@ mod tests {
 
         let runs = chunks(&directory, &index.coordinates, StreamKind::Coordinates);
         let runs_per_chunk = record::CHUNK / record::COORDINATE_RUN;
-        assert_eq!(runs.len(), (len + runs_per_chunk - 1) / runs_per_chunk);
+        assert_eq!(runs.len(), len.div_ceil(runs_per_chunk));
         assert!(runs.iter().all(|chunk| chunk.len() <= record::CHUNK));
         assert_eq!(
             runs.iter().map(Vec::len).sum::<usize>(),
