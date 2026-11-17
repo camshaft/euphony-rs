@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-097"
 
 [[spec]]
 level = "MUST"
-quote = "The host MUST answer a lease request, and handle each event of EU-0006-096, with work that doesn't grow with the report intervals, the waiting lease requests, the render profiles, or the running attempts other than those the asking worker holds."
+quote = "The host MUST answer a lease request, and handle each event of EU-0006-096, with work that doesn't grow with the report intervals, the waiting lease requests, the render profiles other than those that the worker whose request it answers renders, or the running attempts other than those that the asking or reporting worker holds."
