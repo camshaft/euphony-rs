@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-179"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument model MUST interpolate a control only between validated points within its supported domain."

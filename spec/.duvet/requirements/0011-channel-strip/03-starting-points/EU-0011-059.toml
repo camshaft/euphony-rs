@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-059"
+
+[[spec]]
+level = "SHOULD"
+quote = "The strip's operating level SHOULD default to 18 decibels below full scale."

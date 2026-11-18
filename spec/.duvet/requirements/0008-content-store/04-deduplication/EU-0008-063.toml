@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-063"
+
+[[spec]]
+level = "MUST"
+quote = "A transfer MUST send only the items, and of a partly held item only the chunks, that the receiver lacks."

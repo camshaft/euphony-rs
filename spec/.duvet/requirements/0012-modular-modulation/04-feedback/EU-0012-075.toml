@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-075"
+
+[[spec]]
+level = "MUST"
+quote = "A live feedback loop MUST render on one computer."

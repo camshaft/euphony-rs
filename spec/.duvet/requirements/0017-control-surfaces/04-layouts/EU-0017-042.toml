@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-042"
+
+[[spec]]
+level = "MAY"
+quote = "A device MAY keep a default layout that seeds its layouts in new projects."

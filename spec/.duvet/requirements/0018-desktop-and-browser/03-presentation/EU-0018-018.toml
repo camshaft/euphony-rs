@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-018"
+
+[[spec]]
+level = "MUST"
+quote = "The audio render MUST NOT wait for a frame, a display or a graphics device."

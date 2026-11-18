@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-075"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST admit analysis work against the capacity it measures on each machine."

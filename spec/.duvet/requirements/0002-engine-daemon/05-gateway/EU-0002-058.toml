@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-058"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST refuse a command whose origin is not the owner, a paired device, an assistant the owner connected, a script of the owner's account, or a link participant whose level allows the command."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-175"
+
+[[spec]]
+level = "MUST"
+quote = "A punch MUST show for one frame, on the hit's frame where its streamer ends."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-004"
+
+[[spec]]
+level = "MUST"
+quote = "A change of the encoding or the codec version of an audio item MUST NOT change its identity."

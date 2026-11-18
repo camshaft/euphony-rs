@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-060"
+
+[[spec]]
+level = "MUST"
+quote = "An analysis curve used as a modulation source MUST pass the same validation of dependencies and cycles as any other modulation source."

@@ -1,0 +1,9 @@
+number = 4
+title = 'Project model, commands and history'
+area = 'euphony'
+abstract = """\
+  The project of euphony: its identity, sample rate and sample timeline and its typed links, the \
+  commands that change it and their outcomes, the journal that records who changed what, and the \
+  signed revisions and branches that each copy holds and reads."""
+retired = []
+sources = []

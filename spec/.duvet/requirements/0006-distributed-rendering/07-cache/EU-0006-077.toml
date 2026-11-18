@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-077"
+
+[[spec]]
+level = "MUST"
+quote = "Pruning a unique original MUST wait for the owner's explicit approval of its exact effect."

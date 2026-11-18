@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-025"
+
+[[spec]]
+level = "MUST"
+quote = "The publication check MUST refuse a publication that holds an upstream-derived file whose provenance record is missing or doesn't match the file."

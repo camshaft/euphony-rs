@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-131"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST NOT publish a finding until the publication policy passes."

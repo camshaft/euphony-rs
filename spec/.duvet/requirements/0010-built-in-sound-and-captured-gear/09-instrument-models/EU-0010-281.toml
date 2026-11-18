@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-281"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST show each setting of an instrument model as measured, validated by interpolation or unsupported."

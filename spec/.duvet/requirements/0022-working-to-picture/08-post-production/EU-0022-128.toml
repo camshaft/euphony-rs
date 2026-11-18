@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-128"
+
+[[spec]]
+level = "MUST"
+quote = "A post-production project template MUST create the stem buses, a return for each stem and their delivery records."

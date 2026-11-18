@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-159"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST report a takeover to the surface of the earlier owner and to the surface of the new owner."

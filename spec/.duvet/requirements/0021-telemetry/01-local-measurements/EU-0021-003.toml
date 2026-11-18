@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-003"
+
+[[spec]]
+level = "MUST"
+quote = "The telemetry journal MUST NOT hold project state."

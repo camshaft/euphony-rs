@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-065"
+
+[[spec]]
+level = "MUST"
+quote = "An approval proposal MUST show its recipient, its destination, its affected assets and its revision."

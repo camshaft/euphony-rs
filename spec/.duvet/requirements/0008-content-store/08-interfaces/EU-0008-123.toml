@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-123"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant of the owner MUST NOT reach a placement, catalog or deletion operation over content that it may not already read."

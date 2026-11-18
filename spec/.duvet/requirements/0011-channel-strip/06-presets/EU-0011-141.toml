@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-141"
+
+[[spec]]
+level = "MUST"
+quote = "A preference MUST NOT enter the starting-point calculation before the musician approves it."

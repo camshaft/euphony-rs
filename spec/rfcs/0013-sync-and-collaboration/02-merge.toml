@@ -1,0 +1,169 @@
+[section]
+anchor = 'merge'
+title = 'Combining versions and conflicts'
+problem = """\
+  Two versions of a piece edited apart can disagree on the same note, tempo or route, and a merge that picks one side silently, or by whoever wrote last, loses a musician's work without telling anyone."""
+motivation = """\
+  A merge that knows the project's musical objects combines what does not clash and turns each clash into a visible choice for a person, so that every accepted edit is kept and nothing is lost unseen."""
+prose = """
+A merge combines two versions from a verified common ancestor, comparing the project's objects by
+stable identity: tracks, clips, notes, automation points and routing edges. Independent additions
+and changes to different properties combine, and each keeps its author. A change by both sides to
+the same property, a deletion of an object the other side edited, overlapping automation, competing
+tempo changes and a regeneration by a program of material the other side edited by hand are
+conflicts. A conflict is a typed object that holds both versions and offers musical alternatives
+for a person to choose between. A merge revision records both parents and each resolution chosen. A
+general merge of text or data structures does not know these musical meanings, so it does not stand
+in for typed conflicts. Reconciling contradictory musical edits automatically is outside this RFC."""
+
+[[requirement]]
+id = 'EU-0013-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST start from a verified common ancestor of the versions it combines.'
+binds_to = 'system'
+rationale = 'The merge compares each side with the same starting point.'
+
+[[requirement]]
+id = 'EU-0013-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST identify tracks, clips, notes, automation points and routing edges by stable identities.'
+binds_to = 'system'
+rationale = 'The merge tells a moved or renamed object from a new one.'
+
+[[requirement]]
+id = 'EU-0013-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST combine independent additions and changes to different properties without asking a person.'
+binds_to = 'system'
+rationale = 'A person decides only what actually clashes.'
+
+[[requirement]]
+id = 'EU-0013-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST keep the authorship of each change it combines.'
+binds_to = 'system'
+rationale = 'Every edit keeps the name of the person who made it.'
+
+[[requirement]]
+id = 'EU-0013-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST make a typed conflict of changes by both sides to the same property.'
+binds_to = 'system'
+rationale = 'Neither side of a clash on one property is lost.'
+
+[[requirement]]
+id = 'EU-0013-021'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST make a typed conflict of a deletion of an object that the other side edited.'
+binds_to = 'system'
+rationale = 'An edit is never discarded because the other side removed its object.'
+
+[[requirement]]
+id = 'EU-0013-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST make a typed conflict of overlapping automation changes.'
+binds_to = 'system'
+rationale = 'Two automation curves over the same time are never blended unseen.'
+
+[[requirement]]
+id = 'EU-0013-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST make a typed conflict of competing tempo changes.'
+binds_to = 'system'
+rationale = 'A tempo change moves everything after it, so a person chooses between two.'
+
+[[requirement]]
+id = 'EU-0013-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST make a typed conflict of a program regenerating material that the other side edited by hand.'
+binds_to = 'system'
+rationale = 'A hand edit is never overwritten by a regeneration, nor a regeneration by a hand edit, unseen.'
+
+[[requirement]]
+id = 'EU-0013-231'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge preview MUST show both versions of each conflict.'
+binds_to = 'system'
+rationale = 'A person hears both sides of a clash before choosing.'
+
+[[requirement]]
+id = 'EU-0013-232'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge preview MUST offer musical alternatives for each conflict.'
+binds_to = 'system'
+rationale = 'A person resolves a conflict by hearing and choosing, not by reading data.'
+
+[[requirement]]
+id = 'EU-0013-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge MUST validate the timing, the routing cycles and the musical constraints of its result, also where no edits conflicted.'
+binds_to = 'system'
+rationale = 'Edits that are fine alone can still break the project together.'
+
+[[requirement]]
+id = 'EU-0013-027'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A merge MUST NOT resolve conflicting notes or routing by the clock time at which each edit was made.'
+binds_to = 'system'
+rationale = 'The last writer never wins a musical clash by accident of timing.'
+
+[[requirement]]
+id = 'EU-0013-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'A merge revision MUST record both parents and each resolution chosen.'
+binds_to = 'system'
+rationale = 'The history shows how two versions became one.'
+
+[[requirement]]
+id = 'EU-0013-029'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A merge with an unresolved conflict MUST NOT become the revision that plays or exports.'
+binds_to = 'system'
+rationale = 'What a person plays or exports is always a version a person settled.'
+
+[[requirement]]
+id = 'EU-0013-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where two versions have more than one merge base, a merge MUST synthesize a base from them only where their own merge has no conflict.'
+binds_to = 'system'
+rationale = 'A synthesized base never hides a conflict between earlier versions.'
+
+[[requirement]]
+id = 'EU-0013-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the merge bases of two versions conflict with each other, the merge MUST require an explicit resolution of those conflicts.'
+binds_to = 'system'
+rationale = 'A conflict deep in history reaches a person instead of being guessed.'
+
+[[requirement]]
+id = 'EU-0013-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each conflict MUST stay shown until a person resolves it.'
+binds_to = 'system'
+rationale = 'An unresolved conflict is never forgotten.'
+
+[[requirement]]
+id = 'EU-0013-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'When two collaborators who edited while disconnected exchange their versions, every accepted edit of each MUST be kept.'
+binds_to = 'system'
+rationale = 'No accepted work is lost by collaborating.'

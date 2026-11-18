@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-097"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse to publish a corpus version that lacks an example of each required case."

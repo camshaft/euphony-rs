@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-054"
+
+[[spec]]
+level = "SHOULD"
+quote = "The scheduler SHOULD place a job on the worker with the least measured transfer time to its inputs."

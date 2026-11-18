@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-002"
+
+[[spec]]
+level = "MUST"
+quote = "A project MUST open on each supported desktop operating system with the same timing, routing, automation and sound definitions."

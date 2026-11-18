@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/01-boundary.md#EU-0019-004"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST serve the learning store to assistants through the resources, tools and procedures of its client protocol alone."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-020"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of one collaborator's session host MUST NOT make another collaborator's copy of the project read-only."

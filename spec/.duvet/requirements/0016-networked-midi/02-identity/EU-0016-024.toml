@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-024"
+
+[[spec]]
+level = "MUST"
+quote = "A host that presents a different key MUST NOT hold a binding saved for another key until the owner pairs it."

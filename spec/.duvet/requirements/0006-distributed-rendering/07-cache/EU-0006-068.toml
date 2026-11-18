@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-068"
+
+[[spec]]
+level = "MUST"
+quote = "The render cache MUST NOT evict a result to stay under a fixed size."

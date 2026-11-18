@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-021"
+
+[[spec]]
+level = "MUST"
+quote = "Shared project history MUST NOT require a central leader."

@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-037"
+
+[[spec]]
+level = "MUST"
+quote = "A change of tempo or meter MUST invalidate every result whose timing it changes, whether or not its notes changed."

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-029"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST convert automation recorded inside a region as automation anchored to that region, at positions relative to the region's start."

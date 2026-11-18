@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-078"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant MUST NOT make a link with the picture option without the owner's approval of that link."

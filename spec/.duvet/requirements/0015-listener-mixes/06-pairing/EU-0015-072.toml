@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-072"
+
+[[spec]]
+level = "MAY"
+quote = "On a network the owner marks as theirs, the host MAY send a station's audio as an unencrypted standard network audio stream."

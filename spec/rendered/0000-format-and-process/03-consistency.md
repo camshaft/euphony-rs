@@ -9,12 +9,12 @@ exactly_one holds exactly where all, any or exactly one of its parts hold, and o
 unless holds exactly where its exception doesn't. Each logic formula is added as written, over
 identifiers, negation, conjunction, disjunction, implication, equivalence and parentheses. Each
 parameter a requirement sets has a name, a type, a unit and a bound. A relation to a requirement of
-an RFC the index lists as planned is a warning until that RFC is written. The check reads the whole
-set this way on every change.
+a planned RFC, one the index lists whose directory the set doesn't hold, is a warning until that RFC
+is written. The check reads the whole set this way on every change.
 
 ### EU-0000-027 {#EU-0000-027}
 
-Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of an RFC the index lists as planned.
+Each relation and each logic formula MUST name only identifiers of requirements the set holds or of requirements of a planned RFC, one the index lists whose directory the set doesn't hold.
 
 ### EU-0000-028 {#EU-0000-028}
 

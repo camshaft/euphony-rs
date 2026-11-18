@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-011"
+
+[[spec]]
+level = "MUST"
+quote = "A move of a project to a new processor version MUST offer the musician a comparison of the sound before and after the move."

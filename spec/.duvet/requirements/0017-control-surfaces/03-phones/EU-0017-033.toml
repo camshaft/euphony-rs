@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-033"
+
+[[spec]]
+level = "MUST"
+quote = "The phone controller MUST offer play, pause, stop, locating a marker, toggling the loop, reading the transport and recording state, and adjusting the click and its assigned cue levels."

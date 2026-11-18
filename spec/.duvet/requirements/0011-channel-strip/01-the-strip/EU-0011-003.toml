@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-003"
+
+[[spec]]
+level = "MUST"
+quote = "The stages of a strip and their order MUST come from the project's strip layout, a versioned record of the project."

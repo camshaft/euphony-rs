@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-046"
+
+[[spec]]
+level = "MUST"
+quote = "A unit of render work MUST be a render island over a time range."

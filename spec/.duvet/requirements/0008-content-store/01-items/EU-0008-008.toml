@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-008"
+
+[[spec]]
+level = "MUST"
+quote = "The note sequence parsed from an imported MIDI file MUST be stored as an item of its own, linked to the file by its provenance."

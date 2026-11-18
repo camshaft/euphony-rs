@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-154"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface, the browser companion, every surface and the assistant interface MUST share one set of layout records."

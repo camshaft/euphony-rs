@@ -1,0 +1,269 @@
+[section]
+anchor = 'sending-choice'
+title = "The person's choice to send"
+problem = "Measurements that leave a person's computers without their choice break their trust and can expose their work, while measurements that never leave can't show the project which problems matter or whether a fix worked."
+motivation = "Sending that is off until the person turns it on, chosen by category and project, shown exactly before it goes, and stopped at once when the person says so, lets people who want to help do so without giving up control."
+prose = """
+Sending is the passing of telemetry from the person's computers to the receiving service that the
+project runs. The person's sending choice has three parts. The categories are performance, which
+holds deadline misses, render timings, resource samples and device latencies; stability, which
+holds crashes and errors; and assistant actions, which holds tool calls. Each project is included
+or excluded. The sending mode is the first mode, in which each batch waits in the outbox until the
+person reviews and sends it, or the second mode, in which batches of the chosen categories go once
+built. A batch is an immutable record of submission records that the client builds on the computer
+and holds in the outbox until it is sent or deleted. Each change of the sending choice makes a new
+consent revision. A send authorization is the record that the person reviewed one batch in the
+outbox and chose to send it. The sent log on the computer holds each batch that was sent. Bytes
+already sent can't be recalled: the sent log shows them, and deletion at the receiving service
+removes what it holds of them. RFC 0001 states the owner's approval of turning sending on or
+widening it, and what that approval shows (EU-0001-059, EU-0001-062 and EU-0001-063)."""
+
+[[requirement]]
+id = 'EU-0021-032'
+level = 'MUST'
+polarity = 'required'
+statement = "Sending MUST be off in a new installation."
+binds_to = 'system'
+rationale = "Nothing leaves a person's computers until they choose to send it."
+
+[[requirement]]
+id = 'EU-0021-033'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "While sending is off, euphony MUST NOT open a connection to the receiving service, including to read its settings, except to send a problem report that the person chose to send or a deletion request that the person made."
+binds_to = 'system'
+rationale = "An installation that doesn't send isn't seen by the service, except through a report the person sends or a deletion the person asks for."
+
+[[requirement]]
+id = 'EU-0021-034'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A release MUST NOT turn sending on."
+binds_to = 'system'
+rationale = "Only the person's own choice starts sending."
+
+[[requirement]]
+id = 'EU-0021-035'
+level = 'MUST'
+polarity = 'required'
+statement = "A category that a later release adds MUST stay off until the person turns it on."
+binds_to = 'system'
+rationale = "An earlier choice never covers measurements the person didn't see."
+
+[[requirement]]
+id = 'EU-0021-036'
+level = 'MUST'
+polarity = 'required'
+statement = "The person MUST be able to turn each category on and off apart from the others."
+binds_to = 'system'
+rationale = "The person sends only the kinds of measurement they want to."
+
+[[requirement]]
+id = 'EU-0021-037'
+level = 'MUST'
+polarity = 'required'
+statement = "The person MUST be able to include or exclude each project."
+binds_to = 'system'
+rationale = "The person keeps the measurements of a private project on the computer."
+
+[[requirement]]
+id = 'EU-0021-038'
+level = 'MUST'
+polarity = 'required'
+statement = "A project that the person holds through another person's edit link MUST be excluded until the person includes it."
+binds_to = 'system'
+rationale = "The music of that project belongs to the other person."
+
+[[requirement]]
+id = 'EU-0021-039'
+level = 'MUST'
+polarity = 'required'
+statement = "The sending mode MUST start as the first mode."
+binds_to = 'system'
+rationale = "The person reviews each batch until they choose otherwise."
+
+[[requirement]]
+id = 'EU-0021-040'
+level = 'MAY'
+polarity = 'required'
+statement = "The person MAY choose the second mode."
+binds_to = 'system'
+rationale = "A person who trusts the schema can send without reviewing each batch."
+
+[[requirement]]
+id = 'EU-0021-041'
+level = 'MUST'
+polarity = 'required'
+statement = "The client MUST build each batch on the computer, from the submission schema alone, as an immutable record in the outbox."
+binds_to = 'system'
+rationale = "What goes is fixed before it goes, and holds only what the public schema allows."
+
+[[requirement]]
+id = 'EU-0021-042'
+level = 'MUST'
+polarity = 'required'
+statement = "Before a batch goes, the outbox MUST show every field of every record in plain words, the exact bytes, the destination address, the schema version and the submission identity."
+binds_to = 'system'
+rationale = "The person sees exactly what will be sent and where."
+
+[[requirement]]
+id = 'EU-0021-043'
+level = 'MUST'
+polarity = 'required'
+statement = "Each batch and each problem report MUST record the consent it was built under: the consent revision, the destination, the submission schema version and its field set, and the categories and projects it covers."
+binds_to = 'system'
+rationale = "Each send is checked against the choice it was built under."
+
+[[requirement]]
+id = 'EU-0021-044'
+level = 'MUST'
+polarity = 'required'
+statement = "The client MUST send only a batch that the outbox holds."
+binds_to = 'system'
+rationale = "Nothing goes that the person couldn't see."
+relations = [ { kind = 'depends_on', target = 'EU-0021-041' } ]
+
+[[requirement]]
+id = 'EU-0021-045'
+level = 'MUST'
+polarity = 'required'
+statement = "At the first send and at each retry, the client MUST check that the bytes have the digest the outbox showed and that the current consent revision still allows the batch's destination, schema, fields, categories and projects."
+binds_to = 'system'
+rationale = "A batch that changed, or that the person no longer allows, never goes."
+
+[[requirement]]
+id = 'EU-0021-046'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A batch whose check fails MUST NOT be sent."
+binds_to = 'system'
+rationale = "The check is what stands between a narrowed choice and a send."
+relations = [ { kind = 'depends_on', target = 'EU-0021-045' } ]
+
+[[requirement]]
+id = 'EU-0021-047'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the consent has narrowed or changed while sending is still on, the client MUST delete the batch or rebuild it under the current consent."
+binds_to = 'system'
+rationale = "A batch built under an older choice doesn't linger."
+
+[[requirement]]
+id = 'EU-0021-048'
+level = 'MUST'
+polarity = 'required'
+statement = "A rebuilt batch MUST have an identity and a digest of its own."
+binds_to = 'system'
+rationale = "An authorization of the old batch never sends the new one."
+
+[[requirement]]
+id = 'EU-0021-049'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of the sending choice MUST apply to every send whose check comes after the change."
+binds_to = 'system'
+rationale = "Turning sending off or excluding a project stops every later send, while a send already checked completes."
+
+[[requirement]]
+id = 'EU-0021-050'
+level = 'MUST'
+polarity = 'required'
+statement = "A release that changes the destination or adds fields to the submission schema MUST pause sending until the person reviews the change and turns sending on again."
+binds_to = 'system'
+rationale = "An earlier consent never covers a new destination or new fields."
+
+[[requirement]]
+id = 'EU-0021-051'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A batch MUST NOT hold an event of an excluded project, including an event of a crash trail."
+binds_to = 'system'
+rationale = "Excluding a project keeps every event of it on the computer."
+
+[[requirement]]
+id = 'EU-0021-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A batch MUST NOT hold an event that the client can't attribute to included projects alone."
+binds_to = 'system'
+rationale = "An event that names more than one project goes only where every project it names is included."
+
+[[requirement]]
+id = 'EU-0021-053'
+level = 'MUST'
+polarity = 'required'
+statement = "In the first mode, the client MUST send a batch only with a send authorization bound to the batch identity, its digest, its destination and the consent revision it was built under."
+binds_to = 'system'
+rationale = "Each batch goes only after the person reviewed that exact batch."
+
+[[requirement]]
+id = 'EU-0021-054'
+level = 'MUST'
+polarity = 'required'
+statement = "A send authorization MUST come only from the owner's own review of the batch on a paired owner device."
+binds_to = 'system'
+rationale = "The person, not a program acting for them, decides each send."
+
+[[requirement]]
+id = 'EU-0021-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An assistant, a script or a workflow MUST NOT create a send authorization."
+binds_to = 'system'
+rationale = "Automation can ask to send, but can't authorize it."
+
+[[requirement]]
+id = 'EU-0021-056'
+level = 'MUST'
+polarity = 'required'
+statement = "An assistant's, a script's or a workflow's request to send a batch MUST wait for the owner's approval."
+binds_to = 'system'
+rationale = "The owner approves each send that automation asks for."
+
+[[requirement]]
+id = 'EU-0021-057'
+level = 'MAY'
+polarity = 'required'
+statement = "A retry of an authorized batch MAY reuse its authorization while the consent revision still allows the batch."
+binds_to = 'system'
+rationale = "A congested service doesn't make the person review the same batch again."
+
+[[requirement]]
+id = 'EU-0021-058'
+level = 'MUST'
+polarity = 'required'
+statement = "A change from the second mode to the first MUST apply to every batch not yet sent."
+binds_to = 'system'
+rationale = "A batch built under the second mode waits for review once the person asks for review."
+
+[[requirement]]
+id = 'EU-0021-059'
+level = 'MUST'
+polarity = 'required'
+statement = "A change from the first mode to the second MUST be a change of the sending choice that the owner makes."
+binds_to = 'system'
+rationale = "Only the owner can stop reviewing each batch."
+
+[[requirement]]
+id = 'EU-0021-060'
+level = 'MUST'
+polarity = 'required'
+statement = "The sent log MUST keep each sent batch as it was sent."
+binds_to = 'system'
+rationale = "In either mode the person can read exactly what went."
+
+[[requirement]]
+id = 'EU-0021-061'
+level = 'MUST'
+polarity = 'required'
+statement = "Turning sending off MUST delete every batch still in the outbox."
+binds_to = 'system'
+rationale = "Nothing waits to go once the person stops sending."
+
+[[requirement]]
+id = 'EU-0021-062'
+level = 'MUST'
+polarity = 'required'
+statement = "The screen that turns sending off MUST offer the deletion of what was already sent."
+binds_to = 'system'
+rationale = "Stopping and deleting are one place for the person."

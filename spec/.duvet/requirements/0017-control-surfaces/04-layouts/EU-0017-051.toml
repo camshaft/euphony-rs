@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-051"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST offer mixer, transport, built-in processor, smart control, track parameter and modulation patch panels."

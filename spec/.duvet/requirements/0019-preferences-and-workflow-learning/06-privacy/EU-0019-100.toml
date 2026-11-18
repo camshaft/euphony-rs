@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-100"
+
+[[spec]]
+level = "MUST"
+quote = "The approval view MUST show the verification record and its scope before the owner consents."

@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/05-capture.md#EU-0005-042"
+
+[[spec]]
+level = "MUST"
+quote = "A recorded take MUST enter the project as regions of the same immutable model as other audio."

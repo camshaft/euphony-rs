@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-045"
+
+[[spec]]
+level = "MUST"
+quote = "A message from a device MUST NOT act as a project command or change a permission."

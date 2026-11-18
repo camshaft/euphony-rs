@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-029"
+
+[[spec]]
+level = "MUST"
+quote = "A copy opened after an outage MUST hold every revision its journal recorded."

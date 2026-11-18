@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/01-hosts.md#EU-0016-001"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST show each port of each device on a discovered MIDI host in its device browser without manual configuration."

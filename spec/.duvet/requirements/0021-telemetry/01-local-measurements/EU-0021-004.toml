@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-004"
+
+[[spec]]
+level = "MUST"
+quote = "Each telemetry event MUST carry its family, the public schema version, the release version, the build identity, the component that recorded it, the computer's monotonic time and its local project and session reference."

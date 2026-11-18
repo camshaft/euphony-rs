@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-199"
+
+[[spec]]
+level = "MUST"
+quote = "A verification record MUST count toward a grant of remote inference only where the publisher that the project's configuration names wrote it."

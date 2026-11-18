@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-081"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST assign a local client that doesn't authenticate with the paired-device key of its computer an assistant or a script origin, whatever the client claims."

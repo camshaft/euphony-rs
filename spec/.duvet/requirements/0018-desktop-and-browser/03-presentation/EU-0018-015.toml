@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-015"
+
+[[spec]]
+level = "MUST"
+quote = "The presentation of a view MUST NOT widen what a person or an assistant may read or do."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-019"
+
+[[spec]]
+level = "MUST"
+quote = "The gateway MUST attach a surface only after it validates the surface's pairing or link level, its identity and its protocol capabilities."

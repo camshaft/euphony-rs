@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-061"
+
+[[spec]]
+level = "MUST"
+quote = "A computer MUST store each item at most once, however many projects refer to it."

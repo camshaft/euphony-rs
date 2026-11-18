@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-043"
+
+[[spec]]
+level = "MUST"
+quote = "When a holder returns after its copies were repaired, placement MUST release the surplus copies that the policy does not need."

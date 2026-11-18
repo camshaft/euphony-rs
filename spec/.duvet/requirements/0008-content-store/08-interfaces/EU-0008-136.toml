@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-136"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST let the owner set the license of an item."

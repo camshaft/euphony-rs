@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-075"
+
+[[spec]]
+level = "MUST"
+quote = "The command that creates a project MUST name its actor and an idempotency key."

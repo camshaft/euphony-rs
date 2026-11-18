@@ -36,7 +36,7 @@ rationale = "A difference in loudness doesn't count as a difference in sound."
 id = 'EU-0023-028'
 level = 'MUST'
 polarity = 'required'
-statement = 'The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch and in the noise between notes.'
+statement = 'The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch in cents and in the noise between notes.'
 binds_to = 'system'
 rationale = 'Each kind of difference the musician listens for is measured on its own.'
 

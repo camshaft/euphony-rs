@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-008"
+
+[[spec]]
+level = "MUST"
+quote = "A decision of euphony MUST NOT rest on the text of a label, a description or a message in a project."

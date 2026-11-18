@@ -1,0 +1,228 @@
+[section]
+anchor = 'project'
+title = 'The project and its timeline'
+problem = """\
+  A project whose times follow the clock of the computer that plays it, or whose parts refer to each \
+  other by their labels, plays differently on each computer and can be changed by anyone who writes a \
+  matching label."""
+motivation = """\
+  A timeline counted in samples at the rate of the project, and links between parts that are typed \
+  fields, let every copy, worker and interface read the same project the same way."""
+prose = """
+A project is a piece of music as euphony holds it: its tracks, regions, events, automation, routing
+and processors with their settings, and the links between them. Each project has an identity and a
+sample rate, a whole number of samples per second greater than 0. Every time in a project is a
+whole number of samples at that rate from the start of its
+timeline, whatever the clock of the computer that edits, plays or renders it. Each link from one part
+of a project to another is a typed field: a region refers to the audio it plays by the content
+identity of that audio, and a processor refers to the definition it runs by the identity and version
+of that definition. A copy of a project is the project as one computer holds it. Rendering, content
+identities and the processors themselves are the subjects of other RFCs.
+A project comes to exist through the command that creates it, a command of a type the command
+schema defines that is sent alone and not in a batch, since no project exists yet for a batch to
+name. The command names the sample rate of the new project, its actor, which is the caller that
+euphony authenticated and the party the first revision records as having made the change, and a
+key that identifies it across retries; it doesn't name an identity.
+Once a creation passes the checks of who may create a project and of its actor, euphony checks the
+command against the command schema before it creates the project, and refuses as invalid input a
+creation that fails that check.
+euphony chooses the identity of the new project without regard to the identities other projects
+hold, and the outcome of the command identifies the project and its first revision, which the
+first batch sent to the project names as its expected revision. A creation sent again with the same
+actor, key and sample rate receives the outcome of the first and doesn't create a second project,
+and the same key with another sample rate is refused as invalid input. Only the owner, a paired
+owner device and an assistant the owner connected may create a project: a collaborator
+reaches only the projects that its share links reach."""
+
+[[requirement]]
+id = 'EU-0004-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each project MUST have an identity that no other project has.'
+binds_to = 'system'
+rationale = 'Every command, revision and copy names the project it belongs to without doubt.'
+
+[[requirement]]
+id = 'EU-0004-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each project MUST have exactly one sample rate.'
+binds_to = 'system'
+rationale = 'Every time in the project is counted at one rate.'
+
+[[requirement]]
+id = 'EU-0004-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command schema MUST define the sample rate that the command creating a project names as a required whole number of samples per second greater than 0.'
+binds_to = 'system'
+rationale = 'A creation that leaves out its sample rate, or names 0, fails the check against the command schema, and the rates a device plays at come from that device, not from a list fixed in the project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-002' }, { kind = 'depends_on', target = 'EU-0004-010' }, { kind = 'depends_on', target = 'EU-0004-090' } ]
+
+[[requirement]]
+id = 'EU-0004-070'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command that creates a project MUST be sent alone, and not in a batch.'
+binds_to = 'system'
+rationale = "A creation never names a project that doesn't exist yet, so the refusal of a batch that names a missing project never refuses a creation."
+relations = [ { kind = 'depends_on', target = 'EU-0004-010' } ]
+
+[[requirement]]
+id = 'EU-0004-071'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A command that creates a project MUST NOT name an identity for the project it creates.'
+binds_to = 'system'
+rationale = "The answer to a creation doesn't depend on which identities other projects hold."
+relations = [ { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST choose the identity of each project it creates without regard to the identities other projects hold.'
+binds_to = 'system'
+rationale = 'No two projects share an identity, and the identity a creation returns, such as one drawn at random from a space large enough that no two draws meet, tells its caller nothing of other projects.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-001' }, { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of a command that creates a project MUST identify the new project and its first revision.'
+binds_to = 'system'
+rationale = 'The creator names the new project and its expected revision in the first batch it sends.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-072' } ]
+
+[[requirement]]
+id = 'EU-0004-074'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST refuse as denied a command that creates a project from a caller other than the owner, a paired owner device or an assistant the owner connected, before it checks the command's idempotency key."
+binds_to = 'system'
+rationale = "A collaborator, a sink endpoint or any other caller doesn't add projects to the owner's workstation, or learn from a retry which keys the owner's actors used."
+relations = [ { kind = 'depends_on', target = 'EU-0001-035' }, { kind = 'depends_on', target = 'EU-0001-038' } ]
+
+[[requirement]]
+id = 'EU-0004-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command that creates a project MUST name its actor and an idempotency key.'
+binds_to = 'system'
+rationale = 'euphony knows for whom the project is created, and a creation whose answer was lost can be sent again.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the actor that a command creating a project names is not the caller that euphony authenticated, euphony MUST refuse the command as denied before it checks its idempotency key.'
+binds_to = 'system'
+rationale = 'No sender creates a project as another actor, or learns from a retry which keys another actor used.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-075' } ]
+
+[[requirement]]
+id = 'EU-0004-090'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST check the command that creates a project against the command schema before it creates the project.'
+binds_to = 'system'
+rationale = "A creation is checked against the command schema, as a batch's commands are checked against the project schema, so a project never starts from an invalid command."
+relations = [ { kind = 'depends_on', target = 'EU-0004-010' }, { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the command that creates a project passes the checks of EU-0004-074 and EU-0004-076 and fails the check against the command schema, euphony MUST refuse the command as invalid input.'
+binds_to = 'system'
+rationale = 'A creation that fails the command schema never makes a project, its sender acts on a typed reason, and a caller that euphony denies receives the same denial whatever it sent.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-090' }, { kind = 'depends_on', target = 'EU-0004-080' }, { kind = 'depends_on', target = 'EU-0004-074' }, { kind = 'depends_on', target = 'EU-0004-076' } ]
+
+[[requirement]]
+id = 'EU-0004-077'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command that creates a project sent again with the actor, idempotency key and sample rate of a committed creation MUST receive the outcome of that creation.'
+binds_to = 'system'
+rationale = 'A sender whose answer was lost learns which project it created.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-073' }, { kind = 'depends_on', target = 'EU-0004-075' } ]
+
+[[requirement]]
+id = 'EU-0004-078'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A command that creates a project with the actor and idempotency key of a committed creation MUST NOT create another project.'
+binds_to = 'system'
+rationale = 'A retry after a lost answer never makes a second project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-075' } ]
+
+[[requirement]]
+id = 'EU-0004-079'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a command that creates a project has the actor and idempotency key of a committed creation and another sample rate, euphony MUST refuse it as invalid input.'
+binds_to = 'system'
+rationale = 'A key used again for another creation is never read as a retry, and never creates a project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-075' } ]
+
+[[requirement]]
+id = 'EU-0004-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of a refused command that creates a project MUST be one of denied, invalid input or unavailable storage.'
+binds_to = 'system'
+rationale = 'A sender acts on a typed reason, not on the words of a message.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-070' } ]
+
+[[requirement]]
+id = 'EU-0004-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every time in a project MUST be a whole number of samples at the sample rate of the project.'
+binds_to = 'system'
+rationale = 'Two copies place every event at the same sample.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-002' } ]
+
+[[requirement]]
+id = 'EU-0004-004'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The times of a project MUST NOT depend on the clock of any computer that holds, plays or renders it.'
+binds_to = 'system'
+rationale = 'A worker renders any range at any speed, and the result is the same.'
+
+[[requirement]]
+id = 'EU-0004-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each link from one part of a project to another MUST be a typed field of the project.'
+binds_to = 'system'
+rationale = 'Every reader finds a link the same way, and a check validates it.'
+
+[[requirement]]
+id = 'EU-0004-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'A region MUST refer to the audio it plays by the content identity of that audio.'
+binds_to = 'system'
+rationale = 'A region plays the same bytes on every computer, and a change of the audio is a change of the link.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-005' } ]
+
+[[requirement]]
+id = 'EU-0004-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'A processor MUST refer to the definition it runs by the identity and version of that definition.'
+binds_to = 'system'
+rationale = 'A project plays with the processor version it was made with.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-005' } ]
+
+[[requirement]]
+id = 'EU-0004-008'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A decision of euphony MUST NOT rest on the text of a label, a description or a message in a project.'
+binds_to = 'system'
+rationale = 'Text planted in a project cannot grant access or change what euphony does.'

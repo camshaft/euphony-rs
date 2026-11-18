@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/01-surfaces.md#EU-0017-009"
+
+[[spec]]
+level = "MUST"
+quote = "A surface's transport and recording actions MUST act on behalf of the session's current controller."

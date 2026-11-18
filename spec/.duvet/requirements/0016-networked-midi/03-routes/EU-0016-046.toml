@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-046"
+
+[[spec]]
+level = "MUST"
+quote = "A controller MUST change only the target it is explicitly bound to, within that target's declared range."

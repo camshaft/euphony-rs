@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/10-voice.md#EU-0013-207"
+
+[[spec]]
+level = "MUST"
+quote = "Where the session cannot confirm that program audio returning through the microphone of a participant is suppressed, it MUST warn every participant."

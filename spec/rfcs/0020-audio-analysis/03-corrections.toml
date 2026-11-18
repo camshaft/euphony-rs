@@ -1,0 +1,92 @@
+[section]
+anchor = 'corrections'
+title = 'Corrections and applying results to the music'
+problem = """\
+  An estimate written straight into a project changes existing music whenever it is wrong, and a \
+  correction that overwrites the method's output loses the record of what was estimated and of who \
+  changed it."""
+motivation = """\
+  Keeping a method's output, people's corrections and the accepted musical state apart, and \
+  changing music only through an ordinary command the musician chooses, means that nothing reaches \
+  the music without the musician's action, and that every step can be inspected and undone."""
+prose = """
+A result is a suggestion. A musician, or an assistant the musician authorized, can correct it, and
+a correction is a new revision of the interpretation, recorded with who made it and the evidence
+behind it. The musician can accept an interpretation, the result as it stands or as corrected, and
+later work reuses an accepted interpretation, such as a tempo map or a chord progression. Applying
+an accepted interpretation to the music, such as a tempo map, note events or chords, is an ordinary
+project command: it can be previewed, it names the revision of the project it expects, and it can
+be undone like any other command. The musician can listen to the music with and without an
+interpretation before applying it."""
+
+[[requirement]]
+id = 'EU-0020-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A result MUST NOT change the music of a project unless the musician applies it.'
+binds_to = 'system'
+rationale = 'A wrong estimate never silently changes existing music.'
+
+[[requirement]]
+id = 'EU-0020-024'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST keep a method's output, each correction of it and the accepted interpretation as distinct records."
+binds_to = 'system'
+rationale = 'A reader can always tell what the method said from what a person changed and what the music uses.'
+
+[[requirement]]
+id = 'EU-0020-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each correction MUST record the person or the assistant that made it.'
+binds_to = 'system'
+rationale = 'Every change to an interpretation has an author a reader can see.'
+
+[[requirement]]
+id = 'EU-0020-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each correction MUST link the evidence it is based on.'
+binds_to = 'system'
+rationale = 'A later reader can judge why the interpretation was changed.'
+
+[[requirement]]
+id = 'EU-0020-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command that applies an accepted interpretation MUST be previewable before it is applied.'
+binds_to = 'system'
+rationale = 'The musician sees what the change does before the music changes.'
+
+[[requirement]]
+id = 'EU-0020-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command that applies an accepted interpretation MUST name the project revision it expects.'
+binds_to = 'system'
+rationale = 'An application written for one state of the project never changes another one by accident.'
+
+[[requirement]]
+id = 'EU-0020-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'An applied interpretation MUST be undoable like any other project command.'
+binds_to = 'system'
+rationale = 'Applying a result is never a step the musician cannot take back.'
+
+[[requirement]]
+id = 'EU-0020-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'The musician MUST be able to audition the music with and without an interpretation before applying it.'
+binds_to = 'system'
+rationale = 'The musician decides by ear whether the interpretation improves the music.'
+
+[[requirement]]
+id = 'EU-0020-031'
+level = 'MUST'
+polarity = 'required'
+statement = 'An accepted interpretation MUST be reusable by later work without the analysis running again.'
+binds_to = 'system'
+rationale = 'A musician corrects and accepts an interpretation once and builds on it from then on.'

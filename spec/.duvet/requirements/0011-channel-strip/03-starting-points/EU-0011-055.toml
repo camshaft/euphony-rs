@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-055"
+
+[[spec]]
+level = "MUST"
+quote = "A starting point MUST make the track's loudness through the stage equal its loudness with the stage off, within the level-match tolerance."

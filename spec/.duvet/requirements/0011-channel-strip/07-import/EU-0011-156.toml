@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/07-import.md#EU-0011-156"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to save an imported strip as a fixed preset."

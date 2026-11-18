@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-025"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST emit an operational event for each command acceptance, command conflict, preparation start, preparation completion, preparation failure, cache validation, worker arrival, worker loss, clock state change and underrun."

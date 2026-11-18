@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-162"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to keep or replace the original audio tracks of the video in its copy."

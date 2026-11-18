@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-247"
+
+[[spec]]
+level = "MUST"
+quote = "Once the measured upload of the host carries one more stream, the host MUST admit the first waiting participant, unless that participant was stopped for a shrinking upload and the congestion control is not raising the rates of the remaining streams."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-202"
+
+[[spec]]
+level = "MUST"
+quote = "Each read of evidence, of a history or of the Why view MUST return one page and the cursor that reads the next page."

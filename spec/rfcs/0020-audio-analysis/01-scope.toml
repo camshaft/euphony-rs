@@ -1,0 +1,73 @@
+[section]
+anchor = 'scope'
+title = 'Scope of analysis'
+problem = """\
+  Musicians and their assistants need to know what a recording contains, such as its key, tempo, \
+  chords and loudness, but working it out by ear each time is slow, and a tool that answers for \
+  some material and not for other material leaves them unsure what they can ask."""
+motivation = """\
+  One analysis capability that reads every kind of audio a project holds the same way, and that \
+  states what each method produces, lets a musician and an assistant ask for any analysis of any \
+  audio they hold and know beforehand what they can get back."""
+prose = """
+Analysis estimates what a recording holds and measures how it sounds. Its input is any audio a
+project holds: an imported sample, a recorded take, a stem, a selected region of any of these, or a
+prepared mix. Its results are of two kinds. A measurement computes a defined quantity of the signal,
+such as loudness, true peak, loudness range, crest factor, spectral balance, stereo width and phase
+correlation. An inference estimates musical content, such as key and mode, tuning reference, tempo
+and tempo map, beats and downbeats, time signature, swing and groove, sections and repeats, melody
+and pitch contour, note events, vibrato, instruments and timbre, separated stems, the behavior of
+dynamics, reverb and other effects, lyrics, and mood and genre tags. A method is one versioned
+analyzer that produces results of one or more of these families. Any method can abstain: a result
+can be absent, ambiguous or outside what the method supports. Analysis doesn't recover the original
+session, its tracks or its arrangement from a finished mix, and it doesn't identify the one preset
+or effects chain that made a sound; for a sound, it offers candidates that the musician compares by
+ear."""
+
+[[requirement]]
+id = 'EU-0020-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Analysis MUST accept as its input any audio a project holds, including a sample, a take, a stem, a selected region and a prepared mix.'
+binds_to = 'system'
+rationale = 'A musician analyzes any material through the same capability, whatever its origin.'
+
+[[requirement]]
+id = 'EU-0020-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST list each available method with its version, the result families it produces and the material it supports.'
+binds_to = 'system'
+rationale = 'A musician and an assistant know what they can ask for before they ask.'
+
+[[requirement]]
+id = 'EU-0020-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'A request for analysis MUST name its source audio, the interval of that audio to analyze and the method.'
+binds_to = 'system'
+rationale = 'Every result answers one exact question that a reader can see.'
+
+[[requirement]]
+id = 'EU-0020-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'A method MUST be able to answer any request with an abstention that states its reason.'
+binds_to = 'system'
+rationale = 'A method that cannot say it does not know turns every unsupported case into a confident guess.'
+
+[[requirement]]
+id = 'EU-0020-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each measurement MUST state the definition it computes and the revision of that definition.'
+binds_to = 'system'
+rationale = 'Two measurements compare only where they compute the same quantity the same way.'
+
+[[requirement]]
+id = 'EU-0020-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A result about effects or sound sources MUST NOT be presented as the identification of the original chain or its settings.'
+binds_to = 'system'
+rationale = 'Different sources, processors and settings can produce the same audio, so audio alone cannot identify them.'

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/02-import.md#EU-0014-012"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST refuse a path in a source project that leads outside the selected folders and the files the musician permitted."

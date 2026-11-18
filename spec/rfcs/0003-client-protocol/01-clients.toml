@@ -1,0 +1,97 @@
+[section]
+anchor = 'clients'
+title = 'Clients and the one protocol'
+problem = """\
+  A person reaches a session from a desktop window, a command line, a script, an assistant, a phone \
+  or a control surface, and where each of these has its own way into the engine, each offers \
+  different actions with different checks, and a change made from one cannot be made the same way \
+  from another."""
+motivation = """\
+  One protocol that every client speaks, defined once from the commands of the session, offers every \
+  client the same actions, the same validation and the same history, and makes a new kind of client \
+  cost only its presentation."""
+prose = """
+A client is any program that shows or changes a session without being part of the engine: the
+desktop interface, with any of its layouts and themes, the terminal interface, the command line, a
+script, the assistant adapter, the phone controllers, the browser companion, the headphone stations
+and the control surfaces. The engine is the set of processes that run a session on the person's
+computers, among them the session host, which holds the state, the history and the transport of the
+session, and the audio process, which runs the device stream and recording. Every client speaks one
+versioned client protocol with the session host, the same for every kind of client, whether it runs
+on the computer that runs the session or on another of the person's computers. The protocol is
+defined once, from the definitions of the commands of the session, and no client adds a command of
+its own. The assistant adapter is a client in a process of its own, so that assistants reach a
+session through the path every interface uses."""
+
+[[requirement]]
+id = 'EU-0003-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'Every client MUST reach a session only through the client protocol.'
+binds_to = 'system'
+rationale = 'Every way into a session offers the same actions with the same checks.'
+
+[[requirement]]
+id = 'EU-0003-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The client protocol MUST be the same for every kind of client.'
+binds_to = 'system'
+rationale = 'A new kind of client costs only its presentation, and no client is a second way in.'
+
+[[requirement]]
+id = 'EU-0003-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'The client protocol MUST carry every command of the session.'
+binds_to = 'system'
+rationale = 'A command added to the session reaches every client in the same change.'
+
+[[requirement]]
+id = 'EU-0003-004'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT define a command of its own.'
+binds_to = 'system'
+rationale = 'Each command has one definition, so its validation and its history are the same for every client.'
+
+[[requirement]]
+id = 'EU-0003-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command MUST have the same validation and the same effect on the session whichever client sends it.'
+binds_to = 'system'
+rationale = 'An assistant, a script and a person at the desktop get the same result for the same action.'
+
+[[requirement]]
+id = 'EU-0003-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each action that a person can take on a session from the desktop interface MUST be available from the command line.'
+binds_to = 'system'
+rationale = 'A person and their assistants can work without a window, from a terminal or a script.'
+
+[[requirement]]
+id = 'EU-0003-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each action that a person can take on a session MUST be available to an authorized assistant through the assistant adapter.'
+binds_to = 'system'
+rationale = 'An assistant the person connects can do the work the person does.'
+
+[[requirement]]
+id = 'EU-0003-008'
+level = 'MUST'
+polarity = 'required'
+statement = "A client on another of the person's computers MUST be able to take every action that a client on the computer running the session can take."
+binds_to = 'system'
+rationale = 'The person works from any of their computers with the same results.'
+
+[[requirement]]
+id = 'EU-0003-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'The same commands sent from the desktop interface, the command line and the assistant adapter MUST produce the same history and the same audio.'
+binds_to = 'system'
+rationale = 'The parity of clients is a result that can be compared, not a promise.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-005' } ]

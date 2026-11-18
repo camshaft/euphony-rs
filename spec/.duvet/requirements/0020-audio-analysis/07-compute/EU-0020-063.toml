@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-063"
+
+[[spec]]
+level = "MUST"
+quote = "Analysis MUST NOT run in the process that drives live audio."

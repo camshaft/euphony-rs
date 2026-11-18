@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-059"
+
+[[spec]]
+level = "MUST"
+quote = "An archived project that the owner opens MUST be recalled to the working tier as a whole, with its progress shown before playback."

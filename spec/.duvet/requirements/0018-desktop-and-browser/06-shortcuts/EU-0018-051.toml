@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-051"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface and an assistant MUST change a shortcut mapping through the same command and its revision checks."

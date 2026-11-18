@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/02-output-safety.md#EU-0015-016"
+
+[[spec]]
+level = "MUST"
+quote = "A sink stream that crosses from one clock domain to another MUST be resampled explicitly."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-107"
+
+[[spec]]
+level = "MUST"
+quote = "Moving a route's transforms to another execution site MUST release the notes they own."

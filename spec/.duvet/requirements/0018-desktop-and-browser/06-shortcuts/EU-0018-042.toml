@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/06-shortcuts.md#EU-0018-042"
+
+[[spec]]
+level = "MUST"
+quote = "Musical shortcut mappings MUST be configurable."

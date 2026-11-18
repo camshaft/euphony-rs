@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-169"
+
+[[spec]]
+level = "MUST"
+quote = "Editing the tempo map MUST change only the automation lanes that resolve their positions through the tempo map."

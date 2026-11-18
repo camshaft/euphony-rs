@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-063"
+
+[[spec]]
+level = "MUST"
+quote = "The starting point MUST NOT switch the gate on unless analysis finds a steady level of bleed or noise between onsets."

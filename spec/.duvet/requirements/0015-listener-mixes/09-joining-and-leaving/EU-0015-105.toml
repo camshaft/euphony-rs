@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-105"
+
+[[spec]]
+level = "MUST"
+quote = "A station joining or leaving a session MUST NOT change the output of any other sink."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/07-import.md#EU-0011-149"
+
+[[spec]]
+level = "MUST"
+quote = "A processor placed in a stage MUST keep its imported values as a fixed setting."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-030"
+
+[[spec]]
+level = "MUST"
+quote = "In Scale mode, the normalized value of a target MUST be its base times the sum of one and its summed contribution."

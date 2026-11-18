@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-280"
+
+[[spec]]
+level = "MUST"
+quote = "The manifest of an instrument model MUST state the continuous control regions and the discrete modes that the model supports."

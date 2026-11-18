@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-028"
+
+[[spec]]
+level = "MUST"
+quote = "The telemetry journal MUST keep events for as long as the person's retention setting allows."

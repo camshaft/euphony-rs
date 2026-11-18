@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-070"
+
+[[spec]]
+level = "MUST"
+quote = "The conformance tests of a streaming method MUST compare its declared delay with the delay they measure."

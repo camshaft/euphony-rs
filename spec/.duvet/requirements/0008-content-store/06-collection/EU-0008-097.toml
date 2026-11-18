@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-097"
+
+[[spec]]
+level = "MUST"
+quote = "Each computer of the owner that was paired when an intent was issued MUST answer the intent as referenced, or as unreferenced with a durable barrier."

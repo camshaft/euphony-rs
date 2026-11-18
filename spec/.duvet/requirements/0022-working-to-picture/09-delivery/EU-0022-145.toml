@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-145"
+
+[[spec]]
+level = "MUST"
+quote = "A failed delivery check MUST say which sum failed, by how much and where."

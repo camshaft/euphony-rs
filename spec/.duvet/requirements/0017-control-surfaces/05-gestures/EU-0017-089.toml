@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-089"
+
+[[spec]]
+level = "MUST"
+quote = "A touch contact MUST NOT take another contact's target by crossing widgets."

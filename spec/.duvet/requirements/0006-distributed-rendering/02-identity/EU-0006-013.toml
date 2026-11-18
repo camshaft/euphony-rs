@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-013"
+
+[[spec]]
+level = "MUST"
+quote = "A render descriptor MUST NOT hold the identity of a worker or a wall-clock time."

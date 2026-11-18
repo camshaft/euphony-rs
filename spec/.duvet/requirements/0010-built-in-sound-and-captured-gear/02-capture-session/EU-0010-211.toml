@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-211"
+
+[[spec]]
+level = "MUST"
+quote = "A capture session MUST mark a take incomplete when it stops emission for an unpairing or a reservation conflict."

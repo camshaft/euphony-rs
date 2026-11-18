@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-112"
+
+[[spec]]
+level = "MUST"
+quote = "Admission MUST compare a transform's resource needs with the runtime and device capacity measured on the target hardware."

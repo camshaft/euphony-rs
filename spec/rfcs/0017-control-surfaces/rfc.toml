@@ -1,0 +1,10 @@
+number = 17
+title = 'Control surfaces and phone controllers'
+area = 'euphony'
+abstract = """\
+  How a person controls a running euphony session from phones, tablets, extra desktop windows, touch \
+  monitors, the browser companion and hardware controllers: surfaces as views of one session, \
+  discovery and pairing, the phone controller, layouts and panels, commands and gestures on shared \
+  controls, timing and capacity, loss and reconnection, and the surface profiles a release supports."""
+retired = []
+sources = []

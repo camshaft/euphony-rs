@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-036"
+
+[[spec]]
+level = "MUST"
+quote = "Where the computer that planned a release is declared lost, recovery MUST settle the release on the releasing holder before it frees any reservation."

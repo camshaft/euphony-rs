@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/06-privacy.md#EU-0019-095"
+
+[[spec]]
+level = "MUST"
+quote = "In private-only operation, private data MUST stay unavailable to an assistant that the owner didn't select as a trusted local assistant whose outbound connections the machine restricts."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-137"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST read the sound effects category of an item from its file name and metadata."

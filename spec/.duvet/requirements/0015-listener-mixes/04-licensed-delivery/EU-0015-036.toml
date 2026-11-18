@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/04-licensed-delivery.md#EU-0015-036"
+
+[[spec]]
+level = "MUST"
+quote = "Delivery in a proprietary licensed spatial format MUST stay unavailable until its license and distribution terms are known to fit the build that offers it."

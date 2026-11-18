@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-164"
+
+[[spec]]
+level = "MUST"
+quote = "The plan, coverage report and estimates of a synthesizer capture MUST be durable session state, so that an interrupted capture resumes at a confirmed experiment boundary."

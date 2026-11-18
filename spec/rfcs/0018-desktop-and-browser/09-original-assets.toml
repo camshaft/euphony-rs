@@ -1,0 +1,80 @@
+[section]
+anchor = 'original-assets'
+title = 'Original visual design'
+problem = """\
+  An interface that copies another product's icons, artwork or exact look raises rights questions, \
+  and a build can carry a copied asset that no one notices."""
+motivation = """\
+  Original artwork with familiar workflows keeps what musicians learned, and typed provenance \
+  records checked at release keep every released asset accountable."""
+prose = """
+The screens and workflows of the desktop interface can be inspired by those of other workstations.
+A provenance record states that an icon, image, texture or font is original, or that it is
+redistributable under a recorded license. A reference capture is a screenshot or a recording of
+another product, taken for a private comparison of workflow and spacing. The reference images of
+the product are images of its own views, which its visual conformance cases compare with."""
+
+[[requirement]]
+id = 'EU-0018-073'
+level = 'MUST'
+polarity = 'required'
+statement = 'The product MUST use an original identity, palette, icons, graphics and artwork.'
+binds_to = 'system'
+rationale = 'The product is recognizably its own.'
+
+[[requirement]]
+id = 'EU-0018-074'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The product MUST NOT copy another product's assets, icons or exact combination of layout, color, typography and artwork."
+binds_to = 'system'
+rationale = 'Familiar workflows never become a copy of another product.'
+
+[[requirement]]
+id = 'EU-0018-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each icon, image, texture and font in a release MUST have a provenance record that shows it is original or redistributable under a recorded license.'
+binds_to = 'system'
+rationale = 'Every released asset can be accounted for.'
+
+[[requirement]]
+id = 'EU-0018-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each interface framework dependency of a release MUST have a passing license check.'
+binds_to = 'system'
+rationale = 'A release meets the license of everything it includes.'
+
+[[requirement]]
+id = 'EU-0018-077'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A release, the repository and the public reference images MUST NOT hold a reference capture of another product or an asset extracted from one.'
+binds_to = 'system'
+rationale = 'A private comparison stays private.'
+
+[[requirement]]
+id = 'EU-0018-078'
+level = 'MUST'
+polarity = 'required'
+statement = "The release check MUST refuse a build whose provenance or license records are missing, failed or don't match the exact build."
+binds_to = 'system'
+rationale = 'A build is cleared by its own records, never by an earlier build.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-075' } ]
+
+[[requirement]]
+id = 'EU-0018-079'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The product MUST NOT claim affiliation with the maker of another product.'
+binds_to = 'system'
+rationale = 'Familiarity is never presented as endorsement.'
+
+[[requirement]]
+id = 'EU-0018-080'
+level = 'MUST'
+polarity = 'required'
+statement = "Visual conformance cases MUST compare views with the product's own reference images at a declared scale, font and renderer."
+binds_to = 'system'
+rationale = 'A visual check needs no image of another product, and a difference is read against a known profile.'

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-116"
+
+[[spec]]
+level = "MUST"
+quote = "A patch edit or a layout change MUST show its preview and its commit or activation state."

@@ -1,0 +1,151 @@
+[section]
+anchor = 'post-production'
+title = 'Sound design and post-production tracks'
+problem = "A sound designer sorts a film's sound into dialogue, music and effects, lines up each sound's key moment with a frame and auditions effects against the picture, and without these the separate mixes can't be made and every effect is placed by trial."
+motivation = "Post-production track roles feeding stem buses, a sync point on every region, and a catalog that finds and plays sound effects with the picture let the designer place each sound once and deliver it in the right stem."
+prose = """
+Post-production sorts the sound of a film into dialogue, music and effects. A track's role takes the
+post-production roles: dialogue, replaced dialogue, music, effects, foley, which is sound performed
+to picture such as footsteps, and backgrounds. A stem bus collects one part of the mix: dialogue,
+music or effects. The music-and-effects bus sums the music and effects stems. A sync point is a
+sample within a region, such as the attack of a slammed gate, that lines up with a picture frame.
+The sound effects category of an item is a category of the public category list that sound effects
+libraries use. Replaced dialogue is speech that a performer records again while watching the picture,
+to take the place of a line recorded on set. Cue beeps are short tones before a line's start that
+count the performer in to it, as a streamer shows the line's start on the picture."""
+
+[[requirement]]
+id = 'EU-0022-124'
+level = 'MUST'
+polarity = 'required'
+statement = "Track roles MUST include each post-production role this section lists."
+binds_to = 'system'
+rationale = "Each track says which part of a film's sound it carries."
+
+[[requirement]]
+id = 'EU-0022-125'
+level = 'MUST'
+polarity = 'required'
+statement = "In a project that holds the stem buses, each track's output MUST go to one of them."
+binds_to = 'system'
+rationale = "In a post-production project, every sound reaches exactly one stem."
+
+[[requirement]]
+id = 'EU-0022-126'
+level = 'MUST'
+polarity = 'required'
+statement = "Foley and background tracks MUST feed the effects stem by default."
+binds_to = 'system'
+rationale = "Foley and backgrounds are effects in the separate mixes a production asks for."
+
+[[requirement]]
+id = 'EU-0022-127'
+level = 'MUST'
+polarity = 'required'
+statement = "A project MUST be able to hold a music-and-effects bus that sums the music and effects stems."
+binds_to = 'system'
+rationale = "A production that dubs the dialogue needs the mix without it."
+
+[[requirement]]
+id = 'EU-0022-128'
+level = 'MUST'
+polarity = 'required'
+statement = "A post-production project template MUST create the stem buses, a return for each stem and their delivery records."
+binds_to = 'system'
+rationale = "A new film project can deliver stems that add up from its start."
+
+[[requirement]]
+id = 'EU-0022-129'
+level = 'MUST'
+polarity = 'required'
+statement = "Each region MUST have a sync point."
+binds_to = 'system'
+rationale = "A sound lines up with a frame by its key moment, not its start."
+
+[[requirement]]
+id = 'EU-0022-130'
+level = 'MUST'
+polarity = 'required'
+statement = "Euphony MUST suggest a region's sync point from the onsets of its sound."
+binds_to = 'system'
+rationale = "The designer moves a suggestion instead of searching for the attack."
+
+[[requirement]]
+id = 'EU-0022-131'
+level = 'MUST'
+polarity = 'required'
+statement = "A sync point MUST snap to frames and to picture markers."
+binds_to = 'system'
+rationale = "A sound sits on the frame it belongs to."
+
+[[requirement]]
+id = 'EU-0022-132'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to place a region's sync point at a timecode."
+binds_to = 'system'
+rationale = "A sound is spotted to the timecode a list states."
+
+[[requirement]]
+id = 'EU-0022-133'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to move a region by frames or by hundredths of a frame."
+binds_to = 'system'
+rationale = "The designer nudges a sound until it sits on the picture."
+
+[[requirement]]
+id = 'EU-0022-134'
+level = 'MUST'
+polarity = 'required'
+statement = "A location recording MUST arrive at the timecode that its file's metadata records."
+binds_to = 'system'
+rationale = "Sound recorded on set lines up with the picture shot with it."
+
+[[requirement]]
+id = 'EU-0022-135'
+level = 'MUST'
+polarity = 'required'
+statement = "Analysis MUST find where speech is present on the guide track and on dialogue tracks."
+binds_to = 'system'
+rationale = "The musician sees where music and effects meet dialogue, and loudness can be measured on speech."
+
+[[requirement]]
+id = 'EU-0022-136'
+level = 'MUST'
+polarity = 'required'
+statement = "The catalog MUST find a sound effect by words, by category and by similar sound."
+binds_to = 'system'
+rationale = "A designer finds an effect the way they think of it."
+
+[[requirement]]
+id = 'EU-0022-137'
+level = 'MUST'
+polarity = 'required'
+statement = "The catalog MUST read the sound effects category of an item from its file name and metadata."
+binds_to = 'system'
+rationale = "Libraries that already carry categories are searched by them at once."
+
+[[requirement]]
+id = 'EU-0022-138'
+level = 'MUST'
+polarity = 'required'
+statement = "A candidate sound effect MUST play at the playhead in step with the picture, looped over the selection, before the person places it."
+binds_to = 'system'
+rationale = "The designer listens to an effect against the picture before choosing it."
+
+[[requirement]]
+id = 'EU-0022-139'
+level = 'MUST'
+polarity = 'required'
+statement = "Placing a sound effect MUST align its sync point, its first strong attack by default, with the chosen frame or marker."
+binds_to = 'system'
+rationale = "A placed effect sits on its moment without a nudge."
+
+[[requirement]]
+id = 'EU-0022-173'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to record replaced dialogue to picture, with cue beeps and streamers before each line."
+binds_to = 'system'
+rationale = "Dialogue recorded again in the studio lines up with the performer's lips on the picture."

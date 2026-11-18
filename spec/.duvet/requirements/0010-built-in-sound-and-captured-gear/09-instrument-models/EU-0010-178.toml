@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-178"
+
+[[spec]]
+level = "MUST"
+quote = "A seek or restart of an instrument model MUST restore its voice and random state from a compatible checkpoint, or render the history that leads to it."

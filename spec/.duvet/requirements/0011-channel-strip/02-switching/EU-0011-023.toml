@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-023"
+
+[[spec]]
+level = "MUST"
+quote = "A switched-off stage MUST NOT add delay to its track."

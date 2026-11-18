@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-046"
+
+[[spec]]
+level = "MUST"
+quote = "A starting point MUST NOT use an analysis result that analysis marks unsupported or below its accepted confidence."

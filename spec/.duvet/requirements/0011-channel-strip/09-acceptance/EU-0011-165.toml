@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-165"
+
+[[spec]]
+level = "MUST"
+quote = "Each calculation version and each built-in preset MUST keep a listening record."

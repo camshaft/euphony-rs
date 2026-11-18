@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-085"
+
+[[spec]]
+level = "MUST"
+quote = "Placing an item MUST add a reference to its identity through the previewable, undoable command of the project."

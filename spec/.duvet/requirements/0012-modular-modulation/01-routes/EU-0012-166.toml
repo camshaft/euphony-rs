@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-166"
+
+[[spec]]
+level = "MUST"
+quote = "A musician MUST be able to use an envelope follower of an audio signal as the source of a route."

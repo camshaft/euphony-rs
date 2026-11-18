@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/04-isolation.md#EU-0022-061"
+
+[[spec]]
+level = "MUST"
+quote = "On each supported computer, a playback and recording test with video playing MUST show no more missed audio deadlines than the same test without video."

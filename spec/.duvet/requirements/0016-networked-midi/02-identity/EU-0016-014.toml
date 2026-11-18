@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-014"
+
+[[spec]]
+level = "MUST"
+quote = "Where the host supplies a physical identity for a device, the device binding MUST hold that identity with each identifier's source and confidence."

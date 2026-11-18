@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-105"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse to admit an example derived from a correction into the corpus without the owner's recorded permission for that example and for evaluation."

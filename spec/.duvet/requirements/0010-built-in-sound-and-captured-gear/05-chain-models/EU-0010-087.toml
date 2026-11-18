@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-087"
+
+[[spec]]
+level = "MUST"
+quote = "Refining a model MUST NOT invalidate audio that did not use that model."

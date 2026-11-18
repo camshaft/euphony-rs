@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-090"
+
+[[spec]]
+level = "MUST"
+quote = "An event subscription MUST resume from its durable cursor after a disconnection."

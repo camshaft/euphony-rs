@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-099"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST refuse an evaluation report whose test artists or recordings overlap a known training or tuning split."

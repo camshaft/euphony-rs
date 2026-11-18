@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-082"
+
+[[spec]]
+level = "SHOULD"
+quote = "The color stage's starting drive SHOULD be light, as the character and the role set it."

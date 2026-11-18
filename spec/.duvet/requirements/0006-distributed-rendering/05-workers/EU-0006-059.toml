@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-059"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted render job MUST NOT be dropped for want of capacity."

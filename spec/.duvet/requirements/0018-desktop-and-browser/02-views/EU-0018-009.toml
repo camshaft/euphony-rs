@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-009"
+
+[[spec]]
+level = "MUST"
+quote = "From any main view, one command MUST open each other main view at the selected track and the playhead position."

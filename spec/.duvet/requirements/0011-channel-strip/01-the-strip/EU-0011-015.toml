@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-015"
+
+[[spec]]
+level = "MUST"
+quote = "The last stage of a track's strip MUST offer pan or stereo width, and the fader."

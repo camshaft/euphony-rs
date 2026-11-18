@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-003"
+
+[[spec]]
+level = "MUST"
+quote = "The audio device process MUST take the sample rate, channel layout and period of a stream from the format it negotiated with the device."

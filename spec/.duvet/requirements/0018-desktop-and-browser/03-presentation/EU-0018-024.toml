@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-024"
+
+[[spec]]
+level = "MUST"
+quote = "A continuous control MUST show local feedback within the tolerance of the selected profile, distinct from the value the session host acknowledged."

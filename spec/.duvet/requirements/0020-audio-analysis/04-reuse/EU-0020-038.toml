@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-038"
+
+[[spec]]
+level = "MUST"
+quote = "For a method whose runs can differ, the system MUST keep the exact result it produced, identified by its digest."

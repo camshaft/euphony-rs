@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-029"
+
+[[spec]]
+level = "MUST"
+quote = "Under storage pressure, the telemetry journal MUST yield space before any cached result or original."

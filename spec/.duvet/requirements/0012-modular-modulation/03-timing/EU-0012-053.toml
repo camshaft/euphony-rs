@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-053"
+
+[[spec]]
+level = "MUST"
+quote = "A route that asks for sample accuracy to a target that accepts updates once a block MUST be refused unless the musician explicitly selects a conversion."

@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-107"
+
+[[spec]]
+level = "MUST"
+quote = "A station joining or leaving a session MUST NOT change a recording in progress."

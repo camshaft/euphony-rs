@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-107"
+
+[[spec]]
+level = "MUST"
+quote = "Every refinement run of euphony, of an external chain or of an instrument, MUST stop under the same rules, read from that run's own metrics, tolerances, stagnation rule and resume authority."

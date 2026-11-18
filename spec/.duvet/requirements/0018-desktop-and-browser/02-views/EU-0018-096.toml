@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-096"
+
+[[spec]]
+level = "MUST"
+quote = "The arrangement view, the piano roll and the automation view MUST lay time out from left to right under a ruler that marks the playhead."

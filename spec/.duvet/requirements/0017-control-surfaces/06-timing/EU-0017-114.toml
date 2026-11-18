@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-114"
+
+[[spec]]
+level = "MUST"
+quote = "A quantized start MUST be scheduled in session time."

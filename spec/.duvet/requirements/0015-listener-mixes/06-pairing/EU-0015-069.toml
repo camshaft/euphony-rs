@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-069"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST refuse a second station that presents a paired station's identity."

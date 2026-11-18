@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-086"
+
+[[spec]]
+level = "MUST"
+quote = "A stage whose starting point isn't ready MUST show that it is dialing in."

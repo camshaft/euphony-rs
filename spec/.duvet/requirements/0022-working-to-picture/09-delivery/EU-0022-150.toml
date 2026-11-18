@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-150"
+
+[[spec]]
+level = "MUST"
+quote = "A delivery MUST NOT apply nonlinear main-output processing to each stem and report the sum as passing."

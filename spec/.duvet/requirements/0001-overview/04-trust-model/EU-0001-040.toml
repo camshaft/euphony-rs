@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-040"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator MUST NOT take an action that the level of the collaborator's link doesn't allow."

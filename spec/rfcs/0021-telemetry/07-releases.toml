@@ -1,0 +1,82 @@
+[section]
+anchor = 'releases'
+title = "Releases and the submission schema"
+problem = "A release could turn sending on, add a field that carries names, send to a destination the person didn't see, or release crash frames the service can't read, and no person would notice before people were affected."
+motivation = "A public configuration in each release, reviewed schema changes, published symbol files and a release check that refuses each telemetry fault keep every release within what the person agreed to."
+prose = """
+A release's public configuration sets what its clients send and where. The release check reads
+each release before it is published and refuses one whose telemetry breaks what this RFC states.
+Each release build publishes the symbol files of its own code, so that the receiving service turns
+crash frames into function names without the client sending them."""
+
+[[requirement]]
+id = 'EU-0021-163'
+level = 'MUST'
+polarity = 'required'
+statement = "The public configuration of each release MUST set the submission schema version and the destination."
+binds_to = 'system'
+rationale = "What a release sends and where is public before anyone sends."
+
+[[requirement]]
+id = 'EU-0021-164'
+level = 'MUST'
+polarity = 'required'
+statement = "A change of the submission schema MUST be a reviewed public change that assigns each new field its privacy class."
+binds_to = 'system'
+rationale = "No field enters the schema unseen."
+
+[[requirement]]
+id = 'EU-0021-165'
+level = 'MUST'
+polarity = 'required'
+statement = "The release notes MUST describe each change of the submission schema."
+binds_to = 'system'
+rationale = "People learn what a new release would send."
+
+[[requirement]]
+id = 'EU-0021-166'
+level = 'MUST'
+polarity = 'required'
+statement = "Each release build MUST publish the symbol files of its own code."
+binds_to = 'system'
+rationale = "The service reads crash frames without the client sending more."
+
+[[requirement]]
+id = 'EU-0021-167'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A sent crash frame MUST NOT hold a function name."
+binds_to = 'system'
+rationale = "The service resolves names from the published symbol files."
+
+[[requirement]]
+id = 'EU-0021-168'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The release check MUST NOT pass a release in which sending is on in a new installation."
+binds_to = 'system'
+rationale = "No release starts sending by default."
+
+[[requirement]]
+id = 'EU-0021-169'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The release check MUST NOT pass a release with a submission field that has no privacy class or is free text."
+binds_to = 'system'
+rationale = "No release sends a field that could carry names."
+
+[[requirement]]
+id = 'EU-0021-170'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The release check MUST NOT pass a release whose destination differs from its public configuration."
+binds_to = 'system'
+rationale = "No release sends anywhere other than where it says."
+
+[[requirement]]
+id = 'EU-0021-171'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The release check MUST NOT pass a release whose symbol files are missing."
+binds_to = 'system'
+rationale = "Every release's crashes can be read."

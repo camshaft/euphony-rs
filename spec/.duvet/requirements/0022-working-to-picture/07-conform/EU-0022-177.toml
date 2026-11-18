@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-177"
+
+[[spec]]
+level = "MUST"
+quote = "Conforming MUST make every move of a change list in one command."

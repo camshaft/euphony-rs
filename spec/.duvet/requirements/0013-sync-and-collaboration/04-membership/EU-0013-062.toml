@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/04-membership.md#EU-0013-062"
+
+[[spec]]
+level = "MUST"
+quote = "Sync MUST validate the signatures and the level of the sending peer against the current policy of the receiver before it updates accepted heads or serves objects."

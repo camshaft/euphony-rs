@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-003"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST NOT poll for clients or for work."

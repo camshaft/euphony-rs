@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-101"
+
+[[spec]]
+level = "MUST"
+quote = "Where training overlap cannot be checked, an evaluation report MUST record the overlap as unknown with its missing provenance."

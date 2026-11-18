@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/01-routes.md#EU-0012-010"
+
+[[spec]]
+level = "MUST"
+quote = "A conversion from notes to a control value MUST state how it normalizes values and how it combines notes, including their release and sustain."

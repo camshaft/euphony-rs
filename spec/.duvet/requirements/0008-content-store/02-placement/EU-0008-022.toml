@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-022"
+
+[[spec]]
+level = "MUST"
+quote = "A change of the placement policy MUST take effect only once the owner approves it."

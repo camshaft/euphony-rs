@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/08-trust.md#EU-0020-085"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST record the rights of the code, the model weights, the training data and the evaluation data of each method for its exact version."

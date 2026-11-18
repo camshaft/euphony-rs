@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-061"
+
+[[spec]]
+level = "MUST"
+quote = "Turning sending off MUST delete every batch still in the outbox."

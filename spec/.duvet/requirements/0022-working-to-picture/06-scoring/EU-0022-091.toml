@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-091"
+
+[[spec]]
+level = "MUST"
+quote = "A fit to one constant tempo MUST find the tempo and the first downbeat position whose largest miss is the smallest."

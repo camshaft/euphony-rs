@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-078"
+
+[[spec]]
+level = "MUST"
+quote = "Where two surfaces move absolute controls on the same target, the first accepted begin MUST own the gesture until it ends, is cancelled, is taken over or its connection is lost."

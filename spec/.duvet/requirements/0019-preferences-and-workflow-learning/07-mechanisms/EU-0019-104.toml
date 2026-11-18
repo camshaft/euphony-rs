@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-104"
+
+[[spec]]
+level = "MUST"
+quote = "Duplicate findings MUST join the same learning work by an explicit key and the affected workflow or domain."

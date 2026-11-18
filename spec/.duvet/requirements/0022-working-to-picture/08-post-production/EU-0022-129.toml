@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-129"
+
+[[spec]]
+level = "MUST"
+quote = "Each region MUST have a sync point."

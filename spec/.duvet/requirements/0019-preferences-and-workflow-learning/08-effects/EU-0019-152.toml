@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-152"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to disable a mechanism at any time, with immediate effect."

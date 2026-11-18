@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-057"
+
+[[spec]]
+level = "MUST"
+quote = "A live transform whose analysis dependency is missing or stale MUST show itself as unavailable unless the musician selected an earlier result version for it."

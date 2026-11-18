@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-119"
+
+[[spec]]
+level = "MUST"
+quote = "The equalizer's tone MUST tilt its response from darker to brighter."

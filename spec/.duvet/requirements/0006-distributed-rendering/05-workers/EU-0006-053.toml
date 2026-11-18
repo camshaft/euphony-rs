@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-053"
+
+[[spec]]
+level = "MUST"
+quote = "Projects at the same priority level MUST each receive a fair share of the available capacity."

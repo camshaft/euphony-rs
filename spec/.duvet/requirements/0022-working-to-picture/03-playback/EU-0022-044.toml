@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-044"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to measure a display's offset with the flash-and-tone test."

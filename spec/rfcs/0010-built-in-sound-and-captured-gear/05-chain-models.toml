@@ -1,0 +1,341 @@
+[section]
+anchor = 'chain-models'
+title = 'Models of an external chain'
+problem = "A musician wants to play their external chain when the hardware is absent, with controls they can read and change, at a cost a live session can carry, and with noise and pitch wobble that vary as the hardware's do."
+motivation = "Two model families fitted to the same capture, loaded as data into processors built into euphony, let the musician compare them and accept the one that passes their tests, without a new release of euphony and without running code that euphony doesn't include."
+prose = """
+A model of an external chain belongs to one of two families. A structured model is a typed graph of
+euphony's own built-in processors, such as filters, a level detector, a gain curve and a
+waveshaper, whose parameters are fitted to the capture, with small learned parts where a fixed
+formula falls short and, only where those don't meet the musician's tolerances, a small learned
+model of the remaining error. A learned model is one trained network of the whole chain. Both
+families are fitted to the same capture, and the evaluation of each device decides which one the
+musician accepts. A model is a versioned, content-addressed object, and one built-in processor for
+each family loads model objects as data. The modeled delay is the behavior of the hardware itself;
+the added delay is what the model adds beyond it, such as buffering, look-ahead and resampling.
+The random part of a model is a random process with a stored seed. A model of an external chain
+captured at one setting of its controls copies the chain at that setting and offers one control, a
+blend of the unprocessed and processed sound. A chain captured at several settings of its controls
+is offered both as a set of models at fixed settings that the musician switches between and as one
+model conditioned on the captured settings, which reports its error at each captured setting and
+marks each setting between them as unverified. Gear that recalls its settings digitally lets the
+capture rig step the settings between captures, instead of a person turning each control.
+Training, fitting and evaluation run as durable jobs on the owner's paired computers, and playback
+runs live on the audio computer or ahead into the render cache."""
+
+[[requirement]]
+id = 'EU-0010-063'
+level = 'MUST'
+polarity = 'required'
+statement = "For each capture of an external chain, euphony MUST fit a structured model and a learned model to the same capture."
+binds_to = 'system'
+rationale = "The musician compares both families on the same evidence."
+
+[[requirement]]
+id = 'EU-0010-064'
+level = 'MUST'
+polarity = 'required'
+statement = "A structured model MUST be a typed graph of built-in processors with fitted parameters."
+binds_to = 'system'
+rationale = "Most of the model stays readable and adjustable."
+
+[[requirement]]
+id = 'EU-0010-065'
+level = 'MUST'
+polarity = 'required'
+statement = "Each fitted parameter of a built-in processor in a structured model MUST be readable and adjustable by the musician."
+binds_to = 'system'
+rationale = "The musician can change what the model does, such as its release time."
+relations = [ { kind = 'depends_on', target = 'EU-0010-064' } ]
+
+[[requirement]]
+id = 'EU-0010-066'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A model object MUST NOT hold code that euphony runs."
+binds_to = 'system'
+rationale = "Loading a model can't do anything the built-in processors can't."
+
+[[requirement]]
+id = 'EU-0010-067'
+level = 'MUST'
+polarity = 'required'
+statement = "A model MUST be a versioned, content-addressed object."
+binds_to = 'system'
+rationale = "A project names exactly the model it plays."
+
+[[requirement]]
+id = 'EU-0010-068'
+level = 'MUST'
+polarity = 'required'
+statement = "A model object MUST hold its family, structure, weights, sample rate, calibrated level, modeled delay, declared added delay, random-part statistics, capture identities, weight license and error report."
+binds_to = 'system'
+rationale = "A model carries everything needed to play it, trace it and judge it."
+
+[[requirement]]
+id = 'EU-0010-069'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST load a model into its built-in processors without a new release of euphony."
+binds_to = 'system'
+rationale = "Capture, training and listening happen in one session."
+
+[[requirement]]
+id = 'EU-0010-070'
+level = 'MUST'
+polarity = 'required'
+statement = "Before activation, the loader MUST refuse a model whose graph holds an operator outside the built-in set, a cycle without delay, a dimension mismatch or a coefficient that is not finite, with the reason."
+binds_to = 'system'
+rationale = "A malformed or hostile model never reaches the audio path."
+
+[[requirement]]
+id = 'EU-0010-071'
+level = 'MUST'
+polarity = 'required'
+statement = "Before activation, the loader MUST refuse a model whose measured resource demand exceeds the capacity measured on the computer, with the reason."
+binds_to = 'system'
+rationale = "A model never starves the rest of the session."
+
+[[requirement]]
+id = 'EU-0010-072'
+level = 'MUST'
+polarity = 'required'
+statement = "The validation of a model MUST run outside the real-time audio processing."
+binds_to = 'system'
+rationale = "Loading a model never interrupts playback or recording."
+
+[[requirement]]
+id = 'EU-0010-073'
+level = 'MUST'
+polarity = 'required'
+statement = "A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade."
+binds_to = 'system'
+rationale = "A faulty model falls silent gracefully rather than producing noise."
+
+[[requirement]]
+id = 'EU-0010-202'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST report each model whose output became non-finite while it played."
+binds_to = 'system'
+rationale = "The musician learns which model failed and when."
+relations = [ { kind = 'depends_on', target = 'EU-0010-073' } ]
+
+[[requirement]]
+id = 'EU-0010-074'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A fault of a model MUST NOT interrupt unrelated recording."
+binds_to = 'system'
+rationale = "A take in progress survives a model that fails."
+
+[[requirement]]
+id = 'EU-0010-075'
+level = 'MUST'
+polarity = 'required'
+statement = "A model MUST declare its added delay apart from its modeled delay."
+binds_to = 'system'
+rationale = "The delay of the hardware is reproduced and the delay of the implementation is compensated."
+
+[[requirement]]
+id = 'EU-0010-076'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST measure the total delay of each candidate model at each device period of each target computer."
+binds_to = 'system'
+rationale = "A declared delay is checked rather than trusted."
+
+[[requirement]]
+id = 'EU-0010-077'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST refuse a candidate model whose measured total delay differs from its declared modeled delay plus its declared added delay."
+binds_to = 'system'
+rationale = "Delay compensation never works from a wrong figure."
+relations = [ { kind = 'depends_on', target = 'EU-0010-075' }, { kind = 'depends_on', target = 'EU-0010-076' } ]
+
+[[requirement]]
+id = 'EU-0010-078'
+level = 'MUST'
+polarity = 'required'
+statement = "Delay compensation and the blend control MUST use the measured added delay of a model."
+binds_to = 'system'
+rationale = "A blend through the model matches a parallel blend through the hardware."
+relations = [ { kind = 'depends_on', target = 'EU-0010-076' } ]
+
+[[requirement]]
+id = 'EU-0010-079'
+level = 'MUST'
+polarity = 'required'
+statement = "A model of an external chain captured at one setting of its controls MUST copy the chain at that setting."
+binds_to = 'system'
+rationale = "A model needs one capture at one setting."
+
+[[requirement]]
+id = 'EU-0010-240'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST let the musician switch between the models of one external chain captured at different settings of its controls."
+binds_to = 'system'
+rationale = "The musician chooses a captured setting without capturing the chain again."
+
+[[requirement]]
+id = 'EU-0010-241'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST offer, for an external chain captured at several settings of its controls, a model conditioned on those settings."
+binds_to = 'system'
+rationale = "The musician turns a control of the model as they would turn the control of the hardware."
+
+[[requirement]]
+id = 'EU-0010-242'
+level = 'MUST'
+polarity = 'required'
+statement = "A model conditioned on control settings MUST report its held-out error at each captured setting."
+binds_to = 'system'
+rationale = "The musician sees how closely the model matches the hardware at each setting the capture holds."
+relations = [ { kind = 'depends_on', target = 'EU-0010-241' } ]
+
+[[requirement]]
+id = 'EU-0010-243'
+level = 'MUST'
+polarity = 'required'
+statement = "A model conditioned on control settings MUST mark each setting between the captured settings as unverified."
+binds_to = 'system'
+rationale = "The musician knows which settings were never compared with the hardware."
+relations = [ { kind = 'depends_on', target = 'EU-0010-241' } ]
+
+[[requirement]]
+id = 'EU-0010-244'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the gear recalls its control settings digitally, the capture rig MUST step the settings between captures."
+binds_to = 'system'
+rationale = "A person doesn't have to turn each control between captures, which is the main cost of a capture at many settings."
+
+[[requirement]]
+id = 'EU-0010-080'
+level = 'MUST'
+polarity = 'required'
+statement = "A model of an external chain MUST offer a control that blends the unprocessed and processed sound."
+binds_to = 'system'
+rationale = "The musician sets how much of the chain they hear, as with a parallel blend through the hardware."
+
+[[requirement]]
+id = 'EU-0010-081'
+level = 'MUST'
+polarity = 'required'
+statement = "A model played at a sample rate other than the one it was trained at MUST be resampled or refused."
+binds_to = 'system'
+rationale = "A model never plays silently at a rate it was not fitted for."
+
+[[requirement]]
+id = 'EU-0010-203'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST report each sample rate change it makes to play a model, and each model it refuses for its sample rate."
+binds_to = 'system'
+rationale = "The musician knows when a model plays at a rate it was not fitted for."
+relations = [ { kind = 'depends_on', target = 'EU-0010-081' } ]
+
+[[requirement]]
+id = 'EU-0010-082'
+level = 'MUST'
+polarity = 'required'
+statement = "The random part of a model MUST be a random process with a stored seed, not a copy of one recorded pass."
+binds_to = 'system'
+rationale = "Noise and pitch wobble vary as the hardware's do rather than repeating one pass."
+
+[[requirement]]
+id = 'EU-0010-083'
+level = 'MUST'
+polarity = 'required'
+statement = "Each rendered region that plays a model MUST store its seed in its cache identity."
+binds_to = 'system'
+rationale = "A bounce of the region repeats exactly."
+relations = [ { kind = 'depends_on', target = 'EU-0010-082' } ]
+
+[[requirement]]
+id = 'EU-0010-084'
+level = 'MUST'
+polarity = 'required'
+statement = "Two renders of a region with one seed MUST be identical."
+binds_to = 'system'
+rationale = "A project renders the same on every computer."
+relations = [ { kind = 'depends_on', target = 'EU-0010-083' } ]
+
+[[requirement]]
+id = 'EU-0010-085'
+level = 'MUST'
+polarity = 'required'
+statement = "A render with a new seed MUST produce a new pass with the statistics of the random part of the model."
+binds_to = 'system'
+rationale = "A new take of a model varies as a new pass through the hardware would."
+relations = [ { kind = 'depends_on', target = 'EU-0010-082' } ]
+
+[[requirement]]
+id = 'EU-0010-086'
+level = 'MUST'
+polarity = 'required'
+statement = "The cache identity of audio that plays a model MUST include the identity of the model object and the processor version."
+binds_to = 'system'
+rationale = "A refined model invalidates only the audio that used the old one."
+
+[[requirement]]
+id = 'EU-0010-087'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Refining a model MUST NOT invalidate audio that did not use that model."
+binds_to = 'system'
+rationale = "Refinement costs only the renders it changes."
+relations = [ { kind = 'depends_on', target = 'EU-0010-086' } ]
+
+[[requirement]]
+id = 'EU-0010-088'
+level = 'MUST'
+polarity = 'required'
+statement = "A saved project MUST keep playing the model version it names after a refined version exists."
+binds_to = 'system'
+rationale = "A finished project keeps its sound."
+
+[[requirement]]
+id = 'EU-0010-089'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST admit a model for live playback only where its measured added delay is within the musician's live latency setting and its measured processor cost is within the capacity measured on that computer."
+binds_to = 'system'
+rationale = "A live model never misses the deadline of the audio device."
+
+[[requirement]]
+id = 'EU-0010-090'
+level = 'MUST'
+polarity = 'required'
+statement = "A model that euphony does not admit for live playback MUST be offered for prepared playback."
+binds_to = 'system'
+rationale = "A model too costly to play live is still usable."
+relations = [ { kind = 'depends_on', target = 'EU-0010-089' } ]
+
+[[requirement]]
+id = 'EU-0010-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Training, fitting and evaluation of a model MUST run as durable jobs on the owner's paired computers."
+binds_to = 'system'
+rationale = "Captures stay with their owner, and the work survives the loss of a computer."
+
+[[requirement]]
+id = 'EU-0010-092'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST admit the training, fitting and evaluation jobs of a model on every paired computer that the scheduler admits."
+binds_to = 'system'
+rationale = "Many fits run at once, on every paired computer the scheduler admits."
+relations = [ { kind = 'depends_on', target = 'EU-0010-091' } ]
+
+[[requirement]]
+id = 'EU-0010-093'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a model MUST list the processor cost, the added delay and the missed deadlines of each candidate at each device period."
+binds_to = 'system'
+rationale = "The musician weighs closeness against cost."

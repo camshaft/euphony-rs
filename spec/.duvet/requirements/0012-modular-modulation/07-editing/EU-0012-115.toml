@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-115"
+
+[[spec]]
+level = "MUST"
+quote = "The patch view MUST show source sockets and target controls beside the tracks and automation lanes."

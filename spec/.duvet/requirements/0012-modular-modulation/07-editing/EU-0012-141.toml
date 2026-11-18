@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-141"
+
+[[spec]]
+level = "MUST"
+quote = "An automation mode of another workstation MUST map onto a combination mode only where their equations are verified to match."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-128"
+
+[[spec]]
+level = "MAY"
+quote = "The owner MAY choose a later expiry or a number of uses for a listen or comment link."

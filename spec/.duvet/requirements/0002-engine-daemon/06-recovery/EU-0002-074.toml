@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-074"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted session host MUST NOT restart a play or record action."

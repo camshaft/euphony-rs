@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-147"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST NOT advertise a profile list that differs from the conformance records."

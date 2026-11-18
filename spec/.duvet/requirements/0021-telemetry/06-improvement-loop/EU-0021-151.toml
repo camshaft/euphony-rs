@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-151"
+
+[[spec]]
+level = "MUST"
+quote = "Before the release with a fix, the project MUST declare the criterion that decides the fix's effect: the exposure that fits the finding, the least exposure and the confidence level."

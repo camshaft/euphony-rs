@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-074"
+
+[[spec]]
+level = "MUST"
+quote = "Each job's completion MUST record its time for each second of audio, its peak memory, the bytes it transferred, the storage it added, its wait in the queue and the audio deadlines missed while it ran."

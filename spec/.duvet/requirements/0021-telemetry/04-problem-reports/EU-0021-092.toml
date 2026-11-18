@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-092"
+
+[[spec]]
+level = "MUST"
+quote = "Before the person adds the full crash dump, the client MUST warn that it can hold audio and project content from memory."

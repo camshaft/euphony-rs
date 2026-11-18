@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-040"
+
+[[spec]]
+level = "MUST"
+quote = "A holder MUST verify a copy when it is written, when the holder starts, when it reports a storage error, when the owner asks, and before a working copy is released on the strength of that copy."

@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-056"
+
+[[spec]]
+level = "MUST"
+quote = "Where the caller that euphony authenticated may not change the branch that a batch names, or may not take one of the batch's commands on that branch, euphony MUST refuse the batch as denied before it checks the batch's commands against the project schema, its expected revision or its idempotency key."

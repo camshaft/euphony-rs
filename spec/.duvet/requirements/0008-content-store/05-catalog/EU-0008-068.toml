@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-068"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST be built only from the typed records of the store and of the projects."

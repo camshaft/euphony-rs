@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/12-observability.md#EU-0019-190"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST NOT set a fixed limit on the number of preferences, collaborators or proposals."

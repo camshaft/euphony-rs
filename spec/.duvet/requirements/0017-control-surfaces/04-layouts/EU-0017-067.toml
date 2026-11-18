@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-067"
+
+[[spec]]
+level = "MUST"
+quote = "A surface's snapshot and the changes that follow it MUST share one revision boundary."

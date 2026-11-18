@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-050"
+
+[[spec]]
+level = "MUST"
+quote = "Preparing a route MUST NOT delay audio playback."

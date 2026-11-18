@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/02-capture-session.md#EU-0010-023"
+
+[[spec]]
+level = "MUST"
+quote = "The audio engine MUST enforce the route and the level bound of a capture session itself, whatever the mixer of the audio interface is set to."

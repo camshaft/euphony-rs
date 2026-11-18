@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-024"
+
+[[spec]]
+level = "MUST"
+quote = "The publication check MUST read the whole history and every generated file of a publication before it is pushed."

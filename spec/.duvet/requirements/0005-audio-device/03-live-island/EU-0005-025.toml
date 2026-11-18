@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-025"
+
+[[spec]]
+level = "MUST"
+quote = "Where the live render island cannot meet the measured deadline of the device and the musician has not selected a previous revision, the audio device process MUST pause the preview."

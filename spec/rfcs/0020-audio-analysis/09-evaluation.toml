@@ -1,0 +1,212 @@
+[section]
+anchor = 'evaluation'
+title = 'Evaluation and release'
+problem = """\
+  How reliable a method is depends on the material it analyzes, so a single accuracy figure, an \
+  untested model or a model tested on its own training data misleads musicians, and a new version \
+  that is worse than the last can reach them unnoticed."""
+motivation = """\
+  A versioned evaluation corpus, metrics of each result family, a release record that each method \
+  version needs before it is released or applies a result, and a comparison with the previous version \
+  that opens work when it regresses make the reliability of each method measured, not promised."""
+prose = """
+The evaluation corpus is versioned. It holds licensed audio with the provenance of its labels, the
+disagreements of its annotators, its recording conditions, genres, instruments and languages, and
+the identities of its splits. Test artists and recordings are kept apart from training and tuning
+material where those are known, and the overlap is recorded as unknown where it can't be checked.
+The cases the corpus covers are project configuration, and start with silence, noise, clipping,
+tempo changes, rubato, odd meter, detuning and mixed sources. Each method is evaluated with the
+metrics of its family, such as tonic and mode scored together with related-key errors apart, chord
+accuracy for each vocabulary weighted by duration, beat and downbeat precision and recall at a
+declared tolerance, note onset and offset scores, pitch error in cents, and loudness against
+reference vectors of the standard it computes; no single accuracy spans the families. Calibration
+is derived from held-out labeled examples. A release record of a method version holds its validated
+outputs, the material it supports and its coverage, the verified rights of each dependency
+category, passing tests of its resources and of its isolation from live audio, its comparison with
+the pinned previous version on the same corpus and device profiles, or for a first version a record
+that it has none, and an explicit acceptance criterion for its intended use with its result. Someone
+authorized can still inspect a method as a prototype, and a prototype isn't released. Each
+result family advances on its own, through the same result contract and evaluation. A person can
+let a corrected example join the corpus, and can withdraw it later."""
+
+[[requirement]]
+id = 'EU-0020-091'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse to include a method in a build where its conformance tests do not include a request it abstains from.'
+binds_to = 'system'
+rationale = 'Every released method has shown that it can say it does not know.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-004' } ]
+
+[[requirement]]
+id = 'EU-0020-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse to include a method version in a build without a passing release record for that version, model digest, execution profile and build.'
+binds_to = 'system'
+rationale = 'Only a method whose behavior was measured for exactly what is released can be released.'
+
+[[requirement]]
+id = 'EU-0020-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse to apply a result automatically without a passing release record for its method version, model digest, execution profile and build.'
+binds_to = 'system'
+rationale = 'An automatic change of the music depends on a measured method, never on an untested one.'
+
+[[requirement]]
+id = 'EU-0020-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'The release record of a method version MUST hold its comparison with the pinned previous version on the same corpus and device profiles.'
+binds_to = 'system'
+rationale = 'A regression shows before the version is released.'
+
+[[requirement]]
+id = 'EU-0020-095'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse a release record that doesn't name a previous version, for a method whose earlier version has a release record."
+binds_to = 'system'
+rationale = 'A later version never skips its comparison by claiming to be the first.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-094' } ]
+
+[[requirement]]
+id = 'EU-0020-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The release record of a method version MUST state an explicit acceptance criterion for its intended use and the result against that criterion.'
+binds_to = 'system'
+rationale = 'A version is judged against what it is for, and a missing criterion authorizes nothing.'
+
+[[requirement]]
+id = 'EU-0020-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse to publish a corpus version that lacks an example of each required case.'
+binds_to = 'system'
+rationale = 'Every method is tested on silence, noise and the other hard cases the project requires.'
+
+[[requirement]]
+id = 'EU-0020-098'
+level = 'MUST'
+polarity = 'required'
+statement = 'An evaluation report MUST state its exact input set, its metric definitions and tolerances, the model and preprocessing versions, its abstention coverage, its uncertainty and its results for each subgroup.'
+binds_to = 'system'
+rationale = 'A reader can reproduce the report and see where a method works and where it does not.'
+
+[[requirement]]
+id = 'EU-0020-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse an evaluation report whose test artists or recordings overlap a known training or tuning split.'
+binds_to = 'system'
+rationale = 'A method is never scored on the material it learned from.'
+
+[[requirement]]
+id = 'EU-0020-100'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST refuse a calibration record whose examples overlap the final test split.'
+binds_to = 'system'
+rationale = 'A calibration never inflates the score it is later tested on.'
+
+[[requirement]]
+id = 'EU-0020-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where training overlap cannot be checked, an evaluation report MUST record the overlap as unknown with its missing provenance.'
+binds_to = 'system'
+rationale = 'A report never claims an independence it could not check.'
+
+[[requirement]]
+id = 'EU-0020-102'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A report whose overlap is unknown MUST NOT satisfy an acceptance criterion that requires verified separation.'
+binds_to = 'system'
+rationale = 'An unchecked separation never passes as a checked one.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-101' } ]
+
+[[requirement]]
+id = 'EU-0020-103'
+level = 'MUST'
+polarity = 'required'
+statement = "A comparison that shows a regression past a method's acceptance criterion, or a disagreement between methods, MUST open or join one work item for its project, method, profile, corpus and metric."
+binds_to = 'system'
+rationale = 'Each regression is tracked once, however often it is published again.'
+
+[[requirement]]
+id = 'EU-0020-104'
+level = 'MUST'
+polarity = 'required'
+statement = 'A later comparison that shows a resolved regression again MUST reopen its work item.'
+binds_to = 'system'
+rationale = 'A problem that comes back is never lost as already fixed.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-103' } ]
+
+[[requirement]]
+id = 'EU-0020-105'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse to admit an example derived from a correction into the corpus without the owner's recorded permission for that example and for evaluation."
+binds_to = 'system'
+rationale = 'A musician decides which of their corrections become test material.'
+
+[[requirement]]
+id = 'EU-0020-106'
+level = 'MUST'
+polarity = 'required'
+statement = 'A withdrawn example MUST be left out of every later corpus version, including one being assembled when it is withdrawn.'
+binds_to = 'system'
+rationale = 'A withdrawal takes effect at once for every corpus that is not yet published.'
+
+[[requirement]]
+id = 'EU-0020-107'
+level = 'MUST'
+polarity = 'required'
+statement = 'A report published before a withdrawal MUST keep showing its original corpus together with the withdrawal.'
+binds_to = 'system'
+rationale = 'Past results stay reproducible, and their readers see what was withdrawn since.'
+
+[[requirement]]
+id = 'EU-0020-108'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a method runs on more than one kind of hardware, its results on each kind MUST be compared for accuracy as well as for speed.'
+binds_to = 'system'
+rationale = 'A faster profile that answers differently is found before it is used.'
+
+[[requirement]]
+id = 'EU-0020-109'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse an evaluation report or a calibration record whose corpus, split or method version doesn't match the versions it names."
+binds_to = 'system'
+rationale = 'A report or a calibration never rests on evidence from another corpus, split or method version.'
+
+[[requirement]]
+id = 'EU-0020-110'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST refuse to publish a corpus version that holds an example derived from a correction whose owner's permission for that example and for evaluation doesn't hold at publication."
+binds_to = 'system'
+rationale = 'A permission withdrawn or narrowed after admission still keeps the example out of the next corpus version.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-105' } ]
+
+[[requirement]]
+id = 'EU-0020-111'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST accept the publication of a comparison that shows a regression.'
+binds_to = 'system'
+rationale = 'A failing comparison is the evidence a regression needs, so it is never held back.'
+
+[[requirement]]
+id = 'EU-0020-112'
+level = 'MUST'
+polarity = 'required'
+statement = 'A comparison whose publication was interrupted MUST open or join its work item once the system recovers.'
+binds_to = 'system'
+rationale = 'An interruption never leaves a regression untracked or tracked twice.'
+relations = [ { kind = 'depends_on', target = 'EU-0020-103' } ]

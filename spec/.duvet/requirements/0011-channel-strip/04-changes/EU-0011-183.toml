@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-183"
+
+[[spec]]
+level = "MUST"
+quote = "An apply of a held proposal that repeats an earlier apply of the musician MUST be refused."

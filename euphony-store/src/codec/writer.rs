@@ -112,7 +112,10 @@ impl<S: Storage> Drop for Writer<S> {
         let (samples, coordinates) = match (samples, coordinates) {
             (Ok(samples), Ok(coordinates)) => (samples, coordinates),
             (Err(err), _) | (_, Err(err)) => {
-                log::error!("could not write a sink's streams, so its index isn't written: {}", err);
+                log::error!(
+                    "could not write a sink's streams, so its index isn't written: {}",
+                    err
+                );
                 return;
             }
         };
@@ -122,8 +125,8 @@ impl<S: Storage> Drop for Writer<S> {
             coordinates: Digest(coordinates),
         };
 
-        let result = record::encode(&index)
-            .and_then(|bytes| self.storage.write_record(&self.hash, &bytes));
+        let result =
+            record::encode(&index).and_then(|bytes| self.storage.write_record(&self.hash, &bytes));
 
         if let Err(err) = result {
             log::error!("could not write a sink's index: {}", err);

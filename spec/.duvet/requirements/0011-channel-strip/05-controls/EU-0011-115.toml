@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-115"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to open a stage's full controls from its simple view with one action."

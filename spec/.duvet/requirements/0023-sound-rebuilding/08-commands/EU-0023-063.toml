@@ -2,4 +2,4 @@ target = "rendered/0023-sound-rebuilding/08-commands.md#EU-0023-063"
 
 [[spec]]
 level = "MUST"
-quote = "Where a run doesn't finish, the run command MUST return one of cancelled, failed fit and worker lost."
+quote = "Where a run doesn't finish, the run command MUST return one of cancelled and failed fit."

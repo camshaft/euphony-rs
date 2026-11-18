@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-096"
+
+[[spec]]
+level = "MUST"
+quote = "The release record of a method version MUST state an explicit acceptance criterion for its intended use and the result against that criterion."

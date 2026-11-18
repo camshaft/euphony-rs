@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-126"
+
+[[spec]]
+level = "MUST"
+quote = "A finding MUST count its cases and its distinct submission identities by release."

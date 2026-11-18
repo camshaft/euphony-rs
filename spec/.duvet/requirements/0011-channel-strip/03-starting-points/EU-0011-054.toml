@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-054"
+
+[[spec]]
+level = "SHOULD"
+quote = "The released role profiles SHOULD cover at least lead vocal, backing vocal, kick, snare, drum overheads, bass, electric guitar, acoustic guitar, piano, pad and a general role."

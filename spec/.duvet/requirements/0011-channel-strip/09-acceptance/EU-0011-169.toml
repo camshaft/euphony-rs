@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-169"
+
+[[spec]]
+level = "MUST"
+quote = "Until the musician sets a criterion, each listening result MUST be reported as unverified."

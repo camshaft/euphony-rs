@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-054"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST record each note-on a route emits in the note ledger with the exact destinations and pitches it produced."

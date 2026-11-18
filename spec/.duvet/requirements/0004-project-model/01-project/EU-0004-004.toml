@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/01-project.md#EU-0004-004"
+
+[[spec]]
+level = "MUST"
+quote = "The times of a project MUST NOT depend on the clock of any computer that holds, plays or renders it."

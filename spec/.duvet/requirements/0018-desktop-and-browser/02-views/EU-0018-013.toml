@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-013"
+
+[[spec]]
+level = "MUST"
+quote = "A view MUST NOT define a command of its own that changes a project."

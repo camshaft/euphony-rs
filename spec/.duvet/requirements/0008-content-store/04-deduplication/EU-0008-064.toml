@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-064"
+
+[[spec]]
+level = "MUST"
+quote = "The library scan MUST NOT change the library it reads."

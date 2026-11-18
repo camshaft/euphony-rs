@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-206"
+
+[[spec]]
+level = "MUST"
+quote = "A synthesizer capture MUST keep each queued experiment when the device overruns or drops an update."

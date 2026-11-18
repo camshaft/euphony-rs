@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-066"
+
+[[spec]]
+level = "MUST"
+quote = "Another computer that shows the picture MUST show each frame at the presentation time that the session's clock synchronization maps for its samples."

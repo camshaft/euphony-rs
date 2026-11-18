@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-060"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST discard the pending events of a route generation it replaces."

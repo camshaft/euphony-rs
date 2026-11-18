@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-014"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to place each send before or after the fader."

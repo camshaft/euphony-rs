@@ -1,0 +1,226 @@
+[section]
+anchor = 'control'
+title = 'Review, control and explanation'
+problem = """\
+  Without a review that shows what a proposal changes and a record of what each assisted change used, an owner can neither decide what an assistant learns, nor find out why it did what it did, nor take it back."""
+motivation = """\
+  An ordinary, undoable accept command held by the owner alone, and a Why view joined from the records each assisted change keeps, put every lasting lesson under the owner's decision and let the owner reverse it."""
+prose = """
+The owner reviews each proposal: its meaning, its scope, its strength, the evidence for and against
+it, the behavior it is expected to change and the exact diff of its version. The owner's accept
+command approves it, edits and approves it, or rejects it, and the owner can undo that decision. An
+assistant can keep permitted evidence, draft a tentative proposal, prepare a preview and make
+low-risk, undoable session edits the owner already authorized, each with its reason and its
+reversal, and none of these adopts a lasting preference or mechanism. Each assisted change records
+the context it was made under, the preference and mechanism versions that applied, typed links to
+its effects and the explanation the assistant gave. The Why view shows those records to a viewer
+under the viewer's current permissions. A reset withdraws the preferences of selected scopes and can
+be undone; a purge removes retained evidence and exports and can't be undone."""
+
+[[requirement]]
+id = 'EU-0019-065'
+level = 'MUST'
+polarity = 'required'
+statement = 'Before the owner decides a proposal, euphony MUST show its meaning, scope, strength, supporting and contrary evidence, expected affected behavior and exact version diff.'
+binds_to = 'system'
+rationale = 'The owner decides with everything the proposal depends on in view.'
+
+[[requirement]]
+id = 'EU-0019-066'
+level = 'MUST'
+polarity = 'required'
+statement = "The owner's accept command MUST record approve, edit-and-approve or reject."
+binds_to = 'system'
+rationale = 'Each decision of the owner is one recorded outcome.'
+
+[[requirement]]
+id = 'EU-0019-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to undo a decision of the accept command.'
+binds_to = 'system'
+rationale = 'An approval is an ordinary decision the owner can take back.'
+
+[[requirement]]
+id = 'EU-0019-068'
+level = 'MUST'
+polarity = 'required'
+statement = "A changed proposal MUST need the owner's approval of the changed version."
+binds_to = 'system'
+rationale = 'An approval covers the exact version the owner read.'
+
+[[requirement]]
+id = 'EU-0019-069'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant MUST NOT approve a proposal.'
+binds_to = 'system'
+rationale = "Lasting adoption is the owner's choice alone."
+
+[[requirement]]
+id = 'EU-0019-070'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The owner's learning store MUST NOT store a collaborator's taste."
+binds_to = 'system'
+rationale = "Each person's taste stays their own."
+
+[[requirement]]
+id = 'EU-0019-071'
+level = 'MAY'
+polarity = 'required'
+statement = 'An assistant MAY make low-risk, undoable session edits that the owner already authorized.'
+binds_to = 'system'
+rationale = 'An assistant can help within a session without waiting on each step.'
+
+[[requirement]]
+id = 'EU-0019-072'
+level = 'MUST'
+polarity = 'required'
+statement = "Each action an assistant takes without the owner's acceptance MUST record its reason and its reversal."
+binds_to = 'system'
+rationale = 'The owner can see and undo everything an assistant did on its own.'
+
+[[requirement]]
+id = 'EU-0019-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An action an assistant takes without the owner's acceptance MUST NOT adopt a lasting preference or mechanism."
+binds_to = 'system'
+rationale = 'Nothing lasting is learned without the owner.'
+
+[[requirement]]
+id = 'EU-0019-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Sharing, external export, disclosure to a provider and purge of learning MUST each wait for the owner's approval of the exact effect."
+binds_to = 'system'
+rationale = "Each act that sends learning away or destroys it is the owner's informed choice."
+
+[[requirement]]
+id = 'EU-0019-075'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A retrospective or another model's review MUST NOT take the place of the owner's approval."
+binds_to = 'system'
+rationale = 'A favorable review is advice, never consent.'
+
+[[requirement]]
+id = 'EU-0019-076'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each assisted change MUST record its context manifest, the preference and mechanism versions that applied, typed links to its effects and the explanation the assistant supplied.'
+binds_to = 'system'
+rationale = 'The owner can find out what each assisted change depended on.'
+
+[[requirement]]
+id = 'EU-0019-077'
+level = 'MUST'
+polarity = 'required'
+statement = "The Why view MUST join the records of an assisted change under the viewer's current permissions."
+binds_to = 'system'
+rationale = "An explanation never shows a viewer what they can't read."
+
+[[requirement]]
+id = 'EU-0019-078'
+level = 'MUST'
+polarity = 'required'
+statement = 'The Why view MUST mark a missing explanation or unavailable evidence as missing or unavailable.'
+binds_to = 'system'
+rationale = 'A gap in the record is shown as a gap.'
+
+[[requirement]]
+id = 'EU-0019-079'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The Why view MUST NOT present an assistant's explanation as proof of its reasoning."
+binds_to = 'system'
+rationale = "An explanation is the assistant's account, not a record of how it decided."
+
+[[requirement]]
+id = 'EU-0019-080'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to inspect the history of each preference and mechanism.'
+binds_to = 'system'
+rationale = 'The owner sees how each lesson came to be.'
+
+[[requirement]]
+id = 'EU-0019-202'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each read of evidence, of a history or of the Why view MUST return one page and the cursor that reads the next page.'
+binds_to = 'system'
+rationale = 'A read costs the same however long the history grows.'
+
+[[requirement]]
+id = 'EU-0019-081'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to withdraw an approval.'
+binds_to = 'system'
+rationale = 'The owner can change their mind at any time.'
+
+[[requirement]]
+id = 'EU-0019-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to reset the preferences of selected scopes.'
+binds_to = 'system'
+rationale = 'The owner can start a scope over without losing the others.'
+
+[[requirement]]
+id = 'EU-0019-083'
+level = 'MUST'
+polarity = 'required'
+statement = 'A reset MUST commit withdrawal records and invalidate each context handle it affects.'
+binds_to = 'system'
+rationale = 'No assistant goes on working from preferences the owner reset.'
+
+[[requirement]]
+id = 'EU-0019-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to export the preferences they can read in a documented, versioned format.'
+binds_to = 'system'
+rationale = "The owner's preferences stay portable."
+
+[[requirement]]
+id = 'EU-0019-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'A purge MUST remove exactly the retained evidence and exports it names.'
+binds_to = 'system'
+rationale = 'The owner knows what a purge destroys.'
+
+[[requirement]]
+id = 'EU-0019-086'
+level = 'MUST'
+polarity = 'required'
+statement = "Before a purge, euphony MUST show what the purge can't recover."
+binds_to = 'system'
+rationale = 'The owner sees what is lost for good before choosing it.'
+
+[[requirement]]
+id = 'EU-0019-087'
+level = 'MUST'
+polarity = 'required'
+statement = 'A purge MUST be a separate operation from a reset.'
+binds_to = 'system'
+rationale = 'A reversible reset never destroys evidence by surprise.'
+
+[[requirement]]
+id = 'EU-0019-088'
+level = 'MUST'
+polarity = 'required'
+statement = 'An imported preference or mechanism MUST arrive as a proposal that keeps its source attribution.'
+binds_to = 'system'
+rationale = 'An import is reviewed like any other proposal.'
+
+[[requirement]]
+id = 'EU-0019-089'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An import MUST NOT carry an approval or an access grant.'
+binds_to = 'system'
+rationale = 'An approval or a grant made elsewhere never applies here by itself.'

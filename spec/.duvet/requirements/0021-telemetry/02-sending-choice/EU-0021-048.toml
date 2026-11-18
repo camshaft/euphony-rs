@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-048"
+
+[[spec]]
+level = "MUST"
+quote = "A rebuilt batch MUST have an identity and a digest of its own."

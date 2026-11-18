@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-031"
+
+[[spec]]
+level = "MUST"
+quote = "Evidence MUST preserve ties, skipped trials, unknown motives and incomplete capture as they were recorded."

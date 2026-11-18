@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-094"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST receive each later change of its control map as an event, without polling."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-127"
+
+[[spec]]
+level = "MUST"
+quote = "A batch MUST carry its project, the revision it expects, an idempotency identity and its edits."

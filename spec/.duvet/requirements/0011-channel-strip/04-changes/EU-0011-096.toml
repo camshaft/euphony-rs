@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-096"
+
+[[spec]]
+level = "MUST"
+quote = "Where a new take, analysis result, calculation version or approved preference would change a stage's starting point, the strip MUST offer Dial in again on that stage."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-010"
+
+[[spec]]
+level = "MUST"
+quote = "Each component MUST record a resource sample of its processor time, peak and steady resident memory, disk bytes read and written, temporary bytes and network bytes when a job completes, when transport starts or stops, when the operating system signals memory or storage pressure, and when a session ends."

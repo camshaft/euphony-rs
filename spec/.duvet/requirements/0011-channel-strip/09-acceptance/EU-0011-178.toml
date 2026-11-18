@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-178"
+
+[[spec]]
+level = "SHOULD"
+quote = "On comparable tracks, the offsets the musician keeps after a starting point SHOULD become smaller from one release to the next."

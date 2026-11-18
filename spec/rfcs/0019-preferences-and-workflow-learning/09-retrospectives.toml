@@ -1,0 +1,101 @@
+[section]
+anchor = 'retrospectives'
+title = 'Retrospectives'
+problem = """\
+  The lessons of a session are lost where nothing asks for them when it ends, and a review that runs on a timer, repeats itself after an interruption or treats silence as success records lessons no one can trust."""
+motivation = """\
+  Retrospective work created by the event that ends a session, over a closed interval of events, resumable by cursor and reviewed by the owner change by change, records each session's lessons once and leaves each lasting change to the owner."""
+prose = """
+The end of a session, the completion of a project or an explicit request creates retrospective
+work over a closed interval of events. The assistant that picks up the work reads that interval
+and records what worked, what needed correction, the problems still open, the gaps in evidence,
+and its proposals of preferences and mechanisms. The owner sees the proposed changes together as
+one diff and decides each of them on its own."""
+
+[[requirement]]
+id = 'EU-0019-154'
+level = 'MUST'
+polarity = 'required'
+statement = 'The end of a session, the completion of a project or an explicit request MUST create retrospective work over a closed interval of events.'
+binds_to = 'system'
+rationale = "Each session's lessons are asked for when it ends."
+
+[[requirement]]
+id = 'EU-0019-155'
+level = 'MUST'
+polarity = 'required'
+statement = 'Creating retrospective work MUST be idempotent for the same interval.'
+binds_to = 'system'
+rationale = 'One interval is reviewed once.'
+
+[[requirement]]
+id = 'EU-0019-156'
+level = 'MUST'
+polarity = 'required'
+statement = 'A retrospective MUST record what worked, what needed correction, unresolved problems, evidence gaps and its proposals.'
+binds_to = 'system'
+rationale = 'A retrospective leaves a complete account for the owner.'
+
+[[requirement]]
+id = 'EU-0019-157'
+level = 'MUST'
+polarity = 'required'
+statement = 'An interrupted retrospective MUST resume from its cursor.'
+binds_to = 'system'
+rationale = 'An interruption costs neither work nor duplicates.'
+
+[[requirement]]
+id = 'EU-0019-158'
+level = 'MUST'
+polarity = 'required'
+statement = "Evidence that arrives after a retrospective's interval MUST create a linked amendment instead of duplicate proposals."
+binds_to = 'system'
+rationale = 'Late evidence adds to a review instead of repeating it.'
+
+[[requirement]]
+id = 'EU-0019-159'
+level = 'MUST'
+polarity = 'required'
+statement = 'The event that creates retrospective work MUST make the work available at once and at the next connection of an assistant.'
+binds_to = 'system'
+rationale = "The work is ready whenever the person's assistant is."
+
+[[requirement]]
+id = 'EU-0019-160'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Retrospective work MUST NOT depend on polling or on a calendar wake.'
+binds_to = 'system'
+rationale = 'A retrospective follows the event that asked for it.'
+
+[[requirement]]
+id = 'EU-0019-210'
+level = 'MUST'
+polarity = 'required'
+statement = 'Euphony MUST show the owner the changes a retrospective proposes together as one diff.'
+binds_to = 'system'
+rationale = "The owner reads a retrospective's proposals as a whole before deciding each one."
+
+[[requirement]]
+id = 'EU-0019-161'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to accept or reject each change a retrospective proposes on its own.'
+binds_to = 'system'
+rationale = 'One good proposal never carries a bad one with it.'
+
+[[requirement]]
+id = 'EU-0019-162'
+level = 'MUST'
+polarity = 'required'
+statement = 'A retrospective that found nothing MUST record its coverage and the versions it examined.'
+binds_to = 'system'
+rationale = 'An empty result shows what was looked at.'
+
+[[requirement]]
+id = 'EU-0019-163'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Euphony MUST NOT consider learning complete because an assistant stopped receiving corrections.'
+binds_to = 'system'
+rationale = 'Silence is not evidence that a lesson was learned.'

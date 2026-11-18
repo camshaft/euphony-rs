@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-041"
+
+[[spec]]
+level = "MUST"
+quote = "Each answer to a read of a project MUST name the revision it shows."

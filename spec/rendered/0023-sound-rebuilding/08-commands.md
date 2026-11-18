@@ -30,7 +30,7 @@ The run command MUST return durable state events and each candidate as it finish
 
 ### EU-0023-063 {#EU-0023-063}
 
-Where a run doesn't finish, the run command MUST return one of cancelled, failed fit and worker lost.
+Where a run doesn't finish, the run command MUST return one of cancelled and failed fit.
 
 ### EU-0023-064 {#EU-0023-064}
 
@@ -63,3 +63,7 @@ A rebuild MUST NOT send anything outside the owner's computers.
 ### EU-0023-071 {#EU-0023-071}
 
 A worker's result MUST NOT change the project.
+
+### EU-0023-076 {#EU-0023-076}
+
+The run command MUST return worker lost when a worker of the run is lost.

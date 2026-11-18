@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-083"
+
+[[spec]]
+level = "MUST"
+quote = "A sequence gap the recovery journal doesn't cover MUST reach the route as a gap event."

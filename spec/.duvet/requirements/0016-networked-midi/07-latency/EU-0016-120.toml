@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-120"
+
+[[spec]]
+level = "MUST"
+quote = "A delay measurement MUST report its uncertainty."

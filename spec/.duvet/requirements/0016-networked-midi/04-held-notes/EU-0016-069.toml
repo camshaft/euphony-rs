@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-069"
+
+[[spec]]
+level = "MUST"
+quote = "On reconnection, the session host MUST clear the remote note and controller state its routes own before it admits new notes."

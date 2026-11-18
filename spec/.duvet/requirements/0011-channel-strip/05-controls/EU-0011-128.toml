@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-128"
+
+[[spec]]
+level = "MUST"
+quote = "The phone controllers and the control surfaces MUST show the simple view of each stage."

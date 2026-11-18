@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-010"
+
+[[spec]]
+level = "MUST"
+quote = "A video in a format that no decoder of a computer reads MUST show as unavailable on that computer, with the reason."

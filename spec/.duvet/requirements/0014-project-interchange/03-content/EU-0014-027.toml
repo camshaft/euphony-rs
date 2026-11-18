@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/03-content.md#EU-0014-027"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST convert each track's automation of its mixer controls and its effect controls."

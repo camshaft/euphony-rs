@@ -1,0 +1,174 @@
+[section]
+anchor = 'changes'
+title = 'Changes, undo and assistants'
+problem = "Settings that move by themselves, an assistant that changes the sound during a take, and a switch that takes several steps to undo all make a musician lose what they had."
+motivation = "Settings that change only on request, an assistant's change held while the transport runs, and one undo step for each change let a musician trust the strip and get back what they had."
+prose = """
+A stage's settings change only when the musician, or an assistant the musician connected, asks. The
+strip keeps each stage's starting point and the musician's offsets from it apart, so that a change of
+taste shows as an offset. A new take, a new analysis result, a new calculation version or a newly
+approved preference offers Dial in again and changes nothing until someone asks. The musician's own
+change applies at once, as turning a knob does. An assistant acts as the musician, under the trust
+model of RFC 0001, through the same commands as every client; while the transport plays or records,
+its change to a strip waits as a proposal, a timing rule for sound and not a permission. Every
+switch, dial-in and adjustment is one step of the project's history, as RFC 0004 specifies it."""
+
+[[requirement]]
+id = 'EU-0011-094'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A stage's settings MUST NOT change except at the request of the musician or of an assistant the musician connected."
+binds_to = 'system'
+rationale = "The sound of a track never drifts by itself."
+
+[[requirement]]
+id = 'EU-0011-095'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A new take, a new analysis result, a new calculation version or a newly approved preference MUST NOT change a stage's settings."
+binds_to = 'system'
+rationale = "New information offers a change and never makes one."
+
+[[requirement]]
+id = 'EU-0011-096'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a new take, analysis result, calculation version or approved preference would change a stage's starting point, the strip MUST offer Dial in again on that stage."
+binds_to = 'system'
+rationale = "The musician learns that a better starting point may exist, and chooses whether to use it."
+
+[[requirement]]
+id = 'EU-0011-097'
+level = 'MUST'
+polarity = 'required'
+statement = "Dial in again MUST keep the musician's offsets on top of the new starting point unless the musician clears them."
+binds_to = 'system'
+rationale = "The musician's adjustments survive a new starting point."
+
+[[requirement]]
+id = 'EU-0011-098'
+level = 'MUST'
+polarity = 'required'
+statement = "A stage MUST keep its starting point and the musician's offsets from it apart."
+binds_to = 'system'
+rationale = "The musician's change of taste stays visible, and a new starting point keeps it."
+
+[[requirement]]
+id = 'EU-0011-099'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician's own change to a stage MUST apply at once, during playback and recording too."
+binds_to = 'system'
+rationale = "Turning a control changes the sound as a knob on a console does."
+
+[[requirement]]
+id = 'EU-0011-100'
+level = 'MUST'
+polarity = 'required'
+statement = "While the transport plays or records, an assistant's change to a strip MUST wait as a proposal."
+binds_to = 'system'
+rationale = "An assistant never changes the sound under a take or a performance."
+
+[[requirement]]
+id = 'EU-0011-101'
+level = 'MUST'
+polarity = 'required'
+statement = "A held proposal MUST apply when the transport stops."
+binds_to = 'system'
+rationale = "An assistant's change arrives as soon as it can't disturb anything."
+
+[[requirement]]
+id = 'EU-0011-102'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A held proposal MUST NOT apply during playback or recording unless the musician applies it from their native client."
+binds_to = 'system'
+rationale = "Only the musician decides that a change is safe to hear mid-take."
+
+[[requirement]]
+id = 'EU-0011-103'
+level = 'MUST'
+polarity = 'required'
+statement = "An apply of a held proposal that an assistant, a script or the command line sends MUST be refused."
+binds_to = 'system'
+rationale = "An assistant can't approve its own change during playback."
+
+[[requirement]]
+id = 'EU-0011-183'
+level = 'MUST'
+polarity = 'required'
+statement = "An apply of a held proposal that repeats an earlier apply of the musician MUST be refused."
+binds_to = 'system'
+rationale = "A replayed apply can't stand in for the musician's decision now."
+
+[[requirement]]
+id = 'EU-0011-104'
+level = 'MUST'
+polarity = 'required'
+statement = "An assistant MUST read and change a strip through the same commands as the musician's clients."
+binds_to = 'system'
+rationale = "An assistant sees and does exactly what the musician could."
+
+[[requirement]]
+id = 'EU-0011-105'
+level = 'MUST'
+polarity = 'required'
+statement = "The same strip workflow MUST produce the same project history whether it is made from the interface, the command line or an assistant."
+binds_to = 'system'
+rationale = "No client has a path to the strip that the others lack."
+
+[[requirement]]
+id = 'EU-0011-106'
+level = 'MUST'
+polarity = 'required'
+statement = "Each switch, dial-in and adjustment of a stage MUST be one step of the project's undo history."
+binds_to = 'system'
+rationale = "Every change can be taken back."
+
+[[requirement]]
+id = 'EU-0011-107'
+level = 'MUST'
+polarity = 'required'
+statement = "One undo MUST reverse both a stage's switch and its starting point."
+binds_to = 'system'
+rationale = "Switching a stage on is one action, and so is taking it back."
+
+[[requirement]]
+id = 'EU-0011-108'
+level = 'MUST'
+polarity = 'required'
+statement = "Undo, redo, compare and reset MUST restore the exact earlier state of a stage."
+binds_to = 'system'
+rationale = "Going back always returns to what the musician had."
+
+[[requirement]]
+id = 'EU-0011-109'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to switch between a stage's current settings and its previous settings, both level-matched."
+binds_to = 'system'
+rationale = "The musician judges by ear whether a change helped, without loudness deciding for them."
+
+[[requirement]]
+id = 'EU-0011-110'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to reset a stage to its starting point by clearing its offsets."
+binds_to = 'system'
+rationale = "The calculated starting point is always one action away."
+
+[[requirement]]
+id = 'EU-0011-111'
+level = 'MUST'
+polarity = 'required'
+statement = "A collaborator with an edit link MUST dial stages in only on their own branch."
+binds_to = 'system'
+rationale = "A collaborator's changes reach the owner's project only through its branch."
+
+[[requirement]]
+id = 'EU-0011-112'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A participant with listen or comment access alone MUST NOT change a strip."
+binds_to = 'system'
+rationale = "Listeners and commenters never change the sound."

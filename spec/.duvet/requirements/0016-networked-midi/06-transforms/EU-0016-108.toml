@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-108"
+
+[[spec]]
+level = "MUST"
+quote = "Bypassing a route's transforms MUST be an explicit revision of the route."

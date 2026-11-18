@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-015"
+
+[[spec]]
+level = "MUST"
+quote = "Audio captured between the takes of a continuous capture MUST be kept as an item of the take group."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-162"
+
+[[spec]]
+level = "MUST"
+quote = "After a release, the service MUST post its comparison on the release's tracking issue."

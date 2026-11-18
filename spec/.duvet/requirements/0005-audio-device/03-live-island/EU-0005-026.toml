@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-026"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST show the musician when playback sounds a revision other than the current one."

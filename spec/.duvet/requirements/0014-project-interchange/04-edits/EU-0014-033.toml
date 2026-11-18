@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/04-edits.md#EU-0014-033"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST report a combination of automation inside a region and track automation that no modulation combination mode expresses."

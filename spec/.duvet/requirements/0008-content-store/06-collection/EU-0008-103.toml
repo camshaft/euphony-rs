@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-103"
+
+[[spec]]
+level = "MUST"
+quote = "A holder MUST NOT remove a chunk of an intent before the deleted outcome of that intent is recorded."

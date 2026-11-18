@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-026"
+
+[[spec]]
+level = "MUST"
+quote = "A route's curve MUST be a versioned piecewise mapping with a stored interpolation and defined end points."

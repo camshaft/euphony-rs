@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-022"
+
+[[spec]]
+level = "MUST"
+quote = "Each upstream-derived file MUST have a provenance record before it is published."

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-031"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST display and edit bidirectional text, combining marks and fallback glyphs with correct selection and caret placement."

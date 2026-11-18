@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/03-invalidation.md#EU-0006-028"
+
+[[spec]]
+level = "MUST"
+quote = "Each feedback cycle MUST be rendered inside one render island with an explicit delay."

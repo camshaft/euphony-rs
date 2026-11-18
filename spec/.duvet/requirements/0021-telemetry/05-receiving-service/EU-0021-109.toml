@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-109"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST delete a report's attachments once its finding closes and the next release's comparison is published, or once the person deletes them."

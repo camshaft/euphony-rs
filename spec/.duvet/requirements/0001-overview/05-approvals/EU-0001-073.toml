@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-073"
+
+[[spec]]
+level = "MUST"
+quote = "A client session on the owner's first computer, such as a command line, a script or an assistant, MUST NOT be able to make an owner-interaction record as that computer's local console."

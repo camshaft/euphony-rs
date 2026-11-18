@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/01-scope.md#EU-0020-002"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST list each available method with its version, the result families it produces and the material it supports."

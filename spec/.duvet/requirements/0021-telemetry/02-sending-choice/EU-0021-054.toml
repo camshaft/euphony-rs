@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-054"
+
+[[spec]]
+level = "MUST"
+quote = "A send authorization MUST come only from the owner's own review of the batch on a paired owner device."

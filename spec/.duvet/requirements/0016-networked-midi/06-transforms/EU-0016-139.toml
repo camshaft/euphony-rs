@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-139"
+
+[[spec]]
+level = "MUST"
+quote = "The interface MUST let a musician choose an explicit projection rule other than nearest note."

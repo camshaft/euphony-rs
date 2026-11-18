@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-068"
+
+[[spec]]
+level = "MUST"
+quote = "A control surface or a phone MUST show the timecode, the current cue and marker, and a countdown to the next hit."

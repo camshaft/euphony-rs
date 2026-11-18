@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-124"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator MUST NOT reach any operation of placement or of the catalog, or any operation of the store over the content of the owner other than a fetch of the items that the revisions of a project its links reach refer to."

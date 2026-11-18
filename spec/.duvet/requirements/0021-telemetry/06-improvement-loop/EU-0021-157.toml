@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-157"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST close a fixed finding only where its declared criterion is met."

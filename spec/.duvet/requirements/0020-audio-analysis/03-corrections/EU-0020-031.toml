@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-031"
+
+[[spec]]
+level = "MUST"
+quote = "An accepted interpretation MUST be reusable by later work without the analysis running again."

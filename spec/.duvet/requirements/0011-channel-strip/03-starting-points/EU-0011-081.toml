@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-081"
+
+[[spec]]
+level = "SHOULD"
+quote = "The de-esser's starting threshold SHOULD reduce those events by the role's target reduction."

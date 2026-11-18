@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/02-views.md#EU-0018-010"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST provide a track list, an inspector, a transport, rulers, an asset browser and the composition editor beside the main views."

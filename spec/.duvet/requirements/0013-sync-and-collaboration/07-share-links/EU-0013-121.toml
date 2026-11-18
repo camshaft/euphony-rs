@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-121"
+
+[[spec]]
+level = "MUST"
+quote = "A merge MUST NOT treat annotations as edits."

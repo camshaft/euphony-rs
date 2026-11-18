@@ -1,0 +1,102 @@
+[section]
+anchor = 'clients'
+title = 'Views and assistants'
+problem = """\
+  An analysis that only one interface reaches leaves the musician or the assistant without it, a \
+  view that shows a guess like a measurement misleads the musician, and an assistant that reads \
+  instructions out of a result can be turned against the musician by the audio it analyzes."""
+motivation = """\
+  One set of analysis actions shared by the interface for people and the interface for assistants, \
+  views that show what kind of data each result is, and results read as data alone give both the \
+  same abilities and keep both safe."""
+prose = """
+The analysis actions are: list the methods and what they produce; request an analysis and cancel
+it; inspect the state of a job and read its results a page at a time; compare the results of
+methods; propose a correction; preview and apply an accepted interpretation; and remove a result
+that no project keeps. A reader can read each result's series, its alternatives, its provenance and
+the evaluation reports of its method, and can follow the progress, the completion, the invalidation
+and the correction of the results it reads. The views for people are a key and chord lane, a tuning
+display, an editable map of beats, tempo and meter, an overlay of sections and repeats, a preview of
+melody and notes, an audition of stems, a browser of instruments and tags, a lyric lane, and meters
+of loudness, spectrum and stereo. An assistant the owner connects works with the same authority as
+the musician, and neither interface overwrites the musician's music."""
+
+[[requirement]]
+id = 'EU-0020-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'The interface for people and the interface for assistants MUST offer the same analysis actions.'
+binds_to = 'system'
+rationale = 'A musician and an assistant can each do whatever the other can with analysis.'
+
+[[requirement]]
+id = 'EU-0020-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'An assistant the owner authorized MUST be able to inspect and correct results with the same authority as the musician.'
+binds_to = 'system'
+rationale = 'An assistant helps with the same work the musician does, under the same trust.'
+
+[[requirement]]
+id = 'EU-0020-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'The system MUST notify each subscribed reader of the progress, completion, invalidation and correction of the results it follows.'
+binds_to = 'system'
+rationale = 'A reader learns of each change as it happens, without asking again.'
+
+[[requirement]]
+id = 'EU-0020-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'A reader that cannot hold a subscription MUST be able to resume from a durable continuation instead of polling.'
+binds_to = 'system'
+rationale = 'Every reader waits on events, whatever its interface supports.'
+
+[[requirement]]
+id = 'EU-0020-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'A query of an analysis that has not finished MUST return the part it covers so far and a cursor to continue from.'
+binds_to = 'system'
+rationale = 'An interrupted analysis never passes for a complete one, and its reader picks up where it stopped.'
+
+[[requirement]]
+id = 'EU-0020-113'
+level = 'MUST'
+polarity = 'required'
+statement = "A read of a result's series MUST return one page, with a cursor to the next page or, on the last page of a finished analysis, a mark that the series ends."
+binds_to = 'system'
+rationale = 'A series grows with the duration of the audio, and each read of it stays bounded however long the audio is.'
+
+[[requirement]]
+id = 'EU-0020-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each view MUST show whether the data it shows is measured, inferred, corrected, stale, incomplete or unsupported.'
+binds_to = 'system'
+rationale = 'A musician never takes a guess for a measurement or an old result for a current one.'
+
+[[requirement]]
+id = 'EU-0020-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each result shown to a musician or an assistant MUST show its uncertainty and its source passage.'
+binds_to = 'system'
+rationale = 'Every reader judges a result by how sure it is and by the audio it describes.'
+
+[[requirement]]
+id = 'EU-0020-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'Selecting a passage of a result MUST show its source range, its method, the kind of its confidence and its alternatives.'
+binds_to = 'system'
+rationale = 'A musician sees why the system suggests what it does for the passage they chose.'
+
+[[requirement]]
+id = 'EU-0020-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The system MUST NOT treat text in a result, such as lyrics, imported labels or an assistant's prose, as an instruction or a grant."
+binds_to = 'system'
+rationale = 'Audio with spoken or sung instructions cannot make an assistant act or widen access.'

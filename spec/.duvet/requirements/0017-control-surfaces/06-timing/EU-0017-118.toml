@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-118"
+
+[[spec]]
+level = "MUST"
+quote = "A meter or a remote playhead MUST report the age of what it shows."

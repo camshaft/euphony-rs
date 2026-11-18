@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-178"
+
+[[spec]]
+level = "MUST"
+quote = "When the manifest digest of the host changes, the session MUST return the collaborator to the stream, aligned on the shared timeline, before the changed audio plays."

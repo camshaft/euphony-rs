@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-068"
+
+[[spec]]
+level = "MUST"
+quote = "Forwarding, queueing or replaying a command MUST NOT change its origin."

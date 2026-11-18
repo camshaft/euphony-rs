@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-186"
+
+[[spec]]
+level = "MUST"
+quote = "Each participant MUST see the bit rate they receive."

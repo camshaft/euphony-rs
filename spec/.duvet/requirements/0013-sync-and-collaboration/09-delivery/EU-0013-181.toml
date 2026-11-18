@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/09-delivery.md#EU-0013-181"
+
+[[spec]]
+level = "MUST"
+quote = "A stream packet MUST NOT be sent again after its output time has passed."

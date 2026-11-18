@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-050"
+
+[[spec]]
+level = "MUST"
+quote = "Playback MUST start only where the plan delivers every range it reads before playback reaches that range."

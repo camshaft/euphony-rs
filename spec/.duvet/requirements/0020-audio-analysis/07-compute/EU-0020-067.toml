@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/07-compute.md#EU-0020-067"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST validate a result's request, source identities, schema, authority and completeness before it links the result to a project revision."

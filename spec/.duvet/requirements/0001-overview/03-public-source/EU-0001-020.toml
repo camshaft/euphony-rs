@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-020"
+
+[[spec]]
+level = "MUST"
+quote = "The public source, documentation and release history of euphony MUST hold only material authorized for public distribution."

@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/01-end-state.md#EU-0001-003"
+
+[[spec]]
+level = "MUST"
+quote = "Every interface and every assistant MUST reach a session as a client of the engine that runs the session."

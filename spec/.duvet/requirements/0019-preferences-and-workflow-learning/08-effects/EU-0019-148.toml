@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/08-effects.md#EU-0019-148"
+
+[[spec]]
+level = "MUST"
+quote = "Where the evidence is incomplete, an effect report MUST mark the benefit as unverified."

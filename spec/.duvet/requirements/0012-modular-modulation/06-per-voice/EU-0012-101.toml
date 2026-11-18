@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-101"
+
+[[spec]]
+level = "MUST"
+quote = "A voice MUST be identified by the port, channel, key and note identifier of the note that started it."

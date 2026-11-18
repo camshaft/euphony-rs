@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/04-problem-reports.md#EU-0021-097"
+
+[[spec]]
+level = "MUST"
+quote = "A maintainer MUST NOT publish any part of a report without the reporter's consent."

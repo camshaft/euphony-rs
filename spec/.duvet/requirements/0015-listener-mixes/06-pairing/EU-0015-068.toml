@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-068"
+
+[[spec]]
+level = "MUST"
+quote = "A station that isn't on the host's network MUST join through the session's authenticated invitation path."

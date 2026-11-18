@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/01-built-in-processors.md#EU-0010-009"
+
+[[spec]]
+level = "MUST"
+quote = "A new processor version MUST have a cache identity distinct from that of every earlier version."

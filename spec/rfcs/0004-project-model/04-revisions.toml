@@ -1,0 +1,262 @@
+[section]
+anchor = 'revisions'
+title = 'Revisions, branches and reads'
+problem = """\
+  A history that one leader holds stops everyone when that leader is lost, a musician who is offline \
+  can't edit, and a reader can't tell which state an answer shows or whether a revision was altered \
+  after it was made."""
+motivation = """\
+  Signed revisions that never change, linked in a graph, branches that each copy holds for itself, \
+  and reads that name their revision let every copy edit offline, keep working when another copy is \
+  lost, and check each revision it receives."""
+prose = """
+The creation of a project makes its first revision, which doesn't follow any revision, carries the
+signature of the copy that created the project, and becomes the head of a working branch that copy holds;
+the outcome of the creation identifies that branch. Each committed batch then makes a revision. A
+revision names the revisions it follows, its parents, so the
+revisions of a project form a graph without a cycle. A branch is a name that points at one revision,
+its head. Each copy holds its working branches and is the only copy that commits to them, so a
+musician edits their branch offline, and the loss of one copy leaves every other copy free to edit.
+How copies exchange revisions and merge branches is the subject of the sync and collaboration RFC. A
+read of a project answers with a view of one revision and names that revision. Each answer holds at
+most one page: a longer answer names the token that reads its next page, each page shows that same
+revision, and reading one page costs no more in a project with a long history than in a new one. A
+subscriber to the events of a project holds a cursor that a later subscription resumes from. euphony
+answers a read or a subscription only for a caller who may read the project, and refuses any other
+as denied. It refuses a read or a subscription of a project that doesn't exist in the same way, so
+that a refusal doesn't tell a caller whether the project exists. Access can end while a paged read or a subscription is open, such as when a link is
+revoked: from then on euphony refuses each later page of that read as denied, ends the subscription
+as denied, and delivers nothing more of the project to that caller."""
+
+[[requirement]]
+id = 'EU-0004-032'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A revision MUST NOT change once it is committed.'
+binds_to = 'system'
+rationale = 'A citation of a revision always reads the same project.'
+
+[[requirement]]
+id = 'EU-0004-033'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each revision MUST name each revision it follows.'
+binds_to = 'system'
+rationale = 'Every copy reconstructs the history of a revision from its revisions alone.'
+
+[[requirement]]
+id = 'EU-0004-034'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The revisions of a project MUST NOT form a cycle.'
+binds_to = 'system'
+rationale = 'Every history has a beginning and an order.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-033' } ]
+
+[[requirement]]
+id = 'EU-0004-083'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The first revision of a project MUST NOT follow any revision.'
+binds_to = 'system'
+rationale = 'Every history of a project begins at the revision its creation made.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-033' } ]
+
+[[requirement]]
+id = 'EU-0004-035'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each revision MUST carry a signature by which any copy verifies which copy committed it.'
+binds_to = 'system'
+rationale = 'A revision altered or forged on its way to another copy is found.'
+
+[[requirement]]
+id = 'EU-0004-084'
+level = 'MUST'
+polarity = 'required'
+statement = 'The first revision of a project MUST carry the signature of the copy that created the project.'
+binds_to = 'system'
+rationale = 'Any copy verifies where the history of a project began, though no batch made its first revision.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' } ]
+
+[[requirement]]
+id = 'EU-0004-036'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT accept a revision whose signature it cannot verify.'
+binds_to = 'system'
+rationale = 'A forged revision never enters a history.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' } ]
+
+[[requirement]]
+id = 'EU-0004-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each branch MUST point at exactly one revision.'
+binds_to = 'system'
+rationale = 'A branch always names one state of the project.'
+
+[[requirement]]
+id = 'EU-0004-085'
+level = 'MUST'
+polarity = 'required'
+statement = 'The creation of a project MUST make its first revision the head of a working branch that the copy which created the project holds.'
+binds_to = 'system'
+rationale = 'The creating copy commits the first batch of the project to that branch without waiting on another copy.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-037' }, { kind = 'depends_on', target = 'EU-0004-084' } ]
+
+[[requirement]]
+id = 'EU-0004-086'
+level = 'MUST'
+polarity = 'required'
+statement = 'The outcome of the creation of a project MUST identify the working branch whose head is the first revision of the project.'
+binds_to = 'system'
+rationale = 'The creator names that branch and the first revision in the first batch it sends.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-073' }, { kind = 'depends_on', target = 'EU-0004-085' } ]
+
+[[requirement]]
+id = 'EU-0004-038'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT commit to a working branch that another copy holds.'
+binds_to = 'system'
+rationale = 'Two copies never commit different revisions as the same next step of one branch.'
+
+[[requirement]]
+id = 'EU-0004-055'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A copy MUST NOT accept a revision on a working branch unless the copy that holds that branch signed it.'
+binds_to = 'system'
+rationale = 'A copy that may sign revisions never moves a working branch that another copy holds.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-035' }, { kind = 'depends_on', target = 'EU-0004-038' } ]
+
+[[requirement]]
+id = 'EU-0004-039'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Committing a batch MUST NOT need any other copy of the project to be reachable.'
+binds_to = 'system'
+rationale = 'A musician edits offline.'
+
+[[requirement]]
+id = 'EU-0004-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The loss of one copy MUST NOT stop another copy from committing to its branches.'
+binds_to = 'system'
+rationale = 'No copy is a leader that the others wait on.'
+
+[[requirement]]
+id = 'EU-0004-041'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each answer to a read of a project MUST name the revision it shows.'
+binds_to = 'system'
+rationale = 'A reader knows which state an answer describes, and sends it as the expected revision of its next batch.'
+
+[[requirement]]
+id = 'EU-0004-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each page of a paged answer MUST show the revision that its first page shows.'
+binds_to = 'system'
+rationale = 'A long answer never mixes two states of the project.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
+
+[[requirement]]
+id = 'EU-0004-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'A subscription resumed from a cursor MUST deliver every event after that cursor to a subscriber that may read the project.'
+binds_to = 'system'
+rationale = 'A subscriber that reconnects misses nothing.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-061' } ]
+
+[[requirement]]
+id = 'EU-0004-044'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A subscription resumed from a cursor MUST NOT deliver an event at or before that cursor.'
+binds_to = 'system'
+rationale = 'A subscriber that reconnects sees each event once.'
+
+[[requirement]]
+id = 'EU-0004-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A subscriber that may read the project MUST learn of each committed revision of the project without asking for it.'
+binds_to = 'system'
+rationale = 'A reader stays current without polling.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-061' } ]
+
+[[requirement]]
+id = 'EU-0004-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each answer to a read of a project MUST hold at most one page.'
+binds_to = 'system'
+rationale = 'A reader never has to receive or hold a whole long history or a whole large project in one answer.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-041' } ]
+
+[[requirement]]
+id = 'EU-0004-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'An answer to a read that does not hold its last page MUST name the token that reads its next page.'
+binds_to = 'system'
+rationale = 'A reader reaches every page of a long answer, one page at a time.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-052' } ]
+
+[[requirement]]
+id = 'EU-0004-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The cost of reading one page MUST NOT grow with the length of the history or the size of the project.'
+binds_to = 'system'
+rationale = 'A project with years of history reads as quickly, page by page, as a new one.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-052' } ]
+
+[[requirement]]
+id = 'EU-0004-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, from a caller who may not read the project.'
+binds_to = 'system'
+rationale = 'The state and the history of a project reach only the parties that may read it.'
+
+[[requirement]]
+id = 'EU-0004-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each read of a project, of its history or of its events, and each subscription to its events, that names a project that does not exist, with a refusal whose kind and content, apart from the values the request itself supplies, are those of its refusal of a caller who may not read an existing project.'
+binds_to = 'system'
+rationale = "A refusal doesn't tell a caller which projects exist."
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'euphony MUST NOT deliver an event of a project, or a later page of an answer about it, to a caller that may no longer read the project.'
+binds_to = 'system'
+rationale = 'A caller whose access ends, such as by a revoked link, receives nothing more of the project through a subscription or a paged read it opened before.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-061'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST end as denied each subscription to the events of a project once its subscriber may no longer read the project.'
+binds_to = 'system'
+rationale = 'A subscriber learns that its access ended, and does not wait for events that never come.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]
+
+[[requirement]]
+id = 'EU-0004-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'euphony MUST refuse as denied each later page of a paged read of a project once its caller may no longer read the project.'
+binds_to = 'system'
+rationale = 'A reader whose access ends during a paged read learns that it ended, and gets no more of the answer.'
+relations = [ { kind = 'depends_on', target = 'EU-0004-050' } ]

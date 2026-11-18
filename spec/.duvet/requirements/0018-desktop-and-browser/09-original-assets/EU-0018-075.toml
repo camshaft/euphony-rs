@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-075"
+
+[[spec]]
+level = "MUST"
+quote = "Each icon, image, texture and font in a release MUST have a provenance record that shows it is original or redistributable under a recorded license."

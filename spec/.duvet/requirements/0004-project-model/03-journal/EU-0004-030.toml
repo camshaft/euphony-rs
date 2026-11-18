@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/03-journal.md#EU-0004-030"
+
+[[spec]]
+level = "MUST"
+quote = "A lost journal MUST be restorable from a backup of that journal or from a revision of another copy that the owner chooses."

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-018"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST place every frame of a video on the project's sample timeline by the frame mapping this section states."

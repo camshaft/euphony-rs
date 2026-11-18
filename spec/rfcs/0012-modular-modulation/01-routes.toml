@@ -1,0 +1,208 @@
+[section]
+anchor = "routes"
+title = "Routes, sources and targets"
+problem = "A musician can't let one track's audio, notes, drawn curves or generated patterns vary another track's or effect's sound controls without copying curves, which loses the live relationship, or relying on each processor's own sidechain input, which leaves each processor to decide what it accepts."
+motivation = "One kind of connection, kept in the project as typed data with stable identifiers, lets any source drive any control that declares how it is modulated, and keeps the relationship live in prepared and live playback."
+prose = """
+A route connects one source to one target control. A source is an audio tap of a track, taken
+before its effects, after its effects or after its fader; a drawn automation lane, read before
+modulation; the effective value of a control, which is a separate source with its own dependency;
+note and controller events, selected by port, channel and event type; or a generated control
+output, such as a low-frequency oscillator or an envelope follower. A target is a sound control of
+a processor of any track or effect. A route records its source and tap, its target processor and
+control, its conversion and the version of that conversion, its event selector, polarity, depth,
+offset, output range, curve, requested rate, smoothing, delay, scope, aggregation and fallback.
+Each processor declares its controls in a registry of parameters, which is where a route finds
+what a control accepts. Ordinary sidechains and curve editing stay available beside routes."""
+
+[[requirement]]
+id = "EU-0012-001"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to connect a source of any track to any modulatable sound control of any track or effect."
+binds_to = "system"
+rationale = "Any track can drive another, as a modular synthesizer patches any output to any input."
+
+[[requirement]]
+id = "EU-0012-002"
+level = "MUST"
+polarity = "required"
+statement = "Each route MUST be stored in the project as typed data with an identifier that it keeps for its life."
+binds_to = "system"
+rationale = "A route stays the same route through saves, merges and edits."
+
+[[requirement]]
+id = "EU-0012-003"
+level = "MUST"
+polarity = "required"
+statement = "A route MUST refer to its source and its target by their stable identifiers, never by a track's label."
+binds_to = "system"
+rationale = "Renaming a track never breaks or redirects a route."
+
+[[requirement]]
+id = "EU-0012-004"
+level = "MUST"
+polarity = "required"
+statement = "Each track MUST offer its audio before its effects, after its effects and after its fader as sources."
+binds_to = "system"
+rationale = "A musician chooses whether a route follows the track's processing and level."
+
+[[requirement]]
+id = "EU-0012-005"
+level = "MUST"
+polarity = "required"
+statement = "A route that reads an automation lane MUST read the lane's value before modulation."
+binds_to = "system"
+rationale = "A lane read as a source doesn't carry other routes' contributions into a new route."
+
+[[requirement]]
+id = "EU-0012-006"
+level = "MUST"
+polarity = "required"
+statement = "Reading the effective value of a control MUST be a source distinct from reading its automation lane, with its own dependency."
+binds_to = "system"
+rationale = "The cycle check and the cache see which of the two a route reads."
+
+[[requirement]]
+id = "EU-0012-007"
+level = "MUST"
+polarity = "required"
+statement = "A source of note or controller events MUST select its events by port, channel and event type."
+binds_to = "system"
+rationale = "A route reads exactly the events the musician chose."
+
+[[requirement]]
+id = "EU-0012-165"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to use a low-frequency oscillator as the source of a route."
+binds_to = "system"
+rationale = "A generated control pattern drives a sound control without a track's audio or notes."
+
+[[requirement]]
+id = "EU-0012-166"
+level = "MUST"
+polarity = "required"
+statement = "A musician MUST be able to use an envelope follower of an audio signal as the source of a route."
+binds_to = "system"
+rationale = "A track's level drives another track's sound control, as a sidechain does."
+
+[[requirement]]
+id = "EU-0012-008"
+level = "MUST"
+polarity = "required"
+statement = "Following an audio signal's envelope and using the raw signal MUST be distinct conversions."
+binds_to = "system"
+rationale = "Modulation at audio rate and level following are different sounds."
+
+[[requirement]]
+id = "EU-0012-009"
+level = "MUST"
+polarity = "required"
+statement = "A conversion from a signal of more than one channel to a control value MUST state how it selects or mixes the channels."
+binds_to = "system"
+rationale = "A stereo source yields the same control value on every computer."
+
+[[requirement]]
+id = "EU-0012-010"
+level = "MUST"
+polarity = "required"
+statement = "A conversion from notes to a control value MUST state how it normalizes values and how it combines notes, including their release and sustain."
+binds_to = "system"
+rationale = "Overlapping and held notes yield a defined control value."
+
+[[requirement]]
+id = "EU-0012-011"
+level = "MUST"
+polarity = "required"
+statement = "Each built-in processor MUST declare every public control in the parameter registry, with its unit, legal domain, mapping from normalized to physical value, value kind, update capability and effect on state."
+binds_to = "system"
+rationale = "A route to any built-in control is checked against what that control accepts, not against a chosen subset of controls."
+
+[[requirement]]
+id = "EU-0012-012"
+level = "MUST"
+polarity = "required"
+statement = "A continuous control MUST accept numeric modulation."
+binds_to = "system"
+rationale = "Every continuous control can be a target."
+
+[[requirement]]
+id = "EU-0012-013"
+level = "MUST"
+polarity = "required"
+statement = "A switch or a choice among values MUST accept modulation only through an explicit threshold with hysteresis or through index selection."
+binds_to = "system"
+rationale = "A discrete control never chatters, and a fraction is never read as a choice."
+
+[[requirement]]
+id = "EU-0012-014"
+level = "MUST"
+polarity = "required"
+statement = "A control that selects a resource MUST accept modulation only as a typed choice among prepared resources, applied as one control change."
+binds_to = "system"
+rationale = "A number is never read as a path to a resource."
+
+[[requirement]]
+id = "EU-0012-015"
+level = "MUST"
+polarity = "required"
+statement = "Where a route needs a conversion its target doesn't support, the system MUST explain why before the route is activated."
+binds_to = "system"
+rationale = "The musician learns of the gap while connecting, not by hearing it."
+
+[[requirement]]
+id = "EU-0012-016"
+level = "MUST"
+polarity = "forbidden"
+statement = "Muting a track's audible output MUST NOT mute the sources it offers before its fader."
+binds_to = "system"
+rationale = "A muted track can still drive other tracks, as a sidechain source does."
+
+[[requirement]]
+id = "EU-0012-017"
+level = "MUST"
+polarity = "required"
+statement = "A source taken after the fader MUST follow its track's mute and gain."
+binds_to = "system"
+rationale = "The tap after the fader is what that track sends to the mix."
+
+[[requirement]]
+id = "EU-0012-018"
+level = "MUST"
+polarity = "forbidden"
+statement = "Soloing a track to audition it MUST NOT change the saved routes."
+binds_to = "system"
+rationale = "An audition is temporary and never edits the project."
+
+[[requirement]]
+id = "EU-0012-019"
+level = "MUST"
+polarity = "required"
+statement = "A source whose live input is missing MUST be marked unavailable, with a warning the musician sees."
+binds_to = "system"
+rationale = "A missing input is never mistaken for silence or for a real zero."
+
+[[requirement]]
+id = "EU-0012-020"
+level = "MUST"
+polarity = "required"
+statement = "The route of an unavailable source MUST contribute what its stored fallback selects: the neutral contribution, or the last value it held."
+binds_to = "system"
+rationale = "What a lost input does is a choice the project records."
+
+[[requirement]]
+id = "EU-0012-021"
+level = "MUST"
+polarity = "required"
+statement = "The fallback of a new route MUST be a contribution of zero, offset included."
+binds_to = "system"
+rationale = "By default, losing a source leaves the target at its base."
+
+[[requirement]]
+id = "EU-0012-022"
+level = "MUST"
+polarity = "forbidden"
+statement = "An offline render MUST NOT render a range for which a live source's input wasn't captured."
+binds_to = "system"
+rationale = "A bounce never invents a performance it didn't record."

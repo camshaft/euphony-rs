@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/05-accessibility.md#EU-0018-041"
+
+[[spec]]
+level = "MUST"
+quote = "The accessibility of the desktop interface MUST be verified with each supported operating system's screen reader on an actual build."

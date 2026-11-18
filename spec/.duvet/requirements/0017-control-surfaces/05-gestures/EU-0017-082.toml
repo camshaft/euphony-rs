@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-082"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST revalidate only the versions of a gesture's own targets."

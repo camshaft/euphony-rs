@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-055"
+
+[[spec]]
+level = "MUST"
+quote = "A live transform MUST use the accepted result version that was selected when the transform was activated."

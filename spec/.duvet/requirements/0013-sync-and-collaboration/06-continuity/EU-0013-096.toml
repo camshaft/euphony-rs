@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-096"
+
+[[spec]]
+level = "MUST"
+quote = "The readiness view MUST show synchronized project data, prepared audio, connected live inputs and clock lock separately."

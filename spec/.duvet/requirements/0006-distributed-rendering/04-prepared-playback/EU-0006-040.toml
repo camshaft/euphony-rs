@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-040"
+
+[[spec]]
+level = "MUST"
+quote = "Each playback segment MUST come from a single render profile."

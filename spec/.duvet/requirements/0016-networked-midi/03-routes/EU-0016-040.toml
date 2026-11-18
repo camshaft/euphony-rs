@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-040"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant the owner connects MUST be able to perform each route and transform operation a person can perform."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/03-fetch.md#EU-0008-052"
+
+[[spec]]
+level = "MUST"
+quote = "Where a region will miss its time, the session MUST do what the person chose before playing: wait before the region, or play on."

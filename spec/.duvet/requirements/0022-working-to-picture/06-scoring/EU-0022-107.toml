@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-107"
+
+[[spec]]
+level = "MUST"
+quote = "An export MUST NOT carry a streamer, a punch or the timecode overlay."

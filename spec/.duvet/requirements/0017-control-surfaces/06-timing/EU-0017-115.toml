@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/06-timing.md#EU-0017-115"
+
+[[spec]]
+level = "MUST"
+quote = "A recording control MUST NOT become a durable offline command."

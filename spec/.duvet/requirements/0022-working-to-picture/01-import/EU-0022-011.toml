@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-011"
+
+[[spec]]
+level = "MUST"
+quote = "A person MUST be able to derive the scrub copy and the thumbnails of a video on a computer whose decoders read its format."

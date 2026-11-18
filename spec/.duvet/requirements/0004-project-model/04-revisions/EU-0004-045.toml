@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/04-revisions.md#EU-0004-045"
+
+[[spec]]
+level = "MUST"
+quote = "A subscriber that may read the project MUST learn of each committed revision of the project without asking for it."

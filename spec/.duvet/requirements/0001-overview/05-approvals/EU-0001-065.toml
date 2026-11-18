@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-065"
+
+[[spec]]
+level = "MUST"
+quote = "The engine MUST take a command's origin from the authenticated client session that first sent it, never from a field of the command."

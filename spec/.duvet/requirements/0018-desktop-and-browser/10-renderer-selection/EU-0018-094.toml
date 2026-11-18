@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-094"
+
+[[spec]]
+level = "MUST"
+quote = "A selection with missing, failed, stale or mismatched evidence MUST keep the current renderer."

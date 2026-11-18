@@ -1,0 +1,78 @@
+[section]
+anchor = 'membership'
+title = 'Membership and revocation'
+problem = """\
+  Who may take part in a project is a separate question from what the project's music says, and without a separate record a merge, a stale copy or a revoked collaborator could change who belongs or slip edits in."""
+motivation = """\
+  A membership record that only the owner signs, checked on every exchange, keeps admission apart from music, and stating plainly what revocation cannot undo keeps people from trusting it for more than it does."""
+prose = """
+An owner-signed policy stream records each collaborator's level, listen, comment or edit, and each
+revocation. Each peer already controls its own branches and its own retention, so the stream does
+not hold a merge, export or retention permission. A revoked peer's proposals stay quarantined: an
+authorized person can import them explicitly, and they are never accepted as current edits.
+Revocation acts from the moment a peer learns of it. It cannot erase copies already received, and an
+offline peer learns of it only when it connects again."""
+
+[[requirement]]
+id = 'EU-0013-059'
+level = 'MUST'
+polarity = 'required'
+statement = 'Membership MUST be recorded in a policy stream that the owner signs, separate from the musical history of the project.'
+binds_to = 'system'
+rationale = 'Admission and music never change each other.'
+
+[[requirement]]
+id = 'EU-0013-060'
+level = 'MUST'
+polarity = 'required'
+statement = "The policy stream MUST record each collaborator's level, which is listen, comment or edit, and each revocation."
+binds_to = 'system'
+rationale = 'Every peer reads who may do what from one record.'
+
+[[requirement]]
+id = 'EU-0013-061'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A musical merge MUST NOT change membership.'
+binds_to = 'system'
+rationale = 'No edit to a piece changes who may edit it.'
+
+[[requirement]]
+id = 'EU-0013-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'Sync MUST validate the signatures and the level of the sending peer against the current policy of the receiver before it updates accepted heads or serves objects.'
+binds_to = 'system'
+rationale = 'A peer serves and accepts only what the owner admits now.'
+
+[[requirement]]
+id = 'EU-0013-063'
+level = 'MUST'
+polarity = 'required'
+statement = 'The proposals of a revoked peer MUST stay quarantined until an authorized person imports them explicitly.'
+binds_to = 'system'
+rationale = 'Work from a revoked peer is never accepted as a current edit by accident.'
+
+[[requirement]]
+id = 'EU-0013-064'
+level = 'MUST'
+polarity = 'required'
+statement = 'Revocation MUST stop new transfers to and commands from the revoked peer once the applying peer learns of it.'
+binds_to = 'system'
+rationale = 'A revoked peer loses access as soon as each peer knows.'
+
+[[requirement]]
+id = 'EU-0013-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'When a link or an invitation is made, the system MUST show that revocation cannot erase copies already received or reach an offline peer at once.'
+binds_to = 'system'
+rationale = 'A person does not trust revocation for more than it does.'
+
+[[requirement]]
+id = 'EU-0013-067'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Permission to edit a local copy MUST NOT grant permission to publish it or send it to another person.'
+binds_to = 'system'
+rationale = 'Editing and distributing are separate permissions.'

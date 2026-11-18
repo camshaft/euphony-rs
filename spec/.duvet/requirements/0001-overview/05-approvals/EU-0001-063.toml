@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-063"
+
+[[spec]]
+level = "MUST"
+quote = "The approval of an action's exact effect MUST show its recipient, its destination and the assets it affects."

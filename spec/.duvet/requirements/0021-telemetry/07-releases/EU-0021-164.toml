@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-164"
+
+[[spec]]
+level = "MUST"
+quote = "A change of the submission schema MUST be a reviewed public change that assigns each new field its privacy class."

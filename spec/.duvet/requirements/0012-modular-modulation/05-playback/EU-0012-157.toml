@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-157"
+
+[[spec]]
+level = "MUST"
+quote = "After a seek restores a checkpoint, the system MUST replay the history between that checkpoint and the position of the seek."

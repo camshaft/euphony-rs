@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/07-transfer.md#EU-0008-114"
+
+[[spec]]
+level = "MUST"
+quote = "The control messages of the store MUST be sent at a higher priority than any fetch or copy."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-085"
+
+[[spec]]
+level = "MUST"
+quote = "After a reset, the client MUST keep the old key until the person deletes the old identity's data or chooses to forget the key."

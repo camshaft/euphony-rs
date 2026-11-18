@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/03-timing.md#EU-0012-052"
+
+[[spec]]
+level = "MUST"
+quote = "A route to a target that accepts updates once a block MUST state how its conversion filters, samples and holds or interpolates the source."

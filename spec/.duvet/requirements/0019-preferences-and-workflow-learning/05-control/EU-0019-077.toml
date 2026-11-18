@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-077"
+
+[[spec]]
+level = "MUST"
+quote = "The Why view MUST join the records of an assisted change under the viewer's current permissions."

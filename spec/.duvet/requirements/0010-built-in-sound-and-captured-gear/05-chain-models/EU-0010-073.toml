@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-073"
+
+[[spec]]
+level = "MUST"
+quote = "A model whose output becomes non-finite while it plays MUST be replaced by its dry signal with a fade."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-057"
+
+[[spec]]
+level = "SHOULD"
+quote = "The level-match tolerance SHOULD default to 0.5 loudness units."

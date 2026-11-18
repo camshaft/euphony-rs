@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-116"
+
+[[spec]]
+level = "MUST"
+quote = "Raw input and transformed output MUST be recordable as distinct streams."

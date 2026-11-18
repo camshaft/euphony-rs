@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-020"
+
+[[spec]]
+level = "MUST"
+quote = "A paired surface MUST act with the owner's access."

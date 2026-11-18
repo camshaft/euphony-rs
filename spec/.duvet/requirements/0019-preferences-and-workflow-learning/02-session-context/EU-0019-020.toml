@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-020"
+
+[[spec]]
+level = "MUST"
+quote = "Unpairing a device or revoking a link MUST invalidate at once each context handle and subscription it affects."

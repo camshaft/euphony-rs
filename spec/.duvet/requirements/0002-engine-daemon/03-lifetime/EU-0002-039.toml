@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-039"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST NOT cap the number of clients attached to a session."

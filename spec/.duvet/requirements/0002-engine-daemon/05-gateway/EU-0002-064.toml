@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-064"
+
+[[spec]]
+level = "MUST"
+quote = "Where anyone other than the owner starts an action of the approval list, the gateway MUST record an approval proposal of its exact effect before applying the action."

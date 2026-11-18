@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-107"
+
+[[spec]]
+level = "MUST"
+quote = "A report published before a withdrawal MUST keep showing its original corpus together with the withdrawal."

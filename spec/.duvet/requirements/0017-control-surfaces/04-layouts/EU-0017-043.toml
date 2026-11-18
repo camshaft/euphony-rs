@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-043"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST store surface layouts, attachments and device bindings encrypted at rest with the project's other data."

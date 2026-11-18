@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-075"
+
+[[spec]]
+level = "MUST"
+quote = "Each accepted render job MUST be recorded in the host's journal before it is acknowledged."

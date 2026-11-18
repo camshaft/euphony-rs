@@ -1,0 +1,94 @@
+[section]
+anchor = 'device-stream'
+title = 'The audio device and its stream'
+problem = """\
+  A musician cannot record or listen to the live parts of a project unless one component owns the \
+  computer's audio device, starts its stream only when asked, takes the stream's format from the \
+  device, and tells the rest of euphony when the device fails."""
+motivation = """\
+  One process that owns the device, negotiates the format the device offers and reports each \
+  failure as a typed event lets the session host and the musician act on what the device actually \
+  does, on any computer and any device."""
+prose = """
+The audio device process is the component of euphony that owns the hardware stream of one audio
+device on a computer, the capture of its input and the live render island. It starts only once the
+musician activates a device. The session host, which owns the project, sends it compiled graph
+revisions and the audio to play, and the audio device process sends the session host the events of
+the device. Before a stream starts, the process reads the capabilities of the device and prepares a
+stream in a format the device accepts: the sample rate, the channel layout and the period come from
+the device. Preparing a stream answers with the negotiated format, or with one typed failure:
+unsupported format, clock unlocked, device lost or transport failure. Each buffer the process
+reports carries its timestamp and the quality of its clock. An underrun or the loss of the device
+reaches the session host as an event."""
+
+[[requirement]]
+id = 'EU-0005-001'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST start a hardware stream only after the musician activates its device.'
+binds_to = 'system'
+rationale = 'No device opens, and no input is captured, without the musician asking.'
+
+[[requirement]]
+id = 'EU-0005-002'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST report the capabilities of a device when asked.'
+binds_to = 'system'
+rationale = 'The session host and the musician choose a format the device can play.'
+
+[[requirement]]
+id = 'EU-0005-003'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST take the sample rate, channel layout and period of a stream from the format it negotiated with the device.'
+binds_to = 'system'
+rationale = 'Euphony runs on whatever device the musician has, without a fixed rate or period.'
+
+[[requirement]]
+id = 'EU-0005-004'
+level = 'MUST'
+polarity = 'required'
+statement = 'Preparing a stream MUST answer with the negotiated format or with exactly one typed failure of unsupported format, clock unlocked, device lost or transport failure.'
+binds_to = 'system'
+rationale = 'The session host decides from the kind of failure, not from its text.'
+
+[[requirement]]
+id = 'EU-0005-005'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each buffer the audio device process reports MUST carry its timestamp and the quality of its clock.'
+binds_to = 'system'
+rationale = 'Capture, playback and other computers line up audio by time.'
+
+[[requirement]]
+id = 'EU-0005-006'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST stop a stream when the musician stops its device.'
+binds_to = 'system'
+rationale = 'The musician releases the device for other programs.'
+
+[[requirement]]
+id = 'EU-0005-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST report each underrun to the session host as a typed event.'
+binds_to = 'system'
+rationale = 'An underrun is recorded and shown, never silent.'
+
+[[requirement]]
+id = 'EU-0005-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'The audio device process MUST report the loss of its device to the session host as a typed event.'
+binds_to = 'system'
+rationale = 'The session host stops playback and keeps what was recorded.'
+
+[[requirement]]
+id = 'EU-0005-009'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Reporting an event of the device MUST NOT make the callback wait.'
+binds_to = 'system'
+rationale = 'A report never costs the device a deadline.'

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-059"
+
+[[spec]]
+level = "MUST"
+quote = "The browser companion MUST NOT offer offline editing or render on its own."

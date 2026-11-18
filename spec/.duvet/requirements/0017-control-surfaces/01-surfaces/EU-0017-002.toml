@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/01-surfaces.md#EU-0017-002"
+
+[[spec]]
+level = "MUST"
+quote = "A surface MUST NOT hold its own copy of the project."

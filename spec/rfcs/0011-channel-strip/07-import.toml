@@ -1,0 +1,108 @@
+[section]
+anchor = 'import'
+title = 'Strips from other workstations'
+problem = "A musician who moves from another workstation loses the channel strips they built there, and an import that moves a processor to another place in the chain changes the sound without saying so."
+motivation = "An import that places a processor in a stage only where the sound stays the same, keeps the rest of the chain in order, and reports every part it couldn't carry lets a musician bring their strips across and trust what arrives."
+prose = """
+The project import of RFC 0014 brings in the channel strips of another workstation's project. An
+imported processor goes into the stage of its kind only where the whole chain allows it without
+changing the sound; the stage then keeps the imported values as a fixed setting, so the strip sounds
+as the mapping measured, and Dial in is offered rather than applied. Every other processor goes into
+a free slot in its original order. The import report lists what was mapped, approximated and left
+unmapped, and why a processor stayed out of a stage."""
+
+[[requirement]]
+id = 'EU-0011-146'
+level = 'MUST'
+polarity = 'required'
+statement = "An imported processor MUST go into the strip stage of its kind only where all of these hold: a verified mapping covers every parameter it uses, the stage can represent its setting, it is the only processor of that kind in the chain, and placing it keeps the order and routing of the chain."
+binds_to = 'system'
+rationale = "An import never changes the sound by moving a processor or dropping part of its setting."
+
+[[requirement]]
+id = 'EU-0011-147'
+level = 'MUST'
+polarity = 'required'
+statement = "Where any placement condition fails, the whole imported chain MUST stay in the free slots in its original order, with the stages off."
+binds_to = 'system'
+rationale = "The chain sounds as it did in the source when it can't be placed in stages."
+
+[[requirement]]
+id = 'EU-0011-148'
+level = 'MUST'
+polarity = 'required'
+statement = "The import report MUST say which placement condition failed."
+binds_to = 'system'
+rationale = "The musician knows why a processor stayed out of the stages."
+
+[[requirement]]
+id = 'EU-0011-149'
+level = 'MUST'
+polarity = 'required'
+statement = "A processor placed in a stage MUST keep its imported values as a fixed setting."
+binds_to = 'system'
+rationale = "An imported strip sounds as the mapping measured."
+
+[[requirement]]
+id = 'EU-0011-150'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An import MUST NOT dial in a stage that holds imported values."
+binds_to = 'system'
+rationale = "The imported sound arrives as it was, not as a calculation would set it."
+
+[[requirement]]
+id = 'EU-0011-151'
+level = 'MUST'
+polarity = 'required'
+statement = "A stage that holds imported values MUST offer Dial in."
+binds_to = 'system'
+rationale = "The musician can still ask for a starting point on an imported track."
+
+[[requirement]]
+id = 'EU-0011-152'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An imported compressor's circuit type MUST NOT map to a character except through a verified mapping."
+binds_to = 'system'
+rationale = "A character is never chosen from the similarity of a label."
+
+[[requirement]]
+id = 'EU-0011-153'
+level = 'MUST'
+polarity = 'required'
+statement = "Each imported processor that doesn't go into a stage MUST go into a free slot in its original order, as its mapped built-in processor or as a reported placeholder that keeps its state."
+binds_to = 'system'
+rationale = "Nothing of the source chain is lost, mapped or not."
+
+[[requirement]]
+id = 'EU-0011-154'
+level = 'MUST'
+polarity = 'required'
+statement = "The import report MUST list each strip's mapped, approximated and unmapped stages."
+binds_to = 'system'
+rationale = "The musician knows how close each imported strip is to its source."
+
+[[requirement]]
+id = 'EU-0011-155'
+level = 'MUST'
+polarity = 'required'
+statement = "The import report MUST list each mapping of screen controls to parameters that the source holds and the import doesn't carry."
+binds_to = 'system'
+rationale = "The musician knows which of their quick controls didn't come across."
+
+[[requirement]]
+id = 'EU-0011-156'
+level = 'MUST'
+polarity = 'required'
+statement = "The musician MUST be able to save an imported strip as a fixed preset."
+binds_to = 'system'
+rationale = "An imported sound becomes reusable in euphony."
+
+[[requirement]]
+id = 'EU-0011-157'
+level = 'MUST'
+polarity = 'required'
+statement = "Two imports of the same source MUST produce the same strips."
+binds_to = 'system'
+rationale = "An import can be repeated and checked."

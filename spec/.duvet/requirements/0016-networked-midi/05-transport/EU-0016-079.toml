@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-079"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST adapt its receive buffering to the measured jitter, within the accepted monitoring delay."

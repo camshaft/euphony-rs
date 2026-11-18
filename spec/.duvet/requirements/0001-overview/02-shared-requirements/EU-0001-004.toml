@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-004"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant the owner connects MUST be able to take every project action the owner can take."

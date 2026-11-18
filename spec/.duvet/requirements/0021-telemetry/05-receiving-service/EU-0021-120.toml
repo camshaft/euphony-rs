@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-120"
+
+[[spec]]
+level = "MUST"
+quote = "The performance and problems view MUST say when the outbox removed batches under storage pressure."

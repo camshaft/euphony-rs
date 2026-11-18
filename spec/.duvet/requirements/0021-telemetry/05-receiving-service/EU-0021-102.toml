@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-102"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST refuse a batch with a missing or wrong signature."

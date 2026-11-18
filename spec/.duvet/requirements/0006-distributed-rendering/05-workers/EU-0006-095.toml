@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/05-workers.md#EU-0006-095"
+
+[[spec]]
+level = "MUST"
+quote = "A lease request that the host can't answer with a job when it arrives MUST wait at the host until the host offers it a job, the same worker sends a newer lease request, which takes its place, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker."

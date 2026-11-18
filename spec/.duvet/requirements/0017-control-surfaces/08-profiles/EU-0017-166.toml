@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-166"
+
+[[spec]]
+level = "MAY"
+quote = "A hardware controller that only displays a surface MAY present it without emulating a touch screen."

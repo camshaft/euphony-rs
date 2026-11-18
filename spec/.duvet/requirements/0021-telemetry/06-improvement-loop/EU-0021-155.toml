@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-155"
+
+[[spec]]
+level = "MUST"
+quote = "Each fix-effect report MUST state how much exposure it left out as incomplete."

@@ -1,0 +1,205 @@
+[section]
+anchor = "playback"
+title = "Prepared and live playback"
+problem = "A project plays from audio that several computers prepared ahead of time and from live rendering of what a musician changes now; if the two compute modulation differently or lose its state at a switch, the same project sounds different depending on how it is played."
+motivation = "Computing the same control graph everywhere, identifying cached results by everything modulation reads, carrying state across a switch and a seek, and keeping the last good revision playing when a new one can't run make prepared and live playback sound the same."
+prose = """
+Modulation renders together with the audio, notes and automation it depends on. Prepared playback
+uses results that other computers rendered from the same control graph, and live playback renders
+the parts that a live input or a gesture affects on the musician's computer while the rest of the
+prepared audio continues. State that modulation carries over time, such as an oscillator's phase,
+an envelope follower's history and a loop's delay buffers, is part of each checkpoint. A graph is
+admitted by the measured runtime and memory capacity of the computers that render it."""
+
+[[requirement]]
+id = "EU-0012-076"
+level = "MUST"
+polarity = "required"
+statement = "The value a modulated control takes at each moment MUST be the same in prepared playback as in live playback of the same revision."
+binds_to = "system"
+rationale = "A project sounds the same however it is played."
+
+[[requirement]]
+id = "EU-0012-077"
+level = "MUST"
+polarity = "required"
+statement = "The identity of a cached result MUST include every route, tap, selector, conversion and curve version, mode, base, parameter mapping, rate, filter latency, tempo, seed, checkpoint and upstream input it depends on."
+binds_to = "system"
+rationale = "A cached result is reused only where it would render the same."
+
+[[requirement]]
+id = "EU-0012-078"
+level = "MUST"
+polarity = "required"
+statement = "An edit of an automation lane MUST invalidate its consumers, their tails and the future ranges that depend on their state."
+binds_to = "system"
+rationale = "Every result that the edit changes renders again."
+
+[[requirement]]
+id = "EU-0012-079"
+level = "MUST"
+polarity = "forbidden"
+statement = "An edit of an automation lane MUST NOT invalidate the results of tracks that don't depend on it."
+binds_to = "system"
+rationale = "A small edit doesn't render the whole project again."
+
+[[requirement]]
+id = "EU-0012-080"
+level = "MUST"
+polarity = "required"
+statement = "A cached result MUST be reused only under the same complete descriptor and a compatible numerical profile."
+binds_to = "system"
+rationale = "Results from an incompatible profile never mix into a render."
+
+[[requirement]]
+id = "EU-0012-081"
+level = "MUST"
+polarity = "forbidden"
+statement = "A worker MUST NOT publish a result for an older graph as the current revision."
+binds_to = "system"
+rationale = "A late result never replaces the sound of a newer edit."
+
+[[requirement]]
+id = "EU-0012-082"
+level = "MUST"
+polarity = "required"
+statement = "A checkpoint MUST hold the state of every envelope follower and the buffers of every delayed loop."
+binds_to = "system"
+rationale = "A render that starts from a checkpoint matches one that played through."
+
+[[requirement]]
+id = "EU-0012-083"
+level = "MUST"
+polarity = "required"
+statement = "A remote computer that prepares audio MUST compute the same control graph as the local renderer."
+binds_to = "system"
+rationale = "Prepared audio matches what live playback would render."
+
+[[requirement]]
+id = "EU-0012-084"
+level = "MUST"
+polarity = "forbidden"
+statement = "Prepared playback MUST NOT send control updates for each sample over the network."
+binds_to = "system"
+rationale = "Network timing never reaches the sound."
+
+[[requirement]]
+id = "EU-0012-085"
+level = "MUST"
+polarity = "required"
+statement = "During a live input or a gesture on a depth, the affected part and its consumers MUST render on the musician's computer while the unaffected prepared audio continues."
+binds_to = "system"
+rationale = "A live change is heard at once without stopping the rest of the project."
+
+[[requirement]]
+id = "EU-0012-086"
+level = "MUST"
+polarity = "required"
+statement = "Where reproducible playback is asked for, the system MUST store each external control performance with its timestamps."
+binds_to = "system"
+rationale = "A bounce plays back what the musician performed."
+
+[[requirement]]
+id = "EU-0012-087"
+level = "MUST"
+polarity = "required"
+statement = "A switch between prepared and live playback MUST carry matching oscillator phase, follower history and delay state at an aligned sample."
+binds_to = "system"
+rationale = "A switch never makes a step in the sound."
+
+[[requirement]]
+id = "EU-0012-088"
+level = "MUST"
+polarity = "required"
+statement = "Where matching state is missing at a switch between prepared and live playback, the system MUST render again from a valid checkpoint rather than crossfade two control histories."
+binds_to = "system"
+rationale = "Two contradictory histories never play at once."
+
+[[requirement]]
+id = "EU-0012-089"
+level = "MUST"
+polarity = "required"
+statement = "A seek MUST restore a verified checkpoint."
+binds_to = "system"
+rationale = "Playback from any point starts from a known state."
+
+[[requirement]]
+id = "EU-0012-090"
+level = "MUST"
+polarity = "forbidden"
+statement = "A missed live deadline MUST NOT silently lower the rate of modulation."
+binds_to = "system"
+rationale = "A lack of computing never changes the sound without the musician seeing it."
+
+[[requirement]]
+id = "EU-0012-091"
+level = "MUST"
+polarity = "required"
+statement = "Where a previous revision covers the range being played, a missed live deadline MUST keep that revision playing."
+binds_to = "system"
+rationale = "The project keeps sounding while a change isn't ready."
+
+[[requirement]]
+id = "EU-0012-092"
+level = "MUST"
+polarity = "required"
+statement = "An accepted edit MUST stay saved when the graph it makes can't run on the available capacity."
+binds_to = "system"
+rationale = "A patch too large to play now is never lost."
+
+[[requirement]]
+id = "EU-0012-093"
+level = "MUST"
+polarity = "required"
+statement = "Where a graph can't run, playback MUST keep the previous revision."
+binds_to = "system"
+rationale = "The project keeps playing while the musician changes the patch."
+
+[[requirement]]
+id = "EU-0012-094"
+level = "MUST"
+polarity = "forbidden"
+statement = "The system MUST NOT limit the number of routes or voices by a fixed count."
+binds_to = "system"
+rationale = "Only the measured capacity of the computers limits a patch."
+
+[[requirement]]
+id = "EU-0012-095"
+level = "MUST"
+polarity = "forbidden"
+statement = "Validating a graph MUST NOT wait on any project other than its own."
+binds_to = "system"
+rationale = "One project's patch never slows another project."
+
+[[requirement]]
+id = "EU-0012-157"
+level = "MUST"
+polarity = "required"
+statement = "After a seek restores a checkpoint, the system MUST replay the history between that checkpoint and the position of the seek."
+binds_to = "system"
+rationale = "Playback from any point sounds as it would after playing through."
+relations = [ { kind = "depends_on", target = "EU-0012-089" } ]
+
+[[requirement]]
+id = "EU-0012-158"
+level = "MUST"
+polarity = "required"
+statement = "Where a graph can't run, the system MUST tell the musician that it can't run."
+binds_to = "system"
+rationale = "The musician knows why a change isn't heard."
+
+[[requirement]]
+id = "EU-0012-160"
+level = "MUST"
+polarity = "required"
+statement = "Where no previous revision covers the range being played, a missed live deadline MUST mark the preview unavailable."
+binds_to = "system"
+rationale = "A change that isn't ready is never played half rendered."
+
+[[requirement]]
+id = "EU-0012-161"
+level = "MUST"
+polarity = "required"
+statement = "The interface MUST show the musician each missed live deadline."
+binds_to = "system"
+rationale = "The musician sees why a change isn't heard yet."

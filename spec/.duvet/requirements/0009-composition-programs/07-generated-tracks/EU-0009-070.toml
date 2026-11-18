@@ -2,4 +2,4 @@ target = "rendered/0009-composition-programs/07-generated-tracks.md#EU-0009-070"
 
 [[spec]]
 level = "MUST"
-quote = "A generated track MUST stay linked to the version of the program and the identity of each input that made it."
+quote = "A generated track MUST stay linked to the version of the program that made it and to the identity of each asset the program imported and each musical input it read."

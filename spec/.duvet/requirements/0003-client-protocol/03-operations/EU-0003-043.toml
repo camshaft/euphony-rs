@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/03-operations.md#EU-0003-043"
+
+[[spec]]
+level = "MUST"
+quote = "The shared parts of the state of each view, such as the selected track, the follow mode of the playhead and named screensets, MUST be part of the state of the session."

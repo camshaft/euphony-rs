@@ -1,0 +1,5 @@
+target = "rendered/0004-project-model/02-commands.md#EU-0004-067"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST make the check of EU-0004-064 with a fixed number of reads, each bounded by an index and returning a fixed number of records, whatever the length of the history of the branch that the batch names."

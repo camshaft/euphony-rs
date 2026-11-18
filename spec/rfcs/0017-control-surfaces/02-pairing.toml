@@ -1,0 +1,195 @@
+[section]
+anchor = 'pairing'
+title = 'Discovery, pairing and access'
+problem = "A device that announces itself on the network could read a session's track labels and meters, or control its recording, unless pairing establishes who it is and the session checks that on every input and every update it sends."
+motivation = "Treating discovery as a hint, pairing each device once with the owner's confirmation, and checking pairing or link level at every boundary lets a musician add a device in one step while an unpaired or revoked device sees and changes nothing."
+prose = '''
+The discovery service finds controllers on the local network and reports each one as a typed
+controller capability, with its identity, its class, the owner's device or a link participant's
+device, and its key fingerprint. Discovery on the local network is an untrusted hint. Pairing sets up
+a key for each device through a pairing attempt that the owner approves, with a commitment step and
+a code comparison, and the owner confirms it on a screen of the workstation; each computer checks
+the paired list on every connection. A device outside the local network, and the browser companion,
+joins through an invitation and an authenticated connection with the same relay and origin
+restrictions as other devices. The gateway is the boundary of the session host that every attach,
+layout commit, control operation and delivered projection of a surface passes through. The trust
+model, the levels of a link, invitations, origin restrictions, a paired device's change of key and
+the meaning of pairing are stated by RFC 0001; a second window or a touch monitor wired to a
+computer is part of that computer and isn't paired on its own. Pairing establishes a device's
+identity, not trust in every later input from it.'''
+
+[[requirement]]
+id = 'EU-0017-012'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Discovering a device MUST NOT pair it or let it read, control or hear the session."
+binds_to = 'system'
+rationale = "Announcing itself on the network is never enough for a device to reach a session."
+
+[[requirement]]
+id = 'EU-0017-013'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST report each discovered controller with its identity, its class and its key fingerprint."
+binds_to = 'system'
+rationale = "The owner pairs the device they mean and sees whose device it is."
+
+[[requirement]]
+id = 'EU-0017-014'
+level = 'MUST'
+polarity = 'required'
+statement = "Pairing a surface MUST show the owner the session's identity and a confirmation of the device's key."
+binds_to = 'system'
+rationale = "The owner pairs the device with the session they intend, and a device in the middle is caught."
+
+[[requirement]]
+id = 'EU-0017-015'
+level = 'MUST'
+polarity = 'required'
+statement = "A pairing MUST take effect only once the owner confirms it."
+binds_to = 'system'
+rationale = "Only the owner adds a device that acts with the owner's access."
+
+[[requirement]]
+id = 'EU-0017-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An assistant MUST NOT pair a surface."
+binds_to = 'system'
+rationale = "Pairing grants the owner's access, so it stays the owner's act."
+
+[[requirement]]
+id = 'EU-0017-017'
+level = 'MAY'
+polarity = 'required'
+statement = "An assistant MAY propose pairing a surface for the owner to confirm."
+binds_to = 'system'
+rationale = "An assistant prepares the pairing, and the owner's confirmation approves it."
+
+[[requirement]]
+id = 'EU-0017-018'
+level = 'MUST'
+polarity = 'required'
+statement = "The pairing screen MUST show the surface, a warning for a shared screen, the limits of the device's credential storage and that unpairing cannot erase what the device has received."
+binds_to = 'system'
+rationale = "The owner's confirmation accepts the remaining risks of the device knowingly."
+
+[[requirement]]
+id = 'EU-0017-151'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A pairing confirmation MUST NOT authorize external sharing or publication of the session's content."
+binds_to = 'system'
+rationale = "Sharing or publishing what a surface receives keeps its own approval."
+
+[[requirement]]
+id = 'EU-0017-019'
+level = 'MUST'
+polarity = 'required'
+statement = "The gateway MUST attach a surface only after it validates the surface's pairing or link level, its identity and its protocol capabilities."
+binds_to = 'system'
+rationale = "A surface reaches the session only through a checked identity."
+
+[[requirement]]
+id = 'EU-0017-020'
+level = 'MUST'
+polarity = 'required'
+statement = "A paired surface MUST act with the owner's access."
+binds_to = 'system'
+rationale = "The owner's own devices control everything the owner controls."
+
+[[requirement]]
+id = 'EU-0017-021'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface of a participant joined by link MUST act at that link's level."
+binds_to = 'system'
+rationale = "A collaborator's device never reaches more than the link allows."
+
+[[requirement]]
+id = 'EU-0017-022'
+level = 'MUST'
+polarity = 'required'
+statement = "The gateway MUST check a surface's pairing or link level on every attach, layout commit, control operation and delivered projection."
+binds_to = 'system'
+rationale = "A pairing revoked mid-session stops the very next input and update."
+
+[[requirement]]
+id = 'EU-0017-023'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A device that is neither paired nor joined by link MUST NOT receive anything beyond the public connection information."
+binds_to = 'system'
+rationale = "Track labels, meters and project structure stay private until the owner pairs the device or invites its participant."
+
+[[requirement]]
+id = 'EU-0017-024'
+level = 'MUST'
+polarity = 'required'
+statement = "A projection sent to a link participant's surface MUST hold only what that link's level allows, filtered before it is sent."
+binds_to = 'system'
+rationale = "Data a participant may not see never leaves the session host."
+
+[[requirement]]
+id = 'EU-0017-025'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST keep its credentials in the platform's secure storage where the platform offers it."
+binds_to = 'system'
+rationale = "A lost or shared device doesn't hand its pairing to another program."
+
+[[requirement]]
+id = 'EU-0017-152'
+level = 'MUST'
+polarity = 'required'
+statement = "A key provisioned to a hardware controller or its adapter MUST be kept in protected storage where the device keeps it."
+binds_to = 'system'
+rationale = "A hardware controller's pairing is as hard to copy as a phone's."
+
+[[requirement]]
+id = 'EU-0017-026'
+level = 'MUST'
+polarity = 'required'
+statement = "Unpairing a surface MUST end its subscriptions and its control at once."
+binds_to = 'system'
+rationale = "A revoked device stops seeing and changing the session immediately."
+
+[[requirement]]
+id = 'EU-0017-027'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Unpairing a surface MUST NOT stop a recording that was already authorized."
+binds_to = 'system'
+rationale = "Removing a device never ruins a take in progress."
+
+[[requirement]]
+id = 'EU-0017-028'
+level = 'MUST'
+polarity = 'required'
+statement = "The gateway MUST validate a reconnecting surface's pairing again before it attaches."
+binds_to = 'system'
+rationale = "A device unpaired while it was away doesn't come back with its old access."
+
+[[requirement]]
+id = 'EU-0017-029'
+level = 'MUST'
+polarity = 'required'
+statement = "A hardware adapter MUST bind a controller's physical port identity to its paired host and its map."
+binds_to = 'system'
+rationale = "A controller keeps its own mapping wherever it is plugged in on that host."
+
+[[requirement]]
+id = 'EU-0017-030'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A controller whose identity is ambiguous or has changed MUST NOT inherit another controller's mapping."
+binds_to = 'system'
+rationale = "A swapped device never drives controls meant for another."
+
+[[requirement]]
+id = 'EU-0017-031'
+level = 'MUST'
+polarity = 'required'
+statement = "Control traffic between a surface and the session MUST run over a mutually authenticated connection."
+binds_to = 'system'
+rationale = "Neither side accepts input or projections from a party it hasn't verified."

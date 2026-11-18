@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/02-combination.md#EU-0012-039"
+
+[[spec]]
+level = "MUST"
+quote = "A target MUST combine in Add mode until the musician chooses another mode."

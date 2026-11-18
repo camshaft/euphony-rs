@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/06-continuity.md#EU-0013-098"
+
+[[spec]]
+level = "MUST"
+quote = "Continuing a session on another computer MUST restore its selection, editors, transport and monitoring assignments."

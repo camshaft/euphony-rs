@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-045"
+
+[[spec]]
+level = "MUST"
+quote = "The local endpoint MUST admit only connections of the operating-system user that runs the host service."

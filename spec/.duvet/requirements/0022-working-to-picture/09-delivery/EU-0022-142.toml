@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-142"
+
+[[spec]]
+level = "MUST"
+quote = "The delivery check MUST test that dialogue, music and effects add up to the full mix within the profile's numerical tolerance."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-091"
+
+[[spec]]
+level = "MUST"
+quote = "Where a pruned identity is held again, its entry MUST become present again without a new reference."

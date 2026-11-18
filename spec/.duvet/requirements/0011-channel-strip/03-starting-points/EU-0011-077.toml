@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-077"
+
+[[spec]]
+level = "SHOULD"
+quote = "The compressor's starting ratio SHOULD follow the role and the track's loudness range."

@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-085"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST answer each query with the revision the answer reflects."

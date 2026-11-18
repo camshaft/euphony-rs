@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-138"
+
+[[spec]]
+level = "MUST"
+quote = "The musician's strip presets MUST sync to their paired devices."

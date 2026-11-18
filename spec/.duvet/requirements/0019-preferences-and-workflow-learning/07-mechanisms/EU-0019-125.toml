@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-125"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant, a script or a mechanism MUST NOT activate a mechanism."

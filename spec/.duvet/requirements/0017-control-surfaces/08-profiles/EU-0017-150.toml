@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/08-profiles.md#EU-0017-150"
+
+[[spec]]
+level = "MUST"
+quote = "The surface categories, the mobile platforms of the phone controller and the conformance publisher MUST be set in the project's configuration."

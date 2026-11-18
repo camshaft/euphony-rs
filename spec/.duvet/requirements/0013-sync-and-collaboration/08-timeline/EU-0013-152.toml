@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-152"
+
+[[spec]]
+level = "MUST"
+quote = "A participant with transport control MUST be able to play, stop, seek and loop for everyone."

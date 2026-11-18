@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-143"
+
+[[spec]]
+level = "MUST"
+quote = "The import report MUST list each imported connection as imported or unsupported, and each unsupported one with its source, target and reason."

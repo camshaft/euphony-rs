@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-084"
+
+[[spec]]
+level = "MUST"
+quote = "Every persistent action on a session MUST be a typed command."

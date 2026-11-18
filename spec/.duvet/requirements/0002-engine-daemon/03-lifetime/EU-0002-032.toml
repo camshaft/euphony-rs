@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/03-lifetime.md#EU-0002-032"
+
+[[spec]]
+level = "MUST"
+quote = "Where the person quits the last client attached to a session, the session MUST stay open while it records, plays, or is marked by the person to keep running."

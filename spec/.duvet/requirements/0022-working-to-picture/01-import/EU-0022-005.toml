@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/01-import.md#EU-0022-005"
+
+[[spec]]
+level = "MUST"
+quote = "The video record MUST hold its start offset, the project position of its first shown frame."

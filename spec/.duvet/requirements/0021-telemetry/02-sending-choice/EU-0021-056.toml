@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-056"
+
+[[spec]]
+level = "MUST"
+quote = "An assistant's, a script's or a workflow's request to send a batch MUST wait for the owner's approval."

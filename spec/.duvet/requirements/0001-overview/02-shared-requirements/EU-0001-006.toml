@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-006"
+
+[[spec]]
+level = "MUST"
+quote = "Each change to a project MUST be recorded in a history the owner can inspect, with the party that made it."

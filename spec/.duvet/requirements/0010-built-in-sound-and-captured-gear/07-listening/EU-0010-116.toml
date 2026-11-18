@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-116"
+
+[[spec]]
+level = "MUST"
+quote = "The tolerated proportion of correct answers of the final evaluation MUST be above 0.5 and below 1."

@@ -219,7 +219,9 @@ impl Stream {
         .0;
 
         if found != kind {
-            return Err(invalid(format!("expected a {kind:?} stream, found a {found:?} stream")));
+            return Err(invalid(format!(
+                "expected a {kind:?} stream, found a {found:?} stream"
+            )));
         }
 
         if body.len() % kind.value_len() != 0 {
@@ -343,8 +345,8 @@ pub fn samples_body(samples: &[f64]) -> Vec<u8> {
 
 /// The samples of a sample stream's body.
 pub fn samples_from_body(body: &[u8]) -> impl Iterator<Item = f64> + '_ {
-    body.chunks_exact(SAMPLE)
-        .map(|sample| f64::from_le_bytes(sample.try_into().unwrap()))
+    let (samples, _) = body.as_chunks::<SAMPLE>();
+    samples.iter().map(|sample| f64::from_le_bytes(*sample))
 }
 
 /// One run of a coordinate stream's body.
@@ -530,7 +532,10 @@ mod tests {
             0x07,
         ]);
         assert_eq!(coordinates, expected);
-        assert_eq!(content_hash(&coordinates), *blake3::hash(&expected).as_bytes());
+        assert_eq!(
+            content_hash(&coordinates),
+            *blake3::hash(&expected).as_bytes()
+        );
     }
 
     #[test]
@@ -541,6 +546,14 @@ mod tests {
         assert_eq!(body, expected);
         assert_eq!(
             samples_from_body(&body).collect::<Vec<_>>(),
+            vec![1.5, -0.25]
+        );
+
+        // a part shorter than a sample at the end of the body is left out
+        let mut partial = body.clone();
+        partial.extend_from_slice(&[1, 2, 3]);
+        assert_eq!(
+            samples_from_body(&partial).collect::<Vec<_>>(),
             vec![1.5, -0.25]
         );
 
@@ -685,7 +698,10 @@ mod tests {
         file.extend(chunk_frame(&second).unwrap());
 
         let mut reader = ChunkReader::new(&file[..], StreamKind::Samples);
-        assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.5, -0.5])));
+        assert_eq!(
+            reader.next_chunk().unwrap(),
+            Some(samples_body(&[0.5, -0.5]))
+        );
         assert_eq!(reader.next_chunk().unwrap(), Some(samples_body(&[0.25])));
         assert_eq!(reader.next_chunk().unwrap(), None);
 
@@ -762,7 +778,7 @@ mod tests {
 
             let Some((first, rest)) = self.bytes.split_first() else {
                 return if self.fail {
-                    Err(io::Error::new(io::ErrorKind::Other, "the disk failed"))
+                    Err(io::Error::other("the disk failed"))
                 } else {
                     Ok(0)
                 };

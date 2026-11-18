@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/03-spatial.md#EU-0015-028"
+
+[[spec]]
+level = "MUST"
+quote = "A change of a sink's layout MUST NOT cause a new rendering of audio that doesn't depend on that layout."

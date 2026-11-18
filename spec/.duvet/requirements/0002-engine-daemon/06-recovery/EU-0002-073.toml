@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/06-recovery.md#EU-0002-073"
+
+[[spec]]
+level = "MUST"
+quote = "A restarted session host MUST NOT run an external effect of a journaled command again."

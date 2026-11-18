@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/07-listening.md#EU-0010-111"
+
+[[spec]]
+level = "MUST"
+quote = "The final evaluation MUST refuse to start before the candidate, the protocol and the criterion are frozen and recorded."

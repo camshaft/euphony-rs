@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/09-acceptance.md#EU-0011-179"
+
+[[spec]]
+level = "MUST"
+quote = "The size of the offsets the musician keeps MUST be reported, release against release, from the musician's own records, with the count of tracks it covers."

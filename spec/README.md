@@ -2,7 +2,8 @@
 
 This directory holds the specification of euphony: small RFCs that state the end state of each
 component of euphony as requirements with stable identifiers. RFC 0000 states the format of the set
-and how it changes; each other RFC covers one component.
+and how it changes, RFC 0001 holds the requirements every component shares, and each other RFC
+covers one component.
 
 - `spec.toml`: the configuration of the set: the identifier prefix, the levels, the locations and the RFC number groups.
 - `rfcs/index.toml`: every RFC by number, title and area.

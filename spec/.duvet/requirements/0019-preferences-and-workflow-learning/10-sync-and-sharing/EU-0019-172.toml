@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-172"
+
+[[spec]]
+level = "MUST"
+quote = "Synchronization MUST preserve concurrent heads, explicit conflict resolutions, signed withdrawals and scope tombstones."

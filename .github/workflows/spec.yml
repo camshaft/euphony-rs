@@ -2,6 +2,7 @@ on:
   pull_request:
     paths:
       - "spec/**"
+      - "euphony*/**/*.rs"
       - ".github/workflows/spec.yml"
   # A run on master saves the tools cache in master's scope, which every pull request's run can restore.
   push:
@@ -9,6 +10,7 @@ on:
       - master
     paths:
       - "spec/**"
+      - "euphony*/**/*.rs"
       - ".github/workflows/spec.yml"
 
 name: spec

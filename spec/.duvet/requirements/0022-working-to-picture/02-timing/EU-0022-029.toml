@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-029"
+
+[[spec]]
+level = "MUST"
+quote = "A stored position MUST keep its place on the timeline when the project's timecode rate or labeling changes."

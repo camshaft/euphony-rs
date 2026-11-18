@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-019"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator's session host MUST accept edits to that collaborator's own branch while no other collaborator's session host is reachable."

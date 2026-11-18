@@ -1,0 +1,161 @@
+[section]
+anchor = 'approvals'
+title = 'Approvals and the command gateway'
+problem = """\
+  Some actions send material beyond the owner's computers or can't be undone, and an assistant, a \
+  script or a collaborator that starts one could expose or destroy what the owner meant to keep."""
+motivation = """\
+  Holding exactly those actions for the owner's approval of their exact effect, and checking every \
+  command once at one gateway, guards what matters without putting a step in front of everything \
+  else."""
+prose = """
+An approval-held action is one of these: pairing a device; making a share link, and admitting the
+person behind an edit link; an export to a destination outside the owner's computers, a backup
+destination, or a public publication; pruning unique original audio, and purging retained learning
+evidence; sending private preference or project data to an assistant whose processing may leave the
+owner's computers, and sharing a preference, a workflow mechanism or a captured model with a
+collaborator; marking a network as the owner's, which lets real-time streams run unencrypted on it;
+the route, the channels and the level bound of a capture session, whose signals go into physical
+gear; and turning on or widening telemetry sending, and sending a problem report with its
+attachments. When the owner takes such an action on their own device, taking it is the approval.
+Unpairing a device, revoking a share link, and every edit, render, recording, routing, mapping or
+layout change are not approval-held. Adopting a learned preference or a workflow mechanism is an
+ordinary command that can be undone.
+
+An owner-interaction record is the record a paired owner device makes of the owner's own input
+there, such as a press of an approve control, for one exact effect. Before the first pairing, the
+local console of the owner's first computer makes such a record for the approval of a pairing alone.
+A command's origin is the party whose client session first sent the command.
+
+The command gateway is the one place in the engine that accepts or refuses each command. It refuses
+a command with one of these reasons: unpaired, outside link level, link expired or revoked, or
+approval required. The commands that pair and unpair devices, make, revoke and list share links,
+admit an editor, and request and decide approvals are commands of the same set as every other
+command."""
+
+[[requirement]]
+id = 'EU-0001-059'
+level = 'MUST'
+polarity = 'required'
+statement = "An approval-held action that an assistant, a script, a workflow mechanism, a collaborator or anything other than the owner's own input on a paired owner device starts MUST wait for the owner's approval of its exact effect."
+binds_to = 'system'
+rationale = 'An assistant, a script or a collaborator cannot send material away or destroy it without the owner seeing what will happen, though an assistant otherwise acts as the owner.'
+
+[[requirement]]
+id = 'EU-0001-060'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant, a script, a workflow mechanism or a collaborator that starts an approval-held action MUST NOT be able to approve it.'
+binds_to = 'system'
+rationale = "An approval is a decision of the owner, never of the party that asks for it, and the owner's own pairing on the first computer's console can still be approved there."
+relations = [ { kind = 'depends_on', target = 'EU-0001-059' } ]
+
+[[requirement]]
+id = 'EU-0001-061'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST accept an approval only with an owner-interaction record from one of the owner's paired owner devices, or, for the approval of a pairing, from the local console of the owner's first computer."
+binds_to = 'system'
+rationale = "A script or an assistant running on the owner's computer cannot approve by claiming to be the owner."
+
+[[requirement]]
+id = 'EU-0001-062'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "An approval-held action that the owner's own input on a paired owner device starts, with the owner-interaction record of that input, MUST NOT wait for a further approval."
+binds_to = 'system'
+rationale = "The owner's own action is the approval, so the owner never confirms what they just did, and a claim to be the owner without that record doesn't skip the approval."
+relations = [ { kind = 'depends_on', target = 'EU-0001-069' } ]
+
+[[requirement]]
+id = 'EU-0001-063'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of an action's exact effect MUST show its recipient, its destination and the assets it affects."
+binds_to = 'system'
+rationale = 'The owner approves what will happen, not a description of it.'
+
+[[requirement]]
+id = 'EU-0001-064'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST check each command against the party that sent it, the level of that party's link and any approval the command needs, before the command takes effect."
+binds_to = 'system'
+rationale = 'Every way into a session meets the same checks in one place.'
+
+[[requirement]]
+id = 'EU-0001-065'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST take a command's origin from the authenticated client session that first sent it, never from a field of the command."
+binds_to = 'system'
+rationale = 'A client cannot claim to be another party by what it writes in a command.'
+
+[[requirement]]
+id = 'EU-0001-066'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command the command gateway refuses MUST carry exactly one reason from the closed set of unpaired, outside link level, link expired or revoked, and approval required.'
+binds_to = 'system'
+rationale = 'Every client and assistant reads why the gateway refused a command from a typed reason, not from text.'
+
+[[requirement]]
+id = 'EU-0001-067'
+level = 'MUST'
+polarity = 'required'
+statement = 'Pairings, share links and approvals MUST be managed through commands of the same command set that every client uses.'
+binds_to = 'system'
+rationale = 'The desktop interface and an assistant take the same operations, with the same checks.'
+
+[[requirement]]
+id = 'EU-0001-068'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Forwarding, queueing or replaying a command MUST NOT change its origin.'
+binds_to = 'system'
+rationale = "A command that an owner device forwards, that a queue holds or that a retry replays still carries the party that first sent it, so it never passes as the owner's."
+relations = [ { kind = 'depends_on', target = 'EU-0001-065' } ]
+
+[[requirement]]
+id = 'EU-0001-069'
+level = 'MUST'
+polarity = 'required'
+statement = 'An owner-interaction record MUST be bound to the exact effect it approves and to the paired owner device or the local console that made it.'
+binds_to = 'system'
+rationale = 'A record of one approval cannot pass for another action or for another device.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-061' } ]
+
+[[requirement]]
+id = 'EU-0001-070'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The engine MUST NOT accept an owner-interaction record whose effect, device or console doesn't match the approval, or that the engine accepted before."
+binds_to = 'system'
+rationale = 'A captured record cannot approve a second action, or the same action twice.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-069' } ]
+
+[[requirement]]
+id = 'EU-0001-071'
+level = 'MUST'
+polarity = 'required'
+statement = "The engine MUST accept the approval of a pairing only after the trusted device and the new device have shown the same short code, derived from the pairing attempt and the new device's key."
+binds_to = 'system'
+rationale = 'A device that takes over the attempt shows a different code, so the owner notices before approving.'
+
+[[requirement]]
+id = 'EU-0001-072'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An input on the new device MUST NOT authorize a pairing by itself.'
+binds_to = 'system'
+rationale = "A device the owner doesn't control cannot pair itself by pressing its own button."
+relations = [ { kind = 'depends_on', target = 'EU-0001-071' } ]
+
+[[requirement]]
+id = 'EU-0001-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A client session on the owner's first computer, such as a command line, a script or an assistant, MUST NOT be able to make an owner-interaction record as that computer's local console."
+binds_to = 'system'
+rationale = "A script or an assistant running as the owner on that computer cannot approve anything by claiming to be the owner's console."
+relations = [ { kind = 'depends_on', target = 'EU-0001-061' } ]

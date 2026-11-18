@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-050"
+
+[[spec]]
+level = "MUST"
+quote = "Each result shown to a musician or an assistant MUST show its uncertainty and its source passage."

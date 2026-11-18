@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-057"
+
+[[spec]]
+level = "MUST"
+quote = "The output level of each sink MUST stay within the gain limit the owner sets for it, whichever party changes its mix."

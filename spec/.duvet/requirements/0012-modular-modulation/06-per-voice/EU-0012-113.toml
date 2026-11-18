@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-113"
+
+[[spec]]
+level = "MUST"
+quote = "The renderer MUST send per-voice modulation to a hosted processor as events addressed by voice, with the global contribution already included."

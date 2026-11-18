@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/05-control.md#EU-0019-072"
+
+[[spec]]
+level = "MUST"
+quote = "Each action an assistant takes without the owner's acceptance MUST record its reason and its reversal."

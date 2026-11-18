@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-185"
+
+[[spec]]
+level = "MUST"
+quote = "A worker MUST NOT approve a model or attach it to a track."

@@ -1,0 +1,139 @@
+[section]
+anchor = 'streams'
+title = 'Display streams, waveforms and content'
+problem = """\
+  Meters, playheads and waveforms change many times a second, so a client that waits on each value, \
+  or an engine that waits on a client, makes either side late, and a file the person picks in the \
+  dialog of a client is not a path the engine may read on its own."""
+motivation = """\
+  Display values sent as frames where only the newest matters, waveform tiles identified by content \
+  that never changes, and files passed as the choice of the person rather than as a path, keep every \
+  client current without the engine waiting for any of them."""
+prose = """
+Display streams carry the values that change many times a second: meters and level history, the
+playhead and the transport position, and analysis displays such as the gain reduction of a
+compressor or a spectrum. Each stream is a sequence of frames, of which a client shows the newest at
+each refresh of its display, and the engine publishes each frame without waiting for any reader.
+Deltas follow the same rule: the session host holds the deltas a client has not yet consumed, and
+where a client falls behind further than that, it ends the subscription rather than waiting. A
+waveform tile holds the peak data of one audio item at one zoom level and position; since the
+content of an item never changes, neither does its tile. Content transfer covers the imports,
+exports and recordings that a client sends or receives. A client on the same computer hands the
+engine the file the person chose, as RFC 0002 states, and a client on another computer sends the
+content into the content store of the session. No client writes the memory of the engine, and the
+engine treats every message from a client as untrusted until it has checked it."""
+
+[[requirement]]
+id = 'EU-0003-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each display stream MUST carry its values as frames of which a client shows only the newest.'
+binds_to = 'system'
+rationale = 'A meter is never late because of values that nobody will see.'
+
+[[requirement]]
+id = 'EU-0003-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each display frame MUST state its age.'
+binds_to = 'system'
+rationale = 'A client shows that a meter stopped moving because its source stopped.'
+
+[[requirement]]
+id = 'EU-0003-051'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The engine MUST NOT wait for a client before it publishes a display frame or a delta.'
+binds_to = 'system'
+rationale = 'A slow or stopped client never delays the audio or another client.'
+
+[[requirement]]
+id = 'EU-0003-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT show a display frame made of parts of two frames.'
+binds_to = 'system'
+rationale = 'A meter never shows a value that the engine never measured.'
+
+[[requirement]]
+id = 'EU-0003-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the audio process stops, a client MUST show the last complete display frame with its age growing.'
+binds_to = 'system'
+rationale = 'The person sees that the display stopped, not a broken frame.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-050' } ]
+
+[[requirement]]
+id = 'EU-0003-054'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a client falls further behind a stream of deltas than the session host holds for it, the session host MUST end that subscription.'
+binds_to = 'system'
+rationale = 'The session host never waits for a client.'
+
+[[requirement]]
+id = 'EU-0003-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client whose subscription ended MUST take a fresh snapshot before it shows the session again.'
+binds_to = 'system'
+rationale = 'A client that fell behind returns to the state the session holds.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-054' } ]
+
+[[requirement]]
+id = 'EU-0003-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client that falls behind MUST NOT cause an accepted change to be lost.'
+binds_to = 'system'
+rationale = 'A slow client costs only its own view.'
+
+[[requirement]]
+id = 'EU-0003-057'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An acknowledgement of a delta that is forged, repeated, out of order or from an ended generation MUST NOT release that delta before the client has consumed it.'
+binds_to = 'system'
+rationale = 'A misbehaving client cannot make a change disappear from its own stream.'
+
+[[requirement]]
+id = 'EU-0003-058'
+level = 'MUST'
+polarity = 'required'
+statement = 'A waveform tile MUST be identified by the identity of its audio item, its zoom level, its position and the version of its peak format.'
+binds_to = 'system'
+rationale = 'The same tile is never computed or sent twice.'
+
+[[requirement]]
+id = 'EU-0003-059'
+level = 'MAY'
+polarity = 'required'
+statement = 'A client MAY keep a waveform tile by its identity without ever invalidating it.'
+binds_to = 'system'
+rationale = 'The content of an audio item never changes, so its tile never changes either.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-058' } ]
+
+[[requirement]]
+id = 'EU-0003-062'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client on another computer MUST send the content it imports into the content store of the session.'
+binds_to = 'system'
+rationale = 'Content reaches a session the same way from any computer.'
+
+[[requirement]]
+id = 'EU-0003-063'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT be able to write any memory of the engine.'
+binds_to = 'system'
+rationale = 'No client can race or corrupt the state that the engine holds.'
+
+[[requirement]]
+id = 'EU-0003-064'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A malformed message, such as one whose length differs from the length it declares, MUST NOT change any state of the session.'
+binds_to = 'system'
+rationale = 'A faulty or hostile client changes nothing that it was not allowed to change.'

@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-112"
+
+[[spec]]
+level = "MUST"
+quote = "Conforming MUST move each region, picture-locked marker, automation range and cue boundary with its segment."

@@ -1,0 +1,160 @@
+[section]
+anchor = 'presentation'
+title = 'Presentation and the audio path'
+problem = """\
+  An interface that holds project state, makes sound wait for the screen, or stops when its display \
+  fails can change what a project sounds like or end a recording, and a fader that moves only once \
+  the host answers feels slow."""
+motivation = """\
+  Keeping drawing apart from project state and from the audio path lets a view fail and come back \
+  without touching the sound, and immediate local feedback, shown apart from acknowledged values, \
+  keeps control fast and honest."""
+prose = """
+A view is built from a projection of the project that the session host authorized for the client,
+with the layout, the display scale and the person's font and accessibility preferences. Input on a
+view becomes an intent: a local view action, such as a scroll or a zoom, or a gesture that the
+desktop interface sends to the session host as a command. A gesture on a continuous control, such
+as a fader, has a begin, updates and an end. A meter shows a snapshot of levels that the audio
+render publishes without waiting for any reader. A presentation failure is the loss of a graphics
+device, a closed window, a display that becomes unavailable or a renderer that restarts. The
+desktop interface reaches the operating system through platform services: menus, file selection,
+the clipboard, drag and drop, text input methods, focus and window hosting. Each view has a
+generation, and the map from positions on the view to its controls has a revision: a rebuilt view
+has a new generation, and a changed layout a new revision."""
+
+[[requirement]]
+id = 'EU-0018-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST build each view from a projection of the project that the session host authorized for it.'
+binds_to = 'system'
+rationale = 'A view shows only what its client may see.'
+
+[[requirement]]
+id = 'EU-0018-015'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The presentation of a view MUST NOT widen what a person or an assistant may read or do.'
+binds_to = 'system'
+rationale = 'Drawing a view never changes who may see or change a project.'
+
+[[requirement]]
+id = 'EU-0018-016'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Windows, drawing state and graphics resources MUST NOT be part of project state, sound definitions or render cache keys.'
+binds_to = 'system'
+rationale = 'The way a project is drawn never changes the project, its sound or what a render reuses.'
+
+[[requirement]]
+id = 'EU-0018-017'
+level = 'MUST'
+polarity = 'required'
+statement = 'Input on a view MUST reach the project only as a command sent to the session host.'
+binds_to = 'system'
+rationale = 'Every change from the interface passes the session host checks and enters the history.'
+
+[[requirement]]
+id = 'EU-0018-018'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The audio render MUST NOT wait for a frame, a display or a graphics device.'
+binds_to = 'system'
+rationale = 'A slow or stalled screen never makes the sound late.'
+
+[[requirement]]
+id = 'EU-0018-019'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A presentation failure MUST NOT stop a recording.'
+binds_to = 'system'
+rationale = 'A take survives anything that happens to the screen.'
+
+[[requirement]]
+id = 'EU-0018-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'After a presentation failure, the desktop interface MUST rebuild the view from a fresh authorized snapshot.'
+binds_to = 'system'
+rationale = 'A view comes back showing the project as it stands, not as it stood before the failure.'
+
+[[requirement]]
+id = 'EU-0018-021'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The recovery of a view MUST NOT replay a gesture.'
+binds_to = 'system'
+rationale = 'A gesture changes the project once, however often its view is rebuilt.'
+
+[[requirement]]
+id = 'EU-0018-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST report a presentation failure without showing the transport as stopped.'
+binds_to = 'system'
+rationale = 'A musician never reads a missing view as a stopped transport.'
+
+[[requirement]]
+id = 'EU-0018-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'A meter MUST show the newest authorized level snapshot with its age.'
+binds_to = 'system'
+rationale = 'A musician sees how current a meter is, and a smooth meter never hides a stale one.'
+
+[[requirement]]
+id = 'EU-0018-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'A continuous control MUST show local feedback within the tolerance of the selected profile, distinct from the value the session host acknowledged.'
+binds_to = 'system'
+rationale = 'A control responds to the hand at once, and a musician sees which values the host has taken.'
+
+[[requirement]]
+id = 'EU-0018-025'
+level = 'MUST'
+polarity = 'required'
+statement = 'A gesture on a continuous control MUST reach the session host as a begin, updates and an end.'
+binds_to = 'system'
+rationale = 'The host records automation and ownership of a control for the whole gesture.'
+
+[[requirement]]
+id = 'EU-0018-026'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Coalescing display work MUST NOT drop an accepted automation value or a forced end of a gesture.'
+binds_to = 'system'
+rationale = 'Only work that a newer frame replaces is skipped, never a change the host accepted.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-025' } ]
+
+[[requirement]]
+id = 'EU-0018-098'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A file selection MUST NOT grant an assistant access to any file beyond the files selected.'
+binds_to = 'system'
+rationale = 'A person who picks a file for an assistant shares that file alone.'
+
+[[requirement]]
+id = 'EU-0018-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each request to a platform service MUST return a cancellation, a denial, an unsupported result or a validated result.'
+binds_to = 'system'
+rationale = 'The desktop interface handles every outcome of a request to the operating system, and acts only on a result it has checked.'
+
+[[requirement]]
+id = 'EU-0018-100'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST refuse as stale any input made against a view generation or a map revision that is no longer current.'
+binds_to = 'system'
+rationale = 'A touch or a key press acts on the controls the person saw, never on a layout that changed under it.'
+
+[[requirement]]
+id = 'EU-0018-101'
+level = 'MUST'
+polarity = 'required'
+statement = "The desktop interface MUST refuse as invalid or unsupported any input it can't interpret against the current view."
+binds_to = 'system'
+rationale = "Input that the interface can't interpret is never acted on, so it never changes the project by a guess."

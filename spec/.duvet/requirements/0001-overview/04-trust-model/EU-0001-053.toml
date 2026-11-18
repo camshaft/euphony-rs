@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-053"
+
+[[spec]]
+level = "MUST"
+quote = "A device MUST hold its keys in the platform's secure storage where the platform offers it."

@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-088"
+
+[[spec]]
+level = "MUST"
+quote = "Where matching state is missing at a switch between prepared and live playback, the system MUST render again from a valid checkpoint rather than crossfade two control histories."

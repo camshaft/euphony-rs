@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-049"
+
+[[spec]]
+level = "MUST"
+quote = "Every connection between computers MUST be authenticated and encrypted, except a real-time stream on a network the owner marked as theirs."

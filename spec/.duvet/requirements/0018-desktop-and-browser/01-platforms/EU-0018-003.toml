@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/01-platforms.md#EU-0018-003"
+
+[[spec]]
+level = "MUST"
+quote = "The same revision of a project MUST render the same audio on each supported desktop operating system."

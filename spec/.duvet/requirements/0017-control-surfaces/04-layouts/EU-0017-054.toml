@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-054"
+
+[[spec]]
+level = "MUST"
+quote = "A smart control gesture MUST commit to its whole target set atomically."

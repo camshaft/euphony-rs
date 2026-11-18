@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/08-timeline.md#EU-0013-148"
+
+[[spec]]
+level = "MUST"
+quote = "In aligned mode, the host MUST set the output time of each anchor at least the common presentation delay after it accepts the change."

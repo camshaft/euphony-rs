@@ -18,7 +18,7 @@ The comparison MUST match the levels of the rebuilt render and the original befo
 
 ### EU-0023-028 {#EU-0023-028}
 
-The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch and in the noise between notes.
+The comparison MUST measure the difference in spectra at several resolutions, in the spectral envelope, in the attack and decay of each note, in pitch in cents and in the noise between notes.
 
 ### EU-0023-029 {#EU-0023-029}
 

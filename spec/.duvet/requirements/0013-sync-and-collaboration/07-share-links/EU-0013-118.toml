@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-118"
+
+[[spec]]
+level = "MUST"
+quote = "Where one operator runs both the signaling service and the application origin, the approval that makes a link MUST say that this operator is trusted with the secret of the link."

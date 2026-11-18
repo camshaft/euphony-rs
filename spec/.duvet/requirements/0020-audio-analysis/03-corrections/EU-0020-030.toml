@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/03-corrections.md#EU-0020-030"
+
+[[spec]]
+level = "MUST"
+quote = "The musician MUST be able to audition the music with and without an interpretation before applying it."

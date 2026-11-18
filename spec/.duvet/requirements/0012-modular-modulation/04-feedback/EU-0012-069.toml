@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-069"
+
+[[spec]]
+level = "MUST"
+quote = "The interface MUST warn of each feedback loop whose gain around the loop can exceed one, at any frequency or for any value it carries, or whose gain around the loop the analysis can't bound."

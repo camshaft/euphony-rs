@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/02-identity.md#EU-0016-017"
+
+[[spec]]
+level = "MUST"
+quote = "A host MUST advertise, for each port, each identifier its backend reports for the port's device, with the identifier's source and a confidence."

@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/05-effects.md#EU-0014-056"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST report each control value that its mapping leaves missing or ambiguous."

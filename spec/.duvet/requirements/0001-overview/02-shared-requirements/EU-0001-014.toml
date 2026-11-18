@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-014"
+
+[[spec]]
+level = "MUST"
+quote = "A crash of an interface during a recording MUST NOT lose a recorded sample."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/06-consumers.md#EU-0020-061"
+
+[[spec]]
+level = "MUST"
+quote = "A correction or an acceptance of a result MUST NOT become a preference except through the rules of preference learning."

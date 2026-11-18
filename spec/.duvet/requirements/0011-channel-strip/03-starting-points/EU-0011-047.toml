@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-047"
+
+[[spec]]
+level = "MUST"
+quote = "Where an analysis result is missing or unsupported, the stage MUST use the role's default for that input."

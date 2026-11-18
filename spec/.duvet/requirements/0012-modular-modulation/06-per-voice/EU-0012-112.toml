@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-112"
+
+[[spec]]
+level = "MUST"
+quote = "A checkpoint MUST hold the per-voice state of each active voice."

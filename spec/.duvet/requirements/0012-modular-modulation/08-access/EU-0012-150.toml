@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/08-access.md#EU-0012-150"
+
+[[spec]]
+level = "MUST"
+quote = "The protections against unsafe feedback, excessive graph expansion and stale compilation MUST be enforced outside the user interface."

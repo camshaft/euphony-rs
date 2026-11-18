@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-100"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST refuse a fit, evaluation or capture plan submitted for a stopped run, with the stop rule that holds and the report of the best candidates."

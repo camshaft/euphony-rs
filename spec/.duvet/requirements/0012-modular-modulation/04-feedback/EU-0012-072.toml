@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-072"
+
+[[spec]]
+level = "MUST"
+quote = "An output that isn't finite MUST fault the rendering of the part of the project that produced it."

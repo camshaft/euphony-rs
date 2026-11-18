@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/09-instrument-models.md#EU-0010-180"
+
+[[spec]]
+level = "MUST"
+quote = "A request for a control value outside the supported domain of an instrument model MUST be refused with that domain and its missing coverage."

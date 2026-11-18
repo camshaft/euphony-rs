@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/01-scope.md#EU-0014-002"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST leave the source project unchanged."

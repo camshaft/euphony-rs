@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-074"
+
+[[spec]]
+level = "MUST"
+quote = "Each batch MUST carry its exposure intervals and the counts of batches the client built, sent and deleted since its previous batch."

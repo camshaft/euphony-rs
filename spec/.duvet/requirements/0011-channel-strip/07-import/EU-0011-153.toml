@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/07-import.md#EU-0011-153"
+
+[[spec]]
+level = "MUST"
+quote = "Each imported processor that doesn't go into a stage MUST go into a free slot in its original order, as its mapped built-in processor or as a reported placeholder that keeps its state."

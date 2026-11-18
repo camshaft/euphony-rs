@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/08-post-production.md#EU-0022-130"
+
+[[spec]]
+level = "MUST"
+quote = "Euphony MUST suggest a region's sync point from the onsets of its sound."

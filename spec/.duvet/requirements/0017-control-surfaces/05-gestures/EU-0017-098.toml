@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-098"
+
+[[spec]]
+level = "MUST"
+quote = "An ordinary manual value MUST hold its last accepted state when its gesture ends by loss."

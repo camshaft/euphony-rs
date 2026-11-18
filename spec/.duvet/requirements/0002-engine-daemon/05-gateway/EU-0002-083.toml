@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-083"
+
+[[spec]]
+level = "MUST"
+quote = "A conflict answer MUST hold the current view, as far as the caller may see it, of only the parts of the project the command touches."

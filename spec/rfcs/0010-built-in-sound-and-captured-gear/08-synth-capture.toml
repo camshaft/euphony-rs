@@ -1,0 +1,345 @@
+[section]
+anchor = 'synth-capture'
+title = 'Capturing an external synthesizer'
+problem = "A synthesizer is played by instrument control messages and holds state that no message shows, such as voice allocation, oscillator phase and drift, and a careless capture can erase its patches, play at an unsafe level, or train a model on takes whose state is unknown."
+motivation = "An exclusive, approved capture session with a verified map of the device, calibrated timing and gain, tested resets, held-out histories and a durable plan lets a musician keep an adjustable model of their synthesizer without risking the device or claiming coverage they didn't measure."
+prose = """
+A synthesizer capture uses the capture session of this RFC on the computer whose audio inputs the
+synthesizer returns to, with timestamped instrument control messages sent to the synthesizer. Its
+plan plays notes with attack and release velocities, pedals, pitch bend, channel and per-note
+pressure, controllers and high-resolution controllers, parameter numbers, bank selection and
+program changes, and device-specific messages only where the chart of the device verifies them. An
+instrument map is a versioned data object that describes the parameters of one device, firmware,
+port and channel mode and patch format. The musician selects the patch families and controls the
+model supports, with their ranges, before capture. Sampling first maps pitch, velocity, durations
+and voice behavior with other settings fixed, then sweeps each chosen control in both directions,
+then adds joint samples and interaction cases, then adds samples where held-out errors are large.
+Whole takes, histories and parameter regions are held out for validation and the final test. The
+plan, its coverage report and its estimates are durable session state, so an interrupted capture
+resumes at a confirmed experiment boundary."""
+
+[[requirement]]
+id = 'EU-0010-138'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST reserve exclusive use of the device, ports and channels it plays for the length of its session."
+binds_to = 'system'
+rationale = "Unrelated playing can't alter the experiment."
+
+[[requirement]]
+id = 'EU-0010-139'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture that sends messages from another computer MUST measure the mapping and jitter of its timestamps."
+binds_to = 'system'
+rationale = "Network delay is measured rather than assumed."
+
+[[requirement]]
+id = 'EU-0010-140'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST record its planned messages, actual send times, device acknowledgments, audio, clock mapping, calibration and observed failures as one take."
+binds_to = 'system'
+rationale = "A take holds everything needed to fit it or reject it."
+
+[[requirement]]
+id = 'EU-0010-141'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A synthesizer capture MUST NOT send a device-specific message other than a read request or a nonpersistent edit of the edit buffer that the chart of the device verifies."
+binds_to = 'system'
+rationale = "A capture never writes or probes the device beyond what is known to be safe."
+
+[[requirement]]
+id = 'EU-0010-142'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A synthesizer capture MUST NOT write firmware, calibration, a factory reset or a persistent patch."
+binds_to = 'system'
+rationale = "A capture never changes what the device keeps."
+
+[[requirement]]
+id = 'EU-0010-143'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST report a message type that the device lacks as unsupported."
+binds_to = 'system'
+rationale = "A sent message is never taken as evidence that it took effect."
+
+[[requirement]]
+id = 'EU-0010-144'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST treat a program change as a discrete patch transition."
+binds_to = 'system'
+rationale = "A patch is never interpolated as if it were a continuous control."
+
+[[requirement]]
+id = 'EU-0010-145'
+level = 'MUST'
+polarity = 'required'
+statement = "Synthesizer calibration MUST estimate the distribution of the delay from a sent message to the observed onset from repeated timestamped notes of a reference patch."
+binds_to = 'system'
+rationale = "A direct audio cable can't measure the delay of the synthesizer itself."
+
+[[requirement]]
+id = 'EU-0010-146'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST report their aggregate delay with its uncertainty."
+binds_to = 'system'
+rationale = "An unknown split of delay is reported, not guessed."
+
+[[requirement]]
+id = 'EU-0010-270'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the delays of converter, transport and synthesizer can't be separated, the capture MUST keep the raw timing."
+binds_to = 'system'
+rationale = "Raw timing lets a later calibration separate the delays."
+
+[[requirement]]
+id = 'EU-0010-147'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Synthesizer calibration MUST NOT align each target note on its own."
+binds_to = 'system'
+rationale = "Slow attacks and control-dependent timing stay in the model."
+
+[[requirement]]
+id = 'EU-0010-148'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST set its input gain from quiet isolated notes through the loudest authorized chords, with a measured margin below clipping."
+binds_to = 'system'
+rationale = "Every take fits the converter without clipping."
+
+[[requirement]]
+id = 'EU-0010-149'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST reject a clipped take."
+binds_to = 'system'
+rationale = "The distortion of a converter is never learned as the synthesizer's."
+
+[[requirement]]
+id = 'EU-0010-150'
+level = 'MUST'
+polarity = 'required'
+statement = "A level excursion MUST stop a synthesizer capture."
+binds_to = 'system'
+rationale = "An unsafe level stops at once."
+
+[[requirement]]
+id = 'EU-0010-271'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture that a level excursion stopped MUST keep its partial take as invalid for fitting."
+binds_to = 'system'
+rationale = "A take recorded at an unsafe level never trains a model."
+
+[[requirement]]
+id = 'EU-0010-151'
+level = 'MUST'
+polarity = 'required'
+statement = "After a device reconnects, a synthesizer capture MUST check the identity and calibration of the device before it resumes."
+binds_to = 'system'
+rationale = "A capture never resumes on a different or changed device."
+
+[[requirement]]
+id = 'EU-0010-152'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST begin from a declared patch snapshot and a tested reset sequence."
+binds_to = 'system'
+rationale = "Each take starts from a known state."
+
+[[requirement]]
+id = 'EU-0010-272'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST record which state its reset sequence restores."
+binds_to = 'system'
+rationale = "What a reset doesn't restore is recorded as unknown."
+
+[[requirement]]
+id = 'EU-0010-153'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a reset can't restore the hidden state of a device, the capture MUST mark that uncertainty."
+binds_to = 'system'
+rationale = "The musician sees which takes rest on a state that can't be reproduced."
+
+[[requirement]]
+id = 'EU-0010-273'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a reset can't restore the hidden state of a device, the capture MUST validate the model statistically rather than claim waveform identity."
+binds_to = 'system'
+rationale = "A claim is never based on a state that can't be reproduced."
+
+[[requirement]]
+id = 'EU-0010-154'
+level = 'MUST'
+polarity = 'required'
+statement = "Cancellation of a synthesizer capture MUST release each note it owns and each pedal it holds while the device remains reachable."
+binds_to = 'system'
+rationale = "A cancelled capture never leaves notes sounding."
+
+[[requirement]]
+id = 'EU-0010-155'
+level = 'MUST'
+polarity = 'required'
+statement = "After a device is lost, a new session MUST reconcile the state of the device rather than replay an uncertain outstanding message."
+binds_to = 'system'
+rationale = "A message is never delivered twice by a replay."
+
+[[requirement]]
+id = 'EU-0010-156'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument map MUST be a versioned data object tied to a device model, firmware, port and channel mode and patch format."
+binds_to = 'system'
+rationale = "A map is used only for the device it describes."
+
+[[requirement]]
+id = 'EU-0010-157'
+level = 'MUST'
+polarity = 'required'
+statement = "An instrument map MUST record for each parameter its stable identity, unit, range, quantization, type, encoding, dependencies, settling behavior, readback support and whether a change resets voices."
+binds_to = 'system'
+rationale = "Every parameter is sent, read and modeled as the device expects."
+
+[[requirement]]
+id = 'EU-0010-158'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST treat a dump from a device as untrusted data."
+binds_to = 'system'
+rationale = "A dump is never run or written back on its own authority."
+
+[[requirement]]
+id = 'EU-0010-159'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST store the intended and the confirmed value of each parameter apart."
+binds_to = 'system'
+rationale = "An unconfirmed setting is never taken as set."
+
+[[requirement]]
+id = 'EU-0010-160'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST invalidate a take whose state confirmation fails."
+binds_to = 'system'
+rationale = "A model is never fitted to a take in an unknown state."
+relations = [ { kind = 'depends_on', target = 'EU-0010-159' } ]
+
+[[requirement]]
+id = 'EU-0010-161'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture plan MUST list the patch families and controls the model supports, with their ranges, as the musician selects them."
+binds_to = 'system'
+rationale = "The capture measures what the musician needs."
+
+[[requirement]]
+id = 'EU-0010-162'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST hold each control the musician did not select at a recorded value."
+binds_to = 'system'
+rationale = "A control the musician didn't select stays the same across takes."
+
+[[requirement]]
+id = 'EU-0010-274'
+level = 'MUST'
+polarity = 'required'
+statement = "euphony MUST show each control that a synthesizer capture held at a recorded value as fixed."
+binds_to = 'system'
+rationale = "An unmeasured control is never offered as a working knob."
+
+[[requirement]]
+id = 'EU-0010-163'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A synthesizer capture MUST NOT split adjacent windows of one performance between training and testing."
+binds_to = 'system'
+rationale = "Held-out material is truly unseen."
+
+[[requirement]]
+id = 'EU-0010-164'
+level = 'MUST'
+polarity = 'required'
+statement = "The plan, coverage report and estimates of a synthesizer capture MUST be durable session state, so that an interrupted capture resumes at a confirmed experiment boundary."
+binds_to = 'system'
+rationale = "A long capture survives an interruption without repeating or losing takes."
+
+[[requirement]]
+id = 'EU-0010-165'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture plan MUST show its estimated physical capture time and the projected remaining time as it grows."
+binds_to = 'system'
+rationale = "The musician knows how long the hardware will be busy."
+
+[[requirement]]
+id = 'EU-0010-166'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST pace its messages by the documented limits of the device and the measured acknowledgments and settling."
+binds_to = 'system'
+rationale = "No message is lost to an overloaded device."
+
+[[requirement]]
+id = 'EU-0010-206'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST keep each queued experiment when the device overruns or drops an update."
+binds_to = 'system'
+rationale = "An overloaded device delays the plan without losing any of it."
+relations = [ { kind = 'depends_on', target = 'EU-0010-166' } ]
+
+[[requirement]]
+id = 'EU-0010-205'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST lower its message rate when the device overruns or drops an update."
+binds_to = 'system'
+rationale = "The capture slows to the rate the device sustains, which it learns from the device's answers."
+relations = [ { kind = 'depends_on', target = 'EU-0010-166' } ]
+
+[[requirement]]
+id = 'EU-0010-167'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a synthesizer capture MUST state its unmet coverage."
+binds_to = 'system'
+rationale = "An incomplete capture is never advertised as a complete instrument."
+
+[[requirement]]
+id = 'EU-0010-207'
+level = 'MUST'
+polarity = 'required'
+statement = "The approval of a synthesizer capture session MUST name the classes of instrument control message and the domain of each control that the capture may send."
+binds_to = 'system'
+rationale = "The owner decides what the capture may change on the device."
+relations = [ { kind = 'depends_on', target = 'EU-0010-019' } ]
+
+[[requirement]]
+id = 'EU-0010-208'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A synthesizer capture MUST NOT send a message of a class, or a control value outside a domain, that its session's approval doesn't name."
+binds_to = 'system'
+rationale = "A capture never drives the device beyond what its owner approved."
+relations = [ { kind = 'depends_on', target = 'EU-0010-207' } ]
+
+[[requirement]]
+id = 'EU-0010-210'
+level = 'MUST'
+polarity = 'required'
+statement = "A synthesizer capture MUST stop emission when another session takes the device, ports or channels it reserved."
+binds_to = 'system'
+rationale = "Two sessions never drive one device at once."
+relations = [ { kind = 'depends_on', target = 'EU-0010-138' } ]

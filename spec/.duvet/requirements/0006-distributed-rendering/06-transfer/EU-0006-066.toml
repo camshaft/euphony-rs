@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/06-transfer.md#EU-0006-066"
+
+[[spec]]
+level = "MUST"
+quote = "A transfer MUST run at the priority level of the work it serves."

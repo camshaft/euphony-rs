@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-085"
+
+[[spec]]
+level = "MUST"
+quote = "A nonmotorized absolute fader MUST pick up at the acknowledged value before it moves its target."

@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-093"
+
+[[spec]]
+level = "MUST"
+quote = "The catalog MUST let a subscriber follow new items, analysis progress and changes of availability."

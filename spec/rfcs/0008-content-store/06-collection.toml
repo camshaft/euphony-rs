@@ -1,0 +1,188 @@
+[section]
+anchor = 'collection'
+title = 'Collection and deletion that keep referenced content'
+problem = """\
+  Content that a project on another computer, an export or a recording in progress still uses can \
+  be deleted by a computer that sees only its own projects, and a deletion that two computers decide \
+  apart can remove the last copy while a new reference to it commits."""
+motivation = """\
+  Roots taken from every computer of the owner, and one decision for each deletion of the last \
+  copies that every computer answers, delete only what nothing uses, and keep a new reference and a \
+  deletion from both succeeding."""
+prose = """
+Collection runs across the owner's computers. Its roots are every retained revision of every project
+on any of the owner's computers, pins, working copies, exports, active transfers, recordings in
+progress, catalog items the owner marked to keep, and items that a placement in progress refers to.
+An item that none of these reach is a candidate for deletion. The last copies of an item are deleted
+through a deletion intent for that item, which one computer, the decision point, issues and settles.
+The intent names the item, the chunks that only this item holds, and the owner's computers as they
+were paired when it was issued. Each computer in that set checks its roots for the item and answers
+referenced, which cancels the intent, or unreferenced with a durable barrier. While a computer holds
+a barrier, a new reference to the item commits only once the decision point records that the intent
+is cancelled; where the deletion is recorded, the reference is refused as unavailable with the
+deletion record; and where the decision point can't be reached, the command waits in the project's
+queue with its state, where the owner sees it. The decision point records exactly one outcome for
+each intent, cancelled or deleted, and records deleted only once every computer in the set has
+answered unreferenced and the pairing is unchanged; a pairing or a computer declared lost since the
+intent was issued cancels it. Holders remove chunks only on a recorded deleted outcome, and each
+computer releases its barrier once the outcome reaches it. After a crash, each party resumes from
+its durable intents, barriers and states. Where the owner declares the decision point's computer
+lost, recovery settles the intent on its holders under a new epoch, so that a delayed delete from
+the lost computer removes nothing, and an intent that recovery can't settle stays unresolved, with
+its barriers held, where the owner sees it. A computer that hasn't answered holds back the deletion
+of the last copies, and doesn't hold back the release of copies above the count the policy sets. A
+rendered result whose inputs are retained can be evicted under storage pressure without asking the
+owner. Deleting a source original or a recording takes the owner's approval of a preview that shows
+the items, the bytes freed, every revision and project that loses them, the copies that remain
+anywhere and whether anything can recreate them. Deleting a project removes its roots, and an item
+that another project, an export or a keep mark refers to stays. A collaborator's copies stay theirs,
+and the owner's deletion never reaches them."""
+
+[[requirement]]
+id = 'EU-0008-094'
+level = 'MUST'
+polarity = 'required'
+statement = 'Collection MUST treat as roots every retained revision of every project on any computer of the owner, pins, working copies, exports, active transfers, recordings in progress, keep marks and placements in progress.'
+binds_to = 'system'
+rationale = 'Content that any computer of the owner still uses is never a candidate for deletion.'
+
+[[requirement]]
+id = 'EU-0008-095'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Collection MUST NOT delete an item that a root on any computer of the owner refers to.'
+binds_to = 'system'
+rationale = 'A computer that sees only its own projects never deletes what another computer uses.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-094' } ]
+
+[[requirement]]
+id = 'EU-0008-096'
+level = 'MUST'
+polarity = 'required'
+statement = 'The last copies of an item MUST be deleted only through a deletion intent that one decision point settles.'
+binds_to = 'system'
+rationale = 'Two computers never decide the same deletion apart.'
+
+[[requirement]]
+id = 'EU-0008-097'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each computer of the owner that was paired when an intent was issued MUST answer the intent as referenced, or as unreferenced with a durable barrier.'
+binds_to = 'system'
+rationale = 'Every computer that could hold a root is asked before the last copies go.'
+
+[[requirement]]
+id = 'EU-0008-098'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'While a computer holds a barrier for an intent, a new reference to its item MUST NOT commit before the decision point records the intent as cancelled.'
+binds_to = 'system'
+rationale = 'A new reference and a deletion never both succeed.'
+
+[[requirement]]
+id = 'EU-0008-099'
+level = 'MUST'
+polarity = 'required'
+statement = 'A new reference to an item whose deletion is recorded MUST be refused as unavailable, with the deletion record.'
+binds_to = 'system'
+rationale = 'A project never gains a reference to content that was deleted.'
+
+[[requirement]]
+id = 'EU-0008-100'
+level = 'MUST'
+polarity = 'required'
+statement = 'A new reference that waits for a decision point that cannot be reached MUST wait in the queue of its project with its state shown to the owner.'
+binds_to = 'system'
+rationale = 'The owner sees why an edit has not committed.'
+
+[[requirement]]
+id = 'EU-0008-101'
+level = 'MUST'
+polarity = 'required'
+statement = 'The decision point MUST record exactly one outcome for each intent, cancelled or deleted, which never changes afterwards.'
+binds_to = 'system'
+rationale = 'Every computer reads the same outcome of a deletion.'
+
+[[requirement]]
+id = 'EU-0008-102'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The decision point MUST NOT record an intent as deleted before every computer it was issued to has answered unreferenced with a barrier while the pairing is unchanged.'
+binds_to = 'system'
+rationale = 'The last copies go only once no computer of the owner uses them.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-097' } ]
+
+[[requirement]]
+id = 'EU-0008-103'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A holder MUST NOT remove a chunk of an intent before the deleted outcome of that intent is recorded.'
+binds_to = 'system'
+rationale = 'No chunk is removed on a deletion that could still be cancelled.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-101' } ]
+
+[[requirement]]
+id = 'EU-0008-104'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the computer of a decision point is declared lost, each holder of its intent MUST refuse every later message of the lost decision point for that intent.'
+binds_to = 'system'
+rationale = 'A delayed delete from a lost computer removes nothing.'
+
+[[requirement]]
+id = 'EU-0008-105'
+level = 'MUST'
+polarity = 'required'
+statement = 'An intent that recovery cannot settle MUST keep its barriers and be shown to the owner as an unresolved deletion.'
+binds_to = 'system'
+rationale = 'An unsettled deletion never frees a reference to commit or lets a chunk go.'
+
+[[requirement]]
+id = 'EU-0008-106'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A computer that has not answered an intent MUST NOT hold back the release of copies above the count that the policy sets.'
+binds_to = 'system'
+rationale = 'An offline computer stops only the deletion of last copies, and surplus copies still go.'
+
+[[requirement]]
+id = 'EU-0008-107'
+level = 'MUST'
+polarity = 'required'
+statement = 'Deleting a source original or a recording MUST wait for the approval of the owner of a preview that shows the items, the bytes freed, the revisions and projects that lose them, the copies that remain and whether anything can recreate them.'
+binds_to = 'system'
+rationale = 'Material that cannot be recreated is deleted only once the owner sees exactly what goes.'
+
+[[requirement]]
+id = 'EU-0008-108'
+level = 'MAY'
+polarity = 'required'
+statement = 'A rendered result whose inputs are retained MAY be evicted under storage pressure without the approval of the owner.'
+binds_to = 'system'
+rationale = 'A result that can be rendered again frees space without asking anyone.'
+
+[[requirement]]
+id = 'EU-0008-109'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Deleting a project MUST NOT delete an item that another project, an export or a keep mark refers to.'
+binds_to = 'system'
+rationale = 'Removing one project never takes material that other work uses.'
+
+[[requirement]]
+id = 'EU-0008-110'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A deletion by the owner MUST NOT delete a copy that a collaborator holds.'
+binds_to = 'system'
+rationale = 'What a collaborator received stays theirs.'
+
+[[requirement]]
+id = 'EU-0008-139'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each computer MUST release its barrier for an intent once the recorded outcome of that intent reaches it.'
+binds_to = 'system'
+rationale = 'A settled deletion never holds back new references.'
+relations = [ { kind = 'depends_on', target = 'EU-0008-101' } ]
+

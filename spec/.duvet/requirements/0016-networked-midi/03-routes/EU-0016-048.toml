@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-048"
+
+[[spec]]
+level = "MUST"
+quote = "A default binding MUST NOT change a pairing or a link."

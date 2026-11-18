@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-089"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST admit a model for live playback only where its measured added delay is within the musician's live latency setting and its measured processor cost is within the capacity measured on that computer."

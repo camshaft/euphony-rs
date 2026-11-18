@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-005"
+
+[[spec]]
+level = "MUST"
+quote = "The identity of a note sequence, an automation curve or a composition program source MUST be computed from the canonical serialization that the project model defines for it."

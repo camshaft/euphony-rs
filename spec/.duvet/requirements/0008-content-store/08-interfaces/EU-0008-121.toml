@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/08-interfaces.md#EU-0008-121"
+
+[[spec]]
+level = "MUST"
+quote = "Every relation between items, revisions, copies and deletion decisions MUST be held as typed data."

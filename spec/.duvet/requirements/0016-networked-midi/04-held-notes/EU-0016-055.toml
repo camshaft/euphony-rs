@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-055"
+
+[[spec]]
+level = "MUST"
+quote = "A note-off MUST release the destinations and pitches its note-on produced, whatever key, route or transform edit came between them."

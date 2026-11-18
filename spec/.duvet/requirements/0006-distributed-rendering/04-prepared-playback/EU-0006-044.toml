@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/04-prepared-playback.md#EU-0006-044"
+
+[[spec]]
+level = "SHOULD"
+quote = "Stable passages SHOULD be prepared as full-mix segments."

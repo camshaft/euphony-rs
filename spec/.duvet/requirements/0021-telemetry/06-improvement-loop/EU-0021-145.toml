@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-145"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST flag a regression where the worse direction passes the margin that the project configures."

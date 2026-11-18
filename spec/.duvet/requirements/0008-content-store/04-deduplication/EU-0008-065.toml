@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-065"
+
+[[spec]]
+level = "MUST"
+quote = "The library scan MUST report the duplicate bytes it finds by item kind and by the point at which storing each item once would save them."

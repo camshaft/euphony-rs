@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/07-conform.md#EU-0022-121"
+
+[[spec]]
+level = "MUST"
+quote = "Conforming MUST report every segment and its move."

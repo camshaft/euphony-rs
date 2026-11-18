@@ -1,0 +1,318 @@
+[section]
+anchor = 'share-links'
+title = 'Sharing a project by link'
+problem = """\
+  A musician wants to let someone hear, comment on or edit a project by sending a message, but a link that reaches the wrong person, or that never ends, grants more than was meant."""
+motivation = """\
+  A link that grants one level, carries a secret that no service in between can redeem, expires, can be revoked, and admits an editor only once the owner approves them makes sharing as easy as a message without widening access by mistake."""
+prose = """
+A share link is an invitation written as an address that a person can paste into a message. It holds
+the join address of the signaling service, an invitation identity, a random secret and the
+fingerprint of the host's identity key. The link's address is on the application origin, the site
+that serves the browser companion's code, which the owner configures and trusts as the application's
+distributor. The secret and the fingerprint sit in the part of the address that a browser does not
+send in any request, and a native client opens the link through its registered address scheme. The
+signaling service and the relay are untrusted operators; the distributor is trusted, and this RFC
+does not defend against a malicious distributor. Each link carries one level. A listener receives
+the audio of the sink the owner assigns, the main mix by default, and reads the transport state,
+markers and track labels. A commenter also adds timestamped comments and markers, which are
+annotations of the revision being played, a record kind apart from musical edits. An edit link
+starts the enrollment of a collaborator. Transport control is one setting of the session, which no
+link carries. The host is reached through the connection path of collaboration, without an inbound
+port of its own."""
+
+[[requirement]]
+id = 'EU-0013-113'
+level = 'MUST'
+polarity = 'required'
+statement = 'The secret of a link MUST hold at least 128 random bits from the secure random source of the operating system.'
+binds_to = 'system'
+rationale = 'A link cannot be guessed.'
+params = [ { name = 'link_secret_length', type = 'size', unit = 'B', bound = 'min', value = 16 } ]
+
+[[requirement]]
+id = 'EU-0013-114'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A link MUST NOT carry its secret in any part of its address that a browser sends in a request.'
+binds_to = 'system'
+rationale = 'No server on the way learns the secret from the address.'
+
+[[requirement]]
+id = 'EU-0013-115'
+level = 'MUST'
+polarity = 'required'
+statement = 'A joining client MUST prove to the host, over the encrypted connection, that it holds the secret of the link.'
+binds_to = 'system'
+rationale = 'Only a holder of the link joins.'
+
+[[requirement]]
+id = 'EU-0013-216'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to configure the application origin, the site that serves the code of the browser companion and the addresses of its links.'
+binds_to = 'system'
+rationale = 'The owner trusts that origin as the distributor of the application, as they trust the installer of the native application.'
+
+[[requirement]]
+id = 'EU-0013-217'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The system MUST NOT let code from any origin other than the application origin read the secret or the fingerprint of a link.'
+binds_to = 'system'
+rationale = 'The secret reaches only the code of the companion itself.'
+
+[[requirement]]
+id = 'EU-0013-218'
+level = 'MUST'
+polarity = 'required'
+statement = 'A native client MUST read the secret and the fingerprint of a link itself, from the link it opens through its registered address scheme.'
+binds_to = 'system'
+rationale = 'A native join does not pass the secret through a browser.'
+
+[[requirement]]
+id = 'EU-0013-116'
+level = 'MUST'
+polarity = 'required'
+statement = 'A joining client MUST fail the join where the host key does not match the fingerprint in the link.'
+binds_to = 'system'
+rationale = 'A participant never joins an impostor host.'
+
+[[requirement]]
+id = 'EU-0013-117'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A signaling or relay operator MUST NOT be able to redeem a link, read its session or place itself between the host and a participant.'
+binds_to = 'system'
+rationale = 'The services in the path learn only that an invitation was used.'
+
+[[requirement]]
+id = 'EU-0013-118'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where one operator runs both the signaling service and the application origin, the approval that makes a link MUST say that this operator is trusted with the secret of the link.'
+binds_to = 'system'
+rationale = 'A person knows who could read the secret.'
+
+[[requirement]]
+id = 'EU-0013-224'
+level = 'MUST'
+polarity = 'required'
+statement = 'A listener MUST receive the audio stream of the sink that the owner assigns to their link.'
+binds_to = 'system'
+rationale = 'The owner chooses which audio each listener receives.'
+
+[[requirement]]
+id = 'EU-0013-225'
+level = 'MUST'
+polarity = 'required'
+statement = "Where the owner doesn't assign a sink to a listen link, a listener MUST receive the main mix."
+binds_to = 'system'
+rationale = 'A listener receives the whole piece unless the owner chooses otherwise.'
+
+[[requirement]]
+id = 'EU-0013-119'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A listener MUST NOT receive project objects, stems, prepared audio files or history.'
+binds_to = 'system'
+rationale = 'Listening never hands over the project.'
+
+[[requirement]]
+id = 'EU-0013-120'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST store comments and markers from a comment link as annotations of the revision being played, separate from musical edits.'
+binds_to = 'system'
+rationale = 'A comment never changes the arrangement.'
+
+[[requirement]]
+id = 'EU-0013-121'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A merge MUST NOT treat annotations as edits.'
+binds_to = 'system'
+rationale = 'Comments never become conflicts in the music.'
+
+[[requirement]]
+id = 'EU-0013-122'
+level = 'MAY'
+polarity = 'required'
+statement = 'The owner MAY hide or delete annotations.'
+binds_to = 'system'
+rationale = 'The owner keeps control of what is shown on their project.'
+
+[[requirement]]
+id = 'EU-0013-123'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A link alone MUST NOT admit an editor.'
+binds_to = 'system'
+rationale = 'An edit link that reaches the wrong person yields only a request the owner can refuse.'
+
+[[requirement]]
+id = 'EU-0013-124'
+level = 'MUST'
+polarity = 'required'
+statement = 'The policy stream MUST record an edit level only after the owner approves the exact device identity of the person who joins.'
+binds_to = 'system'
+rationale = 'The owner decides who edits, one identity at a time.'
+
+[[requirement]]
+id = 'EU-0013-239'
+level = 'MUST'
+polarity = 'required'
+statement = 'An edit link MUST be single use.'
+binds_to = 'system'
+rationale = 'An edit link admits one person.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
+
+[[requirement]]
+id = 'EU-0013-240'
+level = 'MUST'
+polarity = 'required'
+statement = 'An edit link MUST bind to the first identity the owner approves.'
+binds_to = 'system'
+rationale = 'Only the person the owner approved edits through the link.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-039' } ]
+
+[[requirement]]
+id = 'EU-0013-127'
+level = 'MUST'
+polarity = 'required'
+statement = 'A link MUST expire, by default, when the session it was made for ends.'
+binds_to = 'system'
+rationale = 'The narrowest lifetime is the default.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-041' } ]
+
+[[requirement]]
+id = 'EU-0013-128'
+level = 'MAY'
+polarity = 'required'
+statement = 'The owner MAY choose a later expiry or a number of uses for a listen or comment link.'
+binds_to = 'system'
+rationale = 'A recurring listener can keep a link for longer.'
+
+[[requirement]]
+id = 'EU-0013-129'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST record each redemption of a link with the identity of the joining client and the time.'
+binds_to = 'system'
+rationale = 'The owner sees who joined and when.'
+
+[[requirement]]
+id = 'EU-0013-227'
+level = 'MUST'
+polarity = 'required'
+statement = 'The owner MUST be able to revoke one participant of a link, from the sharing view of the session or the assistant interface.'
+binds_to = 'system'
+rationale = "The owner withdraws one person's access without ending the link for the others."
+relations = [ { kind = 'depends_on', target = 'EU-0001-045' } ]
+
+[[requirement]]
+id = 'EU-0013-131'
+level = 'MUST'
+polarity = 'required'
+statement = 'Revocation MUST refuse new redemptions of the link at once.'
+binds_to = 'system'
+rationale = 'A revoked link stops working immediately.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-045' } ]
+
+[[requirement]]
+id = 'EU-0013-133'
+level = 'MUST'
+polarity = 'required'
+statement = 'On revocation, the host MUST rotate the stream keys of the session so that a removed client cannot decode later packets.'
+binds_to = 'system'
+rationale = 'Packets sent after removal stay unreadable to the removed client.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-048' } ]
+
+[[requirement]]
+id = 'EU-0013-134'
+level = 'MUST'
+polarity = 'required'
+statement = 'The dialog that makes a link MUST say that revocation cannot recall audio a listener already heard or recorded on their own device.'
+binds_to = 'system'
+rationale = 'A person does not expect revocation to undo what was heard.'
+
+[[requirement]]
+id = 'EU-0013-230'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The host MUST NOT run a public web server for a shared session.'
+binds_to = 'system'
+rationale = 'Sharing never exposes the host to the internet.'
+relations = [ { kind = 'depends_on', target = 'EU-0001-052' } ]
+
+[[requirement]]
+id = 'EU-0013-136'
+level = 'MUST'
+polarity = 'required'
+statement = 'The approval that makes a link MUST show the application origin, the signaling and relay services the session uses and the metadata they see.'
+binds_to = 'system'
+rationale = 'A person knows who learns of a shared session before sharing.'
+
+[[requirement]]
+id = 'EU-0013-137'
+level = 'MUST'
+polarity = 'required'
+statement = 'The policy stream MUST record the identity, level, sink, expiry and use count of each link, with each redemption under it.'
+binds_to = 'system'
+rationale = 'Every peer checks a participant against one record.'
+
+[[requirement]]
+id = 'EU-0013-138'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command gateway MUST check every action of a participant against the record of the link that admitted them.'
+binds_to = 'system'
+rationale = 'A participant does exactly what their level allows.'
+
+[[requirement]]
+id = 'EU-0013-139'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An assistant MUST NOT make a link without the owner approving its exact effect.'
+binds_to = 'system'
+rationale = "Widening who can hear a project is always the owner's choice."
+
+[[requirement]]
+id = 'EU-0013-241'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session setting of transport control for participants MUST be off by default.'
+binds_to = 'system'
+rationale = "Shared control is the owner's deliberate choice."
+
+[[requirement]]
+id = 'EU-0013-242'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session setting of transport control for participants MUST apply to every participant.'
+binds_to = 'system'
+rationale = 'Each participant has the same transport control as every other.'
+
+[[requirement]]
+id = 'EU-0013-141'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A link MUST NOT carry transport control.'
+binds_to = 'system'
+rationale = 'Control of the transport never travels with an address.'
+
+[[requirement]]
+id = 'EU-0013-142'
+level = 'MUST'
+polarity = 'required'
+statement = 'While transport control is off, the host MUST show the owner each participant request for play or stop.'
+binds_to = 'system'
+rationale = 'A participant can still ask, and the owner decides.'
+
+[[requirement]]
+id = 'EU-0013-143'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A remote participant MUST NOT join a local-network audio stream.'
+binds_to = 'system'
+rationale = 'Local audio streams stay on the local network.'

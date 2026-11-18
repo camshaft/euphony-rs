@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-092"
+
+[[spec]]
+level = "MUST"
+quote = "Pointer cancellation, suspending the app, locking the device, replacing the map and changing the orientation MUST end each gesture they affect."

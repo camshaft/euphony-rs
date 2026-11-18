@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-127"
+
+[[spec]]
+level = "MUST"
+quote = "Every client MUST draw both views of a stage from the same description of its controls."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-075"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST journal each accepted control event with its gesture's undo grouping."

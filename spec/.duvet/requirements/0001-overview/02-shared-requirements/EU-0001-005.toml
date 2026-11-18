@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-005"
+
+[[spec]]
+level = "MUST"
+quote = "A project action that an assistant takes MUST pass the same validation as the same action taken by the owner."

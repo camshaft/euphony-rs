@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-038"
+
+[[spec]]
+level = "MUST"
+quote = "A project that the person holds through another person's edit link MUST be excluded until the person includes it."

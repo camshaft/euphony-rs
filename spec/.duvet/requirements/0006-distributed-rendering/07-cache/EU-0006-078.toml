@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/07-cache.md#EU-0006-078"
+
+[[spec]]
+level = "MUST"
+quote = "Every local pin MUST be checked again before the results of a deprecated revision are collected."

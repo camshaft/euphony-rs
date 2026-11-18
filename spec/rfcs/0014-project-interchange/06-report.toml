@@ -1,0 +1,71 @@
+[section]
+anchor = 'report'
+title = 'The conversion report'
+problem = """\
+  A musician who relies on an imported project without knowing what didn't carry over can lose work, \
+  or release a mix that sounds different, without noticing."""
+motivation = """\
+  A report of every item, read before acceptance and kept visible in the project, lets the musician \
+  decide with full knowledge and find each unresolved part later."""
+prose = """
+The conversion report lists every item of a source project and how it came over, so that nothing is
+lost or replaced without the musician seeing it. The musician reads it with the proposed project,
+before accepting it, and its states stay visible in the arrangement afterwards. A musician can
+accept an import that didn't convert everything, and still hear an unresolved part through a render
+they already made, while editing that part stays incomplete."""
+
+[[requirement]]
+id = 'EU-0014-063'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST report, before the musician accepts it, each feature, control setting and file that does not convert, with its place in the project.'
+binds_to = 'system'
+rationale = 'Nothing is lost or replaced without the musician seeing it first.'
+
+[[requirement]]
+id = 'EU-0014-064'
+level = 'MUST'
+polarity = 'required'
+statement = 'The conversion report MUST give each item one of the states complete mapping, known lossy conversion, unsupported feature and missing file.'
+binds_to = 'system'
+rationale = 'The musician tells a part that converted exactly from one that changed, one that is unsupported and one whose file is missing.'
+
+[[requirement]]
+id = 'EU-0014-065'
+level = 'MUST'
+polarity = 'required'
+statement = "An imported project MUST show in its arrangement each item that didn't convert completely."
+binds_to = 'system'
+rationale = 'The musician finds each unresolved part while working, not only in the report.'
+
+[[requirement]]
+id = 'EU-0014-066'
+level = 'MAY'
+polarity = 'required'
+statement = 'The musician MAY accept an import as partial.'
+binds_to = 'system'
+rationale = 'A musician can work with what converted while the rest waits for a mapping.'
+
+[[requirement]]
+id = 'EU-0014-067'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A partial import MUST NOT be reported as preserving the sound completely.'
+binds_to = 'system'
+rationale = 'A partial import never claims more than it delivered.'
+
+[[requirement]]
+id = 'EU-0014-068'
+level = 'MUST'
+polarity = 'required'
+statement = 'A render or an export of an imported project MUST identify each replacement that is still unresolved.'
+binds_to = 'system'
+rationale = 'A render never passes off a replacement as the original sound.'
+
+[[requirement]]
+id = 'EU-0014-069'
+level = 'MAY'
+polarity = 'required'
+statement = "An imported project MAY keep the musician's own render of an unresolved part, so that the part can still be heard."
+binds_to = 'system'
+rationale = "The musician can still hear a part whose editing doesn't carry over."

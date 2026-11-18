@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-086"
+
+[[spec]]
+level = "MUST"
+quote = "The cache identity of audio that plays a model MUST include the identity of the model object and the processor version."

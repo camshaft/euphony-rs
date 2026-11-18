@@ -1,0 +1,94 @@
+[section]
+anchor = 'latency'
+title = 'Measured delay and readiness'
+problem = """\
+  A transport's nominal latency leaves out most of the delay between a musician playing a note and its \
+  sound, through capture, the network, buffering, a transform and the synthesizer, and a route promised as live that isn't \
+  plays late."""
+motivation = """\
+  A delay measured end to end on the hardware in use, compared with the delay the musician accepts, \
+  tells each route whether it is ready to play live and how much time its transforms have."""
+prose = """
+A route's delay is measured end to end: capture at the device, packetization, inbound network
+transit, clock uncertainty, receive buffering, dispatch, transform execution, output scheduling,
+outbound transport, and the delay of the synthesizer or audio device where there is one. Clock round
+trips alone can't prove a one-way delay under asymmetric traffic, so the measurement uses
+timestamped loopback on the target hardware. The accepted monitoring delay comes from the
+monitoring mode the musician accepts, which the system overview RFC holds. A route's transform
+budget is that accepted delay less the route's other measured delays and their uncertainty
+allowance. A route is live-ready where its transform budget covers the measured execution of its
+transforms."""
+
+[[requirement]]
+id = 'EU-0016-118'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST measure each route's delay end to end on the hardware in use, with rendering under way."
+binds_to = 'system'
+rationale = 'The delay shown is the delay of a real session.'
+
+[[requirement]]
+id = 'EU-0016-119'
+level = 'MUST'
+polarity = 'required'
+statement = "The interface MUST show each route's delay distribution, worst observed delay, jitter, loss and late-event counts."
+binds_to = 'system'
+rationale = 'A musician sees how a route behaves, not just its average.'
+
+[[requirement]]
+id = 'EU-0016-120'
+level = 'MUST'
+polarity = 'required'
+statement = 'A delay measurement MUST report its uncertainty.'
+binds_to = 'system'
+rationale = 'A number is never shown as more exact than it is.'
+
+[[requirement]]
+id = 'EU-0016-121'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A one-way delay MUST NOT be claimed from clock round trips alone.'
+binds_to = 'system'
+rationale = 'Asymmetric traffic makes a round trip a poor measure of either direction.'
+
+[[requirement]]
+id = 'EU-0016-122'
+level = 'MUST'
+polarity = 'required'
+statement = "A route's transform budget MUST be the accepted monitoring delay less the route's other measured delays and their uncertainty allowance."
+binds_to = 'system'
+rationale = 'A transform gets the time that is actually left.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-118' } ]
+
+[[requirement]]
+id = 'EU-0016-123'
+level = 'MUST'
+polarity = 'required'
+statement = "A route whose transform budget doesn't cover its transforms MUST be shown as not live-ready."
+binds_to = 'system'
+rationale = 'A route that would play late says so before it is played.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-122' } ]
+
+[[requirement]]
+id = 'EU-0016-124'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A route MUST NOT be shown as live-ready before its delay is measured.'
+binds_to = 'system'
+rationale = 'Readiness is never promised from a number copied from a transport.'
+
+[[requirement]]
+id = 'EU-0016-125'
+level = 'MUST'
+polarity = 'required'
+statement = 'Delay results over wired and wireless networks MUST be reported separately.'
+binds_to = 'system'
+rationale = 'A musician chooses a network from its own numbers.'
+
+[[requirement]]
+id = 'EU-0016-126'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A simulated result MUST NOT be reported as a measurement on hardware.'
+binds_to = 'system'
+rationale = 'A reader always knows which numbers came from real devices.'

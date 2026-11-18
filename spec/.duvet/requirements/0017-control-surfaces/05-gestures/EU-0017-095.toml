@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-095"
+
+[[spec]]
+level = "MUST"
+quote = "The project's automation recording mode MUST decide whether a lane returns to its existing automation or keeps the accepted value at release."

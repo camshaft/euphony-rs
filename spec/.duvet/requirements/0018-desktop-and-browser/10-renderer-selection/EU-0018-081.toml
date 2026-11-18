@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-081"
+
+[[spec]]
+level = "MUST"
+quote = "Selecting the supported renderer MUST take the project, the renderer, the build identity, the supported profiles and the expected configuration revision."

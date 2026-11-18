@@ -1,0 +1,92 @@
+[section]
+anchor = 'problem-reports'
+title = "Problem reports"
+problem = "A person who meets a crash or a problem wants to tell the project once, with what helps, without turning on continuous sending, and the material that helps most can hold their music."
+motivation = "A report that is drafted from the event, sent once by the person's choice, with each attachment off until added and open only to the maintainers, lets a person help with one problem while keeping control of their work."
+prose = """
+A problem report is one report of a crash or another problem that the person sends once, with the
+parts they choose. It is a choice of the owner apart from the sending choice, and the receiving
+service joins it to the finding of the event it describes. Its attachments can hold the person's
+music, so each one stays off until the person adds it, and only the maintainers that the project's
+configuration lists can open it. RFC 0001 states the owner's approval of sending a report that an
+assistant, a script or a workflow drafts (EU-0001-059 and EU-0001-062)."""
+
+[[requirement]]
+id = 'EU-0021-088'
+level = 'MUST'
+polarity = 'required'
+statement = "A person MUST be able to send one problem report while sending is off."
+binds_to = 'system'
+rationale = "Reporting one problem doesn't require continuous sending."
+
+[[requirement]]
+id = 'EU-0021-089'
+level = 'MUST'
+polarity = 'required'
+statement = "The client MUST offer to draft a problem report at the next start after a crash, from a report command in the native interface, and through the assistant adapter."
+binds_to = 'system'
+rationale = "A person reports a problem from wherever they meet it."
+
+[[requirement]]
+id = 'EU-0021-090'
+level = 'MUST'
+polarity = 'required'
+statement = "A drafted report MUST hold the person's own description, the crash or error event they choose, and its trail."
+binds_to = 'system'
+rationale = "The report carries the context that leads to its cause."
+
+[[requirement]]
+id = 'EU-0021-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Each attachment of a report MUST stay off until the person adds it: the full crash dump, a log excerpt, a reduced copy of the project holding the tracks the person chooses, an audio clip, a screenshot and a reply address."
+binds_to = 'system'
+rationale = "The person decides what of their work goes with a report."
+
+[[requirement]]
+id = 'EU-0021-092'
+level = 'MUST'
+polarity = 'required'
+statement = "Before the person adds the full crash dump, the client MUST warn that it can hold audio and project content from memory."
+binds_to = 'system'
+rationale = "The person knows what a dump can carry."
+
+[[requirement]]
+id = 'EU-0021-093'
+level = 'MUST'
+polarity = 'required'
+statement = "The preview of a report MUST show each part as the outbox shows a batch."
+binds_to = 'system'
+rationale = "The person sees exactly what the report sends."
+
+[[requirement]]
+id = 'EU-0021-095'
+level = 'MUST'
+polarity = 'required'
+statement = "The receiving service MUST answer each report with its identity and join it to its finding."
+binds_to = 'system'
+rationale = "The person can refer to the report, and it counts toward its finding."
+
+[[requirement]]
+id = 'EU-0021-096'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A report's description and attachments MUST NOT be opened by anyone other than the maintainers that the project's configuration lists."
+binds_to = 'system'
+rationale = "What a person attaches reaches only the people who fix problems."
+
+[[requirement]]
+id = 'EU-0021-097'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A maintainer MUST NOT publish any part of a report without the reporter's consent."
+binds_to = 'system'
+rationale = "A report stays private unless its sender agrees otherwise."
+
+[[requirement]]
+id = 'EU-0021-098'
+level = 'MUST'
+polarity = 'required'
+statement = "The person MUST be able to delete a report with a signed deletion request."
+binds_to = 'system'
+rationale = "A report can be withdrawn as a batch can."

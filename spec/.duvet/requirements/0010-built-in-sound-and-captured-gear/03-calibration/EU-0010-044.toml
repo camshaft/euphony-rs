@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-044"
+
+[[spec]]
+level = "MUST"
+quote = "A capture MUST play each test segment in at least two repeated passes, each after the same preroll."

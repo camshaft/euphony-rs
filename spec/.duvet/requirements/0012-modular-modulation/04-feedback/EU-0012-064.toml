@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/04-feedback.md#EU-0012-064"
+
+[[spec]]
+level = "MUST"
+quote = "A converter's or processor's latency MUST NOT stand in for a loop's explicit feedback delay."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/07-recovery.md#EU-0017-139"
+
+[[spec]]
+level = "MUST"
+quote = "A malformed or unauthorized command MUST NOT become accepted durable work."

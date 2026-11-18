@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-082"
+
+[[spec]]
+level = "MUST"
+quote = "The loss of a worker MUST NOT lose a result the host has accepted."

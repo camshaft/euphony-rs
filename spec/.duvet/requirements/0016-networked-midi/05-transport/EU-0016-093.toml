@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-093"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST refuse to activate a transport unless a verification record holds passing peer and session binding tests for its exact implementation digest, version and transport profile."

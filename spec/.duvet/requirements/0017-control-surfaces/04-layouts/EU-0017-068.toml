@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-068"
+
+[[spec]]
+level = "MAY"
+quote = "An assistant MAY arrange a surface's layout."

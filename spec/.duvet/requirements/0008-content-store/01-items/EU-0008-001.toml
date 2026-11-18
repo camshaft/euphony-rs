@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/01-items.md#EU-0008-001"
+
+[[spec]]
+level = "MUST"
+quote = "Each item MUST have exactly one kind of the closed set of item kinds."

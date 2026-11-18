@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-102"
+
+[[spec]]
+level = "MUST"
+quote = "A report whose overlap is unknown MUST NOT satisfy an acceptance criterion that requires verified separation."

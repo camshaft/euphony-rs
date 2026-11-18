@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/02-pairing.md#EU-0017-031"
+
+[[spec]]
+level = "MUST"
+quote = "Control traffic between a surface and the session MUST run over a mutually authenticated connection."

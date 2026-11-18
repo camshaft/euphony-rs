@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-016"
+
+[[spec]]
+level = "MUST"
+quote = "Each random source of a calculation MUST be named in its render descriptor with its seed and its version."

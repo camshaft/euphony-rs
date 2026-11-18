@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/06-transforms.md#EU-0016-111"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST reserve a transform's state and output allocation before it activates the transform."

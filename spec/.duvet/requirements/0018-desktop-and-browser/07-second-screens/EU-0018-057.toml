@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/07-second-screens.md#EU-0018-057"
+
+[[spec]]
+level = "MUST"
+quote = "A drawn panel on a phone or in a browser MUST NOT replace the semantic access that its platform's own controls provide."

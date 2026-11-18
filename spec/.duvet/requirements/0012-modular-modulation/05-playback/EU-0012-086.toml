@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-086"
+
+[[spec]]
+level = "MUST"
+quote = "Where reproducible playback is asked for, the system MUST store each external control performance with its timestamps."

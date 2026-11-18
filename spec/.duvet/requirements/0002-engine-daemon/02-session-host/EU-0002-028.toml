@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-028"
+
+[[spec]]
+level = "MUST"
+quote = "A metric of the session host MUST NOT use a diagnostic identifier as a category."

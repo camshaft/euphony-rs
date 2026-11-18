@@ -27,7 +27,7 @@ An encoded object MUST have a digest of its encoded bytes that is separate from 
 
 ### EU-0007-125 {#EU-0007-125}
 
-A reader MUST verify an encoded object's encoded digest before it decodes the object.
+A reader MUST verify the encoded digest of each chunk before it decodes that chunk.
 
 ### EU-0007-023 {#EU-0007-023}
 

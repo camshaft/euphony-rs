@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-122"
+
+[[spec]]
+level = "MUST"
+quote = "The finding key of a crash MUST be its process, its exception kind and the frames of euphony's own code on the faulting thread."

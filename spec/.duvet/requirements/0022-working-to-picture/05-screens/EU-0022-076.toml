@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/05-screens.md#EU-0022-076"
+
+[[spec]]
+level = "MUST"
+quote = "After a seek, a loop change, a join, a change of delay or a change between aligned and host-live mode, a participant's picture MUST follow the new timing from its first refresh."

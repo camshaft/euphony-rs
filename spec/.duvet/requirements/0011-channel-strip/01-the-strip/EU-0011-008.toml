@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-008"
+
+[[spec]]
+level = "MUST"
+quote = "The equalizer stage MUST offer four bands: a low shelf, a high shelf and two peaking bands."

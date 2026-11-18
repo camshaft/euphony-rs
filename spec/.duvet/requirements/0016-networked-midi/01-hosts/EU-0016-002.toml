@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/01-hosts.md#EU-0016-002"
+
+[[spec]]
+level = "MUST"
+quote = "The device browser MUST show the connection state of each port it shows."

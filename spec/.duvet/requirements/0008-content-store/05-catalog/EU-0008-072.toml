@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-072"
+
+[[spec]]
+level = "MUST"
+quote = "Metadata, license text and provenance read from imported content MUST NOT be acted on as instructions or grants."

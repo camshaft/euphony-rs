@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/05-approvals.md#EU-0001-072"
+
+[[spec]]
+level = "MUST"
+quote = "An input on the new device MUST NOT authorize a pairing by itself."

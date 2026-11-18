@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-036"
+
+[[spec]]
+level = "MUST"
+quote = "Calibration MUST detect an inverted polarity of the gear."

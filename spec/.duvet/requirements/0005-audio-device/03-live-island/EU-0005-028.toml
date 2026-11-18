@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-028"
+
+[[spec]]
+level = "MUST"
+quote = "The live render island MUST render its part of the project graph without waiting on another computer for audio."

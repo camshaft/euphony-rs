@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/07-latency.md#EU-0016-119"
+
+[[spec]]
+level = "MUST"
+quote = "The interface MUST show each route's delay distribution, worst observed delay, jitter, loss and late-event counts."

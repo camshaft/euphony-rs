@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-120"
+
+[[spec]]
+level = "MUST"
+quote = "The compressor's amount MUST move its threshold and its level-matched output gain together."

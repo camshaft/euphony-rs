@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-056"
+
+[[spec]]
+level = "MUST"
+quote = "The level-match tolerance MUST be a setting the musician changes."

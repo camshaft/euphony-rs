@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/02-results.md#EU-0020-021"
+
+[[spec]]
+level = "MUST"
+quote = "An incomplete result MUST state which part of its requested interval it covers."

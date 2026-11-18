@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/02-identity.md#EU-0006-024"
+
+[[spec]]
+level = "MUST"
+quote = "A result MUST be accepted only from a worker that is one of the owner's paired computers."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-131"
+
+[[spec]]
+level = "MUST"
+quote = "The provenance of a strip preset MUST be one of built in, the musician's own, learned and imported."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/02-results.md#EU-0020-016"
+
+[[spec]]
+level = "MUST"
+quote = "A measurement MUST NOT carry a probability of being right."

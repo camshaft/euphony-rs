@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-048"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST read the origin of each command from the client session that sent it, whatever the command claims."

@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-106"
+
+[[spec]]
+level = "MUST"
+quote = "A finding MUST NOT be an executable command or an approval."

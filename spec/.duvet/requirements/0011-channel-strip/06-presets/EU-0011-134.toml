@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/06-presets.md#EU-0011-134"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a preset's fixed stage MUST set the stage's exact parameter values."

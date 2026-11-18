@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/03-public-source.md#EU-0001-028"
+
+[[spec]]
+level = "MUST"
+quote = "A change to upstream-derived code MUST update the summary of local changes in its provenance record."

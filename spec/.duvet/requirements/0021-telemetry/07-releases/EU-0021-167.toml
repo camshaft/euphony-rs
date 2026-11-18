@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/07-releases.md#EU-0021-167"
+
+[[spec]]
+level = "MUST"
+quote = "A sent crash frame MUST NOT hold a function name."

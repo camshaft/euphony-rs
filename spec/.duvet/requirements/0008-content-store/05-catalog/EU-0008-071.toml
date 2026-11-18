@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-071"
+
+[[spec]]
+level = "MUST"
+quote = "The original file name and folder of an imported item MUST NOT leave the computers of the owner."

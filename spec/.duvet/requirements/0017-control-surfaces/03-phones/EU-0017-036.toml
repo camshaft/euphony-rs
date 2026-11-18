@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/03-phones.md#EU-0017-036"
+
+[[spec]]
+level = "MUST"
+quote = "Every recording and mix control on a phone MUST show the session and the output it acts on."

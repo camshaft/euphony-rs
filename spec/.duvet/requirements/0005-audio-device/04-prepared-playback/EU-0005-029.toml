@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/04-prepared-playback.md#EU-0005-029"
+
+[[spec]]
+level = "MUST"
+quote = "A passage whose prepared audio matches the current revision MUST play from that prepared audio."

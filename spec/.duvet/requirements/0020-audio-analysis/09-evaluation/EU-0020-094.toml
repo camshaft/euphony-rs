@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-094"
+
+[[spec]]
+level = "MUST"
+quote = "The release record of a method version MUST hold its comparison with the pinned previous version on the same corpus and device profiles."

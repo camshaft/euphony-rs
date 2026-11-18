@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-156"
+
+[[spec]]
+level = "MUST"
+quote = "Once the release with a fix has reports, the service MUST post the change in the finding's rate with its interval of uncertainty, the exposure and the cohort of each release."

@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-086"
+
+[[spec]]
+level = "MUST"
+quote = "Feedback sent to a hardware controller MUST NOT come back as a new command from a person."

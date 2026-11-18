@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-050"
+
+[[spec]]
+level = "MUST"
+quote = "The jump back to a loop's start MUST show the loop's first frame on the first refresh after the jump."

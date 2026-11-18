@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-038"
+
+[[spec]]
+level = "MUST"
+quote = "The capture rig MUST rise to the highest level the musician sets in steps from a low level."

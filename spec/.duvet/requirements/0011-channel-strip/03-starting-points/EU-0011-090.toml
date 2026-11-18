@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-090"
+
+[[spec]]
+level = "MUST"
+quote = "The strip MUST offer Listen on a track without audio, which measures a moment of the live input and dials the stages in from it."

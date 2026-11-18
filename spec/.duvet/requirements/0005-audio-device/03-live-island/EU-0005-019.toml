@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/03-live-island.md#EU-0005-019"
+
+[[spec]]
+level = "MUST"
+quote = "Input monitoring MUST render in the live render island of the computer the input is attached to."

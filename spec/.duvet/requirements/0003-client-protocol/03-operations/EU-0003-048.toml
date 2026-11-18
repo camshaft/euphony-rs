@@ -1,0 +1,5 @@
+target = "rendered/0003-client-protocol/03-operations.md#EU-0003-048"
+
+[[spec]]
+level = "MUST"
+quote = "A client MUST drop or revert a predicted value when its command is acknowledged or refused."

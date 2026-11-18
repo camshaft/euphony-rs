@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-114"
+
+[[spec]]
+level = "MAY"
+quote = "Aggregate counts and tracker issues that don't hold an identity MAY remain after a deletion."

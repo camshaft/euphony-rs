@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/04-trust-model.md#EU-0001-030"
+
+[[spec]]
+level = "MUST"
+quote = "Discovering a device MUST NOT pair it."

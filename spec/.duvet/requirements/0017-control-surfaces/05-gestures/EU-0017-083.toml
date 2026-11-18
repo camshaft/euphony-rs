@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/05-gestures.md#EU-0017-083"
+
+[[spec]]
+level = "MUST"
+quote = "Relative encoder turns MUST add up in the session host's order, each counted once."

@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/01-end-state.md#EU-0006-004"
+
+[[spec]]
+level = "MUST"
+quote = "An edit MUST NOT cause a render of audio that neither the edit nor its dependencies change."

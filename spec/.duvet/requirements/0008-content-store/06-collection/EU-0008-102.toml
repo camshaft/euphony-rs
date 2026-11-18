@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/06-collection.md#EU-0008-102"
+
+[[spec]]
+level = "MUST"
+quote = "The decision point MUST NOT record an intent as deleted before every computer it was issued to has answered unreferenced with a barrier while the pairing is unchanged."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/05-transport.md#EU-0016-085"
+
+[[spec]]
+level = "MUST"
+quote = "A transport without verified loss recovery MUST NOT claim an uninterrupted performance."

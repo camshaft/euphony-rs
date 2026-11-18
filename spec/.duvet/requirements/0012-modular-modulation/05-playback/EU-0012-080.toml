@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/05-playback.md#EU-0012-080"
+
+[[spec]]
+level = "MUST"
+quote = "A cached result MUST be reused only under the same complete descriptor and a compatible numerical profile."

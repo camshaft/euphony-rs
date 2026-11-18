@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/06-refinement.md#EU-0010-098"
+
+[[spec]]
+level = "MUST"
+quote = "euphony MUST NOT admit a submission or a job of a run once an evaluation result that establishes one of the run's stop rules is recorded."

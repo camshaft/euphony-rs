@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/08-control-maps.md#EU-0015-096"
+
+[[spec]]
+level = "MUST"
+quote = "The host MUST apply each encoder turn it accepts exactly once, however often it arrives and in whatever order."

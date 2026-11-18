@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/03-evidence.md#EU-0019-033"
+
+[[spec]]
+level = "MUST"
+quote = "Submitting evidence MUST carry the expected learning revision and an idempotency key."

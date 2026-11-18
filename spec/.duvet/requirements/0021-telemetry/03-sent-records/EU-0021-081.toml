@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-081"
+
+[[spec]]
+level = "MUST"
+quote = "The signature of a batch MUST cover its batch identity and the digest of its contents."

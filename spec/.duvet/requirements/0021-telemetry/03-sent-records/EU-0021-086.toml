@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-086"
+
+[[spec]]
+level = "MUST"
+quote = "Before the person forgets a key, the client MUST say that a forgotten key can't delete that identity's data later."

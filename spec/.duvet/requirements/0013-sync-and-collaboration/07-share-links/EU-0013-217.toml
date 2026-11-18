@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-217"
+
+[[spec]]
+level = "MUST"
+quote = "The system MUST NOT let code from any origin other than the application origin read the secret or the fingerprint of a link."

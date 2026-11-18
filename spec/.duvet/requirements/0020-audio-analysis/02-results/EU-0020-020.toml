@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/02-results.md#EU-0020-020"
+
+[[spec]]
+level = "MUST"
+quote = "Each result MUST hold a digest of its whole content."

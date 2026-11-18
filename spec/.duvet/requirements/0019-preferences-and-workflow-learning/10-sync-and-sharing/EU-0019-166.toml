@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/10-sync-and-sharing.md#EU-0019-166"
+
+[[spec]]
+level = "MUST"
+quote = "Sharing a project, a link to it or a digest of its audio MUST NOT include the owner's learning."

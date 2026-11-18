@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/09-original-assets.md#EU-0018-077"
+
+[[spec]]
+level = "MUST"
+quote = "A release, the repository and the public reference images MUST NOT hold a reference capture of another product or an asset extracted from one."

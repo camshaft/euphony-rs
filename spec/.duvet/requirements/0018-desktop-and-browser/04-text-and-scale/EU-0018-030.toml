@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/04-text-and-scale.md#EU-0018-030"
+
+[[spec]]
+level = "MUST"
+quote = "Text entry MUST support the operating system's input methods for composing characters."

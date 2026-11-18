@@ -1,0 +1,251 @@
+[section]
+anchor = 'routes'
+title = 'Routes'
+problem = """\
+  A device's events go to tracks, instruments, parameters and other devices, and a route that two \
+  interfaces edit at once, that points at a port that moved, or that loops back into itself plays \
+  the wrong notes or feeds back."""
+motivation = """\
+  One typed, revisioned project record for each route, checked before it is recorded, lets every \
+  interface read and change the same routes, keeps device messages from acting as commands, and \
+  refuses a route that can't be carried out."""
+prose = """
+A route is a record of the project. It holds an identity and a revision; a device binding and a
+source port; a selector of channels and event classes; the ordered versions of its transforms and
+their parameters; a destination, which is a track, an instrument, an external port or a declared
+control target; an output channel mapping; a timing profile; and the execution site and generation
+of its transforms. An input route records raw events, plays an instrument or maps declared
+controller values onto parameters the controller is bound to. An output route plays an external
+synthesizer. The operations on routes are to list and subscribe to devices; to preview, set and
+remove a route; to compile, preview and attach a transform; to activate and suspend a route; and
+to reset the notes a route owns. Each mutation answers with a committed revision, or with one of
+the refusals denied, stale revision, ambiguous device, absent port, unsupported format, invalid
+cycle, invalid program and insufficient timing readiness. A route edit is a musical edit of the
+project. The membership of a session isn't music, and a merge of music never changes it. Device
+messages are data: a control change, a system exclusive message or a program change plays or
+records, and changes a parameter only through a controller bound to that parameter."""
+
+[[requirement]]
+id = 'EU-0016-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each route MUST be a typed record of the project with an identity and a revision.'
+binds_to = 'system'
+rationale = 'Every interface reads and changes the same route, and a stale edit is found.'
+
+[[requirement]]
+id = 'EU-0016-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each route mutation MUST carry its actor, project, expected revision and idempotency identity.'
+binds_to = 'system'
+rationale = 'The gateway knows who asked, for what, over which revision, and whether it has seen the request.'
+
+[[requirement]]
+id = 'EU-0016-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each route mutation MUST answer with a committed revision or a typed refusal.'
+binds_to = 'system'
+rationale = 'A person and an assistant read the same outcome from the same field.'
+
+[[requirement]]
+id = 'EU-0016-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'A route mutation that repeats the idempotency identity of an earlier mutation MUST answer as that mutation answered, without changing the project again.'
+binds_to = 'system'
+rationale = 'A retried request never applies twice.'
+relations = [ { kind = 'depends_on', target = 'EU-0016-028' } ]
+
+[[requirement]]
+id = 'EU-0016-031'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route mutation whose expected revision isn't the route's current revision."
+binds_to = 'system'
+rationale = 'Two concurrent edits never overwrite each other without notice.'
+
+[[requirement]]
+id = 'EU-0016-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'The command gateway MUST refuse a route whose source or destination has the wrong direction.'
+binds_to = 'system'
+rationale = 'A route never reads from a sink or writes to a source.'
+
+[[requirement]]
+id = 'EU-0016-033'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route made over a port description that isn't current."
+binds_to = 'system'
+rationale = 'A route always matches the port as its host describes it now.'
+
+[[requirement]]
+id = 'EU-0016-034'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route whose event encoding its port doesn't support."
+binds_to = 'system'
+rationale = 'A port never receives events it cannot carry.'
+
+[[requirement]]
+id = 'EU-0016-035'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route whose destination doesn't exist."
+binds_to = 'system'
+rationale = 'Events are never sent to nothing.'
+
+[[requirement]]
+id = 'EU-0016-036'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route mutation from a caller the trust model doesn't authorize for the project."
+binds_to = 'system'
+rationale = 'Routing follows the same access rules as every other project change.'
+
+[[requirement]]
+id = 'EU-0016-037'
+level = 'MUST'
+polarity = 'required'
+statement = "The command gateway MUST refuse a route that closes a routing cycle the route doesn't declare."
+binds_to = 'system'
+rationale = "External MIDI doesn't carry a dependable loop marker, so an undeclared loop would feed back."
+
+[[requirement]]
+id = 'EU-0016-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A declared routing loop MUST carry an explicit delay.'
+binds_to = 'system'
+rationale = 'An intentional loop stays bounded and predictable.'
+
+[[requirement]]
+id = 'EU-0016-039'
+level = 'MUST'
+polarity = 'required'
+statement = "The desktop interface, each phone client that supports routes and each assistant MUST read the same revisioned view of a project's routes."
+binds_to = 'system'
+rationale = 'Every interface shows the same routing.'
+
+[[requirement]]
+id = 'EU-0016-040'
+level = 'MUST'
+polarity = 'required'
+statement = 'An assistant the owner connects MUST be able to perform each route and transform operation a person can perform.'
+binds_to = 'system'
+rationale = 'An assistant works the same routes through the same commands, and no other way in.'
+
+[[requirement]]
+id = 'EU-0016-041'
+level = 'MUST'
+polarity = 'required'
+statement = "A route edit MUST take part in the project's undo and merge as other musical edits do."
+binds_to = 'system'
+rationale = 'A musician undoes a routing change like any other change.'
+
+[[requirement]]
+id = 'EU-0016-042'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A merge of route edits MUST NOT change the membership of a session.'
+binds_to = 'system'
+rationale = 'Merging music never changes who takes part.'
+
+[[requirement]]
+id = 'EU-0016-043'
+level = 'MUST'
+polarity = 'required'
+statement = "A route's acknowledgement MUST distinguish its stored intent from its active transport."
+binds_to = 'system'
+rationale = 'A musician sees whether a saved route is also playing.'
+
+[[requirement]]
+id = 'EU-0016-044'
+level = 'MUST'
+polarity = 'required'
+statement = "A route MUST keep each event's source channel and identity before any remapping."
+binds_to = 'system'
+rationale = 'A recording and a note release can always trace an event back to where it came from.'
+
+[[requirement]]
+id = 'EU-0016-045'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A message from a device MUST NOT act as a project command or change a permission.'
+binds_to = 'system'
+rationale = 'A device on the network can play, and nothing more.'
+
+[[requirement]]
+id = 'EU-0016-046'
+level = 'MUST'
+polarity = 'required'
+statement = "A controller MUST change only the target it is explicitly bound to, within that target's declared range."
+binds_to = 'system'
+rationale = 'A knob moves the parameter it was given, and never another.'
+
+[[requirement]]
+id = 'EU-0016-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A default binding MUST NOT arm recording.'
+binds_to = 'system'
+rationale = 'Plugging in a device never starts a recording.'
+
+[[requirement]]
+id = 'EU-0016-048'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A default binding MUST NOT change a pairing or a link.'
+binds_to = 'system'
+rationale = 'Plugging in a device never changes who or what is connected.'
+
+[[requirement]]
+id = 'EU-0016-049'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A default binding MUST NOT transmit system exclusive messages.'
+binds_to = 'system'
+rationale = 'A default never rewrites a device setting.'
+
+[[requirement]]
+id = 'EU-0016-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Preparing a route MUST NOT delay audio playback.'
+binds_to = 'system'
+rationale = 'A route edit never makes playback stutter.'
+
+[[requirement]]
+id = 'EU-0016-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST activate a route's new generation atomically."
+binds_to = 'system'
+rationale = 'No event plays through half of an old route and half of a new one.'
+
+[[requirement]]
+id = 'EU-0016-052'
+level = 'MUST'
+polarity = 'required'
+statement = "The output adapter MUST refuse each event of a route generation that isn't current."
+binds_to = 'system'
+rationale = 'An event of a replaced route never reaches an instrument.'
+
+[[requirement]]
+id = 'EU-0016-053'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT send events to a host after the owner unpairs it.'
+binds_to = 'system'
+rationale = 'Unpairing takes effect at once, whatever routes are saved.'
+
+[[requirement]]
+id = 'EU-0016-140'
+level = 'MUST'
+polarity = 'required'
+statement = 'A declared routing loop MUST carry a declared feedback policy.'
+binds_to = 'system'
+rationale = 'An intentional loop never feeds back without a rule that says what happens.'

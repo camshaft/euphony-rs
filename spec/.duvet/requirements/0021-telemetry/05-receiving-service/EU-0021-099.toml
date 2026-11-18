@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-099"
+
+[[spec]]
+level = "MUST"
+quote = "The receiving service MUST be public code built and released from euphony's public repository."

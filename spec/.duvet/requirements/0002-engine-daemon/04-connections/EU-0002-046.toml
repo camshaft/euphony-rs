@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/04-connections.md#EU-0002-046"
+
+[[spec]]
+level = "MUST"
+quote = "Admission to the local endpoint MUST NOT assign a connection an origin."

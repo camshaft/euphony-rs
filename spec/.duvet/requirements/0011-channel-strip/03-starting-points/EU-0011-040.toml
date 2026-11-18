@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-040"
+
+[[spec]]
+level = "MUST"
+quote = "Two calculations with the same inputs MUST return the same starting point on every computer of a compatible numerical profile."

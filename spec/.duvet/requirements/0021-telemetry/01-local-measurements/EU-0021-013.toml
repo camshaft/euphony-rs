@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/01-local-measurements.md#EU-0021-013"
+
+[[spec]]
+level = "MUST"
+quote = "Each abnormal end of a process MUST be recorded as a crash event that states the process, the release and build identity, the exception or signal kind from a closed set, the frames of the faulting thread that lie in euphony's own public code as module and offset, the trail, the uptime and the computer's hardware class."

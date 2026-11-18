@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-123"
+
+[[spec]]
+level = "MUST"
+quote = "The finding key of an error MUST be its interface, its operation and its result kind."

@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-146"
+
+[[spec]]
+level = "MUST"
+quote = "A hardware class with too few computers to give an interval MUST be reported as unverified."

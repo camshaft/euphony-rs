@@ -1,0 +1,5 @@
+target = "rendered/0005-audio-device/01-device-stream.md#EU-0005-001"
+
+[[spec]]
+level = "MUST"
+quote = "The audio device process MUST start a hardware stream only after the musician activates its device."

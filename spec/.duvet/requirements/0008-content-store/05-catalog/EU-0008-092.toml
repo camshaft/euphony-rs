@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/05-catalog.md#EU-0008-092"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator MUST NOT reach any entry of the catalog of the owner."

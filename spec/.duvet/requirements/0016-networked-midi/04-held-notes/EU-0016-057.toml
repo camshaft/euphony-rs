@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/04-held-notes.md#EU-0016-057"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST NOT stop a note that another note-on still holds."

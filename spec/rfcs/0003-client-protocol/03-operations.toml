@@ -1,0 +1,200 @@
+[section]
+anchor = 'operations'
+title = 'Session operations, commands and state'
+problem = """\
+  A client that cannot tell whether its command was applied sends it twice or loses it, a client that \
+  applies part of a change shows a session that never existed, and a client that attaches late \
+  cannot show the session as it stands."""
+motivation = """\
+  Commands that carry their expected revision and an idempotency key and are answered with the \
+  committed revision or a typed refusal, and a state that arrives as a snapshot and then as ordered \
+  deltas, let every client show the session exactly as the session host holds it."""
+prose = """
+The session operations list the sessions of a computer, open a project, attach to a session, detach
+and close it. Each attachment has a generation, and a new attach starts a new one. A command is one
+typed action on the session: it carries the revision of the session it was made against, an
+idempotency key that identifies it across a resend, and the transaction group it commits with. The
+session host answers it with the revision it committed or with a typed refusal, and accepts it only
+once it has decoded, validated and recorded it. Each refusal has one kind. A command whose expected
+revision isn't the current revision of the session is refused as a conflict that names the current
+head revision, as RFC 0002 states, and that conflict is the only refusal of a stale revision. A
+command from an origin that may not take it is denied, whatever its expected revision. A command
+that names an object the session doesn't hold, or one outside the part of the session the client
+may see, has an unknown target, so the kind of the refusal doesn't tell the client whether the
+object exists. A command that needs a capability the session host doesn't serve has an unsupported
+capability. A command that decodes but fails validation, such as one that sets a value outside the
+range its target takes, is an invalid command; a command that has an unknown target, whether the
+session doesn't hold its object or the client may not see it, is never refused as an invalid
+command. Where a command meets more than one of these cases, its refusal is the first that applies
+in this order: unknown target, denied, unsupported capability, conflict, invalid command. The
+state of the session reaches a client as a snapshot of the part the client may see and then as an
+ordered stream of deltas, each at a revision, which the client resumes from a cursor. A gesture,
+such as a fader drag, is a token that begins, is updated in sequence with the
+time each update was captured, and ends or is cancelled. Undo and redo are commands on the one
+history of the session, and RFC 0002 states how the session host keeps that
+history, applies each command once and resumes a subscription from its cursor. The state of a view
+has shared parts, which belong to the session, and transient parts, such as scrolling, which stay
+with each client. A client draws the effect of its own command at once, as a predicted value, until
+the command is acknowledged or refused."""
+
+[[requirement]]
+id = 'EU-0003-026'
+level = 'MUST'
+polarity = 'required'
+statement = 'The client protocol MUST offer the session operations list, open, attach, detach and close.'
+binds_to = 'system'
+rationale = 'Every client finds, opens and leaves a session the same way.'
+
+[[requirement]]
+id = 'EU-0003-027'
+level = 'MUST'
+polarity = 'required'
+statement = 'An attach MUST return the generation of the session, its control epoch, a snapshot of the part of the session the client may see and a subscription cursor.'
+binds_to = 'system'
+rationale = 'A client shows the session as it stands at once and follows its changes from there.'
+
+[[requirement]]
+id = 'EU-0003-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each command MUST carry the revision it expects, an idempotency key and its transaction group.'
+binds_to = 'system'
+rationale = 'A command made against an old state is refused, a repeated command is recognized, and a group of commands commits together.'
+
+[[requirement]]
+id = 'EU-0003-029'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each command MUST be answered with the revision it committed or with a typed refusal.'
+binds_to = 'system'
+rationale = 'A client knows exactly what became of each command.'
+
+[[requirement]]
+id = 'EU-0003-030'
+level = 'MUST'
+polarity = 'required'
+statement = 'A refusal MUST state its kind as one of denied, conflict, unknown target, unsupported capability and invalid command.'
+binds_to = 'system'
+rationale = 'A client and an assistant act on why a command was refused, not on its words.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-029' } ]
+
+[[requirement]]
+id = 'EU-0003-031'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A command MUST NOT be acknowledged before the session host has validated it and recorded it in the history of the session.'
+binds_to = 'system'
+rationale = 'An acknowledged command survives the failure of any process.'
+
+[[requirement]]
+id = 'EU-0003-032'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client MUST learn the outcome of an unacknowledged command from its idempotency key before it sends that command again.'
+binds_to = 'system'
+rationale = 'A client that reconnects never applies a command twice and never loses one.'
+
+[[requirement]]
+id = 'EU-0003-034'
+level = 'MUST'
+polarity = 'required'
+statement = 'The state of a session MUST reach a client as a snapshot followed by a stream of deltas, each at a revision of the session.'
+binds_to = 'system'
+rationale = 'A client always shows a state that the session held.'
+
+[[requirement]]
+id = 'EU-0003-036'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A client MUST NOT apply part of a delta.'
+binds_to = 'system'
+rationale = 'A client never shows a state that the session never held.'
+
+[[requirement]]
+id = 'EU-0003-037'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client that cannot apply a delta MUST ask for a fresh snapshot.'
+binds_to = 'system'
+rationale = 'A client older than a delta, or one that missed a delta, returns to the state the session holds.'
+
+[[requirement]]
+id = 'EU-0003-038'
+level = 'MUST'
+polarity = 'required'
+statement = 'A gesture MUST be carried as a token with begin, update, end and cancel operations.'
+binds_to = 'system'
+rationale = 'A continuous control, such as a fader drag, is one action with a clear start and end.'
+
+[[requirement]]
+id = 'EU-0003-039'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each update of a gesture MUST carry its sequence and its capture time.'
+binds_to = 'system'
+rationale = 'The engine applies a gesture as the person moved it, whatever the network did.'
+
+[[requirement]]
+id = 'EU-0003-040'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Two updates of one gesture MUST NOT be applied out of their sequence.'
+binds_to = 'system'
+rationale = 'A late update never moves a control back.'
+relations = [ { kind = 'depends_on', target = 'EU-0003-039' } ]
+
+[[requirement]]
+id = 'EU-0003-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'Undo MUST undo a gesture as one step.'
+binds_to = 'system'
+rationale = 'One undo reverses a whole fader drag, as the person made it.'
+
+[[requirement]]
+id = 'EU-0003-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'The shared parts of the state of each view, such as the selected track, the follow mode of the playhead and named screensets, MUST be part of the state of the session.'
+binds_to = 'system'
+rationale = 'A second interface can follow the first, and an assistant can read and change what the person sees.'
+
+[[requirement]]
+id = 'EU-0003-044'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The transient view state of a client, such as its scroll, zoom and pointer position, MUST NOT reach another client.'
+binds_to = 'system'
+rationale = 'Scrolling on one screen never moves another.'
+
+[[requirement]]
+id = 'EU-0003-045'
+level = 'MAY'
+polarity = 'required'
+statement = 'A client MAY follow or ignore the shared view state, as its configuration sets.'
+binds_to = 'system'
+rationale = 'Two screens can show the same view or different ones.'
+
+[[requirement]]
+id = 'EU-0003-046'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A predicted value MUST NOT change audio.'
+binds_to = 'system'
+rationale = 'A client draws its own command at once, while the audio changes only for the accepted command.'
+
+[[requirement]]
+id = 'EU-0003-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A predicted value MUST NOT hide a refusal of its command.'
+binds_to = 'system'
+rationale = 'The person always sees when a change did not happen.'
+
+[[requirement]]
+id = 'EU-0003-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'A client MUST drop or revert a predicted value when its command is acknowledged or refused.'
+binds_to = 'system'
+rationale = 'The screen returns to the state the session holds.'

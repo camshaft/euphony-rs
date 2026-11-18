@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/01-host-service.md#EU-0002-009"
+
+[[spec]]
+level = "MUST"
+quote = "The host service MUST hold its computer's local endpoint and network endpoint."

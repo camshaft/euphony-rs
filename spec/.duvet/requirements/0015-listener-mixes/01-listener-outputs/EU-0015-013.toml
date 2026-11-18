@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/01-listener-outputs.md#EU-0015-013"
+
+[[spec]]
+level = "MUST"
+quote = "A change of one sink mix MUST NOT change a recording in progress."

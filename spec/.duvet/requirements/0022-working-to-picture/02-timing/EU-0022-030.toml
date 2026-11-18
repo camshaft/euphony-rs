@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-030"
+
+[[spec]]
+level = "MUST"
+quote = "A project with a video MUST take its timecode rate and labeling from that video by default."

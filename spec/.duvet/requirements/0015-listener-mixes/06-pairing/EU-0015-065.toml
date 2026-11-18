@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-065"
+
+[[spec]]
+level = "MUST"
+quote = "A pairing whose confirmation numbers don't match MUST fail."

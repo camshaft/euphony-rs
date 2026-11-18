@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/09-retrospectives.md#EU-0019-161"
+
+[[spec]]
+level = "MUST"
+quote = "The owner MUST be able to accept or reject each change a retrospective proposes on its own."

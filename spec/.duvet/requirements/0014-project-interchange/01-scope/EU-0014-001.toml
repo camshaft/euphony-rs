@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/01-scope.md#EU-0014-001"
+
+[[spec]]
+level = "MUST"
+quote = "An imported project MUST be kept in euphony's own project format."

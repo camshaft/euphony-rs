@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/05-chain-models.md#EU-0010-093"
+
+[[spec]]
+level = "MUST"
+quote = "The report of a model MUST list the processor cost, the added delay and the missed deadlines of each candidate at each device period."

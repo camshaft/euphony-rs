@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/05-stations.md#EU-0015-048"
+
+[[spec]]
+level = "MUST"
+quote = "A station MUST apply its output protection before it plays its sink's stream."

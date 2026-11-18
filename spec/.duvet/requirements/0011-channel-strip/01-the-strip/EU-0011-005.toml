@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/01-the-strip.md#EU-0011-005"
+
+[[spec]]
+level = "MUST"
+quote = "The input stage MUST offer a trim, a polarity inversion and a short delay for aligning microphones."

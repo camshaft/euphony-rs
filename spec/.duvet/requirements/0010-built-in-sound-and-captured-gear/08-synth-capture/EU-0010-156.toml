@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/08-synth-capture.md#EU-0010-156"
+
+[[spec]]
+level = "MUST"
+quote = "An instrument map MUST be a versioned data object tied to a device model, firmware, port and channel mode and patch format."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-239"
+
+[[spec]]
+level = "MUST"
+quote = "An edit link MUST be single use."

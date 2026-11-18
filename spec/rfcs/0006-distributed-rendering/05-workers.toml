@@ -1,0 +1,213 @@
+[section]
+anchor = 'workers'
+title = 'Workers and scheduling'
+problem = """\
+  A scheduler that caps work by a fixed number, or that serves projects and priorities unequally, \
+  either wastes the owner's computers or lets speculative work hold up the passage the musician \
+  waits on, and a result from an attempt the scheduler gave up on can overwrite newer work."""
+motivation = """\
+  Workers that pull work, capacity measured from each worker's own answers, priority levels with \
+  fair shares inside them, and attempts that newer attempts replace let dozens of computers work at \
+  the rate each sustains while the musician's current work comes first."""
+prose = """
+The host of a project keeps its render job queue and the journal of that queue. A worker is
+described to the owner's device discovery service as data: its render profiles, the formats it
+accepts and the addresses of its job and transfer endpoints. The discovery service reports each
+worker's presence and configures the connection to it, and carries none of the render traffic. The
+scheduler reads every capacity signal, such as completions, latency, errors and storage pressure,
+from the job protocol itself. An idle worker pulls a lease on a job. Render work has two priority
+levels, interactive preparation for what the musician is about to hear, then speculative
+preparation, and the messages that start, cancel and answer an attempt come ahead of both. Each new
+attempt at a job replaces the earlier attempts of that job. A local authority orders the edits of
+each branch of a project, and independent branches, render jobs and transfers proceed beside it.
+Each attempt reports its progress over the job protocol, and the scheduler measures each
+worker's rate of progress from those reports as it measures its other capacity signals.
+While a worker holds a lease, the job protocol closes the connection to that worker once the
+transport reports that the worker stopped acknowledging what is sent on it, which ends that lease.
+While the lease is held, the job protocol keeps sending liveness probes on that connection, at a
+pace the transport discovers, so that the transport can report a worker that stops acknowledging.
+An attempt that hangs while its worker's transport keeps acknowledging stops sending progress
+reports, and the next other worker that can take its job and asks for a lease receives a replacing
+attempt, judged from the intervals between the first worker's own reports, or between the reports
+of every worker of its render profile until the first worker's own show a variation above zero.
+A lease request that the host can't answer with a job at once waits at the host, and the host
+judges the hung attempt again on each liveness probe it sends and each message it receives, so
+the waiting worker receives the replacing attempt without asking again.
+Render work and its answers travel over the job protocol's connections. Inputs and results travel
+over the content store's connections, whose pairing and encryption rules RFC 0008 states."""
+
+[[requirement]]
+id = 'EU-0006-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A unit of render work MUST be a render island over a time range.'
+binds_to = 'system'
+rationale = 'Workers exchange substantial pieces of work, never a message for each sample or each node.'
+
+[[requirement]]
+id = 'EU-0006-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Render jobs and transfers MUST NOT wait on the authority that orders a branch's edits."
+binds_to = 'system'
+rationale = 'Ordering edits never serializes their rendering or routes audio through one computer.'
+
+[[requirement]]
+id = 'EU-0006-048'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Adding a worker MUST NOT require a change to the owner's device discovery service."
+binds_to = 'system'
+rationale = 'A worker is data the discovery service carries, and the service stays general.'
+
+[[requirement]]
+id = 'EU-0006-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'The scheduler MUST stop placing work on a worker once the discovery service reports that worker gone.'
+binds_to = 'system'
+rationale = 'Work never waits on a computer that has left the network.'
+
+[[requirement]]
+id = 'EU-0006-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The scheduler MUST NOT impose a fixed limit on the work that a worker or a link takes.'
+binds_to = 'system'
+rationale = 'Each computer and each link works at the capacity it shows, whatever that is.'
+
+[[requirement]]
+id = 'EU-0006-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The scheduler MUST size the work it assigns to each worker and each link from that worker's measured completions, latency, errors and storage pressure."
+binds_to = 'system'
+rationale = 'Work grows on clean answers and shrinks on slow answers, errors and full disks.'
+
+[[requirement]]
+id = 'EU-0006-052'
+level = 'MUST'
+polarity = 'required'
+statement = 'Interactive preparation MUST be scheduled ahead of speculative preparation.'
+binds_to = 'system'
+rationale = 'The passage the musician is about to hear comes first.'
+
+[[requirement]]
+id = 'EU-0006-053'
+level = 'MUST'
+polarity = 'required'
+statement = 'Projects at the same priority level MUST each receive a fair share of the available capacity.'
+binds_to = 'system'
+rationale = 'One large project never starves another.'
+
+[[requirement]]
+id = 'EU-0006-054'
+level = 'SHOULD'
+polarity = 'required'
+statement = 'The scheduler SHOULD place a job on the worker with the least measured transfer time to its inputs.'
+binds_to = 'system'
+rationale = 'Work runs where its inputs arrive soonest.'
+
+[[requirement]]
+id = 'EU-0006-055'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host MUST refuse a result from an attempt that a newer attempt of the same job has replaced.'
+binds_to = 'system'
+rationale = 'A late answer from a slow computer never overwrites newer work.'
+
+[[requirement]]
+id = 'EU-0006-056'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A message that starts, cancels or answers an attempt MUST NOT wait behind queued bulk transfers on a connection.'
+binds_to = 'system'
+rationale = 'Control of the work stays prompt while chunks fill the link.'
+
+[[requirement]]
+id = 'EU-0006-057'
+level = 'MUST'
+polarity = 'required'
+statement = 'Each connection of the job protocol MUST be authenticated and encrypted on every network.'
+binds_to = 'system'
+rationale = "Render work and its answers stay private and unaltered on every network, as RFC 0008 keeps the content store's connections."
+
+[[requirement]]
+id = 'EU-0006-058'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A computer that isn't one of the owner's paired computers MUST NOT be given render work."
+binds_to = 'system'
+rationale = "The owner's project never leaves the owner's trusted computers."
+
+[[requirement]]
+id = 'EU-0006-059'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An accepted render job MUST NOT be dropped for want of capacity.'
+binds_to = 'system'
+rationale = 'An accepted job waits durably until a worker can take it.'
+
+[[requirement]]
+id = 'EU-0006-079'
+level = 'MUST'
+polarity = 'required'
+statement = "A worker's lease on a job MUST end only when the attempt it holds answers or is cancelled, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker."
+binds_to = 'system'
+rationale = 'A lease ends on an event and never on an expiry timer, so a slow worker that keeps progressing keeps its work, and the work of a lost or unpaired worker moves at once.'
+
+[[requirement]]
+id = 'EU-0006-091'
+level = 'MUST'
+polarity = 'required'
+statement = "Once the progress an attempt reports falls behind what its worker's measured rate of progress predicts by more than the variation that worker's own progress reports have shown, and another present worker renders the job's render profile, the host MUST cancel that attempt and start a replacing attempt of its job on such a worker."
+binds_to = 'system'
+rationale = "A stalled worker loses its job to a worker that can take it, while a worker's ordinary variation never moves its job and a job that no other present worker renders keeps its only attempt running; the host judges a stall from the worker's own measurements and their spread, never from a fixed margin or timer."
+
+[[requirement]]
+id = 'EU-0006-092'
+level = 'MUST'
+polarity = 'required'
+statement = 'While a worker holds a lease on a job, the job protocol MUST close the connection to that worker once the transport reports that the worker stopped acknowledging the data and the liveness probes sent on that connection.'
+binds_to = 'system'
+rationale = "A worker whose transport stops acknowledging never holds a job: the transport's report is the event that closes the connection, and EU-0006-079 then ends the lease, with no timer of the scheduler's own. An attempt that hangs while its worker's transport keeps acknowledging loses its lease under EU-0006-094, once the report intervals of its render profile show a standard deviation above zero."
+
+[[requirement]]
+id = 'EU-0006-093'
+level = 'MUST'
+polarity = 'required'
+statement = 'While a worker holds a lease on a job, the job protocol MUST send liveness probes on the connection to that worker, at a pace the transport discovers from that connection rather than at a fixed interval.'
+binds_to = 'system'
+rationale = "The transport reports a worker silent only once something sent to it stays unacknowledged, so a host that sends nothing while an attempt runs would never learn that the worker went silent, and EU-0006-092 would never close the connection; a pace the transport discovers doesn't add a fixed interval of the scheduler's own."
+
+[[requirement]]
+id = 'EU-0006-094'
+level = 'MUST'
+polarity = 'required'
+statement = "When a present worker that renders a job's render profile and doesn't hold that job's running attempt asks for a lease, and the time since that attempt started or last reported progress, whichever is later, exceeds the largest of the attempt's measured report intervals by more than their population standard deviation, the host MUST offer that job to the asking worker at the job's priority level and cancel that attempt once a replacing attempt starts. An attempt's measured report intervals are its worker's report intervals for the job's render profile once their population standard deviation is above zero, which takes at least two unequal intervals, and otherwise the report intervals of every worker for that render profile once their population standard deviation is above zero, each counting the time from an attempt's start to its first progress report as an interval."
+binds_to = 'system'
+rationale = "An attempt that hangs while its worker's transport keeps acknowledging stops sending progress reports, and one that hangs before its first report never sends one, so the time from an attempt's start to its first report counts as an interval. The next lease request from another worker that can take its job is the event that moves the job, judged from the largest interval and the population standard deviation that workers of its render profile have shown, the hung attempt's worker's own once they show a spread, never from a fixed margin or a timer. A healthy worker rarely goes longer than its largest interval by more than their spread, so an ordinary long gap between reports doesn't cost it its work. A lease request from the worker that holds the hung attempt doesn't move the job, which would go back to the computer where it hangs. Where neither the worker's own intervals nor its render profile's show a standard deviation above zero, as after one interval or several equal ones, nothing measures a hang, and the attempt keeps its lease until an event of EU-0006-079 ends it, so a threshold without a spread never cancels a healthy attempt. A lease request from another worker that came before the attempt met that condition waits at the host under EU-0006-095, and EU-0006-096 answers it on the first event the host handles once the attempt meets it, so a worker that asked early still receives the job. Until another worker that can take its job has asked, the attempt keeps its lease, since no other worker could take the job. EU-0006-097 bounds the work this check takes."
+
+[[requirement]]
+id = 'EU-0006-095'
+level = 'MUST'
+polarity = 'required'
+statement = "A lease request that the host can't answer with a job when it arrives MUST wait at the host until the host offers it a job, the same worker sends a newer lease request, which takes its place, the discovery service reports that worker gone, the connection to that worker closes, or the owner unpairs that worker."
+binds_to = 'system'
+rationale = "A worker that the host can't give a job to doesn't ask again on a timer of its own: its one request waits at the host, which answers it on an event, such as the arrival of a new job or the event EU-0006-096 names. A newer request from the same worker takes the waiting one's place, so the requests waiting at the host don't grow with one worker's requests, and a waiting request ends on the events of EU-0006-079 that end its worker's leases, so the host never offers a job to a worker that has left."
+
+[[requirement]]
+id = 'EU-0006-096'
+level = 'MUST'
+polarity = 'required'
+statement = "While lease requests wait at the host, the host MUST offer a job whose running attempt meets the condition of EU-0006-094 to one waiting request of a worker that EU-0006-094 would offer it to, chosen by the priority levels of EU-0006-052 and the fair shares of EU-0006-053, on the first event the host handles after that attempt meets the condition, where an event is a liveness probe the job protocol sends under EU-0006-093, or a progress report, an answer or a lease request the host receives."
+binds_to = 'system'
+rationale = "An attempt becomes overdue as time passes, not on a message, so a request that came before the attempt was overdue needs a later event to answer it. While the hung attempt holds its lease, the job protocol keeps sending liveness probes on its worker's connection at the pace the transport discovers, so such an event always comes, with no timer or fixed interval of the scheduler's own. One job goes to one waiting request, chosen as any other job is placed, and the other requests keep waiting. EU-0006-097 bounds the work each event takes."
+
+[[requirement]]
+id = 'EU-0006-097'
+level = 'MUST'
+polarity = 'required'
+statement = "The host MUST answer a lease request, and handle each event of EU-0006-096, with work that doesn't grow with the report intervals, the waiting lease requests, the render profiles other than those that the asking worker or the worker whose request it answers renders, or the running attempts other than those that the reporting worker or the worker whose request it answers holds."
+binds_to = 'system'
+rationale = "The host keeps each worker's and each render profile's report intervals as running statistics of fixed size, their count, mean, variance and largest interval, whose size doesn't grow with the reports. Each render profile keeps its own two orders of running attempts, and each order groups its attempts by the worker that holds them, each group ordered by start or last report alone, so a report moves one attempt within its group and re-keys one group, and skipping one worker's attempts skips one group. The first order holds the attempts that the render profile's statistics measure, which share one threshold, and orders its groups by their earliest attempt's start or last report, to which the host adds that threshold at the read. The second holds the attempts that their worker's own statistics measure, whose group shares one threshold, and orders its groups by the time their earliest attempt's threshold passes. An attempt moves from the first order to the second once its worker's intervals show a spread, which a report does only for the reporting worker's attempts. A lease request reads the heads of the two orders of each render profile the asking worker renders, and skips only the asking worker's group in each. An attempt whose job the host offers leaves both orders of its render profile at the offer, and keeps its lease until EU-0006-094 cancels it once the replacing attempt starts, so a later event or lease request doesn't read it again or offer its job to a second waiting request. Where the offer ends before the replacing attempt starts, as when the connection to the offered worker closes, the discovery service reports that worker gone or the owner unpairs that worker, the attempt returns to its render profile's orders, to the first or the second as the statistics that measure it place it, at its start or last report, and its render profile is re-keyed in the host-wide order, so a later lease request or event reads it again and EU-0006-094 can still offer its job to another worker; a progress report from that attempt's worker while the attempt is out of the orders records its time and doesn't return it to an order. That return moves one attempt and re-keys one render profile, on an event that ends the offered worker's waiting request or lease rather than on an event the statement bounds, so it doesn't grow with anything the statement names. The host keeps each render profile's waiting requests in arrival order, at most one for each worker under EU-0006-095, and one host-wide order of the render profiles that hold a waiting request and an attempt that one of those requests can take, keyed by the earliest time such an attempt meets the condition of EU-0006-094: with requests of two or more workers waiting, the earlier of the heads of the render profile's two orders, and with one worker's request waiting, the earlier of those heads after skipping that worker's group in each order, since EU-0006-094 doesn't offer a job to the worker that holds its attempt. So each event of EU-0006-096 reads one head and compares one time with the current time, and a render profile whose only waiting request comes from the worker that holds its overdue attempts doesn't hold the head of that order. A render profile's key moves when one of its attempts starts, reports, moves between its orders, ends, leaves them at an offer or returns to them when an offer ends, and when a request joins or leaves its arrival order: a report, an offer or the end of an offer re-keys one render profile, a lease request re-keys each render profile the asking worker renders, and a request an event answers leaves the arrival order of, and re-keys, each render profile its worker renders. Stated as a requirement, the bound has a test of its own, over one running attempt and over many, over one render profile and over many that the asking worker doesn't render, over an event that answers a waiting request while many render profiles that the answered worker doesn't render hold running attempts, over a progress report from one worker while many other workers hold running attempts in the same render profile, over one waiting lease request and over many, from many workers, in the asking worker's render profiles and in others, and over one recorded report interval and over many. The same test checks that an event offers the job of a render profile behind one whose only waiting request comes from the worker that holds its overdue attempts, and that the event or lease request that follows an offer, before the replacing attempt starts, doesn't offer the offered attempt's job to a second waiting request. It also checks, for each of the three events that end an offer before the replacing attempt starts, the connection to the offered worker closing, the discovery service reporting that worker gone and the owner unpairing that worker, that a later lease request from another worker that renders the render profile is offered the job, and that a progress report from the attempt's worker while the attempt is out of the orders leaves it out of both orders."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-034"
+
+[[spec]]
+level = "MUST"
+quote = "A strip MUST render the same output on every computer of a compatible numerical profile."

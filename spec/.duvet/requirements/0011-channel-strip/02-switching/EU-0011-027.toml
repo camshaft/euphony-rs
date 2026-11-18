@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/02-switching.md#EU-0011-027"
+
+[[spec]]
+level = "MUST"
+quote = "The measured delay of a stage MUST equal its declared delay on each supported computer."

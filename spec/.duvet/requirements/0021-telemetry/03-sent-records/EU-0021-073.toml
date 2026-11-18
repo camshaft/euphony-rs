@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/03-sent-records.md#EU-0021-073"
+
+[[spec]]
+level = "MUST"
+quote = "Each crash frame outside euphony's own code MUST be sent as a single frame that stands for other code."

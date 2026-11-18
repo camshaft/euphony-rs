@@ -1,0 +1,107 @@
+[section]
+anchor = 'content'
+title = 'Arrangement, mixer and track automation'
+problem = """\
+  A musician who moves needs the arrangement, notes, mixer and automation of each project they made, \
+  and a part of a project read wrongly is worse than one left out."""
+motivation = """\
+  Converting each part only at a format version whose reader is verified, and reporting the rest, \
+  brings over everything the import can read correctly and nothing it can't."""
+prose = """
+The import carries over the arrangement, notes and automation a musician made: the tempo, meter and
+markers, the tracks, the audio and note regions, the mixer and its routing, the instrument and the
+effects of each track with their latency compensation, and the automation recorded on each track. A
+region is a placed piece of a recording or of notes on a track. Each feature converts at each format
+version whose reader of it is verified, and every instance the import doesn't convert is reported,
+as the section on the conversion report states. Automation inside regions, timing and pitch edits,
+comps and loop grids follow in the next section, and the settings of effects and instruments in the
+one after it."""
+
+[[requirement]]
+id = 'EU-0014-021'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert a source project's tempo, meter and markers."
+binds_to = 'system'
+rationale = 'Every region and automation event keeps its musical position.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-022'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert each track of a source project with its name.'
+binds_to = 'system'
+rationale = 'The musician finds each track where they left it.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-023'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert each audio region with the file it plays.'
+binds_to = 'system'
+rationale = 'Each recording plays as it did in the source project.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-024'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert each note region with its notes, controller events, program changes and pitch bends.'
+binds_to = 'system'
+rationale = 'Each performance written as notes plays as it did in the source project.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-025'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert each track's fader, pan, mute, solo and routing."
+binds_to = 'system'
+rationale = 'The balance and the signal flow of the mix stay as the musician made them.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-026'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert each track's effects in their slot order, with their bypass state."
+binds_to = 'system'
+rationale = 'The signal passes through the effects in the same order, and a bypassed effect stays bypassed.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-027'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST convert each track's automation of its mixer controls and its effect controls."
+binds_to = 'system'
+rationale = 'Recorded changes to the mix and to effect controls play as they did.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-028'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST convert a feature at a format version only where its reader of that feature is verified at that version.'
+binds_to = 'system'
+rationale = 'A part read wrongly never reaches the musician as if it were right.'
+
+[[requirement]]
+id = 'EU-0014-074'
+level = 'MUST'
+polarity = 'required'
+statement = "Where a mapping covers a track's instrument, the import MUST convert it to the built-in replacement that mapping selects."
+binds_to = 'system'
+rationale = 'Each track plays its part on a built-in instrument in place of the source instrument.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]
+
+[[requirement]]
+id = 'EU-0014-075'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where the latency of each effect of a track is known, the import MUST convert that latency compensation, so that the track keeps the alignment it had in the source project.'
+binds_to = 'system'
+rationale = 'The tracks stay aligned with each other as they were in the source project.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-028' } ]

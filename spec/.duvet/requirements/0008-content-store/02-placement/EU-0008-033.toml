@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/02-placement.md#EU-0008-033"
+
+[[spec]]
+level = "MUST"
+quote = "A release MUST be cancelled where the policy or the pairing of the computers of the owner changes before it commits."

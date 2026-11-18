@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-044"
+
+[[spec]]
+level = "MUST"
+quote = "The interface for people and the interface for assistants MUST offer the same analysis actions."

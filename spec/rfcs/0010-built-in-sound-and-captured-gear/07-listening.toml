@@ -1,0 +1,282 @@
+[section]
+anchor = 'listening'
+title = 'Blind listening and acceptance'
+problem = "Signal measures can't decide whether a person can tell two sounds apart, and a listening test that is unblinded, too short, insensitive or repeated until it passes reports closeness that isn't there."
+motivation = "A blind test declared and frozen in advance, sized exactly for its claim, checked for sensitivity, and reported with separate results for detection and closeness, lets the musician rely on a claim that a model is close, and keeps their acceptance apart from it."
+prose = """
+Listening comes in two kinds. Development listening guides the assistant and the musician while
+candidates still differ audibly, and its clips and results become development data. The final
+evaluation is an ABX test: the listener plays A and B, one the hardware and one the model, and says
+which of them an unlabeled clip X is, over level-matched clips of final material. Before it starts,
+the musician declares its scope, one candidate chosen in advance in one test or a budget of A
+attempts across candidates and retests; the error rate alpha the claim tolerates over that scope;
+the largest proportion of correct answers they tolerate, p_tol, above chance and below 1; the L
+listeners; and the chance they want of meeting the criterion for a model that a listener truly
+can't tell apart. Each attempt tests at level alpha/A. For each listener the trial count is fixed in
+advance and computed exactly from the binomial distribution, which assumes independent trials with
+one constant probability of a correct answer. A listener meets the criterion when the exact
+one-sided upper confidence bound on their proportion of correct answers, at level 1 - alpha/(A L),
+is below p_tol. Every final session mixes in a hidden share of trials of the hardware against a
+deliberately degraded model, as a positive control. A failure to reject guessing is never evidence
+of closeness: the report states detected where an exact binomial test rejects guessing, shown close
+only where the upper bound is below p_tol and the listener passed the control, and not shown close
+in every other case."""
+
+[[requirement]]
+id = 'EU-0010-109'
+level = 'MUST'
+polarity = 'required'
+statement = "The results of development listening MUST become development data for the next refinement round."
+binds_to = 'system'
+rationale = "A failed development test points the next round at the material the listener heard."
+
+[[requirement]]
+id = 'EU-0010-110'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation of a model MUST be an ABX test over level-matched clips of final material."
+binds_to = 'system'
+rationale = "A forced choice between known hardware and model detects small differences."
+
+[[requirement]]
+id = 'EU-0010-111'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST refuse to start before the candidate, the protocol and the criterion are frozen and recorded."
+binds_to = 'system'
+rationale = "Nothing about the test changes after its results are seen."
+
+[[requirement]]
+id = 'EU-0010-112'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST refuse final material that fitting, the assistant or development listening read."
+binds_to = 'system'
+rationale = "The final test judges a model on material that never shaped it."
+
+[[requirement]]
+id = 'EU-0010-113'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST take from the musician, before it starts, its scope, its tolerated error rate, its tolerated proportion of correct answers, its listeners and the chance they want of meeting the criterion."
+binds_to = 'system'
+rationale = "The claim is defined before any trial is run."
+
+[[requirement]]
+id = 'EU-0010-114'
+level = 'MUST'
+polarity = 'required'
+statement = "The scope of the final evaluation MUST default to one candidate chosen in advance and tested once."
+binds_to = 'system'
+rationale = "The simplest scope needs no correction for repeated attempts."
+
+[[requirement]]
+id = 'EU-0010-115'
+level = 'MUST'
+polarity = 'required'
+statement = "The tolerated error rate of the final evaluation MUST default to 0.05."
+binds_to = 'system'
+rationale = "A conventional rate holds until the musician chooses another."
+
+[[requirement]]
+id = 'EU-0010-204'
+level = 'MUST'
+polarity = 'required'
+statement = "The listeners of the final evaluation MUST default to the musician alone."
+binds_to = 'system'
+rationale = "The claim holds for the person who relies on it until the musician names other listeners."
+
+[[requirement]]
+id = 'EU-0010-116'
+level = 'MUST'
+polarity = 'required'
+statement = "The tolerated proportion of correct answers of the final evaluation MUST be above 0.5 and below 1."
+binds_to = 'system'
+rationale = "Closeness is a bound above chance, not a proof of chance."
+
+[[requirement]]
+id = 'EU-0010-117'
+level = 'MUST'
+polarity = 'required'
+statement = "Each attempt of a final evaluation with a budget of attempts MUST test at the tolerated error rate divided by the number of attempts in the budget."
+binds_to = 'system'
+rationale = "Repeated attempts never raise the chance of a false acceptance above the tolerated rate."
+
+[[requirement]]
+id = 'EU-0010-118'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A final evaluation MUST NOT make a statistical claim after the attempts of its budget are spent."
+binds_to = 'system'
+rationale = "A model can't be retested until it passes by chance."
+
+[[requirement]]
+id = 'EU-0010-119'
+level = 'MUST'
+polarity = 'required'
+statement = "The trial count of each listener MUST be fixed before the test."
+binds_to = 'system'
+rationale = "The size of the test never follows its results."
+
+[[requirement]]
+id = 'EU-0010-260'
+level = 'MUST'
+polarity = 'required'
+statement = "The trial count of each listener MUST be computed exactly from the binomial distribution for the declared values."
+binds_to = 'system'
+rationale = "The test is large enough for its claim."
+relations = [ { kind = 'depends_on', target = 'EU-0010-113' } ]
+
+[[requirement]]
+id = 'EU-0010-120'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST draw the identity of X at random for each trial."
+binds_to = 'system'
+rationale = "Trials stay independent, as the binomial count assumes."
+
+[[requirement]]
+id = 'EU-0010-121'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST present its trials in random order."
+binds_to = 'system'
+rationale = "The order of the trials can't reveal their answers."
+
+[[requirement]]
+id = 'EU-0010-122'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The final evaluation MUST NOT tell a listener the result of a trial before the end of the test."
+binds_to = 'system'
+rationale = "Feedback can't train the listener during the test."
+
+[[requirement]]
+id = 'EU-0010-123'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST hide which clip is the hardware and which is the model."
+binds_to = 'system'
+rationale = "The test is blind."
+
+[[requirement]]
+id = 'EU-0010-124'
+level = 'MUST'
+polarity = 'required'
+statement = "A listener MUST meet the criterion only when the exact one-sided upper confidence bound on their proportion of correct answers, at a confidence level of one minus the tolerated error rate divided by the number of attempts and the number of listeners, is below the tolerated proportion."
+binds_to = 'system'
+rationale = "A pass bounds how often the listener can tell the model apart."
+
+[[requirement]]
+id = 'EU-0010-125'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The final evaluation MUST NOT pool the trials of different listeners."
+binds_to = 'system'
+rationale = "One sharp listener is never hidden among others."
+
+[[requirement]]
+id = 'EU-0010-126'
+level = 'MUST'
+polarity = 'required'
+statement = "A claim for the declared listeners MUST hold only when every one of them meets the criterion."
+binds_to = 'system'
+rationale = "The claim holds for each listener it names."
+
+[[requirement]]
+id = 'EU-0010-127'
+level = 'MUST'
+polarity = 'required'
+statement = "The final evaluation MUST run its trials in sessions of at most 25 trials."
+binds_to = 'system'
+rationale = "Listener fatigue doesn't decide the result."
+
+[[requirement]]
+id = 'EU-0010-128'
+level = 'MUST'
+polarity = 'required'
+statement = "Every final session MUST mix in, at a share the plan fixes and the listener is not told, trials of the hardware against a deliberately degraded model."
+binds_to = 'system'
+rationale = "The test shows that it can detect a difference."
+
+[[requirement]]
+id = 'EU-0010-129'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The result of a listener who misses the positive control MUST NOT count toward a claim."
+binds_to = 'system'
+rationale = "A null result counts only from a test shown to be sensitive."
+relations = [ { kind = 'depends_on', target = 'EU-0010-128' } ]
+
+[[requirement]]
+id = 'EU-0010-130'
+level = 'MUST'
+polarity = 'required'
+statement = "Level matching MUST apply one constant gain over the whole clip, measured by integrated loudness."
+binds_to = 'system'
+rationale = "Level-dependent behavior stays in the test, and loudness never reveals the answer."
+
+[[requirement]]
+id = 'EU-0010-131'
+level = 'MUST'
+polarity = 'required'
+statement = "Level matching MUST report the level difference that remains after its gain."
+binds_to = 'system'
+rationale = "A reader knows how well the clips were matched."
+
+[[requirement]]
+id = 'EU-0010-132'
+level = 'MUST'
+polarity = 'required'
+statement = "The clips of the hardware and of the model MUST be aligned to the sample."
+binds_to = 'system'
+rationale = "Timing never tells the clips apart."
+
+[[requirement]]
+id = 'EU-0010-261'
+level = 'MUST'
+polarity = 'required'
+statement = "The clips of the hardware and of the model MUST be trimmed and faded the same way."
+binds_to = 'system'
+rationale = "Edits never tell the clips apart."
+
+[[requirement]]
+id = 'EU-0010-133'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a final evaluation MUST state for each listener whether an exact binomial test rejects guessing, as the result detected."
+binds_to = 'system'
+rationale = "A detection is reported as a detection."
+
+[[requirement]]
+id = 'EU-0010-134'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a final evaluation MUST state shown close for a listener only where their upper bound is below the tolerated proportion and they passed the positive control."
+binds_to = 'system'
+rationale = "Closeness is claimed only where the evidence bounds it."
+relations = [ { kind = 'depends_on', target = 'EU-0010-124' } ]
+
+[[requirement]]
+id = 'EU-0010-135'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The report of a final evaluation MUST NOT present a result of not detected as closeness."
+binds_to = 'system'
+rationale = "A failure to reject guessing is not proof of equivalence."
+
+[[requirement]]
+id = 'EU-0010-136'
+level = 'MUST'
+polarity = 'required'
+statement = "The report of a final evaluation MUST list every attempt, with the observed proportion and interval of each listener."
+binds_to = 'system'
+rationale = "Earlier failures stay on the record beside a later pass."
+
+[[requirement]]
+id = 'EU-0010-137'
+level = 'MUST'
+polarity = 'required'
+statement = "A failed final evaluation MUST spend its final partition, so that another final evaluation needs a newly captured final partition."
+binds_to = 'system'
+rationale = "A retest never runs on material the musician has already heard in a test."

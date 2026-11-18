@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/02-session-context.md#EU-0019-207"
+
+[[spec]]
+level = "MUST"
+quote = "Through the client protocol, an assistant MUST be able to preview the effect of a change it proposes."

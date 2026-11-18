@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/06-per-voice.md#EU-0012-096"
+
+[[spec]]
+level = "MUST"
+quote = "Each route MUST store its scope, global or per-voice."

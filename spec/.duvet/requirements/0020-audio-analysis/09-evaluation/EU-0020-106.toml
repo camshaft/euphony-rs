@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/09-evaluation.md#EU-0020-106"
+
+[[spec]]
+level = "MUST"
+quote = "A withdrawn example MUST be left out of every later corpus version, including one being assembled when it is withdrawn."

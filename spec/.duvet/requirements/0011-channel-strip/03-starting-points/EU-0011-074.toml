@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/03-starting-points.md#EU-0011-074"
+
+[[spec]]
+level = "MUST"
+quote = "The response that the starting point calculates MUST equal the equalizer's rendered response."

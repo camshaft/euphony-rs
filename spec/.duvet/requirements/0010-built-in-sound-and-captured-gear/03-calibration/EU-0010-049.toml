@@ -1,0 +1,5 @@
+target = "rendered/0010-built-in-sound-and-captured-gear/03-calibration.md#EU-0010-049"
+
+[[spec]]
+level = "MUST"
+quote = "A model MUST report when its input goes outside the levels its capture covered."

@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/02-merge.md#EU-0013-027"
+
+[[spec]]
+level = "MUST"
+quote = "A merge MUST NOT resolve conflicting notes or routing by the clock time at which each edit was made."

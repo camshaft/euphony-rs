@@ -1,0 +1,136 @@
+[section]
+anchor = 'connections'
+title = 'Connections and the origin of each command'
+problem = """\
+  A local endpoint is a new way into a session for any process of the owner's account, and a \
+  process that claims to be the owner's own interface could start an action that waits for the \
+  owner's approval, unless the origin of each connection follows from how it authenticated rather \
+  than from what it claims."""
+motivation = """\
+  An endpoint that admits only the owner's account, and a client session credential that the host \
+  issues at attach and that fixes the origin of every command sent on it, keep the owner's native \
+  interface, assistants, scripts and link participants apart, so that only the owner's own input \
+  approves what the owner approves."""
+prose = """
+The local endpoint of the host service admits connections of the same operating-system user, checked
+by the credentials of the peer, and that check admits a connection without assigning it an origin.
+At attach, the host service issues the connection a client session credential bound to the session
+and its generation, and the session host reads the origin of every command from that client session.
+The owner's native interface authenticates with the paired-device key of its computer, kept in the
+platform's secure storage. An assistant's adapter, a script, the command line and the terminal
+interface each authenticate as a client session of their own, with an assistant or a script origin.
+A client on another of the owner's computers connects over the mutually authenticated and encrypted
+connection of a paired device, and a link participant attaches at the level of its link. The
+owner's single-party trust model, pairing and link levels are specified in the overview RFC."""
+
+[[requirement]]
+id = 'EU-0002-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'The local endpoint MUST admit only connections of the operating-system user that runs the host service.'
+binds_to = 'system'
+rationale = "Another account on the computer can't reach the owner's sessions."
+
+[[requirement]]
+id = 'EU-0002-046'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Admission to the local endpoint MUST NOT assign a connection an origin.'
+binds_to = 'system'
+rationale = 'Running as the owner is not enough to act as the owner.'
+
+[[requirement]]
+id = 'EU-0002-047'
+level = 'MUST'
+polarity = 'required'
+statement = 'At attach, the host service MUST issue the connection a client session credential bound to the session and its generation.'
+binds_to = 'system'
+rationale = 'Each command after attach is traced to one client session.'
+
+[[requirement]]
+id = 'EU-0002-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'The session host MUST read the origin of each command from the client session that sent it, whatever the command claims.'
+binds_to = 'system'
+rationale = 'A command cannot raise its own origin through its arguments.'
+
+[[requirement]]
+id = 'EU-0002-049'
+level = 'MUST'
+polarity = 'required'
+statement = "The host service MUST assign the origin of the owner's native client only to a client that authenticates with the paired-device key of its computer."
+binds_to = 'system'
+rationale = "A process can't become the owner's interface by claiming to be it."
+
+[[requirement]]
+id = 'EU-0002-081'
+level = 'MUST'
+polarity = 'required'
+statement = "The host service MUST assign a local client that doesn't authenticate with the paired-device key of its computer an assistant or a script origin, whatever the client claims."
+binds_to = 'system'
+rationale = 'Every local client receives an origin, and only the native client receives the owner origin.'
+
+[[requirement]]
+id = 'EU-0002-082'
+level = 'MUST'
+polarity = 'required'
+statement = 'The host service MUST assign a paired-device or link-participant origin only to a connection that authenticated as that paired device or that link.'
+binds_to = 'system'
+rationale = "A process of the owner's account can't claim to be another device or a link participant."
+
+[[requirement]]
+id = 'EU-0002-050'
+level = 'MUST'
+polarity = 'required'
+statement = 'A command that a client forwards, queues or replays MUST keep the origin of the client session that first sent it.'
+binds_to = 'system'
+rationale = 'Passing a command on never changes who started it.'
+
+[[requirement]]
+id = 'EU-0002-051'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST accept an owner-interaction record only from the owner's native client, made from the owner's own input on its interface and signed with the paired-device key of its computer."
+binds_to = 'system'
+rationale = "Only the owner's own input on their own interface counts as the owner acting."
+
+[[requirement]]
+id = 'EU-0002-052'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The session host MUST NOT accept an approval decision from an assistant, a script, the command line or the terminal interface.'
+binds_to = 'system'
+rationale = 'An action that waits for the owner is approved by the owner alone.'
+
+[[requirement]]
+id = 'EU-0002-053'
+level = 'MUST'
+polarity = 'required'
+statement = "A client on another of the owner's computers MUST attach over a mutually authenticated and encrypted connection of a paired device."
+binds_to = 'system'
+rationale = 'Remote control of a session reaches only paired computers, and only over a protected connection.'
+
+[[requirement]]
+id = 'EU-0002-054'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The host service MUST NOT admit a remote attachment from a computer that isn't paired."
+binds_to = 'system'
+rationale = "An unknown computer can't reach a session."
+
+[[requirement]]
+id = 'EU-0002-055'
+level = 'MUST'
+polarity = 'required'
+statement = "A link participant's attachment MUST receive only what its link's level allows."
+binds_to = 'system'
+rationale = 'A link participant never sees more than the owner shared.'
+
+[[requirement]]
+id = 'EU-0002-056'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST receive a file that a local client picks as an open handle, without a grant of the file's path."
+binds_to = 'system'
+rationale = "The person's choice reaches the engine without opening the rest of their files to it."

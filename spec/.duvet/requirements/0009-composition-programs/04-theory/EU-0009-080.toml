@@ -1,0 +1,5 @@
+target = "rendered/0009-composition-programs/04-theory.md#EU-0009-080"
+
+[[spec]]
+level = "MUST"
+quote = "The theory operations MUST include the transposition of a musical value by an interval."

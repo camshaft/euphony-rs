@@ -1,0 +1,5 @@
+target = "rendered/0012-modular-modulation/07-editing.md#EU-0012-138"
+
+[[spec]]
+level = "MUST"
+quote = "Importing a project from another workstation MUST bring its sidechains and automation into routes of the native graph."

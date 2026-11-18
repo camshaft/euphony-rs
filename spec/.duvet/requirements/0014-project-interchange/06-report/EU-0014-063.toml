@@ -1,0 +1,5 @@
+target = "rendered/0014-project-interchange/06-report.md#EU-0014-063"
+
+[[spec]]
+level = "MUST"
+quote = "The import MUST report, before the musician accepts it, each feature, control setting and file that does not convert, with its place in the project."

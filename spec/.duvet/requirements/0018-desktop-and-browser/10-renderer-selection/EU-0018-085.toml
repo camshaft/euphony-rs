@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/10-renderer-selection.md#EU-0018-085"
+
+[[spec]]
+level = "MUST"
+quote = "The selection MUST require the musician's physical acceptance on every supported profile."

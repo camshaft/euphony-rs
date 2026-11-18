@@ -1,0 +1,101 @@
+[section]
+anchor = 'end-state'
+title = 'End state and goals'
+problem = """\
+  A musician with several computers repeats every instrument and effect calculation on the one \
+  computer attached to the speakers on every listen, and a computer that prepares audio elsewhere \
+  could replace the current project with incomplete or outdated audio."""
+motivation = """\
+  Prepared audio as the normal input of playback, prepared by any of the owner's trusted computers \
+  under one contract, lets repeated listening reuse earlier work, lets that work fan out across many \
+  computers, and keeps a lost computer from costing an accepted edit or corrupting what plays."""
+prose = """
+Euphony prepares the audio of a project ahead of playback, and plays prepared audio as its normal
+input. Preparing audio is rendering, and a computer that renders is a worker. The computer that
+hosts the project is one of the owner's paired computers and always renders, and each other
+computer the owner has paired is offered as a worker. Every worker renders through one contract, so
+rendering on the host's own computer is one
+worker among the others. A render cache on each computer holds prepared results. Euphony is built
+for dozens of the owner's computers rendering one project. Live monitoring, live instruments and
+recording stay on the musician's own computer and belong to RFC 0005, and the trust model under
+which workers are the owner's paired computers belongs to RFC 0001."""
+
+[[requirement]]
+id = 'EU-0006-001'
+level = 'MUST'
+polarity = 'required'
+statement = "The scheduler MUST be able to place a project's render work on every present worker that the owner has paired."
+binds_to = 'system'
+rationale = 'A musician can prepare one project across every trusted computer they have, dozens of them included.'
+
+[[requirement]]
+id = 'EU-0006-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'Audio from an interrupted, late or superseded render MUST NOT be accepted into the manifest of the current revision.'
+binds_to = 'system'
+rationale = 'A lost or slow computer never replaces the current project with incomplete or outdated audio.'
+
+[[requirement]]
+id = 'EU-0006-004'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'An edit MUST NOT cause a render of audio that neither the edit nor its dependencies change.'
+binds_to = 'system'
+rationale = 'After an edit to one passage, the rest of the project plays from saved audio.'
+
+[[requirement]]
+id = 'EU-0006-005'
+level = 'MUST'
+polarity = 'required'
+statement = "Results of passages that an edit doesn't change MUST stay valid in the manifest of the new revision."
+binds_to = 'system'
+rationale = 'The changed passages render again while the rest of the project keeps its saved audio.'
+
+[[requirement]]
+id = 'EU-0006-006'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Rendering MUST NOT stop recording or live monitoring on the musician's computer."
+binds_to = 'system'
+rationale = 'Preparing audio never costs the musician a take.'
+
+[[requirement]]
+id = 'EU-0006-007'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The loss of a worker MUST NOT lose an accepted edit.'
+binds_to = 'system'
+rationale = 'Removing a computer from the studio never undoes the work done on the project.'
+
+[[requirement]]
+id = 'EU-0006-082'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The loss of a worker MUST NOT lose a result the host has accepted.'
+binds_to = 'system'
+rationale = 'Removing a computer from the studio never costs the audio it already prepared.'
+
+[[requirement]]
+id = 'EU-0006-008'
+level = 'MUST'
+polarity = 'required'
+statement = 'Render work that a lost worker left unfinished MUST be offered to another worker.'
+binds_to = 'system'
+rationale = 'The preparation of a project finishes whichever computers stay.'
+
+[[requirement]]
+id = 'EU-0006-009'
+level = 'MUST'
+polarity = 'required'
+statement = "Every worker, the host's own computer included, MUST render through the same versioned render contract."
+binds_to = 'system'
+rationale = 'A small studio and dozens of computers run the same contract and meet the same failure tests.'
+
+[[requirement]]
+id = 'EU-0006-010'
+level = 'MUST'
+polarity = 'required'
+statement = "A computer the owner has paired MUST be offered as a worker as soon as it joins the owner's network."
+binds_to = 'system'
+rationale = 'Adding a computer to the studio adds its capacity without any setup of its own.'

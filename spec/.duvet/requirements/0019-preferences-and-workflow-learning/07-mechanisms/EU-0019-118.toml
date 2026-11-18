@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-118"
+
+[[spec]]
+level = "MUST"
+quote = "A mechanism proposal whose learning work reference is missing, inaccessible or of another scope MUST be refused without being stored."

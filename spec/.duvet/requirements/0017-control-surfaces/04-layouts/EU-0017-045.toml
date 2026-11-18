@@ -1,0 +1,5 @@
+target = "rendered/0017-control-surfaces/04-layouts.md#EU-0017-045"
+
+[[spec]]
+level = "MUST"
+quote = "A layout MUST select each of its targets by the target's stable identity."

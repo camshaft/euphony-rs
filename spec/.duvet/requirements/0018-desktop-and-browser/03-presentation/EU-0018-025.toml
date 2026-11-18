@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-025"
+
+[[spec]]
+level = "MUST"
+quote = "A gesture on a continuous control MUST reach the session host as a begin, updates and an end."

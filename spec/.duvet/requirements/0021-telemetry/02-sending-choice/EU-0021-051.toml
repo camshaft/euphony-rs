@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-051"
+
+[[spec]]
+level = "MUST"
+quote = "A batch MUST NOT hold an event of an excluded project, including an event of a crash trail."

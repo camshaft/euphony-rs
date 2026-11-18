@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-022"
+
+[[spec]]
+level = "MUST"
+quote = "The desktop interface MUST report a presentation failure without showing the transport as stopped."

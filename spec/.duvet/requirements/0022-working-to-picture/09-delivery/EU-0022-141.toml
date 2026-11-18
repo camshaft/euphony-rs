@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/09-delivery.md#EU-0022-141"
+
+[[spec]]
+level = "MUST"
+quote = "One export MUST render every stem of a delivery from the same revision of the project and the same numerical profile."

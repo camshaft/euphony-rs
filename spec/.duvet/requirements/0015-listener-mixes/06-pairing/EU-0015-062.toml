@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/06-pairing.md#EU-0015-062"
+
+[[spec]]
+level = "MUST"
+quote = "During pairing, the station MUST show the same confirmation number on its lights."

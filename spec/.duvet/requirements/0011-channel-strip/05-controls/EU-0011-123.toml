@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-123"
+
+[[spec]]
+level = "MUST"
+quote = "The range of each simple control MUST be the one the role profile sets."

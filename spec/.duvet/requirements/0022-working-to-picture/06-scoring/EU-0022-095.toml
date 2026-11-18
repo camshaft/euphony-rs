@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/06-scoring.md#EU-0022-095"
+
+[[spec]]
+level = "MUST"
+quote = "Applying a candidate tempo map MUST change the tempo map within its range alone."

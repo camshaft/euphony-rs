@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-154"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST leave each incomplete exposure interval out of both the cases and the exposure."

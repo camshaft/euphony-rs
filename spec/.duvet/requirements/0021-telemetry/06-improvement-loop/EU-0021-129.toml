@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/06-improvement-loop.md#EU-0021-129"
+
+[[spec]]
+level = "MUST"
+quote = "A later case of a finding MUST add to that finding's count instead of filing a new issue."

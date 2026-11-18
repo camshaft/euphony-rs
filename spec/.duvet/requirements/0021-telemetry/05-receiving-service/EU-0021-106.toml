@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/05-receiving-service.md#EU-0021-106"
+
+[[spec]]
+level = "MUST"
+quote = "The service MUST NOT keep a client's network address in any record or log."

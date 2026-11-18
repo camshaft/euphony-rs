@@ -1,0 +1,11 @@
+number = 8
+title = 'Content store and sample catalog'
+area = 'euphony'
+abstract = """\
+  How euphony stores each sample, recording, render, note sequence, MIDI file and automation curve \
+  once by its content, keeps the copies the owner sets on the owner's storage computers and repairs \
+  them, fetches content before playback reaches it, catalogs every item for people and their \
+  assistants to search and place by reference, collects only what nothing uses, and moves content \
+  between the owner's computers."""
+retired = []
+sources = []

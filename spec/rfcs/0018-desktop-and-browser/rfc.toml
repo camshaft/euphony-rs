@@ -1,0 +1,11 @@
+number = 18
+title = 'Desktop interface and browser companion'
+area = 'euphony'
+abstract = """\
+  The desktop interface on each supported desktop operating system and the browser companion: \
+  familiar main views over shared commands, presentation kept apart from project state and the \
+  audio path, text, scale, accessibility and shortcuts, second screens and touch monitors, the \
+  browser companion's control and prepared playback, original visual design, and the evidence \
+  that selects the supported renderer."""
+retired = ['EU-0018-052', 'EU-0018-053', 'EU-0018-054', 'EU-0018-066']
+sources = []

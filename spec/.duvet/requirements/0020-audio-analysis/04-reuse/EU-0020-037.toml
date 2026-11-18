@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/04-reuse.md#EU-0020-037"
+
+[[spec]]
+level = "MUST"
+quote = "A change of hardware or of model that can change a method's answers MUST be treated as a new execution profile."

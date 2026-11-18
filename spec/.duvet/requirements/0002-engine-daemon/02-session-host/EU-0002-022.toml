@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/02-session-host.md#EU-0002-022"
+
+[[spec]]
+level = "MUST"
+quote = "A lost local journal MUST be restored only from its own backup or from a peer revision the owner explicitly chooses."

@@ -1,0 +1,5 @@
+target = "rendered/0020-audio-analysis/05-clients.md#EU-0020-049"
+
+[[spec]]
+level = "MUST"
+quote = "Each view MUST show whether the data it shows is measured, inferred, corrected, stale, incomplete or unsupported."

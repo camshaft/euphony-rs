@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-111"
+
+[[spec]]
+level = "MUST"
+quote = "A collaborator with an edit link MUST dial stages in only on their own branch."

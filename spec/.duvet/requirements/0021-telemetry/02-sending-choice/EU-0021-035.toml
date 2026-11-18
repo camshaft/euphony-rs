@@ -1,0 +1,5 @@
+target = "rendered/0021-telemetry/02-sending-choice.md#EU-0021-035"
+
+[[spec]]
+level = "MUST"
+quote = "A category that a later release adds MUST stay off until the person turns it on."

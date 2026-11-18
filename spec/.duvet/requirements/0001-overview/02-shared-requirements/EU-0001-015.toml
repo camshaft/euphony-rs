@@ -1,0 +1,5 @@
+target = "rendered/0001-overview/02-shared-requirements.md#EU-0001-015"
+
+[[spec]]
+level = "MUST"
+quote = "A crash of an interface MUST NOT change any output of the session other than that interface's own display."

@@ -1,0 +1,5 @@
+target = "rendered/0016-networked-midi/03-routes.md#EU-0016-027"
+
+[[spec]]
+level = "MUST"
+quote = "Each route MUST be a typed record of the project with an identity and a revision."

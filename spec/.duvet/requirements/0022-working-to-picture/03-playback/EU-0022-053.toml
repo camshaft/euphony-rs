@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/03-playback.md#EU-0022-053"
+
+[[spec]]
+level = "MUST"
+quote = "Reverse playback MUST show the frame for each position."

@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/04-changes.md#EU-0011-095"
+
+[[spec]]
+level = "MUST"
+quote = "A new take, a new analysis result, a new calculation version or a newly approved preference MUST NOT change a stage's settings."

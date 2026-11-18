@@ -1,0 +1,5 @@
+target = "rendered/0011-channel-strip/05-controls.md#EU-0011-122"
+
+[[spec]]
+level = "MUST"
+quote = "The center of each simple control MUST be the stage's starting point with the changes of its full controls applied."

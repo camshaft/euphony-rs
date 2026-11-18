@@ -1,0 +1,5 @@
+target = "rendered/0008-content-store/04-deduplication.md#EU-0008-062"
+
+[[spec]]
+level = "MUST"
+quote = "Publishing an item whose identity a computer already holds MUST add a reference to the existing item instead of a second copy."

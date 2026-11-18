@@ -1,0 +1,97 @@
+[section]
+anchor = 'shortcuts'
+title = 'Shortcuts and collisions'
+problem = """\
+  Musical shortcuts that every desktop shares collide with shortcuts that each operating system \
+  reserves, and a collision resolved silently breaks either the system or the musician's habit."""
+motivation = """\
+  A mapping saved by one checked command, with every collision resolved explicitly, keeps shortcuts \
+  the same wherever each system allows it, and shows the musician where it doesn't."""
+prose = """
+A shortcut mapping binds keys to actions for a project, for each platform profile. A platform
+profile states the shortcuts its operating system reserves and the bindings that exist already
+there. A collision is a binding of the mapping that a profile reserves or binds already. A
+resolution remaps or disables the conflicting binding of the application. An imported mapping is
+a file that goes through the normal checked import."""
+
+[[requirement]]
+id = 'EU-0018-042'
+level = 'MUST'
+polarity = 'required'
+statement = 'Musical shortcut mappings MUST be configurable.'
+binds_to = 'system'
+rationale = 'A musician keeps the shortcuts they already know.'
+
+[[requirement]]
+id = 'EU-0018-043'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface MUST display the effective binding of each shortcut.'
+binds_to = 'system'
+rationale = 'A musician sees which keys an action actually answers to on this computer.'
+
+[[requirement]]
+id = 'EU-0018-044'
+level = 'MUST'
+polarity = 'required'
+statement = 'Saving a shortcut mapping MUST check it, at its expected revision, against the reserved and existing bindings of each supported platform profile.'
+binds_to = 'system'
+rationale = 'A mapping that works on one system is never saved broken for another.'
+
+[[requirement]]
+id = 'EU-0018-045'
+level = 'MUST'
+polarity = 'required'
+statement = 'A shortcut mapping MUST be saved whole or not at all.'
+binds_to = 'system'
+rationale = 'A mapping is never left half changed.'
+
+[[requirement]]
+id = 'EU-0018-046'
+level = 'MUST'
+polarity = 'required'
+statement = 'A save with an unresolved collision MUST be refused with each collision and its platform.'
+binds_to = 'system'
+rationale = 'The musician sees every collision to resolve before the mapping changes.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-044' } ]
+
+[[requirement]]
+id = 'EU-0018-047'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A resolution MUST NOT override a shortcut the operating system reserves.'
+binds_to = 'system'
+rationale = 'The operating system keeps every shortcut it relies on.'
+
+[[requirement]]
+id = 'EU-0018-048'
+level = 'MUST'
+polarity = 'required'
+statement = 'A save for a platform whose binding data is missing MUST report that platform as unverified.'
+binds_to = 'system'
+rationale = 'An unchecked platform is never reported as checked.'
+
+[[requirement]]
+id = 'EU-0018-049'
+level = 'MUST'
+polarity = 'required'
+statement = 'Activating or importing a shortcut mapping MUST repeat its checks.'
+binds_to = 'system'
+rationale = 'A mapping saved against an older profile is checked against the current one.'
+
+[[requirement]]
+id = 'EU-0018-050'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'A binding that a changed platform profile leaves unresolved MUST NOT become active.'
+binds_to = 'system'
+rationale = 'A system update never activates a binding that collides with it.'
+relations = [ { kind = 'depends_on', target = 'EU-0018-049' } ]
+
+[[requirement]]
+id = 'EU-0018-051'
+level = 'MUST'
+polarity = 'required'
+statement = 'The desktop interface and an assistant MUST change a shortcut mapping through the same command and its revision checks.'
+binds_to = 'system'
+rationale = 'An assistant and a musician never overwrite each other unnoticed.'

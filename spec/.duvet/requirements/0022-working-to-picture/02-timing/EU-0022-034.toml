@@ -1,0 +1,5 @@
+target = "rendered/0022-working-to-picture/02-timing.md#EU-0022-034"
+
+[[spec]]
+level = "MUST"
+quote = "A project MUST offer pull-up and pull-down as a setting."

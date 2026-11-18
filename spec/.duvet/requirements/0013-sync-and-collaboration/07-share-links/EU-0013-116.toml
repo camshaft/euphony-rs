@@ -1,0 +1,5 @@
+target = "rendered/0013-sync-and-collaboration/07-share-links.md#EU-0013-116"
+
+[[spec]]
+level = "MUST"
+quote = "A joining client MUST fail the join where the host key does not match the fingerprint in the link."

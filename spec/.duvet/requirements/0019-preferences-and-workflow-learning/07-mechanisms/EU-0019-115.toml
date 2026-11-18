@@ -1,0 +1,5 @@
+target = "rendered/0019-preferences-and-workflow-learning/07-mechanisms.md#EU-0019-115"
+
+[[spec]]
+level = "MUST"
+quote = "A mechanism proposal MUST NOT change the command gateway, the approval operations or its own authority."

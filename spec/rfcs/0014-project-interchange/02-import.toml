@@ -1,0 +1,176 @@
+[section]
+anchor = 'import'
+title = 'Reading a source project'
+problem = """\
+  A source project comes in a format that isn't published and that changes between versions of the \
+  source workstation, and it can hold files, paths and records that would reach outside the project \
+  or exhaust the computer if the import read them without care."""
+motivation = """\
+  Identifying the format first, reading only what a verified reader covers, bounding what the import \
+  reaches, and committing nothing until the musician accepts the result keep a failed or hostile \
+  import from changing anything."""
+prose = """
+An import is staged. It reads a source project the musician chose and has access to, identifies its
+format version from the data the project records, reads the alternative the project marks active,
+takes an inventory of its arrangement and files, reads the content it supports apart from the rest
+of the system, and builds a proposed project with a conversion report. Nothing changes until the
+musician accepts the proposal; a refusal, a failure or an interruption leaves the source project and
+every euphony project as they were. A reader of a format version is verified when its reading of
+that version matches saves the musician made in the source workstation, each changing one known
+value. The folders the musician selects, and each file the musician permits beyond them, bound the
+files an import reads."""
+
+[[requirement]]
+id = 'EU-0014-006'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST identify the format version of a source project before it reads the project's content."
+binds_to = 'system'
+rationale = 'Every later step reads the project at a known format version.'
+
+[[requirement]]
+id = 'EU-0014-007'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST refuse a source project of a format version it has no verified reader for.'
+binds_to = 'system'
+rationale = "The import never guesses at a format it hasn't been checked against."
+relations = [ { kind = 'depends_on', target = 'EU-0014-006' } ]
+
+[[requirement]]
+id = 'EU-0014-008'
+level = 'MUST'
+polarity = 'required'
+statement = "The refusal of a source project's format version MUST show that version."
+binds_to = 'system'
+rationale = 'The musician sees why the project was refused and which version a reader needs.'
+relations = [ { kind = 'depends_on', target = 'EU-0014-007' } ]
+
+[[requirement]]
+id = 'EU-0014-009'
+level = 'MUST'
+polarity = 'required'
+statement = 'Where a source project holds several alternatives, the import MUST read the one the project marks active.'
+binds_to = 'system'
+rationale = 'The musician gets the arrangement they last worked on, however the alternatives are numbered.'
+
+[[requirement]]
+id = 'EU-0014-010'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST resolve a file reference outside the folders the musician selected only with the musician's permission."
+binds_to = 'system'
+rationale = "An import never reads the musician's other files without their permission."
+
+[[requirement]]
+id = 'EU-0014-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = 'The import MUST NOT run executable content that a source project holds.'
+binds_to = 'system'
+rationale = "A project file can't carry code that runs on the musician's computer."
+
+[[requirement]]
+id = 'EU-0014-012'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST refuse a path in a source project that leads outside the selected folders and the files the musician permitted.'
+binds_to = 'system'
+rationale = "A project's paths can't reach files the import wasn't given."
+
+[[requirement]]
+id = 'EU-0014-013'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST refuse a malformed record of a source project.'
+binds_to = 'system'
+rationale = "A damaged or hostile project can't make the import read past its records."
+
+[[requirement]]
+id = 'EU-0014-014'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST judge whether a size a source project asks for is too large from the resources available, not from a fixed bound.'
+binds_to = 'system'
+rationale = "The import serves a project of any size the computer can hold, and refuses one it can't."
+
+[[requirement]]
+id = 'EU-0014-015'
+level = 'MUST'
+polarity = 'required'
+statement = 'An interrupted import MUST leave its proposed project unapplied.'
+binds_to = 'system'
+rationale = 'The musician can start an interrupted import again from the same state.'
+
+[[requirement]]
+id = 'EU-0014-016'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST show the musician the proposed project and its conversion report before it commits anything.'
+binds_to = 'system'
+rationale = 'Nothing is lost or replaced without the musician seeing it.'
+
+[[requirement]]
+id = 'EU-0014-017'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The import MUST NOT commit a proposed project the musician hasn't accepted."
+binds_to = 'system'
+rationale = "An import changes only what the musician chose."
+relations = [ { kind = 'depends_on', target = 'EU-0014-016' } ]
+
+[[requirement]]
+id = 'EU-0014-018'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import MUST commit an accepted project as a new branch, through the commands every client uses.'
+binds_to = 'system'
+rationale = 'An accepted import is an ordinary revision that a later revision can drop.'
+
+[[requirement]]
+id = 'EU-0014-019'
+level = 'MUST'
+polarity = 'required'
+statement = 'Importing the same source project again at the same importer and mapping versions MUST produce the same project and the same report.'
+binds_to = 'system'
+rationale = 'A musician who imports again gets a result they can compare with the first.'
+
+[[requirement]]
+id = 'EU-0014-020'
+level = 'MUST'
+polarity = 'required'
+statement = 'The import result MUST record the versions of the importer and of each mapping it used.'
+binds_to = 'system'
+rationale = 'A later import, or a report of a difference, states which reader and mappings produced the project.'
+
+[[requirement]]
+id = 'EU-0014-070'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST read only a source project on the musician's own computer that the musician chose and has access to."
+binds_to = 'system'
+rationale = "An import never reads a project the musician didn't choose, whoever asks for it."
+
+[[requirement]]
+id = 'EU-0014-071'
+level = 'MUST'
+polarity = 'required'
+statement = "The import MUST read a source project's content in isolation from the rest of the system."
+binds_to = 'system'
+rationale = "A hostile or damaged project can't change a euphony project or a running take."
+
+[[requirement]]
+id = 'EU-0014-072'
+level = 'MUST'
+polarity = 'required'
+statement = 'Text read from a source project MUST be treated as data, never as an instruction to an assistant.'
+binds_to = 'system'
+rationale = "A name or a note in a project can't direct an assistant to act."
+
+[[requirement]]
+id = 'EU-0014-073'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The import MUST NOT set a control to a converted value outside that control's domain."
+binds_to = 'system'
+rationale = 'A converted value never sets a control outside what the control accepts.'

@@ -1,0 +1,5 @@
+target = "rendered/0018-desktop-and-browser/03-presentation.md#EU-0018-099"
+
+[[spec]]
+level = "MUST"
+quote = "Each request to a platform service MUST return a cancellation, a denial, an unsupported result or a validated result."

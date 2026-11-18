@@ -1,0 +1,5 @@
+target = "rendered/0002-engine-daemon/05-gateway.md#EU-0002-091"
+
+[[spec]]
+level = "MUST"
+quote = "The session host MUST serve a collaborator's peer the objects of only the projects that peer's links reach."

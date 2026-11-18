@@ -1,0 +1,5 @@
+target = "rendered/0015-listener-mixes/09-joining-and-leaving.md#EU-0015-115"
+
+[[spec]]
+level = "MUST"
+quote = "A headphone removal MUST NOT end the station's connection."

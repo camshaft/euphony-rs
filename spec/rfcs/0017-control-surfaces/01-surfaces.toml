@@ -1,0 +1,105 @@
+[section]
+anchor = 'surfaces'
+title = 'Surfaces as views of one session'
+problem = "Musicians control a session from more than the main screen, and a surface that opens a session of its own, or holds its own copy of the project, can issue transport and recording commands that undo another person's stop or take."
+motivation = "Attaching every surface to the one running session as a view and an input endpoint keeps one authority over the project, so every surface acts through the same commands, access and state, and none fights another over transport or recording."
+prose = '''
+A control surface is a device or a window that a person uses to see and control a running session:
+a phone, a tablet, a second desktop window or screen, a touch monitor, the browser companion or a
+hardware controller. A surface attaches to one running session as a view and an input endpoint,
+and holds its own layout over that session's existing controls. It is not another authority over
+the project, a render worker or an audio source. A second window or a touch monitor wired to a
+computer is a local surface of that computer, while a phone, a tablet, the browser companion or a
+hardware controller reached through an adapter on an enrolled computer joins over the network.
+Surfaces attached to one session share its branch and its transport; collaborators who work apart
+use branches of their own, and the session's exclusive control epoch, which decides who controls
+transport and recording, is stated by RFC 0013. A listener station keeps the binding to its own
+listener mix that RFC 0015 states.'''
+
+[[requirement]]
+id = 'EU-0017-001'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST attach to exactly one running session at a time."
+binds_to = 'system'
+rationale = "Every input of a surface acts on one known session."
+
+[[requirement]]
+id = 'EU-0017-002'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A surface MUST NOT hold its own copy of the project."
+binds_to = 'system'
+rationale = "The session stays the one place the project changes."
+
+[[requirement]]
+id = 'EU-0017-003'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "A surface MUST NOT act as an authority over the session it controls."
+binds_to = 'system'
+rationale = "Two authorities could issue conflicting transport and recording commands."
+
+[[requirement]]
+id = 'EU-0017-004'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Attaching a surface MUST NOT make it a render worker or an audio input of the session."
+binds_to = 'system'
+rationale = "A controller never changes where the session renders or what it records."
+
+[[requirement]]
+id = 'EU-0017-005'
+level = 'MUST'
+polarity = 'required'
+statement = "The system MUST let phones, tablets, desktop windows, touch monitors, the browser companion and hardware controllers attach to one running session at the same time."
+binds_to = 'system'
+rationale = "A musician extends one session with every kind of control they use together."
+
+[[requirement]]
+id = 'EU-0017-006'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface MUST act through the same commands, access rules and state as every other client of the session."
+binds_to = 'system'
+rationale = "A surface never adds a second mixer or a controller-specific project model."
+
+[[requirement]]
+id = 'EU-0017-007'
+level = 'MUST'
+polarity = 'required'
+statement = "Surfaces attached to one session MUST share its selected branch and its transport."
+binds_to = 'system'
+rationale = "Every surface of a session shows and moves the same playback."
+
+[[requirement]]
+id = 'EU-0017-008'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "Attaching a surface MUST NOT transfer the control of the session's transport and recording to it."
+binds_to = 'system'
+rationale = "A new surface never takes a take away from the person who controls it."
+
+[[requirement]]
+id = 'EU-0017-009'
+level = 'MUST'
+polarity = 'required'
+statement = "A surface's transport and recording actions MUST act on behalf of the session's current controller."
+binds_to = 'system'
+rationale = "Several surfaces can serve one controller without competing for the role."
+
+[[requirement]]
+id = 'EU-0017-010'
+level = 'MUST'
+polarity = 'required'
+statement = "The session host MUST deny a surface's request that lacks the session's current control epoch."
+binds_to = 'system'
+rationale = "A request made under an earlier controller never changes transport or recording."
+
+[[requirement]]
+id = 'EU-0017-011'
+level = 'MUST'
+polarity = 'forbidden'
+statement = "The surface protocol MUST NOT let a listener station change the main mix or the recording."
+binds_to = 'system'
+rationale = "A station keeps its binding to its own listener mix."
