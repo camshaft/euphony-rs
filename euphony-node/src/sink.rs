@@ -100,6 +100,12 @@ mod tests {
 
     #[test]
     fn a_full_block_of_constant_inputs_writes_one_block_of_samples() {
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-098
+        //= type=test
+        //# A render block MUST hold at most 256 samples of each node output.
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-100
+        //= type=test
+        //# In each render block, each node, each sink among them, MUST take at most as many samples from each of its inputs as the block holds, whatever the input holds.
         let count = Arc::new(AtomicUsize::new(0));
         let mut graph = Graph::<Config>::default();
 
@@ -108,6 +114,26 @@ mod tests {
         graph.update().unwrap();
         graph.process(&Context::default());
 
-        assert_eq!(count.load(Ordering::SeqCst), LEN);
+        // a full block holds 256 samples, and the sink takes each of them
+        assert_eq!(count.load(Ordering::SeqCst), 256);
+    }
+
+    #[test]
+    fn a_shorter_block_of_constant_inputs_writes_the_samples_it_holds() {
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-100
+        //= type=test
+        //# In each render block, each node, each sink among them, MUST take at most as many samples from each of its inputs as the block holds, whatever the input holds.
+        let count = Arc::new(AtomicUsize::new(0));
+        let mut graph = Graph::<Config>::default();
+
+        // a block that ends at the render's next instruction or at its end holds fewer samples
+        graph.insert(1, Count(count.clone()).spawn());
+        graph.update().unwrap();
+        graph.process(&Context {
+            partial: Some(100),
+            ..Context::default()
+        });
+
+        assert_eq!(count.load(Ordering::SeqCst), 100);
     }
 }

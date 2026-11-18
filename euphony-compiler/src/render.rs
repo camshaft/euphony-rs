@@ -170,13 +170,15 @@ mod tests {
     use euphony_units::coordinates::Polar;
     use std::sync::{
         atomic::{AtomicBool, AtomicUsize, Ordering},
-        Arc,
+        Arc, Mutex,
     };
 
     /// What became of a sink the renderer spawned
     #[derive(Default)]
     struct Probe {
         samples: AtomicUsize,
+        /// The count of samples of each block the sink wrote, in order
+        writes: Mutex<Vec<usize>>,
         discarded: AtomicBool,
         dropped: AtomicBool,
     }
@@ -184,6 +186,10 @@ mod tests {
     impl Probe {
         fn samples(&self) -> usize {
             self.samples.load(Ordering::SeqCst)
+        }
+
+        fn writes(&self) -> Vec<usize> {
+            self.writes.lock().unwrap().clone()
         }
 
         fn discarded(&self) -> bool {
@@ -199,7 +205,9 @@ mod tests {
 
     impl Sink for ProbeSink {
         fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: S) {
-            self.0.samples.fetch_add(samples.count(), Ordering::SeqCst);
+            let count = samples.count();
+            self.0.samples.fetch_add(count, Ordering::SeqCst);
+            self.0.writes.lock().unwrap().push(count);
         }
 
         fn discard(&mut self) {
@@ -256,6 +264,20 @@ mod tests {
             .push(Instruction::SpawnSink { id, hash }, output)
             .unwrap();
         output.probes.last().unwrap().clone()
+    }
+
+    /// Sets the first input of the node `id` to the constant `value`
+    fn set_constant(renderer: &mut Renderer, output: &mut Output, id: u64, value: f64) {
+        renderer
+            .push(
+                Instruction::SetParameter {
+                    target_node: id,
+                    target_parameter: 0,
+                    value: ParameterValue::Constant(value),
+                },
+                output,
+            )
+            .unwrap();
     }
 
     #[test]
@@ -351,5 +373,68 @@ mod tests {
 
         assert!(probe.dropped());
         assert!(!probe.discarded());
+    }
+
+    #[test]
+    fn a_render_block_ends_at_the_next_instruction_and_at_the_end_of_the_render() {
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-098
+        //= type=test
+        //# A render block MUST hold at most 256 samples of each node output.
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-099
+        //= type=test
+        //# A render block MUST hold fewer than 256 samples only where it ends at the render's next instruction or at the render's end.
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-101
+        //= type=test
+        //# A render block that ends at the render's next instruction or at the render's end MUST hold the samples that remain up to that point.
+        let mut renderer = Renderer::default();
+        let mut output = Output::default();
+        renderer.start();
+
+        let probe = spawn_sink(&mut renderer, &mut output, 1);
+
+        // an instruction at sample 100 of a render that ends at sample 400
+        renderer
+            .push(Instruction::AdvanceSamples { count: 100 }, &mut output)
+            .unwrap();
+        set_constant(&mut renderer, &mut output, 1, 0.5);
+        renderer
+            .push(Instruction::AdvanceSamples { count: 300 }, &mut output)
+            .unwrap();
+        renderer
+            .push(Instruction::FinishNode { node: 1 }, &mut output)
+            .unwrap();
+        renderer.complete();
+
+        // a block ends at the instruction and at the render's end, and each other block is whole
+        assert_eq!(probe.writes(), [100, 256, 44]);
+    }
+
+    #[test]
+    fn a_node_with_a_constant_input_writes_the_samples_of_each_block() {
+        //= rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-100
+        //= type=test
+        //# In each render block, each node, each sink among them, MUST take at most as many samples from each of its inputs as the block holds, whatever the input holds.
+        let mut renderer = Renderer::default();
+        let mut output = Output::default();
+
+        // the node that negates its input, whose input holds a constant
+        let processor = 33;
+        renderer
+            .push(Instruction::SpawnNode { id: 1, processor }, &mut output)
+            .unwrap();
+        set_constant(&mut renderer, &mut output, 1, 2.0);
+        renderer
+            .push(Instruction::AdvanceSamples { count: 256 }, &mut output)
+            .unwrap();
+        assert_eq!(renderer.graph.get(1).unwrap(), &[-2.0; 256]);
+
+        // a shorter block writes only the samples it holds, and the rest of the output stays
+        set_constant(&mut renderer, &mut output, 1, 3.0);
+        renderer
+            .push(Instruction::AdvanceSamples { count: 100 }, &mut output)
+            .unwrap();
+        let samples = renderer.graph.get(1).unwrap();
+        assert_eq!(samples[..100], [-3.0; 100]);
+        assert_eq!(samples[100..], [-2.0; 156]);
     }
 }
