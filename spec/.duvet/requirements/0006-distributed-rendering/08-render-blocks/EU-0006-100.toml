@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-100"
+
+[[spec]]
+level = "MUST"
+quote = "In each render block, each node, each sink among them, MUST take at most as many samples from each of its inputs as the block holds, whatever the input holds."
