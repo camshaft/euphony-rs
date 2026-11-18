@@ -9,29 +9,38 @@ motivation = """\
   One block length for every render, and a bound on what each node takes from each input in a \
   block, let every render finish and keep each node's output in time with its inputs."""
 prose = """
-A render processes the project graph in render blocks: in each block, each node takes its inputs
-for that block and writes that many samples of its output. A sink is the node that writes a
-render's result, and the rules of this section hold for sinks as for every other node. An input of
-a node is another node's output or a value, such as a constant, which holds as many samples as a
-node asks of it. Every render holds the same block length, on a worker and in the live render
-island of RFC 0005 alike, and a render whose length isn't a whole number of blocks ends with a
-shorter block."""
+A render advances the project graph from one instruction, such as a node's start, a parameter
+change or a node's end, to the next, in render blocks: in each block, each node takes its inputs
+for that block and writes that many samples of its output. A render block holds 256 samples, and
+the block that reaches the render's next instruction or the render's end holds the samples that
+remain up to it. A sink is the node that writes a render's result, and the rules of this section
+hold for sinks as for every other node. An input of a node is another node's output or a value,
+such as a constant, which holds as many samples as a node asks of it. Every render holds the same
+block length, on a worker and in the live render island of RFC 0005 alike."""
 
 [[requirement]]
 id = 'EU-0006-098'
 level = 'MUST'
 polarity = 'required'
-statement = 'A render block other than the last block of a render MUST hold 256 samples of each node output.'
+statement = 'A render block MUST hold at most 256 samples of each node output.'
 binds_to = 'system'
-rationale = 'Every node and every input agree on how many samples one block holds.'
+rationale = 'Every node and every input agree on the most samples one block holds.'
 
 [[requirement]]
 id = 'EU-0006-099'
 level = 'MUST'
 polarity = 'required'
-statement = 'The last block of a render MUST hold the samples that remain of the render.'
+statement = "A render block MUST hold fewer than 256 samples only where it ends at the render's next instruction or at the render's end."
 binds_to = 'system'
-rationale = 'A render ends at its length and not at the next whole block.'
+rationale = 'Every other block holds the whole block length.'
+
+[[requirement]]
+id = 'EU-0006-101'
+level = 'MUST'
+polarity = 'required'
+statement = "A render block that ends at the render's next instruction or at the render's end MUST hold the samples that remain up to that point."
+binds_to = 'system'
+rationale = 'Each instruction takes effect at its own sample, and a render ends at its length.'
 
 [[requirement]]
 id = 'EU-0006-100'

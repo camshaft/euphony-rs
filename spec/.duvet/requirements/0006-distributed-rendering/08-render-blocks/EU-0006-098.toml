@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-098"
 
 [[spec]]
 level = "MUST"
-quote = "A render block other than the last block of a render MUST hold 256 samples of each node output."
+quote = "A render block MUST hold at most 256 samples of each node output."

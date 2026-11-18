@@ -2,4 +2,4 @@ target = "rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-099"
 
 [[spec]]
 level = "MUST"
-quote = "The last block of a render MUST hold the samples that remain of the render."
+quote = "A render block MUST hold fewer than 256 samples only where it ends at the render's next instruction or at the render's end."

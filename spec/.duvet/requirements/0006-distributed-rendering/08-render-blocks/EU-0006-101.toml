@@ -1,0 +1,5 @@
+target = "rendered/0006-distributed-rendering/08-render-blocks.md#EU-0006-101"
+
+[[spec]]
+level = "MUST"
+quote = "A render block that ends at the render's next instruction or at the render's end MUST hold the samples that remain up to that point."
