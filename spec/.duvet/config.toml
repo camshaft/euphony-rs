@@ -3,7 +3,13 @@
 # The requirement side of the trace: duvet reads every requirement file under .duvet/requirements,
 # which partimento render writes from the RFC sources, so the config doesn't list a specification
 # to extract and nothing is extracted from the rendered text (EU-0000-046).
-# An implementation that cites the requirements adds its code as [[source]] patterns.
+
+# The implementation side: the Rust code of each crate of the workspace, whose citations name the
+# rendered text of a section with the requirement's identifier as the anchor (EU-0000-043) and quote
+# the requirement's statement (EU-0000-044). duvet runs from this directory, spec/, so the pattern
+# reaches the crates from its parent, the repository's root.
+[[source]]
+pattern = "../euphony*/**/*.rs"
 
 [report.json]
 enabled = true
