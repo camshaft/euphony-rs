@@ -1,6 +1,6 @@
 use euphony_units::coordinates::Polar;
 
-use crate::{BoxProcessor, Buffers, Inputs, Node, Output};
+use crate::{BoxProcessor, Buffers, Inputs, Node};
 
 pub trait Sink: 'static + Send + Sized {
     #[inline]
@@ -75,29 +75,39 @@ impl<Inner: Sink> Node<4, 0> for Wrapper<Inner> {
 
         self.inner.write(samples)
     }
+}
 
-    #[inline]
-    fn process_full(&mut self, inputs: Inputs<4>, _buffer: Buffers<0>, _samples: &mut Output) {
-        let pcm = inputs.get(0);
-        let pcm = pcm.iter();
-        let azimuth = inputs.get(1);
-        let azimuth = azimuth.iter();
-        let inclination = inputs.get(2);
-        let inclination = inclination.iter();
-        let radius = inputs.get(3);
-        let radius = radius.iter();
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Config, Context, LEN};
+    use euphony_graph::Graph;
+    use std::sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc,
+    };
 
-        let coord = azimuth
-            .zip(inclination)
-            .zip(radius)
-            .map(|((azimuth, inclination), radius)| Polar {
-                azimuth,
-                inclination,
-                radius,
-            });
+    /// Counts the samples the sink takes, at most one more than a block holds
+    struct Count(Arc<AtomicUsize>);
 
-        let samples = pcm.zip(coord);
+    impl Sink for Count {
+        fn write<S: Iterator<Item = (f64, Polar<f64>)>>(&mut self, samples: S) {
+            // an unbounded block never ends, so take one sample past it at most
+            let count = samples.take(LEN + 1).count();
+            self.0.fetch_add(count, Ordering::SeqCst);
+        }
+    }
 
-        self.inner.write(samples)
+    #[test]
+    fn a_full_block_of_constant_inputs_writes_one_block_of_samples() {
+        let count = Arc::new(AtomicUsize::new(0));
+        let mut graph = Graph::<Config>::default();
+
+        // each of the sink's inputs holds its constant default, so no input ends the block
+        graph.insert(1, Count(count.clone()).spawn());
+        graph.update().unwrap();
+        graph.process(&Context::default());
+
+        assert_eq!(count.load(Ordering::SeqCst), LEN);
     }
 }
