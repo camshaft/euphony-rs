@@ -1,0 +1,22 @@
+[package]
+name = "euphony-daw-jobs"
+version = "0.1.0"
+description = "Durable render jobs and the worker contract of the euphony workstation"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "euphony-daw-worker"
+path = "src/bin/worker.rs"
+
+[dependencies]
+euphony-daw-identity = { path = "../euphony-daw-identity" }
+euphony-daw-render = { path = "../euphony-daw-render" }
+euphony-daw-sample = { path = "../euphony-daw-sample" }
+euphony-daw-store = { path = "../euphony-daw-store" }
+
+[dev-dependencies]
+bach = { version = "0.2", default-features = false }
+euphony-daw-project = { path = "../euphony-daw-project" }
+tempfile = "3"

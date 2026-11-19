@@ -1,0 +1,13 @@
+[package]
+name = "euphony-daw-render"
+version = "0.1.0"
+description = "Render descriptors, compilation and the built-in renderer of the euphony workstation"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+euphony-daw-identity = { path = "../euphony-daw-identity" }
+euphony-daw-project = { path = "../euphony-daw-project" }
+euphony-daw-sample = { path = "../euphony-daw-sample" }
+euphony-daw-store = { path = "../euphony-daw-store" }

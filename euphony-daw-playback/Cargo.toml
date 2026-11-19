@@ -1,0 +1,27 @@
+[package]
+name = "euphony-daw-playback"
+version = "0.1.0"
+description = "Prepared playback through a device adapter for the euphony workstation"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[features]
+default = []
+native = ["cpal"]
+
+[dependencies]
+cpal = { version = "0.18", optional = true, features = ["realtime"] }
+euphony-daw-identity = { path = "../euphony-daw-identity" }
+euphony-daw-render = { path = "../euphony-daw-render" }
+euphony-daw-sample = { path = "../euphony-daw-sample" }
+euphony-daw-store = { path = "../euphony-daw-store" }
+rtrb = "0.4"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+cpal = { version = "0.18", optional = true, features = ["pipewire", "realtime-dbus"] }
+
+[dev-dependencies]
+euphony-daw-jobs = { path = "../euphony-daw-jobs" }
+euphony-daw-project = { path = "../euphony-daw-project" }
+tempfile = "3"

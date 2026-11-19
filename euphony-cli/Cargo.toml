@@ -21,7 +21,7 @@ arc-swap = "1"
 base64 = "0.21"
 cargo_metadata = "0.15"
 crossterm = "0.26"
-cpal = { version = "0.15", optional = true }
+cpal = { version = "0.18", optional = true }
 env_logger = "0.10"
 euphony-command = { version = "0.1", path = "../euphony-command" }
 euphony-compiler = { version = "0.1", path = "../euphony-compiler", features = ["parallel"] }
